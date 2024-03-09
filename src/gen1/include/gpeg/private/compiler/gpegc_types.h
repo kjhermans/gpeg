@@ -99,6 +99,7 @@ typedef struct
   unsigned              cslot;
   int                   prefixgiven;
   int                   rulecapture;
+  char*                 startrule;
 }
 gpegc_t;
 

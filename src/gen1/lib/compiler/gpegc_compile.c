@@ -97,6 +97,10 @@ GPEG_ERR_T gpegc_compile
 
   int e = grammar_process_node(&(captures.list[ 0 ]), &gpegc);
 
+  if (gpegc.startrule) {
+    vec_printf_insert(output, 0, "  call %s\n  end 0\n\n", gpegc.startrule);
+  }
+
   if (e) {
     unsigned yx0[ 2 ];
     unsigned yx1[ 2 ];

@@ -1770,8 +1770,12 @@ int handle_RULE
   (void)capture;
 
   gpegc_t* gpegc = arg;
+
   gpegc->currentrule.name = (char*)(capture->children.list[ 0 ].data.data);
   gpegc->currentmatcherlist = &(gpegc->currentrule.matchers);
+  if (NULL == gpegc->startrule) {
+    gpegc->startrule = (char*)(capture->children.list[ 0 ].data.data);
+  }
 
   return 0;
 }
