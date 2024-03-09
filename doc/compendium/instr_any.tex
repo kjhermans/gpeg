@@ -1,0 +1,56 @@
+\subsection{Instruction: any}
+
+\subsubsection{Summary}
+
+\InputIfFileExists{instr_any_summary.tex}{}{}
+
+\subsubsection{Grammar and Compiling}
+
+\InputIfFileExists{instr_any_compiling.tex}{}{}
+
+\subsubsection{Assembly Syntax}
+
+\begin{myquote}
+\begin{verbatim}
+ANYINSTR <- 'any'
+\end{verbatim}
+\end{myquote}
+
+\InputIfFileExists{instr_any_assembly.tex}{}{}
+
+\subsubsection{Bytecode Encoding}
+
+This instruction has a size of 4 bytes and is structured in bytecode as follows:
+
+%DEADBEEF
+$_{00}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+03
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+e4
+  }%
+}
+
+%DEADBEEF
+\InputIfFileExists{instr_any_bytecode.tex}{}{}
+
+\subsubsection{Execution State Change}
+
+.
+
+\InputIfFileExists{instr_any_state.tex}{}{}
+

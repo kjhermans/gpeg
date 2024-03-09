@@ -1,0 +1,371 @@
+\section{Grammar}
+\label{sec:grammar}
+
+A gpeg grammar file or buffer consists either of a single
+unnamed expression, or of a sequence of named expressions (called rules),
+whitespace and comments, denoted in ASCII text.
+gpeg grammar is defined with the express purpose of matching, validating
+and/or capturing from an arbitrary data input.
+gpeg grammar is taken by the gpeg compiler program (naic) and turned
+into gpeg assembly [section \ref{sec:assembly}].
+In this, it resembles greatly other grammar description and parsing methods
+such as Backus-Naur, Regular Expressions, Lex and Yacc.
+
+\begin{myquote}
+\begin{verbatim}
+-- JSON; JavaScript Object Notation.
+TOP          <- JSON
+__prefix     <- %s*
+JSON         <- HASH END
+HASH         <- CBOPEN OPTHASHELTS CBCLOSE
+OPTHASHELTS  <- HASHELTS / ...
+HASHELTS     <- HASHELT COMMA HASHELTS / HASHELT
+HASHELT      <- STRING COLON VALUE
+ARRAY        <- ABOPEN OPTARRAYELTS ABCLOSE
+OPTARRAYELTS <- ARRAYELTS / ...
+ARRAYELTS    <- VALUE COMMA ARRAYELTS / VALUE
+VALUE        <- STRING / FLOAT / INT / BOOL / NULL / HASH / ARRAY
+STRING       <- { '"' ( '\\' ([nrtv"] / [0-9]^3) / [^"\\] )* '"' }
+INT          <- { [0-9]+ }
+FLOAT        <- { [0-9]* '.' [0-9]+ }
+BOOL         <- { 'true' / 'false' }
+NULL         <- { 'null' }
+CBOPEN       <- '{'
+CBCLOSE      <- '}'
+ABOPEN       <- '['
+ABCLOSE      <- ']'
+COMMA        <- ','
+COLON        <- ':'
+END          <- !.
+\end{verbatim}
+\end{myquote}
+\textit{Example of a gpeg grammar meant to validate and capture from
+JSON\cite{bib:json} text.}
+
+\subsection{Caveats}
+
+This section highlights a few things to keep in mind when using
+gpeg, or PEGs in general.
+
+\subsubsection{Greedy and Blind Behavior}
+
+PEG is, by itself, both greedy and blind.
+That is to say, it consumes as much input as possible (greedy), and it does not
+look ahead whether a next token is perhaps a better match for the input (blind).
+It can however, also implement non-blind behavior, both in a greedy as
+well as a non-greedy manner.
+
+Having a greedy, blind parser - standard PEGs - implies that the following
+rule will always fail (because the '.*' will consume all input):
+
+\begin{myquote}
+\begin{verbatim}
+RULE <- .* 'foo'
+\end{verbatim}
+\end{myquote}
+
+Grammars or patterns like the above, are usually treated in a more
+friendly way by, for example, Regex parsers. They implement
+a recursive algorithm around 'does the whole pattern match' question,
+which backtracks 'from zero to any amount' quantifiers such as the one
+used above,
+leaving the user with a much more freedom to implement patterns but,
+in the end, a much more unpredictable system (for example, what if
+'foo' happens twice in the text?)
+
+gpeg is not so understanding. To make it match something while
+also doing a lookahead (therefore 'non blind'),
+you can implement the following pattern
+recursively (non greedy, so catching the first lookahead match):
+
+\begin{myquote}
+\begin{verbatim}
+S <- E2 / E1 S
+\end{verbatim}
+\end{myquote}
+
+Or, not recursively:
+
+\begin{myquote}
+\begin{verbatim}
+S <- ( !E2 E1 )* E2
+\end{verbatim}
+\end{myquote}
+
+And greedy, so catching only the last lookahead match:
+
+\begin{myquote}
+\begin{verbatim}
+S <- E1 S / E2
+\end{verbatim}
+\end{myquote}
+
+\subsubsection{Recursiveness}
+
+Just like with greedy matching, gpeg will simply jump headlong
+into your rule's first matcher, and will not try to second-guess your
+intentions. So while in many grammar systems, left recursive is
+usually considered the best way to describe
+repetition, PEG will get stuck in an endless loop if you do the following:
+
+\begin{myquote}
+\begin{verbatim}
+S <- S SOMEOTHER
+\end{verbatim}
+\end{myquote}
+
+\subsection{Comments}
+
+A comment starts with two minus signs and ends at the end of the line.
+
+\begin{myquote}
+\begin{verbatim}
+-- Example of a single line comment.
+\end{verbatim}
+\end{myquote}
+
+A multiline comment is also avaiable: these start with two minus signs
+followed by two angle braces. The multiline comment is closed by two
+closing angle braces.
+
+\begin{myquote}
+\begin{verbatim}
+--[[
+     Example of a
+     multiline comment.
+  ]]
+\end{verbatim}
+\end{myquote}
+
+\subsection{Rules}
+
+A rule is defined as an \textit{Identifier}, followed by a
+left-pointing arrow (composed of a less-than and a minus sign),
+followed by a matching expression.
+
+When a gpeg grammar consists of a sequence of rules
+(as opposed to a single line expression),
+the first rule is used as the starting point for matching inputs.
+
+\begin{myquote}
+\begin{verbatim}
+RULE1 <- 'a' / RULE2
+RULE2 <- 'b' / RULE3
+RULE3 <- 'c'
+\end{verbatim}
+\end{myquote}
+\textit{Definition of a set of rules}
+
+\subsubsection{Identifiers}
+
+Identifiers, in gpeg, are defined as a combination of letters,
+numbers and the underscore character, not starting with a number,
+of between one and 64 characters long.
+
+\begin{myquote}
+\begin{verbatim}
+IDENTIFIER <- [a-zA-Z_][a-zA-Z0-9_]^-63
+\end{verbatim}
+\end{myquote}
+
+Identifiers are used to start rule definitions, and as references
+to rules in expressions.
+
+\subsubsection{Special Rules}
+
+There is currently one special rule in gpeg grammar: a rule called
+'\_\_prefix' will be treated specially. This rule will be, from its
+definition onwards, called before the execution of any subsequent rule
+definition expression. The aim is to make whitespace and comment filtering
+in program language parsing easier. See also the earlier 'JSON' grammar
+example.
+
+\subsection{Expressions}
+
+Expressions are lists of terms, optionally separated by the
+OR operator (denoted by the forward slash sign).
+
+\begin{myquote}
+\begin{verbatim}
+ALTERNATIVES <- ALT1 / ALT2 / ALT3
+\end{verbatim}
+\end{myquote}
+
+A sequence of terms has a higher precendence than the OR operator,
+so any other desired order of precedence has to be forced by using
+brackets.
+In the example below, the expressions evaluate differently:
+
+\begin{myquote}
+\begin{verbatim}
+RULE1 <- 'a' 'b' / 'c'
+RULE2 <- 'a' ( 'b' / 'c' )
+\end{verbatim}
+\end{myquote}
+
+\subsection{Terms}
+
+A term is defined as a matcher, potentially adorned with prefix
+or postfix operators (though not at the same time).
+Prefix operators are the NOT and CONFIRM modifiers.
+Postfix operators are the quantifiers.
+
+\subsubsection{The NOT Modifier}
+
+The NOT modifier is an exclamation mark.
+It does not advance the input position, but succeeds
+when matching fails (including reaching the end of input),
+and fails when matching succeeds.
+Since gpeg is a greedy parser,
+this can be used to implement a non-greedy lookahead, for example:
+ 
+\begin{myquote}
+\begin{verbatim}
+CMULTILINECOMMENT <- '/*' (!'*/' .)* '*/'
+\end{verbatim}
+\end{myquote}
+
+\subsubsection{The CONFIRM Modifier}
+
+The CONFIRM modifier is an ampersand.
+It does not advance the input position, and succeeds
+as matching succeeds, and fails when matching fails.
+It can be used to process (parts of the) input twice.
+It is equivalent to using the NOT modifier twice.
+
+Example where the input is first confirmed to be valid UTF-8,
+and only after that, processed again from the beginning, for
+well-formedness.
+\begin{myquote}
+\begin{verbatim}
+JSON <- & UTF8 WELLFORMED
+\end{verbatim}
+\end{myquote}
+
+\subsubsection{Quantifiers}
+
+gpeg denotes quantifiers using a circonflex, followed by either
+an absolute number, or a range. Shorthand exists for certain, often-used
+ranges. These shorthand ranges are common in Regex as well:
+
+\begin{center}
+%\caption{gpeg Quantifiers}
+\label{tab:naig_quantifiers}
+\begin{longtable}{ll}
+\textbf{Quantifier} & \textbf{Semantics} \\
+\endhead
+* & Zero or more matches \\
++ & One or more matches \\
+? & Zero or one matches \\
+\^{}\textit{n} & \textit{n} matches \\
+\^{}-\textit{n} & Zero up to and including \textit{n} matches \\
+\^{}\textit{n}- & \textit{n} matches or more \\
+\^{}\textit{n}-\textit{m} & From \textit{n} up to and including \textit{m} matches \\
+\end{longtable}
+\end{center}
+ 
+Example of the use of quantifiers:
+\begin{myquote}
+\begin{verbatim}
+RULE1 <- 'a'? 'b'^-5
+\end{verbatim}
+\end{myquote}
+
+\subsection{Matchers}
+
+\subsubsection{The ANY Matcher}
+
+The ANY matcher is denoted (like in Regex) with a single dot.
+It matches any character of input and it succeeds - advancing the input
+pointer by one - if it can find one at the input pointer. It fails only
+at the end of input.
+
+\begin{myquote}
+\begin{verbatim}
+RUNGREEDILYTOTHEENDOFINPUT <- .*
+\end{verbatim}
+\end{myquote}
+
+\subsubsection{The SET Matcher}
+
+The ANY matcher, together with the NOT modifier,
+also allows you to define end-of-input, like so:
+
+\begin{myquote}
+\begin{verbatim}
+ENDOFINPUT <- !.
+\end{verbatim}
+\end{myquote}
+
+\subsubsection{The SET Matcher}
+
+The SET matcher is denoted, like in Regex, as a series of literals
+and ranges, enclosed between angled brackets. It can also be negated,
+in which case it matches any character not in the set.
+
+\begin{myquote}
+\begin{verbatim}
+ALPHABETIC     <- [a-zA-Z]
+NONALPHABETIC  <- [^a-zA-Z]
+\end{verbatim}
+\end{myquote}
+
+The denotation of the set elements has a backslash as escape character
+(to encode the minus and the closing angled brace).
+It also has a form of binary escaping, to encode non-ASCII characters
+as part of the set: a backslash followed by three digits of the characters
+octal notation.
+
+\subsubsection{The STRING Matcher}
+
+The STRING matcher is denoted as a string literal, between single
+quotes. The string may be postfixed with an lower case 'i' to
+indicate (alphabetic) case insensitive matching.
+
+\begin{myquote}
+\begin{verbatim}
+CASEINSENSTIVESTRING <- 'peg'i
+\end{verbatim}
+\end{myquote}
+
+\subsubsection{The BITMASK Matcher}
+
+The BITMASK matcher allows you to match bits.
+
+\subsubsection{The HEXLITERAL Matcher}
+
+The HEXLITERAL matcher allows you to match single characters by
+through their hexadecimal representation.
+
+\subsubsection{The MACRO Matcher}
+
+All macroes are shorthand equivalents of the SET matcher.
+
+\begin{center}
+%\caption{gpeg Macroes}
+\label{tab:naig_macroes}
+\begin{longtable}{lll}
+\textbf{Macro} & \textbf{Semantics} & \textbf{Set} \\
+\endhead
+\%s & Whitespace & [ \textbackslash n\textbackslash r\textbackslash t\textbackslash v] \\
+\%w & Alphabetic & [a-zA-Z] \\
+\%a & Alphanumeric & [a-zA-Z0-9] \\
+\%n & Numeric & [0-9] \\
+\%p & Printable & 0x20 - 0x7f \\
+\end{longtable}
+\end{center}
+
+\subsubsection{The GROUP Matcher}
+
+\subsubsection{The CAPTURE Matcher}
+
+\subsubsection{The VARCAPTURE Matcher}
+
+\subsubsection{The VARREFERENCE Matcher}
+
+\subsubsection{The REFERENCE Matcher}
+
+\subsubsection{The LIMITEDINPUT Matcher}
+
+\subsubsection{The END Matcher}
+

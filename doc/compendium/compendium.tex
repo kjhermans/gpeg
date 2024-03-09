@@ -1,0 +1,226 @@
+\documentclass[11pt]{amsart}
+%\documentclass[11pt]{report}
+\usepackage[toc,page]{appendix}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{geometry}        % See geometry.pdf to learn the layout options.
+\geometry{a4paper}           % ... or a4paper or a5paper or ...
+%\geometry{landscape}        % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip} % Activate to begin paragraphs with empty line
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{longtable}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\usepackage[most]{tcolorbox}
+\definecolor{block-gray}{gray}{0.95}
+\newtcolorbox{myquote}{colback=block-gray,grow to right by=+0mm,grow to left by=-10mm, boxrule=0pt,boxsep=0pt,breakable}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{ {images/} }
+
+\renewcommand{\familydefault}{\sfdefault}
+\newcounter{defctr}
+
+\title{gpeg parsing system (Compendium)}
+\author{Kees-Jan Hermans}
+%\date{}                     % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+This document contains a description of gpeg, a software
+implementation of a Parsing Expression Grammar compiler,
+assembler, and bytecode execution engine.
+
+\vspace*{3\baselineskip}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=60mm]{naigama}
+\end{figure}
+
+\vfill
+
+\begin{table}[]
+\centering
+\begin{tabular}{ll}
+Accompanies release & \input{../../release} \\
+Author &  Kees-Jan Hermans / kees.jan.hermans@gmail.com \\
+Classification & - \\
+Generated on & \today \\
+\end{tabular}
+\end{table}
+
+% Accompanies release: \input{../../release}
+% 
+% Author: Kees-Jan Hermans / kees.jan.hermans@gmail.com
+% 
+% Classification: -
+% 
+% Generated on: \today
+\newpage
+
+\tableofcontents
+
+\setlength{\parindent}{4em}
+\setlength{\parskip}{1em}
+
+\newpage
+\input{naig_intro.tex}
+
+\newpage
+\input{naig_overview.tex}
+
+\newpage
+\input{naig_generations.tex}
+
+\newpage
+\input{naig_grammar.tex}
+
+\newpage
+\input{naig_compiling.tex}
+
+\newpage
+\input{naig_assembly.tex}
+
+\newpage
+\input{naig_optimizations.tex}
+
+\newpage
+\input{naig_bytecode.tex}
+
+\newpage
+\input{naig_output.tex}
+
+\newpage
+\input{naig_executables.tex}
+
+\newpage
+\input{naig_formats.tex}
+
+\newpage
+\input{naig_apis.tex}
+
+\newpage
+\section{Colofon}
+\listoftables
+\input{bib.tex}
+
+\newpage
+\begin{appendices}
+
+\input{appendix_instr.tex}
+
+%DEADBEEF
+\newpage
+\input{instr_any.tex}
+
+\newpage
+\input{instr_backcommit.tex}
+
+\newpage
+\input{instr_call.tex}
+
+\newpage
+\input{instr_catch.tex}
+
+\newpage
+\input{instr_char.tex}
+
+\newpage
+\input{instr_closecapture.tex}
+
+\newpage
+\input{instr_commit.tex}
+
+\newpage
+\input{instr_condjump.tex}
+
+\newpage
+\input{instr_counter.tex}
+
+\newpage
+\input{instr_end.tex}
+
+\newpage
+\input{instr_endisolate.tex}
+
+\newpage
+\input{instr_endreplace.tex}
+
+\newpage
+\input{instr_fail.tex}
+
+\newpage
+\input{instr_failtwice.tex}
+
+\newpage
+\input{instr_intrpcapture.tex}
+
+\newpage
+\input{instr_isolate.tex}
+
+\newpage
+\input{instr_jump.tex}
+
+\newpage
+\input{instr_maskedchar.tex}
+
+\newpage
+\input{instr_noop.tex}
+
+\newpage
+\input{instr_opencapture.tex}
+
+\newpage
+\input{instr_partialcommit.tex}
+
+\newpage
+\input{instr_quad.tex}
+
+\newpage
+\input{instr_range.tex}
+
+\newpage
+\input{instr_replace.tex}
+
+\newpage
+\input{instr_ret.tex}
+
+\newpage
+\input{instr_set.tex}
+
+\newpage
+\input{instr_skip.tex}
+
+\newpage
+\input{instr_span.tex}
+
+\newpage
+\input{instr_testany.tex}
+
+\newpage
+\input{instr_testchar.tex}
+
+\newpage
+\input{instr_testquad.tex}
+
+\newpage
+\input{instr_testset.tex}
+
+\newpage
+\input{instr_trap.tex}
+
+\newpage
+\input{instr_var.tex}
+
+
+%DEADBEEF
+
+\end{appendices}
+
+\end{document}

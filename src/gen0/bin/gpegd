@@ -1,0 +1,63 @@
+#!/usr/bin/perl
+
+use strict;
+
+my (
+  $inputfile,
+  $outputfile,
+) = (
+  '-',
+  '-',
+);
+
+while (scalar(@ARGV)) {
+  my $arg = shift @ARGV;
+  if ($arg eq '-i') {
+    $inputfile = shift @ARGV || die "Need inputfile";
+  } elsif ($arg eq '-o') {
+    $outputfile = shift @ARGV || die "Need outputfile";
+  }
+}
+
+## TODO: What if inputfile == '-'
+
+my $input = absorb_binary($inputfile);
+
+
+exit 0;
+
+sub absorb_binary
+{
+  my $result = '';
+  my $path = shift; die "Found not found" if (! -f $path);
+  die "Error $@ opening $path" if (!open(FILE, '<', $path));
+  binmode FILE;
+  my $buf;
+  while (1) {
+    my $n = sysread(FILE, $buf, 1024);
+    if (!$n) {
+      close FILE;
+      return $result;
+    }
+    $result .= $buf;
+  }
+}
+
+sub dec32bit
+{
+  my $str = shift;
+  my $byte0 = ord(substr($str, 0, 1));
+  my $byte1 = ord(substr($str, 1, 1));
+  my $byte2 = ord(substr($str, 2, 1));
+  my $byte3 = ord(substr($str, 3, 1));
+  if ($byte0 != ($byte1 ^ $byte2 ^ $byte3)) {
+    die "Checksum failure.";
+  }
+  return (
+    ($byte1 << 16) |
+    ($byte2 << 8) |
+    $byte3
+  );
+}
+
+1;

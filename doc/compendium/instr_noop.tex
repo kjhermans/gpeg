@@ -1,0 +1,56 @@
+\subsection{Instruction: noop}
+
+\subsubsection{Summary}
+
+\InputIfFileExists{instr_noop_summary.tex}{}{}
+
+\subsubsection{Grammar and Compiling}
+
+\InputIfFileExists{instr_noop_compiling.tex}{}{}
+
+\subsubsection{Assembly Syntax}
+
+\begin{myquote}
+\begin{verbatim}
+NOOPINSTR <- 'noop'
+\end{verbatim}
+\end{myquote}
+
+\InputIfFileExists{instr_noop_assembly.tex}{}{}
+
+\subsubsection{Bytecode Encoding}
+
+This instruction has a size of 4 bytes and is structured in bytecode as follows:
+
+%DEADBEEF
+$_{00}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+
+%DEADBEEF
+\InputIfFileExists{instr_noop_bytecode.tex}{}{}
+
+\subsubsection{Execution State Change}
+
+.
+
+\InputIfFileExists{instr_noop_state.tex}{}{}
+

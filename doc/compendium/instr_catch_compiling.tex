@@ -1,0 +1,62 @@
+The 'catch' instruction is emitted when a fail condition has to be
+caught. Currently, in gpeg, when:
+
+\begin{itemize}
+\item a list of matcher alternatives is defined to produce (part of) a rule
+      (through the '/' operator). See example 1 below.
+      Here, the failure of RULE1 is caught by subsequently trying RULE2.
+      Only when RULE2 also fails, the production of EXAMPL1 fails.
+\item a scan operation (through the '\&' and '!' operators) is performed.
+      See example 2 below. RULE1 is evaluated, but if it fails, it succeeds,
+      therefore its failure must be caught.
+\item inconsequential ranges of matchers (through quantifiers) must be skipped.
+      See example 3 below. All the failures to match RULE1 through times
+      4-8 are not consequential to the success of the rule (although they
+      do advance the input pointer), therefore any fail condition must be
+      caught for these cases.
+\end{itemize}
+
+\begin{myquote}
+\begin{verbatim}
+EXAMPLE1 <- RULE1 / RULE2
+EXAMPLE2 <- ! RULE1
+EXAMPLE3 <- RULE1^3-8
+\end{verbatim}
+\end{myquote}
+
+Assembly Patterns
+
+\begin{myquote}
+\textit{-- EXAMPLE1} \newline
+\textit{\textbf{catch ALT} -- On failure, jump to calling RULE2} \newline
+\textit{call RULE1} \newline
+\textit{commit OUT -- Success, remove catch element and jump to OUT} \newline
+\textit{\textbf{ALT}:} \newline
+\textit{call RULE2} \newline
+\textit{commit \_\_NEXT\_\_} \newline
+\textit{OUT:} \newline
+\end{myquote}
+
+\begin{myquote}
+\textit{-- EXAMPLE2} \newline
+\textit{\textbf{catch SUCCESS} -- ! means failure is success} \newline
+\textit{call RULE1} \newline
+\textit{failtwice -- ! means success is failure} \newline
+\textit{\textbf{SUCCESS}:} \newline
+\end{myquote}
+
+\begin{myquote}
+\textit{-- EXAMPLE3} \newline
+\textit{counter 0 3} \newline
+\textit{LOOP1:} \newline
+\textit{call RULE1} \newline
+\textit{condjump 0 LOOP1} \newline
+\textit{counter 0 5 -- 8 minus 3 is 5} \newline
+\textit{LOOP2} \newline
+\textit{\textbf{catch OUT}} \newline
+\textit{call RULE1} \newline
+\textit{partialcommit \_\_NEXT\_\_} \newline
+\textit{condjump 0 LOOP2} \newline
+\textit{commit \_\_NEXT\_\_} \newline
+\textit{\textbf{OUT}:} \newline
+\end{myquote}

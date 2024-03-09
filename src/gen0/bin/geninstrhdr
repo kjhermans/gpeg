@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+
+my $instrfile = shift @ARGV;
+my $instrperl = `cat $instrfile`;
+my $instrhash = eval $instrperl;
+
+print "#ifndef _GPEG_INSTR_H_
+#define _GPEG_INSTR_H_
+
+";
+
+foreach my $key (sort(keys(%{$instrhash}))) {
+  print "#define OPCODE_" . uc($key) . " " . $instrhash->{$key}{instr} . "\n";
+}
+
+print "\n\n#define OPCODE_STRINGS_DEF static char* opcode_strings[] = { \\\n";
+foreach my $key (sort(keys(%{$instrhash}))) {
+  print '  "' . uc($key) . '", \\' . "\n";
+}
+print "};\n";
+
+print "\n\n#define OPCODE_STRINGS_SWITCH switch (opcode) { \\\n";
+my $n = 0;
+foreach my $key (sort(keys(%{$instrhash}))) {
+  print '  case OPCODE_' . uc($key) . ": return opcode_strings[ $n ]; \\\n";
+  ++$n;
+}
+print "}
+
+#endif
+";
+
+1;

@@ -1,0 +1,51 @@
+\section{Bytecode}
+\label{sec:bytecode}
+
+\subsection{Instruction sets}
+
+gpeg, generation 3, provides two instruction sets (with a few overlapping
+instructions) that each have their own stack and other memories:
+one for matching, and one for script execution.
+
+\input{table_bytecode.tex}
+
+\subsection{Bytecode Structure}
+
+A gpeg bytecode file or buffer consists of a sequence of binary
+instructions which, in turn, each consist of a binary
+encoded opcode, plus their parameters, should they have any.
+
+The amount and kind of parameters following an opcode, is strictly
+defined:
+the same opcode will always be followed by the same kinds of parameters
+and therefore, an instruction type will always be the same size
+(see table [\ref{tab:naig_bytecode}]).
+
+gpeg bytecode is taken by the gpeg engine program (naie) or
+library, and run against an input, to produce an output.
+
+\subsection{Opcode Values}
+
+Opcode values are determined through
+
+\begin{itemize}
+\item Grouping; 
+\item Hamming distance;
+\item Instruction size;
+\end{itemize}
+
+\subsection{Noop Slides and Canaries}
+
+Implementations that want each instruction to have exactly the
+same size, can choose to pad the encoding of shorter instructions
+with either no-ops, or canaries.
+
+\subsection{Encoding of Parameters}
+
+\subsubsection{Address}
+
+\subsubsection{Char}
+
+\subsubsection{Slot}
+
+\subsubsection{Register}

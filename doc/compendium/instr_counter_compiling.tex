@@ -1,0 +1,24 @@
+This instruction is emitted in conjunction with a 'condjump'
+instruction, when a matcher quantifier is used.
+For example:
+
+\begin{myquote}
+\begin{verbatim}
+RULE <- 'a'^5
+\end{verbatim}
+\end{myquote}
+
+Will wrap the matcher bytecode between a counter and a condjump
+instruction, initial value of the counter of which will be five.
+Typically, as follows (pattern):
+
+\begin{myquote}
+\textit{counter 0 5} \newline
+\textit{jumpbacklabel:} \newline
+\textit{[[matcher]]} \newline
+\textit{condjump 0 jumpbacklabel} \newline
+\end{myquote}
+
+The 'condjump' instruction will either jump back (when the counter
+value in the register has not yet reached zero), or ignore the
+jump and move on (when it has). Thus implementing a loop.

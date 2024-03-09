@@ -1,0 +1,5 @@
+The 'char' instruction is emitted by the compiler when a string literal
+matcher is specified in grammar. The string is then split up into its
+individual bytes, and each byte is emitted as a 'char' instruction
+(although in gpeg, an optimization exists whereby four bytes can be
+matched at the same time: the 'quad' instruction).

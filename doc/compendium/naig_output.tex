@@ -1,0 +1,31 @@
+\section{Output}
+
+When the gpeg engine exits, it may do so in the following states:
+
+\begin{itemize}
+\item Engine failure. The engine got corrupted somehow. This is not
+      recoverable. You should restart any relevant software in this case.
+\item Bytecode failure. The bytecode caused an endless loop, tried
+      to jump to an out-of-bounds offset, or contained an unknown
+      instruction opcode.
+\item Parsing failure. The stack was unwound without seeing the 'end'
+      instruction first. Your input does not match your grammar.
+\item Parsing success. The engine encountered an 'end' instruction.
+      Your input matches your grammar.
+\item Parsing success including captures.
+      The endine encountered an 'end' instruction and there where
+      captures.
+\end{itemize}
+
+[TBW]
+
+\subsection{Language Agnostic Output}
+
+The language agnostic way in which gpeg provides output, is a table.
+This table is structured as follows:
+
+[TBW]
+
+\subsection{API Outputs}
+
+[TBW]

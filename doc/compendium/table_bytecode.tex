@@ -1,0 +1,45 @@
+
+%\begin{table}[]
+\begin{center}
+%\caption{gpeg Bytecode Instructions}
+\label{tab:naig_bytecode}
+\begin{longtable}{lllll}
+\textbf{Mnemonic} & \textbf{Opcode} & \textbf{Param1} & \textbf{Param2} & \textbf{Length} \\
+\endhead
+any & 000003e4 &  &   & 4 \\
+backcommit & 000403c0 & address &   & 8 \\
+call & 00040382 & address &   & 8 \\
+catch & 00040393 & address &   & 8 \\
+char & 000403d7 & char &   & 8 \\
+closecapture & 00040300 & slot &   & 8 \\
+commit & 00040336 & address &   & 8 \\
+condjump & 00080321 & register & address  & 12 \\
+counter & 00080356 & register & value  & 12 \\
+end & 000400d8 & code &   & 8 \\
+endisolate & 00003005 &  &   & 4 \\
+endreplace & 00000399 &  &   & 4 \\
+fail & 0000034b &  &   & 4 \\
+failtwice & 00000390 &  &   & 4 \\
+intrpcapture & 0008000f &  &   & 12 \\
+isolate & 00043003 & slot &   & 8 \\
+jump & 00040333 & address &   & 8 \\
+maskedchar & 00080365 & char & mask  & 12 \\
+noop & 00000000 &  &   & 4 \\
+opencapture & 0004039c & slot &   & 8 \\
+partialcommit & 000403b4 & address &   & 8 \\
+quad & 0004037e & quad &   & 8 \\
+range & 000803bd & from & until  & 12 \\
+replace & 00080348 & slot & address  & 12 \\
+ret & 000003a0 &  &   & 4 \\
+set & 002003ca & set &   & 36 \\
+skip & 00040330 & number &   & 8 \\
+span & 002003e1 & set &   & 36 \\
+testany & 00040306 & address &   & 8 \\
+testchar & 0008039a & address & char  & 12 \\
+testquad & 000803db & address & quad  & 12 \\
+testset & 00240363 & address & set  & 40 \\
+trap & ff00ffff &  &   & 4 \\
+var & 000403ee & slot &   & 8 \\
+\end{longtable}
+\end{center}
+%\end{table}

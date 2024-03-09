@@ -1,0 +1,105 @@
+#!/usr/bin/perl
+
+use Data::Dumper;
+
+$Data::Dumper::Sortkeys = 1;
+
+my $instrfile = shift @ARGV;
+my $instrtext = `cat $instrfile`;
+my $instrhash = eval $instrtext;
+my $changed;
+
+my @hamming = (
+  0x00, 0x03, 0x05, 0x06, 0x09, 0x0a, 0x0c, 0x0f,  
+  0x11, 0x12, 0x14, 0x17, 0x18, 0x1b, 0x1d, 0x1e,  
+  0x21, 0x22, 0x24, 0x27, 0x28, 0x2b, 0x2d, 0x2e,  
+  0x30, 0x33, 0x35, 0x36, 0x39, 0x3a, 0x3c, 0x3f,  
+  0x41, 0x42, 0x44, 0x47, 0x48, 0x4b, 0x4d, 0x4e,  
+  0x50, 0x53, 0x55, 0x56, 0x59, 0x5a, 0x5c, 0x5f,  
+  0x60, 0x63, 0x65, 0x66, 0x69, 0x6a, 0x6c, 0x6f,  
+  0x71, 0x72, 0x74, 0x77, 0x78, 0x7b, 0x7d, 0x7e,  
+  0x81, 0x82, 0x84, 0x87, 0x88, 0x8b, 0x8d, 0x8e,  
+  0x90, 0x93, 0x95, 0x96, 0x99, 0x9a, 0x9c, 0x9f,  
+  0xa0, 0xa3, 0xa5, 0xa6, 0xa9, 0xaa, 0xac, 0xaf,  
+  0xb1, 0xb2, 0xb4, 0xb7, 0xb8, 0xbb, 0xbd, 0xbe,  
+  0xc0, 0xc3, 0xc5, 0xc6, 0xc9, 0xca, 0xcc, 0xcf,  
+  0xd1, 0xd2, 0xd4, 0xd7, 0xd8, 0xdb, 0xdd, 0xde,  
+  0xe1, 0xe2, 0xe4, 0xe7, 0xe8, 0xeb, 0xed, 0xee,  
+  0xf0, 0xf3, 0xf5, 0xf6, 0xf9, 0xfa, 0xfc, 0xff,
+);
+
+print "#ifndef _INSTRUCTIONS_H_
+#define _INSTRUCTIONS_H_
+";
+
+my $dsec = '';
+my $csec = "#define INSTRCASES \\\n";
+
+foreach my $instr (sort(keys(%{$instrhash}))) {
+
+  if (!defined($instrhash->{$instr}{opcode})) {
+    generate_opcode($instrhash->{$instr}, $instr);
+    $changed = 1;
+  }
+  if (!defined($instrhash->{$instr}{mnem})) {
+    $instrhash->{$instr}{mnem} = $instr;
+    $changed = 1;
+  }
+  my $len = hex(substr($instrhash->{$instr}{opcode}, 2, 2));
+  if ($len + 4 != $instrhash->{$instr}{size}) {
+    print STDERR "WARNING: Instruction $instr length doesn't match size.\n";
+  }
+
+  $dsec .= "#define OPCODE_" . uc($instr) .
+           " 0x" . $instrhash->{$instr}{opcode} . "\n";
+  $csec .= "  case OPCODE_" . uc($instr) . ": return \"".uc($instr)."\";\\\n";
+}
+$csec .= "  default: return \"Unknown opcode\";\n";
+
+print "\n" . $dsec . "\n" . $csec . "\n";
+
+print "#endif\n";
+
+if ($changed) {
+  print STDERR "File has changed. Write Y/n ? ";
+  my $answer = <STDIN>;
+  if ($answer !~ /[nN]/) {
+    open FILE, '>', $instrfile;
+    print FILE Dumper($instrhash);
+    close FILE;
+  } else {
+    print STDERR "Not written.\n";
+  }
+}
+
+exit 0;
+
+##---- functions ----------------------------------------------------------##
+
+sub generate_opcode
+{
+  my $node = shift;
+  my $instr = shift;
+  for (my $i=0; $i < scalar(@hamming); $i++) {
+NEXTCODON:
+    for (my $j=0; $j < scalar(@hamming); $j++) {
+      my $codon = ($hamming[$i] * 0x100) + $hamming[$j];
+      my @keys = keys(%{$instrhash});
+      for (my $k=0; $k < scalar(@keys); $k++) {
+        my $key = $keys[$k];
+        my $instr = $instrhash->{$key};
+        if (hex(substr($instr->{opcode}, 4, 4)) == $codon) {
+          next NEXTCODON;
+        }
+      }
+      $node->{opcode} = '00' .
+        sprintf("%.2x", $node->{size} - 4) .
+        sprintf("%.4x", $codon);
+      $node->{instr} = hex($node->{opcode});
+      print STDERR "Created opcode $node->{opcode} for instr $instr.\n";
+      return;
+    }
+  }
+}
+
+1;

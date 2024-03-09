@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+
+my $instrfile = shift @ARGV;
+my $instrperl = `cat $instrfile`;
+my $instrhash = eval $instrperl || die "Need instructions file";
+
+print "#ifndef _GPEG_INSTRUCTIONS_H_
+#define _GPEG_INSTRUCTIONS_H_
+
+#define INSTR_OPCODE_SIZE 4
+";
+
+foreach my $instr (values(%{$instrhash})) {
+  print "#define INSTR_OPCODE_" . uc($instr->{mnem}) . " 0x$instr->{opcode}\n";
+  print "#define INSTR_LENGTH_" . uc($instr->{mnem}) . " $instr->{size}\n";
+}
+
+print "
+#endif
+";
+
+1;

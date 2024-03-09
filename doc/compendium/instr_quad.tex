@@ -1,0 +1,82 @@
+\subsection{Instruction: quad}
+
+\subsubsection{Summary}
+
+\InputIfFileExists{instr_quad_summary.tex}{}{}
+
+\subsubsection{Grammar and Compiling}
+
+\InputIfFileExists{instr_quad_compiling.tex}{}{}
+
+\subsubsection{Assembly Syntax}
+
+\begin{myquote}
+\begin{verbatim}
+QUADINSTR <- 'quad' S QUAD
+S <- %s+
+QUAD <- [0-9a-fA-F]^8
+\end{verbatim}
+\end{myquote}
+
+\InputIfFileExists{instr_quad_assembly.tex}{}{}
+
+\subsubsection{Bytecode Encoding}
+
+This instruction has a size of 8 bytes and is structured in bytecode as follows:
+
+%DEADBEEF
+$_{00}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+04
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+03
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+7e
+  }%
+}
+
+
+
+$_{04}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+
+%DEADBEEF
+\InputIfFileExists{instr_quad_bytecode.tex}{}{}
+
+\subsubsection{Execution State Change}
+
+.
+
+\InputIfFileExists{instr_quad_state.tex}{}{}
+

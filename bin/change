@@ -1,0 +1,33 @@
+#!/usr/bin/perl -w
+
+my $silent = 0;
+my $regex = shift @ARGV;
+
+if ($ARGV[0] =~ /^-s/) {
+  $silent = 1;
+  shift @ARGV;
+}
+
+#print STDERR "REGEX $regex\n";
+
+foreach my $file (@ARGV) {
+  if (! -f $file) {
+    print STDERR "File $file .. not found.\n";
+    next;
+  }
+  my $contents = `cat $file`;
+  my $result = eval("\$contents =~ $regex;");
+  if ($result) {
+    if (!(open FILE, "> $file")) {
+      print STDERR "File $file .. Could not write changes.\n";
+      next;
+    }
+    print FILE $contents;
+    close FILE;
+    print STDERR "File $file .. Changed.\n";
+  } elsif (!$silent) {
+    print STDERR "File $file .. Unchanged.\n";
+  }
+}
+
+1;

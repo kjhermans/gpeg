@@ -1,0 +1,84 @@
+\section{Overview}
+
+This document describes the gpeg parsing system, which is a 
+modular system to process structured arbitrary length data inputs,
+in order to extract meaning (matching, capturing from data), or to
+manipulate (replacements within data).
+The system was designed with a focus on information and system security.
+
+The system comes in three parts: a grammar compiler, an assembler,
+and a bytecode execution engine. Each of the parts has their own
+input file format specification (grammar description, assembly specification,
+and bytecode specification), and outputs the format of the next stage.
+The process in brief: the compiler takes a
+grammar description that the human user has made, and turns it into
+an assembly language. The assembler takes the assembly, and turns it
+into a bytecode. The engine takes the bytecode and the input, and
+processes it, resulting either in (various measures of) failure or
+success.
+
+%\begin{myquote}
+%\begin{verbatim}
+%Program:      _ Compiler       _  Assembler       _ Engine
+%              /|         \     /|           \     /|  /|\  \
+%             /           _\|  /             _\|  /     |   _\|
+%Format: Grammar          Assembly           Bytecode   |   Output
+%                                                       |
+%                                                     Input
+%\end{verbatim}
+%\end{myquote}
+%\textit{Schematic overview of gpeg data format transformation and modules}
+
+\input{naig_workflow.tex}
+
+The reason for this modularity is strict separation of tasks, and openness:
+anyone should be able to take out a module, and replace it with one
+of their own.
+It should be expressly possible to take out the compiler, and replace
+it with another tool that produces the gpeg assembly, for example.
+Or have a different engine. Or write an optimizer for the assembly.
+
+\subsection{On Grammar}
+  
+gpeg grammar is the human interface of the system.
+It can be used to define complex syntax definitions in order
+to match, capture from, and replace in, structured inputs.
+
+People familiar with regular expressions \cite{bib:regex},
+Backus-Naur syntax descriptions \cite{bib:backusnaur},
+and / or Lex and Yacc tools \cite{bib:yacc},
+should find this part of the document relatively easy to understand.
+The ideas underlying gpeg grammar, assembly and bytecode
+are heavily borrowed from Lua PEG (LPEG) \cite{bib:peg}
+by Roberto Ierusalimschy et al.
+
+\subsection{On Assembly}
+
+The gpeg assembly language is a mixture of two languages:
+For one, it is the outcome instruction set, according to the
+aforementioned LPEG whitepaper,
+of the gpeg grammar compilation process. However, it also contains
+instructions that won't be produced by this compiler, but may
+either be produced by a separate optimizer, or other compilers
+altogether (for example, one that focuses on network packet
+parsing).
+
+The gpeg assembly language, in all cases, is the human readable
+variant of the gpeg bytecode, and its instructions are one-on-one
+translatable from the one to the other, and vice versa
+(although labels will be lost in the reverse process).
+
+\subsection{On Bytecode}
+
+gpeg bytecode is the machine interface of the system.
+It runs in the gpeg engine against the input provided by the user.
+It is designed to be:
+
+\begin{itemize}
+
+\item Easy and quick to interpret.
+\item Resilient against bit upset events.
+\item Resilient against endless loops.
+\item Usable while keeping both bytecode and input as read-only buffers.
+
+\end{itemize}

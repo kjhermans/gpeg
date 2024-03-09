@@ -1,0 +1,56 @@
+\subsection{Instruction: endisolate}
+
+\subsubsection{Summary}
+
+\InputIfFileExists{instr_endisolate_summary.tex}{}{}
+
+\subsubsection{Grammar and Compiling}
+
+\InputIfFileExists{instr_endisolate_compiling.tex}{}{}
+
+\subsubsection{Assembly Syntax}
+
+\begin{myquote}
+\begin{verbatim}
+ENDISOLATEINSTR <- 'endisolate'
+\end{verbatim}
+\end{myquote}
+
+\InputIfFileExists{instr_endisolate_assembly.tex}{}{}
+
+\subsubsection{Bytecode Encoding}
+
+This instruction has a size of 4 bytes and is structured in bytecode as follows:
+
+%DEADBEEF
+$_{00}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+30
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+05
+  }%
+}
+
+%DEADBEEF
+\InputIfFileExists{instr_endisolate_bytecode.tex}{}{}
+
+\subsubsection{Execution State Change}
+
+.
+
+\InputIfFileExists{instr_endisolate_state.tex}{}{}
+

@@ -1,0 +1,897 @@
+#!/usr/bin/perl
+
+use strict;
+use Data::Dumper;
+
+my (
+  $inputfile,
+  $outputfile,
+) = (
+  '-',
+  '-',
+);
+
+my (
+  $input,
+  $output,
+  $capturecounter,
+  $capturerule,
+  $prefixset,
+  $labelcount,
+  $counter,
+  $cfile,
+  $currentrule,
+  $slotmapfile,
+  $slotmaphfile,
+);
+
+my %imports;
+my @namespace;
+my %slotmap;
+my %ruleslotmap;
+my %calltree;
+my %inverse_calltree;
+my %inverse_slotmap;
+my %slot_calltree;
+my @capturestack;
+
+my %macroes = (
+  s => '002e000001000000000000000000000000000000000000000000000000000000',
+  w => '0000000000000000feffff07feffff0700000000000000000000000000000000',
+  a => '000000000000ff03feffff07feffff0700000000000000000000000000000000',
+  n => '000000000000ff03000000000000000000000000000000000000000000000000',
+  p => '002e0000ffffffffffffffffffffff7f00000000000000000000000000000000',
+);
+
+while (scalar(@ARGV)) {
+  my $arg = shift @ARGV;
+  if ($arg eq '-i') {
+    $inputfile = shift @ARGV || die "-i; need input file";
+  } elsif ($arg eq '-o') {
+    $outputfile = shift @ARGV || die "-o; need output file";
+  } elsif ($arg eq '-C') {
+    $capturerule = 1;
+  } elsif ($arg eq '-G') {
+    $cfile = shift @ARGV || die "-G; need C file";
+  } elsif ($arg eq '-m') {
+    $slotmapfile = shift @ARGV || die "-m; need slotmap.json file";
+  } elsif ($arg eq '-M') {
+    $slotmaphfile = shift @ARGV || die "-M; need slotmap.h file";
+  } elsif ($arg eq '-?' || $arg eq '-h') {
+    print "Usage: $0 [options]
+Options:
+-i <path>    Input path. Default '-' for stdin.
+-o <path>    Output path. Default '-' for stdout.
+-C           Generate default captures for each rule.
+-G <path>    Generate C code for the parse tree.
+-m <path>    Output slotmap.json file.
+-M <path>    Output slotmap.h file.
+";
+    exit 0;
+  }
+}
+
+if ($inputfile eq '-') {
+  $input = join('', <STDIN>);
+} else {
+  $input = `cat $inputfile`;
+}
+
+my $asm = compile($input);
+
+if ($outputfile eq '-') {
+  print $asm . "\n";
+} else {
+  open FILE, '>', $outputfile || die "Could not open output file";
+  print FILE $asm . "\n";
+  close FILE;
+}
+
+if ($cfile) {
+  generate_cfile($cfile);
+}
+if ($slotmapfile) {
+  generate_slotmapfile($slotmapfile);
+}
+if ($slotmaphfile) {
+  generate_slotmaphfile($slotmaphfile);
+}
+
+#use Data::Dumper; print STDERR Dumper \%calltree;
+
+exit 0;
+
+##---- functions ----------------------------------------------------------##
+
+sub compile
+{
+  my $grammar = shift;
+  my $asm = '';
+  my @tokens = tokenize($grammar);
+  my $tree = rearrange(@tokens);
+#use Data::Dumper; print STDERR Dumper $tree->{rules};
+  my $firstrule = $tree->{order}[0];
+  if ($firstrule eq '__prefix') {
+    $firstrule = $tree->{order}[1];
+  }
+  $asm .= "  call $firstrule\n" .
+          "  end 0\n";
+  foreach my $rulename (@{$tree->{order}}) {
+    $asm .= "\n$rulename:\n";
+    $asm .= compile_rule($tree->{rules}{$rulename});
+    $asm .= "  ret\n";
+  }
+  invert_calltree();
+  return $asm;
+}
+
+sub tokenize
+{
+  my $grammar = shift;
+  my @tokens;
+  while (1) {
+    while (1) {
+      my $again = 0;
+      $grammar =~ s/^\s+// && ($again |= 1);
+      $grammar =~ s/^--\[\[.*\]\]//s && ($again |= 1);
+      $grammar =~ s/^--.*\n// && ($again |= 1);
+      last if (!$again);
+    }
+    last if (!length($grammar));
+    if ($grammar =~ s/^<-//) {
+      push @tokens, { type => 'producedby' };
+    } elsif ($grammar =~ s/^->//) {
+      push @tokens, { type => 'replace' };
+    } elsif ($grammar =~ s/^=>//) {
+      push @tokens, { type => 'fatarrow' };
+    } elsif ($grammar =~
+        s/^<\s*(ruint32)\s*:\s*([^\s]+)\s*:\s*([_a-zA-Z][_a-zA-Z0-9]*)\s*>//)
+    {
+      push @tokens, { type => 'limcall', mode => $1, parm => $2, string => $3 };
+    } elsif ($grammar =~ s/^__end\s+([0-9]+)//) {
+      push @tokens, { type => 'end', code => $1 };
+    } elsif ($grammar =~
+             s/^import\s+'(\S+)'(\s*as\s+([0-9a-fA-F][0-9a-fA-F_]*))?\n//)
+    {
+      push @tokens, { type => 'import', path => $1, as => $3 };
+    } elsif ($grammar =~ s/^0x([a-fA-F0-9]{2})//) {
+      push @tokens, { type => 'char', string => $1 };
+    } elsif ($grammar =~ s/^([a-zA-Z_][a-zA-Z0-9_]*)//) {
+      push @tokens, { type => 'ident', string => $1 };
+    } elsif ($grammar =~ s/^\|([0-9a-fA-F]{2})\|([0-9a-fA-F]{2})\|//) {
+      push @tokens, { type => 'maskedchar', byte => $1, mask => $2 };
+    } elsif ($grammar =~ s/^\%//) {
+      $grammar =~ s/^([a-z]+)// || die "Need macro";
+      push @tokens, { type => 'macro', string => $1 };
+    } elsif ($grammar =~ s/^\(//) {
+      push @tokens, { type => 'bopen' };
+    } elsif ($grammar =~ s/^\)//) {
+      push @tokens, { type => 'bclose' };
+    } elsif ($grammar =~ s/^\{//) {
+      push @tokens, { type => 'cbopen' };
+    } elsif ($grammar =~ s/^\}//) {
+      push @tokens, { type => 'cbclose' };
+    } elsif ($grammar =~ s/^\[//) {
+      my @range;
+      my $invert;
+      if ($grammar =~ s/^\^//) {
+        $invert = 1;
+      }
+      while (length($grammar) && $grammar !~ /^\]/) {
+        my ($c1, $c2);
+        if ($grammar =~ s/^(\\x[0-9a-fA-F]{2})//
+            || $grammar =~ s/^(\\.)//
+            || $grammar =~ s/^(.)//)
+        {
+          $c1 = unescape($1);
+        } else {
+          die "Set open ended.";
+        }
+        if ($grammar =~ s/^-//) {
+          if ($grammar =~ s/^(\\x[0-9a-fA-F]{2})//
+              || $grammar =~ s/^(\\.)//
+              || $grammar =~ s/^(.)//)
+          {
+            $c2 = unescape($1);
+          } else {
+            die "Set open ended.";
+          }
+          push @range, { type => 'range', range => [ $c1, $c2 ] };
+        } else {
+          push @range, { type => 'single', char => $c1 };
+        }
+      }
+      $grammar =~ s/^\]// || die "Expected ]";
+      push @tokens, { type => 'set', set => \@range, invert => $invert };
+    } elsif ($grammar =~ s/^\///) {
+      push @tokens, { type => 'or' };
+    } elsif ($grammar =~ s/^\+//) {
+      push @tokens, { type => 'quant', quant => [ 1, -1 ] };
+    } elsif ($grammar =~ s/^\?//) {
+      push @tokens, { type => 'quant', quant => [ 0, 1 ] };
+    } elsif ($grammar =~ s/^\*//) {
+      push @tokens, { type => 'quant', quant => [ 0, -1 ] };
+    } elsif ($grammar =~ s/^\^([0-9]+)(-([0-9]+))?//) {
+      push @tokens, { type => 'quant', quant => [ $1, $3 ] };
+    } elsif ($grammar =~ s/^'//) {
+      my $string = '';
+      while (length($grammar)) {
+        last if ($grammar =~ s/^'//);
+        if ($grammar =~ s/^(\\x[0-9a-fA-F]{2})//
+            || $grammar =~ s/^(\\.)//
+            || $grammar =~ s/^(.)//)
+        {
+          $string .= unescape($1);
+        }
+      }
+      my $ci = 0;
+      if ($grammar =~ s/^i//) {
+        $ci = 1;
+      }
+      push @tokens, { type => 'string', string => $string, ci => $ci };
+    } elsif ($grammar =~ s/^!//) {
+      push @tokens, { type => 'not' };
+    } elsif ($grammar =~ s/^\&//) {
+      push @tokens, { type => 'and' };
+    } elsif ($grammar =~ s/^\.//) {
+      push @tokens, { type => 'dot' };
+    } else {
+      die "Unknown token at $grammar";
+    }
+  }
+  return @tokens;
+}
+
+sub unescape
+{
+  my $str = shift;
+  if ($str =~ s/^\\0x([0-9a-fA-F]{2})//) {
+    return chr(hex($1));
+  } elsif ($str =~ s/^\\(.)//) {
+    my $chr = $1;
+    if ($chr eq 'n') {
+      return chr(10);
+    } elsif ($chr eq 'r') {
+      return chr(13);
+    } elsif ($chr eq 't') {
+      return chr(9);
+    } elsif ($chr eq 'v') {
+      return chr(11);
+    } elsif ($chr eq 'a') {
+      return chr(7);
+    } elsif ($chr eq 'b') {
+      return chr(8);
+    } elsif ($chr eq 'f') {
+      return chr(12);
+    } else {
+      return $chr;
+    }
+  } else {
+    return $str;
+  }
+}
+
+sub rearrange
+{
+  my @tokens = @_;
+  my $result = { tokens => [ @tokens ], rules => {}, order => [] };
+  {
+    my ($rule, $rulename, $rulepushed);
+    $rulename = '__auto';
+    while (scalar(@tokens)) {
+      my $token = shift @tokens;
+      if ($token->{type} eq 'ident' && $tokens[0]->{type} eq 'producedby') {
+        shift @tokens;
+        $rulename = $token->{string};
+        $rule = { name => $rulename, production => [] };
+        undef $rulepushed;
+      } else {
+if (!defined($rule)) {
+print STDERR "WTF '$token->{string}' $token->{type}\n";
+}
+        push @{$rule->{production}}, $token;
+        if (!$rulepushed) {
+          push @{$result->{order}}, $rulename;
+          if (defined($result->{rules}{$rulename})) {
+            die "Duplicate definition of rule '$rulename'";
+          }
+          $result->{rules}{$rulename} = $rule;
+          $rulepushed = 1;
+        }
+      }
+    }
+  }
+  foreach my $rulename (@{$result->{order}}) {
+    my $rule = $result->{rules}{$rulename};
+    for (my $i=1; $i < scalar(@{$rule->{production}}); $i++) {
+      if ($rule->{production}[ $i ]{type} eq 'quant') {
+        $rule->{production}[ $i-1 ]{quant} = $rule->{production}[ $i ]{quant};
+        splice(@{$rule->{production}}, $i, 1);
+        --$i;
+      }
+    }
+    if ($capturerule && $rulename ne '__prefix') {
+      unshift @{$rule->{production}}, { type => 'cbopen' };
+      push @{$rule->{production}}, { type => 'cbclose' };
+    }
+    rearrange_groups($rule->{name}, $rule->{production});
+    rearrange_choices($rule->{production});
+  }
+  return $result;
+}
+
+sub rearrange_groups
+{
+  my $rulename = shift;
+  my $list = shift;
+  for (my $i=0; $i < scalar(@{$list}); $i++) {
+    if ($list->[ $i ]{type} =~ /^(c?)bopen$/) {
+      my $c = $1;
+      my $level = 1;
+      for (my $j=$i+1; $j < scalar(@{$list}); $j++) {
+        if ($list->[ $j ]{type} =~ /^(c?)bopen$/) {
+          ++$level;
+        } elsif ($list->[ $j ]{type} =~ /^(c?)bclose$/) {
+          --$level;
+          if ($level == 0) {
+            my @sublist = splice(@{$list}, $i+1, $j-$i);
+            $list->[ $i ]->{type} = ($c eq 'c') ? 'capture' : 'group';
+            if ($list->[ $i ]->{type} eq 'capture') {
+              my $slotmapident = slotmap_ident({ string => $rulename }, @sublist);
+              $slotmap{$slotmapident} = int($capturecounter);
+              $ruleslotmap{int($capturecounter)} = $rulename;
+              $list->[ $i ]->{capturecounter} = $capturecounter++;
+            }
+            $list->[ $i ]->{group} = \@sublist;
+            if (defined($sublist[-1]->{quant})) {
+              $list->[ $i ]->{quant} = $sublist[-1]->{quant};
+            }
+            if ($list->[ $i+1 ]->{type} eq 'replace') {
+              splice(@{$list}, $i+1, 1);
+              my @replace = splice(@{$list}, $i+1);
+              $list->[ $i ]->{replace} = \@replace;
+            } elsif ($list->[ $i+1 ]->{type} eq 'fatarrow') {
+              die "Need ident at =>" if ($list->[ $i+2 ]->{type} ne 'ident');
+              $list->[ $i ]->{goto} = $list->[ $i+2 ];
+              splice(@{$list}, $i+1, 2);
+            }
+            rearrange_groups($rulename, \@sublist);
+            last;
+          }
+        }
+      }
+    }
+  }
+}
+
+sub slotmap_ident
+{
+  my $str = '';
+  if ($capturerule && length($_[ 0 ]->{string})) {
+    $str = $_[ 0 ]->{string};
+  } else {
+    foreach my $elt (@_) {
+      my $substr = "$elt->{string}";
+      $substr =~ s/[^a-zA-Z_0-9]//g;
+      if (length($substr)) {
+        $str .= '_' . $substr;
+      }
+    }
+    $str =~ s/^_+//;
+    if ($str =~ s/^([0-9]+)//) {
+      $str .= '_' . $1;
+    }
+    if (!length($str)) {
+      $str = '_default';
+    }
+  }
+  if (defined($slotmap{$str})) {
+    my $count = 0;
+    while (1) {
+      my $tmp = "$str" . '_' . $count;
+      if (!defined($slotmap{$tmp})) {
+        $str = $tmp;
+        last;
+      }
+      ++$count;
+    }
+  }
+  return $str;
+}
+
+sub rearrange_choices
+{
+  my $list = shift;
+  for (my $i=0; $i < scalar(@{$list}); $i++) {
+    my $token = $list->[ $i ];
+    if ($token->{type} eq 'or') {
+      my @right = splice(@{$list}, $i+1);
+      my @left = splice(@{$list}, 0, $i);
+      $token->{left} = \@left;
+      $token->{right} = \@right;
+      rearrange_choices(\@right);
+      last;
+    } elsif (defined($list->[ $i ]{group})) {
+      rearrange_choices($list->[ $i ]{group});
+    }
+  }
+}
+
+sub compile_rule
+{
+  my $rule = shift;
+  $currentrule = $rule;
+  my $asm = '';
+  if ($prefixset) {
+    $asm = "  call __prefix\n";
+  }
+  $asm .= compile_rule_list($rule->{production});
+  if ($rule->{name} eq '__prefix') {
+    $prefixset = 1;
+  }
+  return $asm;
+}
+
+sub compile_rule_list
+{
+  my $list = shift;
+  my $asm = '';
+  for (my $i=0; $i < scalar(@{$list}); $i++) {
+    my ($subasm, $deltai) = compile_token($list, $i);
+    $asm .= $subasm;
+    $i += $deltai;
+  }
+  return $asm;
+}
+
+sub compile_token
+{
+  my $list = shift;
+  my $i = shift;
+  my $token = $list->[ $i ];
+  my $asm = '';
+  if ($token->{type} eq 'capture') {
+    return compile_token_capture($token);
+  } elsif ($token->{type} eq 'group') {
+    return compile_quantifier($token, \&compile_rule_list, $token->{group});
+  } elsif ($token->{type} eq 'or') {
+    return compile_token_or($token);
+  } elsif ($token->{type} eq 'string') {
+    return compile_token_string($token);
+  } elsif ($token->{type} eq 'char') {
+    return compile_quantifier($token, "  char $token->{string}\n");
+  } elsif ($token->{type} eq 'maskedchar') {
+    return compile_quantifier($token,
+              "  maskedchar $token->{byte} $token->{mask}\n");
+  } elsif ($token->{type} eq 'set') {
+    return compile_token_set($token);
+  } elsif ($token->{type} eq 'dot') {
+    return compile_quantifier($token, "  any\n");
+  } elsif ($token->{type} eq 'ident') {
+    return compile_token_ident($token);
+  } elsif ($token->{type} eq 'macro') {
+    my $set = $macroes{$token->{string}}
+              || die "Unknown macro '\%$token->{string}'";
+    return compile_quantifier($token, "  set $set\n");
+  } elsif ($token->{type} eq 'not') {
+    return compile_token_not($list, $i);
+  } elsif ($token->{type} eq 'and') {
+    return compile_token_and($list, $i);
+  } elsif ($token->{type} eq 'import') {
+    return compile_token_import($token);
+  } elsif ($token->{type} eq 'end') {
+    return "  end $token->{code}\n";
+  } elsif ($token->{type} eq 'limcall') {
+##..
+  } else {
+    
+  }
+  return '';
+}
+
+sub resolve_path
+{
+  my $ident = shift;
+  if (-f $ident) { return $ident };
+## TODO some PATH construct
+  return undef;
+}
+
+sub compile_token_ident
+{
+  my $token = shift;
+  my $nsp = $namespace[-1];
+  my $rulename = $token->{string};
+  my $currentcapture = (scalar(@capturestack)) ? $capturestack[-1] : -1;
+  $calltree{$currentrule->{name}}->{$rulename} = $currentcapture;
+  if (length($nsp)) {
+    $rulename = $nsp . '_' . $rulename;
+  }
+  return compile_quantifier($token, "  call $rulename\n");
+}
+
+sub compile_token_capture
+{
+  my $token = shift;
+  push @capturestack, $token->{capturecounter};
+  my $subasm = sub
+               {
+                 return "  opencapture $token->{capturecounter}\n" .
+                        compile_rule_list($token->{group}) .
+                        "  closecapture $token->{capturecounter}\n";
+               };
+  my $asm = compile_quantifier($token, $subasm, $token);
+  pop @capturestack;
+  if (defined($token->{replace})) {
+##..
+  }
+  if (defined($token->{goto})) {
+##..
+  }
+  return $asm;
+}
+
+sub compile_token_or
+{
+  my $token = shift;
+  my $l1 = ++$labelcount;
+  my $l2 = ++$labelcount;
+  return "  catch __L$l1\n" .
+         compile_rule_list($token->{left}) .
+         "  commit __L$l2\n" .
+         "__L$l1:\n" .
+         compile_rule_list($token->{right}) .
+         "__L$l2:\n";
+}
+
+sub compile_token_not
+{
+  my $list = shift;
+  my $i = shift;
+  die "Not operator not followed by token" if (!defined($list->[ $i+1 ]));
+  my $l1 = ++$labelcount;
+  return (
+           "  catch __L$l1\n" .
+           compile_token($list, $i+1) .
+           "  failtwice\n" .
+           "__L$l1:\n",
+           1
+         );
+}
+
+sub compile_token_and
+{
+  my $list = shift;
+  my $i = shift;
+  die "And operator not followed by token" if (!defined($list->[ $i+1 ]));
+  my $l1 = ++$labelcount;
+  my $l2 = ++$labelcount;
+  return (
+           "  catch __L$l1\n" .
+           compile_token($list, $i+1) .
+           "  backcommit __L$l2\n" .
+           "__L$l1:\n" .
+           "  fail\n" .
+           "__L$l2:\n",
+           1
+         );
+}
+
+sub compile_token_string_ci
+{
+  my $string = shift;
+  my $asm = '';
+  while (length($string)) {
+    $string =~ s/^(.)//s;
+    my $chr = ord($1);
+    my $chr1;
+    if ($chr >= ord('a') && $chr <= ord('z')) {
+      $chr1 = $chr - 32;
+    } elsif ($chr >= ord('A') && $chr <= ord('Z')) {
+      $chr1 = $chr + 32;
+    } else {
+      $asm .= sprintf("  char %.2x\n", $chr);
+      next;
+    }
+    my $l1 = ++$labelcount;
+    my $l2 = ++$labelcount;
+    $asm .= "  catch __L$l1\n" .
+            "  char " . sprintf("%.2x", $chr) . "\n" .
+            "  commit __L$l2\n" .
+            "__L$l1:\n" .
+            "  char " . sprintf("%.2x", $chr1) . "\n" .
+            "__L$l2:\n";
+  }
+  return $asm;
+}
+
+sub compile_token_string
+{
+  my $token = shift;
+  my $subasm = '';
+  my $string = "$token->{string}";
+  if ($token->{ci}) {
+    return compile_token_string_ci($string);
+  }
+  my @buffer;
+  while (length($string)) {
+    my $char;
+    if ($string =~ s/^(\\x[0-9a-fA-f]{2})//
+        || $string =~ s/^(\\.)//
+        || $string =~ s/^(.)//s)
+    {
+      $char = unescape($1);
+      if (scalar(@buffer) == 3) {
+        $subasm .= sprintf(
+                     "  quad %.2x%.2x%.2x%.2x\n"
+                     , ord($buffer[0])
+                     , ord($buffer[1])
+                     , ord($buffer[2])
+                     , ord($char)
+                   );
+        @buffer = ();
+      } else {
+        push @buffer, $char;
+      }
+    } else {
+      die "Unknown character at '$string'";
+    }
+  }
+  foreach my $char (@buffer) {
+    $subasm .= sprintf("  char %.2x\n", ord($char));
+  }
+  return compile_quantifier($token, $subasm);
+}
+
+sub compile_token_set
+{
+  my $token = shift;
+  my @bits;
+  if ($token->{invert}) {
+    @bits = (1) x 256;
+  }
+  foreach my $elt (@{$token->{set}}) {
+    if ($elt->{type} eq 'range') {
+      for (my $i=ord($elt->{range}[0]); $i <= ord($elt->{range}[1]); $i++) {
+        if ($token->{invert}) {
+          $bits[ $i ] = 0;
+        } else {
+          $bits[ $i ] = 1;
+        }
+      }
+    } elsif ($elt->{type} eq 'single') {
+      if ($token->{invert}) {
+        $bits[ ord($elt->{char}) ] = 0;
+      } else {
+        $bits[ ord($elt->{char}) ] = 1;
+      }
+    }
+  }
+  my $bitstring = '';
+  for (my $i=0; $i < 256; $i += 8) {
+    $bitstring .= sprintf("%.2x", (
+      ($bits[ $i+0 ] << 0) |
+      ($bits[ $i+1 ] << 1) |
+      ($bits[ $i+2 ] << 2) |
+      ($bits[ $i+3 ] << 3) |
+      ($bits[ $i+4 ] << 4) |
+      ($bits[ $i+5 ] << 5) |
+      ($bits[ $i+6 ] << 6) |
+      ($bits[ $i+7 ] << 7)
+    ));
+  }
+  return compile_quantifier($token, "  set $bitstring\n");
+}
+
+sub compile_token_import
+{
+  my $token = shift;
+  my $asm = '';
+  if (defined($imports{$token->{path}})) {
+    die "Potential recursive import";
+  }
+  my $path = resolve_path($token->{path})
+             || die "Could not resolve path $token->{path}";
+  my $grammar = `cat $path`;
+  my @tokens = tokenize($grammar);
+  my $tree = rearrange(@tokens);
+  if (length($token->{as})) {
+    push @namespace, $token->{as};
+  }
+  my $nsp = $namespace[-1];
+  foreach my $rulename (@{$tree->{order}}) {
+    if (length($nsp)) {
+      $rulename = $nsp . '_' . $rulename;
+    }
+    $asm .= "\n$rulename:\n" .
+            compile_rule($tree->{rules}{$rulename}) .
+            "  ret\n";
+  }
+  if (length($token->{as})) {
+    pop @namespace;
+  }
+  return $asm;
+}
+
+sub compile_quantifier
+{
+  my $token = shift;
+  my $subasm = shift;
+  my $quant = $token->{quant};
+  my $refsub = ref $subasm;
+  my $asm = '';
+  if (!defined($quant)) {
+    return (($refsub eq 'CODE') ? &$subasm(@_) : $subasm);
+  }
+  if ($quant->[0] > 1) {
+    my $c = $counter++;
+    my $l = ++$labelcount;
+    $asm .= "  counter $c $quant->[0]\n" .
+            "__L$l:\n" .
+            (($refsub eq 'CODE') ? &$subasm(@_) : $subasm) .
+            "  condjump $c __L$l\n";
+  } elsif ($quant->[0] == 1) {
+    $asm .= (($refsub eq 'CODE') ? &$subasm(@_) : $subasm);
+  }
+  if ($quant->[1] == -1) {
+    my $l1 = ++$labelcount;
+    my $l2 = ++$labelcount;
+    $asm .= "  catch __L$l1\n" .
+            "__L$l2:\n" .
+            (($refsub eq 'CODE') ? &$subasm(@_) : $subasm) .
+            "  partialcommit __L$l2\n" .
+            "__L$l1:\n";
+  } elsif ($quant->[1] > $quant->[0]) {
+    my $c = $counter++;
+    my $l1 = ++$labelcount;
+    my $l2 = ++$labelcount;
+    my $q = $quant->[1] - $quant->[0];
+    if ($q == 1) {
+      $asm .= "  catch __L$l1\n" .
+              (($refsub eq 'CODE') ? &$subasm(@_) : $subasm) .
+              "  commit __L$l1\n" .
+              "__L$l1:\n";
+    } else {
+      $asm .= "  catch __L$l1\n" .
+              "  counter $c $q\n" .
+              "__L$l2:\n" .
+              (($refsub eq 'CODE') ? &$subasm(@_) : $subasm) .
+              "  partialcommit __NEXT__\n" .
+              "  condjump $c __L$l2\n" .
+              "  commit __L$l1\n" .
+              "__L$l1:\n";
+    }
+  }
+  return $asm;
+}
+
+sub invert_calltree
+{
+  foreach my $slotident (keys(%slotmap)) {
+    $inverse_slotmap{$slotmap{$slotident}} = $slotident;
+  }
+  foreach my $rule (keys(%calltree)) {
+    my $calledrules = $calltree{$rule};
+    foreach my $calledrule (keys(%{$calledrules})) {
+      my $slot = $calledrules->{$calledrule};
+      $inverse_calltree{$calledrule}{$rule} = $slot;
+      push @{$slot_calltree{$slot}}, $calledrule;
+    }
+  }
+#use Data::Dumper; print STDERR Dumper \%slotmap;
+#use Data::Dumper; print STDERR Dumper \%ruleslotmap;
+#use Data::Dumper; print STDERR Dumper \%inverse_slotmap;
+#use Data::Dumper; print STDERR Dumper \%slot_calltree;
+#use Data::Dumper; print STDERR Dumper \%inverse_calltree;
+}
+
+sub inverse_slotmap_get
+{
+  my $captureindex = shift;
+  my $result = $inverse_slotmap{$captureindex};
+  return $result;
+}
+
+sub generate_cfile
+{
+  my $cfile = shift;
+  my $h = '
+#include <gpeg/lib/gpeg/gpeg_capturelist.h>
+
+#ifdef _DEBUG
+#include <stdio.h>
+#endif
+
+extern int grammar_process_node(gpeg_capture_t*, void*);
+static int do_node(gpeg_capture_t*, unsigned, gpeg_capture_t*, void*);
+
+';
+  my $c = '
+
+int grammar_process_node
+  (
+    gpeg_capture_t* capture,
+    void* ptr
+  )
+{
+  return do_node(0, 0, capture, ptr);
+}
+ 
+static
+int do_node
+  (gpeg_capture_t* parent, unsigned index, gpeg_capture_t* capture, void* ptr)
+{
+  int e;
+  unsigned indices[ ' . scalar(keys(%slotmap)) . ' ] = { 0 };
+
+  switch (capture->type) {
+';
+  foreach my $key (sort(keys(%slotmap))) {
+    my $slotnumber = $slotmap{$key};
+    my $slotname = inverse_slotmap_get($slotnumber);
+    $h .= "extern int handle_$slotname" .
+          "(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n";
+    $h .= "extern int handle_post_$slotname" .
+          "(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n";
+    $c .= "  case $slotnumber:
+    {
+      ++(indices[ $slotnumber ]);
+      if ((e = handle_$slotname(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+      for (unsigned i=0; i < capture->children.count; i++) {
+        if ((e = do_node(capture, indices[ $slotnumber ], &(capture->children.list[ i ]), ptr)) != 0) {
+          return e;
+        }
+      }
+      if ((e = handle_post_$slotname(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+    }
+    break;
+";
+  }
+  $c .= '
+  }
+  return 0;
+}
+';
+  open CFILE, "> $cfile";
+  print CFILE $h . "\n" . $c;
+  close CFILE;
+}
+
+sub generate_slotmapfile
+{
+  my $f = shift;
+  my @list;
+  foreach my $key (sort(keys(%slotmap))) {
+    push @list, "\"$key\":$slotmap{$key}";
+  }
+  open FILE, "> $f" || die "Could not open slotmap file $f for writing.";
+  print FILE
+    "{\n" .
+    join(",\n  ", @list) .
+    "\n}";
+  close FILE;
+}
+
+sub generate_slotmaphfile
+{
+  my $f = shift;
+  my $code = '';
+  foreach my $key (sort(keys(%slotmap))) {
+    $code .= "#define SLOT_$key $slotmap{$key}\n";
+    $code .= "#define SLOT_$slotmap{$key} $key\n";
+  }
+  open FILE, "> $f" || die "Could not open slotmap.h file $f for writing.";
+  print FILE
+    "#ifndef _SLOTMAP_H_\n" .
+    "#define _SLOTMAP_H_\n" .
+    "\n" .
+    $code . "\n" .
+    "#endif\n";
+  close FILE;
+}
+
+1;

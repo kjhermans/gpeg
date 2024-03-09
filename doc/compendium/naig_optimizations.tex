@@ -1,0 +1,147 @@
+\section{Optimizations}
+
+A PEG compiler only needs to be able to emit the following instructions to be
+functionally complete:
+
+\begin{itemize}
+\item any
+\item backcommit
+\item call
+\item char
+\item closecapture
+\item commit
+\item end
+\item fail
+\item failtwice
+\item intrpcapture
+\item maskedchar
+\item opencapture
+\item partialcommit
+\item ret
+\item set
+\item var
+\end{itemize}
+
+And even about this set, a discussion is possible:
+Because theoretically, the 'char' and 'any' instructions are implied by
+the 'set' instruction
+(although that would bring with it a lot of bytecode overhead).
+Also, 'intrpcapture', 'maskedchar' are specific to gpeg and
+binary parsing.
+
+Nevertheless, it's sometimes easy and efficient (both from a bytecode
+size and execution speed perspective) to optimize the code somewhat.
+Which is why the gpeg instruction set is somewhat bigger than the
+list above.
+
+\subsection{Optimizing Loops}
+A matcher that is quantified for a range can be written out in
+full, but gpeg introduces a set of counter registers for this operation,
+as well as two instructions to use them: 'counter' and 'condjump'.
+Grammar:
+
+\begin{myquote}
+\begin{verbatim}
+'a'^3
+\end{verbatim}
+\end{myquote}
+
+Is formally compiled to:
+
+\begin{myquote}
+\begin{verbatim}
+  char 61
+  char 61
+  char 61
+\end{verbatim}
+\end{myquote}
+
+And will be optimized in gpeg as:
+
+\begin{myquote}
+\begin{verbatim}
+  counter 0 3
+looplabel:
+  char 61
+  condjump 0 looplabel
+\end{verbatim}
+\end{myquote}
+
+This optimization starts to make a lot more sense when the matcher
+is quantified with values much higher than three. Which is why
+gpeg performs this optimization automatically.
+
+\subsection{Optimizing Sequences of Char}
+
+gpeg has an instruction to match four bytes at once, called 'quad'.
+To optimize matching larger string literals, these are chopped up into
+chunks of four bytes, which each emit a 'quad' instruction,
+and the remainder is emitted as char instructions.
+Grammar:
+
+\begin{myquote}
+\begin{verbatim}
+'gpeg'
+\end{verbatim}
+\end{myquote}
+
+Is compiled to:
+
+\begin{myquote}
+\begin{verbatim}
+  char 4e
+  char 61
+  char 69
+  char 67
+  char 61
+  char 6d
+  char 61
+\end{verbatim}
+\end{myquote}
+
+May be optimized as:
+
+\begin{myquote}
+\begin{verbatim}
+  quad 4e616967
+  char 61
+  char 6d
+  char 61
+\end{verbatim}
+\end{myquote}
+
+\subsection{Optimizing Sets}
+When a set consists of a single range, it can be rewritten as a 'range'
+instruction.
+
+\begin{myquote}
+\begin{verbatim}
+[a-z]
+\end{verbatim}
+\end{myquote}
+
+Compiles to:
+
+\begin{myquote}
+\begin{verbatim}
+  set 000000000000000000000000feffff0700000000000000000000000000000000
+\end{verbatim}
+\end{myquote}
+
+May be optimized as:
+
+\begin{myquote}
+\begin{verbatim}
+  range 97 122
+\end{verbatim}
+\end{myquote}
+
+\subsection{Optimizing Unlimited Sets}
+
+Span
+
+\subsection{Optimizing Dot-Quantified}
+
+Skip
+
+\subsection{Optimizing Tests}

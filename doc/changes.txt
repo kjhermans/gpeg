@@ -1,0 +1,64 @@
+-- Binary TLV matching
+
+This remains, but the tokenization of the grammar specification changes
+a little. We go from '<<' '>>' to '<' '>'.
+
+-- Parametrized matching
+
+Suppose you have the following, JSON-like, simplified definition
+of a generic hash literal, or a 'free-format data record':
+
+    __prefix <- %s*
+    HASH     <- CBOPEN NVPAIRS CBCLOSE
+    NVPAIRS  <- (NVPAIR (COMMA NVPAIR)* )?
+    NVPAIR   <- NAME COLON VALUE
+    CBOPEN   <- '{'
+    CBCLOSE  <- '}'
+    COMMA    <- ','
+    COLON    <- ':'
+    NAME     <- STRING
+    VALUE    <- STRING / NUMBER
+    STRING   <- '"' [^"]* '"' -- simplified, escaping not included
+    NUMBER   <- [0-9]+
+
+This would match any list, for example:
+
+    {
+      "name" : "Peter",
+      "surname" : "O'Toole",
+      "age" : 32
+    }
+
+But what I want to be is more precise, to fit my data standard. I could
+write out all the required names, but that would make my grammar very big
+and diffuse. If I could parametrize this pattern, the grammar would become
+much more readable. For example:
+
+    MYFORMAT <- HASH where ( NAME <- '"name"' / '"surname"' )
+
+Note that this change will have no repercussions on the assembler: this
+is just a way for the compiler to emit more precise code.
+
+Maybe I want to be more precise even. What if values had types that were
+specific to the given name. For example:
+
+    MYFORMAT <-
+      HASH where ( NAME <- '"name"' / '"age"' where ( VALUE <- NUMBER ) )
+
+The application of this would make the compiler effectively transform
+the grammar above to:
+
+    __prefix <- %s*
+    HASH     <- CBOPEN NVPAIRS CBCLOSE
+    NVPAIRS  <- (NVPAIR (COMMA NVPAIR)* )?
+    NVPAIR   <- NAME COLON VALUE
+    CBOPEN   <- '{'
+    CBCLOSE  <- '}'
+    COMMA    <- ','
+    COLON    <- ':'
+    NAME     <- '"name"'
+    VALUE    <- STRING / NUMBER
+    STRING   <- '"' [^"]* '"' -- simplified, escaping not included
+    NUMBER   <- [0-9]+
+
+

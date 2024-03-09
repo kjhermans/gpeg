@@ -1,0 +1,29 @@
+\begin{center}
+\begin{tikzpicture} [
+bluenode/.style={rectangle, draw=blue!60, fill=green!5, very thick, minimum size=5mm},
+rednode/.style={rectangle, draw=red!60, fill=red!5, very thick, minimum size=5mm},
+]
+%Nodes
+\node[rednode]     (grammar)                            {Grammar};
+\node[bluenode]    (compiler)    [right=of grammar]     {Compiler};
+\node[rednode]     (assembly)    [below=of grammar]     {Assembly};
+\node[bluenode]    (assembler)   [below=of compiler]    {Assembler};
+\node[rednode]     (bytecode)    [below=of assembly]    {Bytecode};
+\node[bluenode]    (engine)      [below=of assembler]   {Engine};
+\node[rednode]     (input)       [below=of engine]      {Input};
+\node[rednode]     (output)      [right=of engine]      {Output};
+
+%Lines
+\draw[->] (grammar.east) -- (compiler.west);
+\draw[->] (compiler.south) -- (assembly.north);
+\draw[->] (assembly.east) -- (assembler.west);
+\draw[->] (assembler.south) -- (bytecode.north);
+\draw[->] (bytecode.east) -- (engine.west);
+\draw[->] (input.north) -- (engine.south);
+\draw[->] (engine.east) -- (output.west);
+
+\end{tikzpicture}
+
+\textit{Schematic overview of gpeg transformations: data formats (red) and tools (blue).}
+
+\end{center}

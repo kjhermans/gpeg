@@ -1,0 +1,18 @@
+Original state: \textit{(p, i, e, c)}
+
+Operation: \textbf{any} ; i \ \textless \ $\vert$S$\vert$
+
+Failure state: \textit{(\textbf{Fail}, i, e, c)}
+
+Success state: \textit{(p + 1, i + 1, e, c)}
+
+\subsubsection{Pseudo Code}
+
+\begin{myquote}
+\textit{if (input\_offset $<$ input\_length) then} \newline
+\hspace*{10mm} \textit{input\_offset = input\_offset + 1} \newline
+\hspace*{10mm} \textit{bytecode\_offset = bytecode\_offset + instruction\_size} \newline
+\textit{else} \newline
+\hspace*{10mm} \textit{fail} \newline
+\textit{endif}
+\end{myquote}
