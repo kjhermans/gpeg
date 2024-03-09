@@ -44,6 +44,9 @@ vec_t;
 void vec_printf
   (vec_t* out, char* fmt, ...);
 
+void vec_printf_insert
+  (vec_t* out, int offset, char* fmt, ...);
+
 void vec_append
   (vec_t* out, void* mem, unsigned size);
 

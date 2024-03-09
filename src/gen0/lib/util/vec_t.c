@@ -59,6 +59,33 @@ void vec_printf
   out->size += (size - 1);
 }
 
+void vec_printf_insert
+  (vec_t* out, int offset, char* fmt, ...)
+{
+  va_list ap;
+  int size;
+
+  if (offset < 0 || offset > out->size) {
+    offset = out->size;
+  }
+
+  va_start(ap, fmt);
+  size = vsnprintf(0, 0, fmt, ap);
+  va_end(ap);
+  if (size < 0) {
+    return;
+  }
+  va_start(ap, fmt);
+  out->data = realloc(out->data, out->size + size + 1);
+  int remainder = out->size - offset;
+  memmove(out->data + offset + size, out->data + offset, remainder + 1);
+  unsigned char replace = out->data[ offset + size ];
+  vsnprintf((char*)(out->data) + offset, size+1, fmt, ap);
+  out->data[ offset + size ] = replace;
+  va_end(ap);
+  out->size += size;
+}
+
 void vec_append
   (vec_t* out, void* mem, unsigned size)
 {
