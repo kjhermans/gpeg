@@ -248,23 +248,26 @@ int handle_CHARINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_CHAR);
+  unsigned char* hex = capture->children.list[ 0 ].data.data;
+  uint32_t value = htonl(hexcodon(hex[ 0 ], hex[ 1 ]));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &value, sizeof(value));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_CHAR;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_CHARINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(CHARINSTR)
 
 int handle_CLOSECAPTUREINSTR
   (
