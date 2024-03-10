@@ -229,7 +229,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       .address = ec->bytecode_offset + instruction_size, \
       .input_offset = ec->input_offset, \
       .input_length = ec->input.size, \
-      .action_count = ec->actions.count \
+      .action_count = ec->actions.count, \
+      .register_count = ec->reg.count \
     } \
   ); \
   if (ec->stack.count > ec->stack_max) { ec->stack_max = ec->stack.count; } \
@@ -266,7 +267,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       .address = param, \
       .input_offset = ec->input_offset, \
       .input_length = ec->input.size, \
-      .action_count = ec->actions.count \
+      .action_count = ec->actions.count, \
+      .register_count = ec->reg.count \
     } \
   ); \
   if (ec->stack.count > ec->stack_max) { ec->stack_max = ec->stack.count; } \
@@ -424,6 +426,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       ec->bytecode_offset = elt.address; \
       ec->input_offset = elt.input_offset; \
       ec->actions.count = elt.action_count; \
+      ec->reg.count = elt.register_count; \
       break; \
     } \
   } \

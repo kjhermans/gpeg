@@ -43,6 +43,7 @@ typedef struct
   unsigned              input_offset;
   unsigned              input_length;
   unsigned              action_count;
+  unsigned              register_count;
 }
 gpege_stackelt_t;
 
