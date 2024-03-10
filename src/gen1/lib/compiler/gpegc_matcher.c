@@ -248,6 +248,8 @@ GPEG_ERR_T gpegc_matcher_quantified
       return gpegc_matcher_to_endless(gpegc, matcher);
     case 0:
       return gpegc_matcher_(gpegc, matcher);
+    default:
+      return gpegc_matcher_optional(gpegc, matcher, q[ 1 ]);
     }
     break;
   case 1:
