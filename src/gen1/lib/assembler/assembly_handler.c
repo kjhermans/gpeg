@@ -165,20 +165,7 @@ int handle_CALLINSTR
   return 0;
 }
 
-int handle_post_CALLINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(CALLINSTR)
 
 int handle_CATCHINSTR
   (
@@ -221,20 +208,7 @@ int handle_CATCHINSTR
   return 0;
 }
 
-int handle_post_CATCHINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(CATCHINSTR)
 
 int handle_CHARINSTR
   (
