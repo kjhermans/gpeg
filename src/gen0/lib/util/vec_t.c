@@ -65,7 +65,7 @@ void vec_printf_insert
   va_list ap;
   int size;
 
-  if (offset < 0 || offset > out->size) {
+  if (offset < 0 || offset > (int)out->size) {
     offset = out->size;
   }
 
