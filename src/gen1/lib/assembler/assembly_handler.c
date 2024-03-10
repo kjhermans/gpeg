@@ -333,20 +333,7 @@ int handle_COMMITINSTR
   return 0;
 }
 
-int handle_post_COMMITINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(COMMITINSTR)
 
 int handle_CONDJUMPINSTR
   (
@@ -360,23 +347,27 @@ int handle_CONDJUMPINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_CONDJUMP);
+  uint32_t param1 = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
+  uint32_t param2 = htonl(atoi((char*)(capture->children.list[ 1 ].data.data)));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &param1, sizeof(param1));
+    vec_append(gpega->output, &param2, sizeof(param2));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_CONDJUMP;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_CONDJUMPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(CONDJUMPINSTR)
 
 int handle_COUNTERINSTR
   (
@@ -390,23 +381,27 @@ int handle_COUNTERINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_COUNTER);
+  uint32_t param1 = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
+  uint32_t param2 = htonl(atoi((char*)(capture->children.list[ 1 ].data.data)));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &param1, sizeof(param1));
+    vec_append(gpega->output, &param2, sizeof(param2));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_COUNTER;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_COUNTERINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(COUNTERINSTR)
 
 IGNOREHANDLER(END)
 
@@ -422,23 +417,25 @@ int handle_ENDINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_END);
+  uint32_t exitcode = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &exitcode, sizeof(exitcode));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_END;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_ENDINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(ENDINSTR)
 
 int handle_ENDISOLATEINSTR
   (
