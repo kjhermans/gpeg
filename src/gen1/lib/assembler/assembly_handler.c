@@ -278,6 +278,21 @@ int handle_CLOSECAPTUREINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_CLOSECAPTURE);
+  uint32_t slot = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &slot, sizeof(slot));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_CLOSECAPTURE;
+    break;
+  }
+
   return 0;
 }
 
@@ -929,6 +944,21 @@ int handle_OPENCAPTUREINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_OPENCAPTURE);
+  uint32_t slot = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &slot, sizeof(slot));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_OPENCAPTURE;
+    break;
+  }
+
   return 0;
 }
 
