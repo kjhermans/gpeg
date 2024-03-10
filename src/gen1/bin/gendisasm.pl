@@ -7,7 +7,8 @@ my $instrhash = eval $instrperl || die "Need instructions file";
 print "TOP <- INSTRUCTION+
 INSTRUCTION <- " . join(" /\n  ", sort(keys(%{$instrhash}))) . "\n\n";
 
-foreach my $instr (values(%{$instrhash})) {
+foreach my $key (sort(keys(%{$instrhash}))) {
+  my $instr = $instrhash->{$key};
   print "$instr->{mnem} <- ";
   my @array = ( $instr->{opcode} =~ m/../g );
   print "0x" . join(' 0x', @array);
