@@ -33,6 +33,22 @@ int COMBINE(handle_post_,ident)  \
   return 0;                      \
 }
 
+#define IGNOREPOSTHANDLER(ident) \
+int COMBINE(handle_post_,ident)  \
+  (                              \
+    gpeg_capture_t* parent,      \
+    unsigned index,              \
+    gpeg_capture_t* capture,     \
+    void* arg                    \
+  )                              \
+{                                \
+  (void)parent;                  \
+  (void)index;                   \
+  (void)capture;                 \
+  (void)arg;                     \
+  return 0;                      \
+}
+
 IGNOREHANDLER(AMPERSAND)
 
 int handle_ANYINSTR
@@ -63,20 +79,7 @@ int handle_ANYINSTR
   return 0;
 }
 
-int handle_post_ANYINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(ANYINSTR)
 
 int handle_BACKCOMMITINSTR
   (
@@ -119,20 +122,7 @@ int handle_BACKCOMMITINSTR
   return 0;
 }
 
-int handle_post_BACKCOMMITINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(BACKCOMMITINSTR)
 
 int handle_CALLINSTR
   (
