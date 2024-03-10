@@ -805,7 +805,9 @@ int handle_LABEL
   gpega_t* gpega = arg;
   char* label = (char*)(capture->data.data);
 
-  str2int_map_put(&(gpega->labelmap), label, gpega->offset);
+  if (gpega->round == 0) {
+    str2int_map_put(&(gpega->labelmap), label, gpega->offset);
+  }
 
   return 0;
 }
