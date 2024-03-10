@@ -525,20 +525,7 @@ int handle_FAILINSTR
   return 0;
 }
 
-int handle_post_FAILINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(FAILINSTR)
 
 int handle_FAILTWICEINSTR
   (
@@ -568,20 +555,7 @@ int handle_FAILTWICEINSTR
   return 0;
 }
 
-int handle_post_FAILTWICEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(FAILTWICEINSTR)
 
 IGNOREHANDLER(HEXBYTE)
 IGNOREHANDLER(INSTRUCTION)
