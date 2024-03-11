@@ -37,14 +37,22 @@ static
 void gpegc_matcher_char
   (gpegc_t* gpegc, gpegc_matcher_t* matcher, char c)
 {
-  if (matcher->caseinsensitive) {
-    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
-//..
-    } else {
-      vec_printf(gpegc->output, "  char %.2x\n", c);
-    }
+  if (matcher->caseinsensitive
+      && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')))
+  {
+    //..
   } else {
-    vec_printf(gpegc->output, "  char %.2x\n", c);
+    if (matcher->value.string.quadoffset == 4) {
+      vec_printf(gpegc->output, "  quad %.2x%.2x%.2x%.2x\n"
+                                , matcher->value.string.quad[ 0 ]
+                                , matcher->value.string.quad[ 1 ]
+                                , matcher->value.string.quad[ 2 ]
+                                , matcher->value.string.quad[ 3 ]
+      );
+      matcher->value.string.quadoffset = 0;
+    }
+    matcher->value.string.quad[ matcher->value.string.quadoffset ] = c;
+    ++(matcher->value.string.quadoffset);
   }
 }
 
@@ -52,11 +60,12 @@ static
 void gpegc_matcher_string
   (gpegc_t* gpegc, gpegc_matcher_t* matcher)
 {
-  for (unsigned i=0; i < strlen(matcher->value.string); i++) {
-    char c = matcher->value.string[ i ];
+  matcher->value.string.quadoffset = 0;
+  for (unsigned i=0; i < strlen(matcher->value.string.value); i++) {
+    char c = matcher->value.string.value[ i ];
     switch (c) {
     case '\\':
-      switch (matcher->value.string[ i+1 ]) {
+      switch (matcher->value.string.value[ i+1 ]) {
       case 'a': gpegc_matcher_char(gpegc, matcher, 7); break;
       case 'b': gpegc_matcher_char(gpegc, matcher, 8); break;
       case 't': gpegc_matcher_char(gpegc, matcher, 9); break;
@@ -66,17 +75,33 @@ void gpegc_matcher_string
       case 'r': gpegc_matcher_char(gpegc, matcher, 13); break;
       case 'x':
         gpegc_matcher_char(gpegc, matcher, hexcodon(
-          matcher->value.string[ i+2 ],
-          matcher->value.string[ i+3 ]
+          matcher->value.string.value[ i+2 ],
+          matcher->value.string.value[ i+3 ]
         ));
         break;
       default:
-        gpegc_matcher_char(gpegc, matcher, matcher->value.string[ i+1 ]);
+        gpegc_matcher_char(gpegc, matcher, matcher->value.string.value[ i+1 ]);
         break;
       }
       break;
     default:
       gpegc_matcher_char(gpegc, matcher, c);
+    }
+  }
+  if (matcher->value.string.quadoffset) {
+    if (matcher->value.string.quadoffset == 4) {
+      vec_printf(gpegc->output, "  quad %.2x%.2x%.2x%.2x\n"
+                                , matcher->value.string.quad[ 0 ]
+                                , matcher->value.string.quad[ 1 ]
+                                , matcher->value.string.quad[ 2 ]
+                                , matcher->value.string.quad[ 3 ]
+      );
+    } else {
+      for (unsigned i=0; i < matcher->value.string.quadoffset; i++) {
+        vec_printf(gpegc->output, "  char %.2x\n"
+                                  , matcher->value.string.quad[ i ]
+        );
+      }
     }
   }
 }
@@ -93,7 +118,7 @@ GPEG_ERR_T gpegc_matcher_
     vec_printf(gpegc->output, "  char %.2x\n", matcher->value.chr);
     break;
   case GPEGC_MATCH_REFERENCE:
-    vec_printf(gpegc->output, "  call %s\n", matcher->value.string);
+    vec_printf(gpegc->output, "  call %s\n", matcher->value.string.value);
     break;
   case GPEGC_MATCH_STRING:
     gpegc_matcher_string(gpegc, matcher);

@@ -59,7 +59,11 @@ struct gpegc_matcher
 
   union {
     unsigned char                 chr;
-    char*                         string;
+    struct {
+      char*                         value;
+      unsigned char                 quad[ 4 ];
+      unsigned                      quadoffset;
+    }                             string;
     unsigned                      capture;
     unsigned                      number;
     struct {

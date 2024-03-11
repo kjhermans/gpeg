@@ -1617,7 +1617,7 @@ int handle_REFERENCE
   gpegc_t* gpegc = arg;
 
   gpegc->currentmatcher->type = GPEGC_MATCH_REFERENCE;
-  gpegc->currentmatcher->value.string = (char*)(capture->data.data);
+  gpegc->currentmatcher->value.string.value = (char*)(capture->data.data);
 
   return 0;
 }
@@ -2136,7 +2136,7 @@ int handle_STRINGLITERAL_0
   gpegc_t* gpegc = arg;
 
   gpegc->currentmatcher->type = GPEGC_MATCH_STRING;
-  gpegc->currentmatcher->value.string = (char*)(capture->data.data);
+  gpegc->currentmatcher->value.string.value = (char*)(capture->data.data);
 
   return 0;
 }
