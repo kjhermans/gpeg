@@ -1172,13 +1172,11 @@ int handle_SETINSTR
 
   switch (gpega->round) {
   case 1:
-fprintf(stderr, "SIZE OF VEC %u\n", gpega->output->size);
     vec_append(gpega->output, &opcode, sizeof(opcode));
     for (unsigned i=0; i<64; i+=2) {
       unsigned chr = hexcodon(set[ i ], set[ i+1 ]);
       vec_appendchr(gpega->output, chr);
     }
-fprintf(stderr, "SIZE OF VEC %u\n", gpega->output->size);
     __attribute__ ((fallthrough));
   case 0:
     gpega->offset += INSTR_LENGTH_SET;
