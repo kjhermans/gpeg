@@ -56,6 +56,24 @@ void gpegc_matcher_string
     char c = matcher->value.string[ i ];
     switch (c) {
     case '\\':
+      switch (matcher->value.string[ i+1 ]) {
+      case 'a': gpegc_matcher_char(gpegc, matcher, 7); break;
+      case 'b': gpegc_matcher_char(gpegc, matcher, 8); break;
+      case 't': gpegc_matcher_char(gpegc, matcher, 9); break;
+      case 'n': gpegc_matcher_char(gpegc, matcher, 10); break;
+      case 'v': gpegc_matcher_char(gpegc, matcher, 11); break;
+      case 'f': gpegc_matcher_char(gpegc, matcher, 12); break;
+      case 'r': gpegc_matcher_char(gpegc, matcher, 13); break;
+      case 'x':
+        gpegc_matcher_char(gpegc, matcher, hexcodon(
+          matcher->value.string[ i+2 ],
+          matcher->value.string[ i+3 ]
+        ));
+        break;
+      default:
+        gpegc_matcher_char(gpegc, matcher, matcher->value.string[ i+1 ]);
+        break;
+      }
       break;
     default:
       gpegc_matcher_char(gpegc, matcher, c);
