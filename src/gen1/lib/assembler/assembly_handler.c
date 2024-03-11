@@ -997,23 +997,28 @@ int handle_QUADINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_QUAD);
+  char* quad = (char*)(capture->children.list[ 0 ].data.data);
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_appendchr(gpega->output, hexcodon(quad[ 0 ], quad[ 1 ]));
+    vec_appendchr(gpega->output, hexcodon(quad[ 2 ], quad[ 3 ]));
+    vec_appendchr(gpega->output, hexcodon(quad[ 4 ], quad[ 5 ]));
+    vec_appendchr(gpega->output, hexcodon(quad[ 6 ], quad[ 7 ]));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_QUAD;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_QUADINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(QUADINSTR)
 
 int handle_RANGEINSTR
   (
