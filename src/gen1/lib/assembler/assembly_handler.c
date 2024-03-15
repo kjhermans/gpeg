@@ -107,7 +107,7 @@ int handle_BACKCOMMITINSTR
       if (0 == strcmp(label, "__NEXT__")) {
         offset = gpega->offset + INSTR_LENGTH_BACKCOMMIT;
       } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
-        //.. return error
+        return GPEG_ERR_LABEL.code;
       }
       o = htonl(offset);
       vec_append(gpega->output, &opcode, sizeof(opcode));
@@ -150,7 +150,7 @@ int handle_CALLINSTR
       if (0 == strcmp(label, "__NEXT__")) {
         offset = gpega->offset + INSTR_LENGTH_CALL;
       } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
-        //.. return error
+        return GPEG_ERR_LABEL.code;
       }
       o = htonl(offset);
       vec_append(gpega->output, &opcode, sizeof(opcode));
@@ -193,7 +193,7 @@ int handle_CATCHINSTR
       if (0 == strcmp(label, "__NEXT__")) {
         offset = gpega->offset + INSTR_LENGTH_CATCH;
       } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
-        //.. return error
+        return GPEG_ERR_LABEL.code;
       }
       o = htonl(offset);
       vec_append(gpega->output, &opcode, sizeof(opcode));
@@ -318,7 +318,7 @@ int handle_COMMITINSTR
       if (0 == strcmp(label, "__NEXT__")) {
         offset = gpega->offset + INSTR_LENGTH_COMMIT;
       } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
-        //.. return error
+        return GPEG_ERR_LABEL.code;
       }
       o = htonl(offset);
       vec_append(gpega->output, &opcode, sizeof(opcode));

@@ -49,6 +49,8 @@ typedef struct {
 
 #define GPEG_ERR_QUANTIFIER      (GPEG_ERR_T){ .code = 16 }
 
+#define GPEG_ERR_LABEL           (GPEG_ERR_T){ .code = 64 }
+
 #define PROPAGATE { return __e; }
 
 #ifdef _DEBUG
