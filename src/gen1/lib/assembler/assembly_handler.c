@@ -351,13 +351,22 @@ int handle_CONDJUMPINSTR
   gpega_t* gpega = arg;
   uint32_t opcode = htonl(INSTR_OPCODE_CONDJUMP);
   uint32_t param1 = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
-  uint32_t param2 = htonl(atoi((char*)(capture->children.list[ 1 ].data.data)));
+  char* label = (char*)(capture->children.list[ 1 ].data.data);
+  unsigned offset = 0;
+  uint32_t o;
+
+  if (0 == strcmp(label, "__NEXT__")) {
+    offset = gpega->offset + INSTR_LENGTH_COMMIT;
+  } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
+    return GPEG_ERR_LABEL.code;
+  }
+  o = htonl(offset);
 
   switch (gpega->round) {
   case 1:
     vec_append(gpega->output, &opcode, sizeof(opcode));
     vec_append(gpega->output, &param1, sizeof(param1));
-    vec_append(gpega->output, &param2, sizeof(param2));
+    vec_append(gpega->output, &o, sizeof(o));
     __attribute__ ((fallthrough));
   case 0:
     gpega->offset += INSTR_LENGTH_CONDJUMP;
