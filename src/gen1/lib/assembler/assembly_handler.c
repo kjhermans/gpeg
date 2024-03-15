@@ -731,22 +731,11 @@ int handle_JUMPINSTR
   return 0;
 }
 
-int handle_post_JUMPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(JUMPINSTR)
 
-int handle_LABEL
+IGNOREHANDLER(LABEL)
+
+int handle_LABELDEF
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -769,50 +758,7 @@ int handle_LABEL
   return 0;
 }
 
-int handle_post_LABEL
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_LABELDEF
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_LABELDEF
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(LABELDEF)
 
 int handle_MASKEDCHARINSTR
   (
@@ -921,20 +867,7 @@ int handle_OPENCAPTUREINSTR
   return 0;
 }
 
-int handle_post_OPENCAPTUREINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(OPENCAPTUREINSTR)
 
 int handle_PARTIALCOMMITINSTR
   (
@@ -962,7 +895,7 @@ int handle_PARTIALCOMMITINSTR
       if (0 == strcmp(label, "__NEXT__")) {
         offset = gpega->offset + INSTR_LENGTH_PARTIALCOMMIT;
       } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
-        //.. return error
+        return GPEG_ERR_LABEL.code;
       }
       o = htonl(offset);
       vec_append(gpega->output, &opcode, sizeof(opcode));
@@ -977,20 +910,7 @@ int handle_PARTIALCOMMITINSTR
   return 0;
 }
 
-int handle_post_PARTIALCOMMITINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(PARTIALCOMMITINSTR)
 
 IGNOREHANDLER(QUAD)
 
@@ -1119,51 +1039,9 @@ int handle_RETINSTR
   return 0;
 }
 
-int handle_post_RETINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(RETINSTR)
 
-int handle_RULEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_RULEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
+IGNOREHANDLER(RULEINSTR)
 IGNOREHANDLER(S)
 IGNOREHANDLER(SET)
 
