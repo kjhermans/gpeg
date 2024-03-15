@@ -81,7 +81,7 @@ SET                <- ABOPEN { '^' }? (
                         { '\\' ([nrtv\\\]\-] / '0x' [0-9a-fA-F]^2) / [^\\\]] }
                       )+ ABCLOSE
 
-VARREFERENCE       <- '$' ( IDENT / NUMBER ) BITMASK?
+VARREFERENCE       <- '$' ( IDENT / NUMBER ) ('-' BITMASK )?
 
 REFERENCE          <- !( KW_IMPORT ) IDENT !LEFTARROW
 

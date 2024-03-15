@@ -627,6 +627,7 @@ __L127:
   call NUMBER
 __L128:
   catch __L129
+  char 2d
   call BITMASK
   commit __L129
 __L129:
