@@ -716,7 +716,7 @@ int handle_JUMPINSTR
       if (0 == strcmp(label, "__NEXT__")) {
         offset = gpega->offset + INSTR_LENGTH_JUMP;
       } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
-        //.. return error
+        return GPEG_ERR_LABEL.code;
       }
       o = htonl(offset);
       vec_append(gpega->output, &opcode, sizeof(opcode));
