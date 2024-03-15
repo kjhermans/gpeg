@@ -47,7 +47,7 @@ typedef struct {
 #define GPEG_ERR_BYTECODE        (GPEG_ERR_T){ .code = 6 }
 #define GPEG_ERR_MAXINSTRUCTIONS (GPEG_ERR_T){ .code = 7 }
 
-#define GPEG_ERR_QUANTIFIER      (GPEG_ERR_T){ .code = 16 }
+#define GPEG_ERR_QUANTIFIER      (GPEG_ERR_T){ .code = 32 }
 
 #define GPEG_ERR_LABEL           (GPEG_ERR_T){ .code = 64 }
 
