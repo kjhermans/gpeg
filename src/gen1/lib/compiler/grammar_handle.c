@@ -1800,12 +1800,12 @@ int handle_post_RULE
   if (gpegc->prefixgiven) {
     vec_printf(gpegc->output, "  call __prefix\n");
   }
-  if (gpegc->rulecapture) {
+  if (gpegc->rulecapture && strcmp(gpegc->currentrule.name, "__prefix")) {
     slot = (gpegc->cslot)++;
     vec_printf(gpegc->output, "  opencapture %u\n", slot);
   }
   e = gpegc_matcherlist(gpegc, &(gpegc->currentrule.matchers));
-  if (gpegc->rulecapture) {
+  if (gpegc->rulecapture && strcmp(gpegc->currentrule.name, "__prefix")) {
     vec_printf(gpegc->output, "  closecapture %u\n", slot);
   }
   vec_printf(gpegc->output, "  ret\n\n");
