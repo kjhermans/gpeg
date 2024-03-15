@@ -96,6 +96,7 @@ typedef struct
   }                     currentrule;
   gpegc_matcher_t*      currentmatcher;
   gpegc_matcherlist_t*  currentmatcherlist;
+  int                   currentquantifier[ 2 ];
   vec_t*                output;
   vec_t*                error;
   unsigned              ccount;
