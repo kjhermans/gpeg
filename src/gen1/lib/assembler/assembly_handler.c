@@ -1227,6 +1227,21 @@ int handle_SKIPINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_SKIP);
+  uint32_t nsteps = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &nsteps, sizeof(nsteps));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_SKIP;
+    break;
+  }
+
   return 0;
 }
 
