@@ -60,6 +60,7 @@ GPEG_ERR_T gpega_assemble
   gpege_t gpege = { 0 };
   gpege_ec_t ec = { 0 };
   gpeg_capturelist_t captures = { 0 };
+  int e;
 
   gpege.bytecode.data = bytecode;
   gpege.bytecode.size = sizeof(bytecode);
