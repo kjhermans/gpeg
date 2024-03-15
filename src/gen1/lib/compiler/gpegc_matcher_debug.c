@@ -36,24 +36,47 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
  *
  */
-GPEG_ERR_T gpegc_matcherlist
-  (gpegc_t* gpegc, gpegc_matcherlist_t* list)
+void gpegc_matcher_debug
+  (gpegc_matcher_t* m, unsigned level)
 {
-  DEBUGFUNCTION
-  ASSERT(gpegc)
-  ASSERT(list)
-
-  for (unsigned i=0; i < list->count; i++) {
-    GPEG_CHECK(gpegc_matcher(gpegc, &(list->list[ i ])), PROPAGATE);
+  for (unsigned i=0; i < level; i++) {
+    fprintf(stderr, "  ");
   }
-
-  return GPEG_OK;
-}
-
-void gpegc_matcherlist_debug
-  (gpegc_matcherlist_t* list, unsigned level)
-{
-  for (unsigned i=0; i < list->count; i++) {
-    gpegc_matcher_debug(&(list->list[ i ]), level);
+  if (m->modifier) {
+    if (m->modifier == 1) {
+      fprintf(stderr, "not ");
+    } else {
+      fprintf(stderr, "and ");
+    }
+  }
+  if (m->quantifier[ 0 ] || m->quantifier[ 1 ]) {
+    fprintf(stderr, "^%d/%d: ", m->quantifier[ 0 ], m->quantifier[ 1 ]);
+  }
+  switch (m->type) {
+  case GPEGC_MATCH_ANY:
+    fprintf(stderr, "any\n"); break;
+  case GPEGC_MATCH_CHAR:
+    fprintf(stderr, "char %.2x\n", m->value.chr); break;
+  case GPEGC_MATCH_SET:
+    fprintf(stderr, "set\n"); break;
+  case GPEGC_MATCH_REFERENCE:
+    fprintf(stderr, "reference %s\n", m->value.string.value); break;
+  case GPEGC_MATCH_STRING:
+    fprintf(stderr, "string %s\n", m->value.string.value); break;
+  case GPEGC_MATCH_ENDFORCE:
+    fprintf(stderr, "end\n"); break;
+  case GPEGC_MATCH_CAPTURE:
+    fprintf(stderr, "capture\n");
+    gpegc_matcherlist_debug(&(m->group), level+1);
+    break;
+  case GPEGC_MATCH_GROUP:
+    fprintf(stderr, "group\n");
+    gpegc_matcherlist_debug(&(m->group), level+1);
+    break;
+  case GPEGC_MATCH_CHOICE:
+    fprintf(stderr, "choice\n");
+    gpegc_matcherlist_debug(&(m->group), level+1);
+    gpegc_matcherlist_debug(&(m->altgroup), level+1);
+    break;
   }
 }
