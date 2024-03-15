@@ -21,11 +21,21 @@ GPEG_ERR_T gpegc_matcher
   (gpegc_t* gpegc, gpegc_matcher_t* matcher)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./gpegc_matcher_debug.c */
+extern
+void gpegc_matcher_debug
+  (gpegc_matcher_t* m, unsigned level);
+
 /* declared in ./gpegc_matcherlist.c */
 extern
 GPEG_ERR_T gpegc_matcherlist
   (gpegc_t* gpegc, gpegc_matcherlist_t* list)
   __attribute__ ((warn_unused_result));
+
+/* declared in ./gpegc_matcherlist.c */
+extern
+void gpegc_matcherlist_debug
+  (gpegc_matcherlist_t* list, unsigned level);
 
 /* declared in ./grammar.c */
 extern
