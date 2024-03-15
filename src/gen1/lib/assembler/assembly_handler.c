@@ -760,7 +760,7 @@ int handle_LABEL
   (void)arg;
 
   gpega_t* gpega = arg;
-  char* label = (char*)(capture->data.data);
+  char* label = (char*)(capture->children.list[ 0 ].data.data);
 
   if (gpega->round == 0) {
     str2int_map_put(&(gpega->labelmap), label, gpega->offset);
