@@ -219,27 +219,40 @@ static
 GPEG_ERR_T gpegc_matcher_optional
   (gpegc_t* gpegc, gpegc_matcher_t* matcher, int count)
 {
-  unsigned label1 = ++(gpegc->clabel);
-  unsigned label2 = ++(gpegc->clabel);
-  unsigned counter = ++(gpegc->ccount);
-
-  vec_printf(gpegc->output, "  catch __L%u\n"
-                            "  counter %u %d\n"
-                            "__L%u:\n"
-                            , label1
-                            , counter
-                            , count
-                            , label2
-  );
-  GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-  vec_printf(gpegc->output, "  partialcommit __NEXT__\n"
-                            "  condjump %u __L%u\n"
-                            "  commit __NEXT__\n"
-                            "__L%u:\n"
-                            , counter
-                            , label2
-                            , label1
-  );
+  if (count == 1) {
+    unsigned label1 = ++(gpegc->clabel);
+  
+    vec_printf(gpegc->output, "  catch __L%u\n"
+                              , label1
+    );
+    GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
+    vec_printf(gpegc->output, "  commit __NEXT__\n"
+                              "__L%u:\n"
+                              , label1
+    );
+  } else {
+    unsigned label1 = ++(gpegc->clabel);
+    unsigned label2 = ++(gpegc->clabel);
+    unsigned counter = ++(gpegc->ccount);
+  
+    vec_printf(gpegc->output, "  catch __L%u\n"
+                              "  counter %u %d\n"
+                              "__L%u:\n"
+                              , label1
+                              , counter
+                              , count
+                              , label2
+    );
+    GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
+    vec_printf(gpegc->output, "  partialcommit __NEXT__\n"
+                              "  condjump %u __L%u\n"
+                              "  commit __NEXT__\n"
+                              "__L%u:\n"
+                              , counter
+                              , label2
+                              , label1
+    );
+  }
   return GPEG_OK;
 }
 
