@@ -31,9 +31,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_GPEGA_H_
-#define _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_GPEGA_H_
+#ifndef _GPEG_GEN1_GPEG_PRIVATE_DISASSEMBLER_TYPES_H_
+#define _GPEG_GEN1_GPEG_PRIVATE_DISASSEMBLER_TYPES_H_
 
-#include "gpegd_functions.h"
+#include <gpeg/private/util/vec_t.h>
+
+typedef struct
+{
+  vec_t*            output;
+}
+gpegd_t;
 
 #endif

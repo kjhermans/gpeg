@@ -31,9 +31,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_GPEGA_H_
-#define _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_GPEGA_H_
+#ifndef _GPEG_GEN1_GPEG_PRIVATE_DISASSEMBLER_LIB_H_
+#define _GPEG_GEN1_GPEG_PRIVATE_DISASSEMBLER_LIB_H_
 
-#include "gpegd_functions.h"
+#include <stdlib.h>
+
+#ifdef _DEBUG
+#include <stdio.h>
+#endif
+
+#include "gpegd_types.h"
+
+#include <gpeg/private/gpeg/gpeg_defines.h>
+
+#include <gpeg/lib/gpeg/gpeg.h>
+#include <gpeg/lib/disassembler/gpegd.h>
+
+#include <gpeg/private/util/util.h>
 
 #endif

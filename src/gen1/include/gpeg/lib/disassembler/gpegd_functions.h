@@ -31,9 +31,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_GPEGA_H_
-#define _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_GPEGA_H_
+#ifndef _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_FUNCTIONS_H_
+#define _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_FUNCTIONS_H_
 
-#include "gpegd_functions.h"
+extern
+GPEG_ERR_T gpegd_disassemble
+  (vec_t* input, vec_t* output, vec_t* error, unsigned flags)
+  __attribute__ ((warn_unused_result));
 
 #endif

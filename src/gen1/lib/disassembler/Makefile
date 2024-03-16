@@ -2,13 +2,13 @@ PREVGEN?=../../../gen0
 CURGEN?=../..
 CFILES:=$(shell ls *.c | sort) disasm.c
 OBJECTS:=$(shell ls *.c | sort | sed -e 's/\.c$$/.o/')
-LIB=libgpegc.a
+LIB=libgpegd.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
 INCLUDE=$(CURGEN)/include
 CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen0_ -I$(INCLUDE)
 
-all: disasmh lib
+all: disasmh functionsh lib
 
 disasmh: disasm.h
 
@@ -24,6 +24,13 @@ disasm.asm: disasm.gpeg
 
 disasm.gpeg: ../../res/instructions.pl
 	../../bin/gendisasm.pl ../../res/instructions.pl > disasm.gpeg
+
+functionsh: gpegd_functions.h
+
+gpegd_functions.h: $(CFILES)
+	../../bin/genfnchdr -t GPEG_ERR_T -i GPEGD_PRIVATE_FUNCTIONS_H_ . > \
+	  gpegd_functions.h
+
 
 lib: objects
 	$(AR) -rcs $(LIB) $(OBJECTS)

@@ -31,9 +31,65 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_GPEGA_H_
-#define _GPEG_GEN1_GPEG_LIB_DISASSEMBLER_GPEGA_H_
+#include "gpegd_private.h"
+#include "disasm.slotmap.h"
+#include <gpeg/previous/lib/engine/gpege.h>
 
-#include "gpegd_functions.h"
+static
+unsigned char bytecode[] = {
+  #include "disasm.h"
+};
 
+#define GENCALL(f) JOIN(PREVGEN, f)
+#define JOIN(a, b) JOIN_AGAIN(a, b)
+#define JOIN_AGAIN(a,b) a ## b
+
+/**
+ *
+ */
+GPEG_ERR_T gpegd_disassemble
+  (vec_t* input, vec_t* output, vec_t* error, unsigned flags)
+{
+  DEBUGFUNCTION
+  ASSERT(input)
+  ASSERT(output)
+  ASSERT(error)
+
+  (void)flags;
+
+  gpege_t gpege = { 0 };
+  gpege_ec_t ec = { 0 };
+  gpeg_capturelist_t captures = { 0 };
+  int e;
+
+  gpege.bytecode.data = bytecode;
+  gpege.bytecode.size = sizeof(bytecode);
+
+  ec.input = *input;
+
+#ifdef _DEBUG
+  gpege.debugger = gpege_debug_verbose;
 #endif
+
+  GPEG_CHECK(
+    GENCALL(gpege_run(&gpege, &ec)),
+    PROPAGATE
+  );
+  GPEG_CHECK(
+    gpege_actions2captures(
+      &(ec.input),
+      &(ec.actions),
+      &captures
+    ),
+    PROPAGATE
+  );
+
+  gpegd_t gpegd = { 0 };
+  gpegd.output = output;
+  if ((e = grammar_process_node(&(captures.list[ 0 ]), &gpegd)) != 0) {
+    vec_printf(error, "Disassembly error code %d.", e);
+    return (GPEG_ERR_T){ .code = e };
+  }
+
+  return GPEG_OK;
+}
