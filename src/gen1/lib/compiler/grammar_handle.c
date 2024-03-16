@@ -359,9 +359,7 @@ int handle_EXPRESSION
 
   gpegc_t* gpegc = arg;
 
-//  if (capture->children.count > 1) {
-    capture->attachment.value_ptr = gpegc->currentmatcherlist;
-//  }
+  capture->attachment.value_ptr = gpegc->currentmatcherlist;
 
   return 0;
 }
@@ -380,17 +378,8 @@ int handle_post_EXPRESSION
   (void)arg;
 
   gpegc_t* gpegc = arg;
-//  gpegc_matcher_t m = { 0 };
 
-//  if (capture->children.count > 1) {
-    gpegc->currentmatcherlist = capture->attachment.value_ptr;
-//    m.type = GPEGC_MATCH_CHOICE;
-//    for (unsigned i=0; i < gpegc->currentmatcherlist->count; i++) {
-//      gpegc_matcherlist_push(&(m.group), gpegc->currentmatcherlist->list[ i ]);
-//    }
-//    gpegc->currentmatcherlist->count = 0;
-//    gpegc_matcherlist_push(gpegc->currentmatcherlist, m);
-//  }
+  gpegc->currentmatcherlist = capture->attachment.value_ptr;
 
   return 0;
 }
@@ -1842,7 +1831,6 @@ int handle_post_RULE
   if (e.code) {
     return e.code;
   }
-//gpegc_matcherlist_debug(&(gpegc->currentrule.matchers), 0);
   gpegc->currentrule.name = NULL;
 // the following function will not free 'child' matcherlists
   gpegc_matcherlist_free(&(gpegc->currentrule.matchers));
