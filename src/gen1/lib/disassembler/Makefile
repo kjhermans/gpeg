@@ -13,7 +13,7 @@ all: disasmh lib
 disasmh: disasm.h
 
 disasm.h: disasm.byc
-	xxd -c 8 -p disasm.byc | sed 's/\(..\)/0x\1, /g' > grammar.h
+	xxd -c 8 -p disasm.byc | sed 's/\(..\)/0x\1, /g' > disasm.h
 
 disasm.byc: disasm.asm
 	$(PREVGEN)/bin/gpega -i disasm.asm -o disasm.byc
@@ -35,4 +35,4 @@ clean:
 
 superclean: clean
 	rm -f disasm.gpeg disasm.asm disasm.byc disasm.slotmap.h \
-	  grammar.h
+	  disasm.h
