@@ -10,5 +10,5 @@ for TEST in $TESTS; do
     "$BIN/gpegc -i GRAMMAR -o ASM" \
     "$BIN/gpega -i ASM -o BYTECODE" \
     "$BIN/gpege -c BYTECODE -i INPUT -v" \
-    "/home/kees/work/oroszlan/src/gen3/main/disassembler/naid"
+    "$BIN/gpegd"
 done
