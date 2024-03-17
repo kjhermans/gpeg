@@ -83,12 +83,14 @@ GPEG_ERR_T gpegd_disassemble
     ),
     PROPAGATE
   );
-
+//gpeg_capturelist_debug(&captures);
   gpegd_t gpegd = { 0 };
   gpegd.output = output;
-  if ((e = grammar_process_node(&(captures.list[ 0 ]), &gpegd)) != 0) {
-    vec_printf(error, "Disassembly error code %d.", e);
-    return (GPEG_ERR_T){ .code = e };
+  for (unsigned i=0; i < captures.count; i++) {
+    if ((e = grammar_process_node(&(captures.list[ i ]), &gpegd)) != 0) {
+      vec_printf(error, "Disassembly error code %d.", e);
+      return (GPEG_ERR_T){ .code = e };
+    }
   }
 
   return GPEG_OK;
