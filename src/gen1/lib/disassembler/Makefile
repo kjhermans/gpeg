@@ -8,7 +8,7 @@ AR=$(ARCH)ar
 INCLUDE=$(CURGEN)/include
 CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen0_ -I$(INCLUDE)
 
-all: disasmh functionsh lib
+all: disasmh functionsh instructionsh lib
 
 disasmh: disasm.h
 
@@ -31,6 +31,11 @@ gpegd_functions.h: $(CFILES)
 	../../bin/genfnchdr -t GPEG_ERR_T -i GPEGD_PRIVATE_FUNCTIONS_H_ . > \
 	  gpegd_functions.h
 
+instructionsh: gpegd_instructions.h
+	../../bin/geninstrhdr $(CURGEN)/res/instructions.pl > \
+	  gpegd_instructions.h
+
+gpegd_instructions.h: $(CURGEN)/res/instructions.pl
 
 lib: objects
 	$(AR) -rcs $(LIB) $(OBJECTS)
