@@ -32,7 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "gpegd_private.h"
-//#include "gpega_instructions.h"
+#include "gpegd_instructions.h"
 //#include "assembly.slotmap.h"
 
 int handle_any
@@ -47,6 +47,12 @@ int handle_any
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  vec_printf(gpegd->output, "%u: any\n", gpegd->offset);
+  gpegd->offset += INSTR_LENGTH_ANY;
+
   return 0;
 }
 
@@ -77,6 +83,13 @@ int handle_backcommit
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: backcommit %u\n", gpegd->offset, offset);
+  gpegd->offset += INSTR_LENGTH_BACKCOMMIT;
+
   return 0;
 }
 
@@ -107,6 +120,13 @@ int handle_call
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: call %u\n", gpegd->offset, offset);
+  gpegd->offset += INSTR_LENGTH_CALL;
+
   return 0;
 }
 
@@ -317,6 +337,13 @@ int handle_end
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned code = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: end %u\n", gpegd->offset, code);
+  gpegd->offset += INSTR_LENGTH_END;
+
   return 0;
 }
 
@@ -767,6 +794,12 @@ int handle_ret
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  vec_printf(gpegd->output, "%u: ret\n", gpegd->offset);
+  gpegd->offset += INSTR_LENGTH_RET;
+
   return 0;
 }
 

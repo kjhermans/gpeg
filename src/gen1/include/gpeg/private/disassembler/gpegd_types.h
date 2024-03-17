@@ -39,6 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 typedef struct
 {
   vec_t*            output;
+  unsigned          offset;
 }
 gpegd_t;
 
