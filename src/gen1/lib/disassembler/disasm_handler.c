@@ -35,66 +35,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //#include "gpega_instructions.h"
 //#include "assembly.slotmap.h"
 
-int handle_INSTRUCTION
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_INSTRUCTION
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_TOP
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_TOP
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_any
   (
     gpeg_capture_t* parent,
@@ -155,36 +95,6 @@ int handle_post_backcommit
   return 0;
 }
 
-int handle_backcommit_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_backcommit_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_call
   (
     gpeg_capture_t* parent,
@@ -201,36 +111,6 @@ int handle_call
 }
 
 int handle_post_call
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_call_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_call_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -275,36 +155,6 @@ int handle_post_catch
   return 0;
 }
 
-int handle_catch_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_catch_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_char
   (
     gpeg_capture_t* parent,
@@ -321,36 +171,6 @@ int handle_char
 }
 
 int handle_post_char
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_char_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_char_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -395,36 +215,6 @@ int handle_post_closecapture
   return 0;
 }
 
-int handle_closecapture_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_closecapture_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_commit
   (
     gpeg_capture_t* parent,
@@ -441,36 +231,6 @@ int handle_commit
 }
 
 int handle_post_commit
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_commit_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_commit_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -515,36 +275,6 @@ int handle_post_condjump
   return 0;
 }
 
-int handle_condjump_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_condjump_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_counter
   (
     gpeg_capture_t* parent,
@@ -575,36 +305,6 @@ int handle_post_counter
   return 0;
 }
 
-int handle_counter_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_counter_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_end
   (
     gpeg_capture_t* parent,
@@ -621,36 +321,6 @@ int handle_end
 }
 
 int handle_post_end
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_end_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_end_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -815,36 +485,6 @@ int handle_post_intrpcapture
   return 0;
 }
 
-int handle_intrpcapture_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_intrpcapture_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_isolate
   (
     gpeg_capture_t* parent,
@@ -861,36 +501,6 @@ int handle_isolate
 }
 
 int handle_post_isolate
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_isolate_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_isolate_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -935,36 +545,6 @@ int handle_post_jump
   return 0;
 }
 
-int handle_jump_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_jump_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_maskedchar
   (
     gpeg_capture_t* parent,
@@ -981,36 +561,6 @@ int handle_maskedchar
 }
 
 int handle_post_maskedchar
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_maskedchar_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_maskedchar_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1085,36 +635,6 @@ int handle_post_opencapture
   return 0;
 }
 
-int handle_opencapture_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_opencapture_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_partialcommit
   (
     gpeg_capture_t* parent,
@@ -1131,36 +651,6 @@ int handle_partialcommit
 }
 
 int handle_post_partialcommit
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_partialcommit_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_partialcommit_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1205,36 +695,6 @@ int handle_post_quad
   return 0;
 }
 
-int handle_quad_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_quad_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_range
   (
     gpeg_capture_t* parent,
@@ -1265,36 +725,6 @@ int handle_post_range
   return 0;
 }
 
-int handle_range_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_range_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_replace
   (
     gpeg_capture_t* parent,
@@ -1311,36 +741,6 @@ int handle_replace
 }
 
 int handle_post_replace
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_replace_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_replace_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1415,36 +815,6 @@ int handle_post_set
   return 0;
 }
 
-int handle_set_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_set_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_skip
   (
     gpeg_capture_t* parent,
@@ -1461,36 +831,6 @@ int handle_skip
 }
 
 int handle_post_skip
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_skip_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_skip_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1535,36 +875,6 @@ int handle_post_span
   return 0;
 }
 
-int handle_span_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_span_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_testany
   (
     gpeg_capture_t* parent,
@@ -1581,36 +891,6 @@ int handle_testany
 }
 
 int handle_post_testany
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_testany_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_testany_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1655,36 +935,6 @@ int handle_post_testchar
   return 0;
 }
 
-int handle_testchar_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_testchar_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_testquad
   (
     gpeg_capture_t* parent,
@@ -1715,36 +965,6 @@ int handle_post_testquad
   return 0;
 }
 
-int handle_testquad_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_testquad_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_testset
   (
     gpeg_capture_t* parent,
@@ -1761,36 +981,6 @@ int handle_testset
 }
 
 int handle_post_testset
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_testset_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_testset_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1851,36 +1041,6 @@ int handle_var
 }
 
 int handle_post_var
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_var_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_var_0
   (
     gpeg_capture_t* parent,
     unsigned index,

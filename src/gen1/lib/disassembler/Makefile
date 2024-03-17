@@ -19,7 +19,7 @@ disasm.byc: disasm.asm
 	$(PREVGEN)/bin/gpega -i disasm.asm -o disasm.byc
 
 disasm.asm: disasm.gpeg
-	$(PREVGEN)/bin/gpegc -C -i disasm.gpeg -o disasm.asm -G disasm.c \
+	$(PREVGEN)/bin/gpegc -i disasm.gpeg -o disasm.asm -G disasm.c \
 	  -M disasm.slotmap.h
 
 disasm.gpeg: ../../res/instructions.pl

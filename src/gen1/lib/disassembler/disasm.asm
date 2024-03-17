@@ -2,18 +2,15 @@
   end 0
 
 TOP:
-  opencapture 0
   call INSTRUCTION
   catch __L1
 __L2:
   call INSTRUCTION
   partialcommit __L2
 __L1:
-  closecapture 0
   ret
 
 INSTRUCTION:
-  opencapture 1
   catch __L3
   call any
   commit __L4
@@ -180,134 +177,227 @@ __L10:
 __L8:
 __L6:
 __L4:
-  closecapture 1
   ret
 
 any:
-  opencapture 2
+  opencapture 0
   char 00
   char 00
   char 03
   char e4
-  closecapture 2
+  closecapture 0
   ret
 
 backcommit:
-  opencapture 3
   char 00
   char 04
   char 03
   char c0
+  opencapture 1
+  any
+  any
+  any
+  any
+  closecapture 1
+  ret
+
+call:
+  char 00
+  char 04
+  char 03
+  char 82
+  opencapture 2
+  any
+  any
+  any
+  any
+  closecapture 2
+  ret
+
+catch:
+  char 00
+  char 04
+  char 03
+  char 93
+  opencapture 3
+  any
+  any
+  any
+  any
+  closecapture 3
+  ret
+
+char:
+  char 00
+  char 04
+  char 03
+  char d7
   opencapture 4
   any
   any
   any
   any
   closecapture 4
-  closecapture 3
   ret
 
-call:
-  opencapture 5
+closecapture:
   char 00
   char 04
   char 03
-  char 82
+  char 00
+  opencapture 5
+  any
+  any
+  any
+  any
+  closecapture 5
+  ret
+
+commit:
+  char 00
+  char 04
+  char 03
+  char 36
   opencapture 6
   any
   any
   any
   any
   closecapture 6
-  closecapture 5
   ret
 
-catch:
-  opencapture 7
+condjump:
   char 00
-  char 04
+  char 08
   char 03
-  char 93
+  char 21
+  opencapture 7
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  closecapture 7
+  ret
+
+counter:
+  char 00
+  char 08
+  char 03
+  char 56
   opencapture 8
   any
   any
   any
   any
+  any
+  any
+  any
+  any
   closecapture 8
-  closecapture 7
   ret
 
-char:
-  opencapture 9
+end:
   char 00
   char 04
-  char 03
-  char d7
-  opencapture 10
+  char 00
+  char d8
+  opencapture 9
   any
   any
   any
   any
-  closecapture 10
   closecapture 9
   ret
 
-closecapture:
+endisolate:
+  opencapture 10
+  char 00
+  char 00
+  char 30
+  char 05
+  closecapture 10
+  ret
+
+endreplace:
   opencapture 11
   char 00
-  char 04
-  char 03
   char 00
-  opencapture 12
-  any
-  any
-  any
-  any
-  closecapture 12
+  char 03
+  char 99
   closecapture 11
   ret
 
-commit:
+fail:
+  opencapture 12
+  char 00
+  char 00
+  char 03
+  char 4b
+  closecapture 12
+  ret
+
+failtwice:
   opencapture 13
   char 00
-  char 04
+  char 00
   char 03
-  char 36
+  char 90
+  closecapture 13
+  ret
+
+intrpcapture:
+  char 00
+  char 08
+  char 00
+  char 0f
   opencapture 14
   any
   any
   any
   any
+  any
+  any
+  any
+  any
   closecapture 14
-  closecapture 13
   ret
 
-condjump:
-  opencapture 15
+isolate:
   char 00
-  char 08
+  char 04
+  char 30
   char 03
-  char 21
+  opencapture 15
+  any
+  any
+  any
+  any
+  closecapture 15
+  ret
+
+jump:
+  char 00
+  char 04
+  char 03
+  char 33
   opencapture 16
   any
   any
   any
   any
-  any
-  any
-  any
-  any
   closecapture 16
-  closecapture 15
   ret
 
-counter:
-  opencapture 17
+maskedchar:
   char 00
   char 08
   char 03
-  char 56
-  opencapture 18
+  char 65
+  opencapture 17
   any
   any
   any
@@ -316,391 +406,248 @@ counter:
   any
   any
   any
-  closecapture 18
   closecapture 17
   ret
 
-end:
-  opencapture 19
+noop:
+  opencapture 18
+  char 00
+  char 00
+  char 00
+  char 00
+  closecapture 18
+  ret
+
+opencapture:
   char 00
   char 04
+  char 03
+  char 9c
+  opencapture 19
+  any
+  any
+  any
+  any
+  closecapture 19
+  ret
+
+partialcommit:
   char 00
-  char d8
+  char 04
+  char 03
+  char b4
   opencapture 20
   any
   any
   any
   any
   closecapture 20
-  closecapture 19
   ret
 
-endisolate:
+quad:
+  char 00
+  char 04
+  char 03
+  char 7e
   opencapture 21
-  char 00
-  char 00
-  char 30
-  char 05
+  any
+  any
+  any
+  any
   closecapture 21
   ret
 
-endreplace:
-  opencapture 22
+range:
   char 00
-  char 00
+  char 08
   char 03
-  char 99
+  char bd
+  opencapture 22
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
   closecapture 22
   ret
 
-fail:
-  opencapture 23
+replace:
   char 00
-  char 00
+  char 08
   char 03
-  char 4b
+  char 48
+  opencapture 23
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
   closecapture 23
   ret
 
-failtwice:
+ret:
   opencapture 24
   char 00
   char 00
   char 03
-  char 90
+  char a0
   closecapture 24
   ret
 
-intrpcapture:
+set:
+  char 00
+  char 20
+  char 03
+  char ca
   opencapture 25
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  closecapture 25
+  ret
+
+skip:
   char 00
-  char 08
-  char 00
-  char 0f
+  char 04
+  char 03
+  char 30
   opencapture 26
   any
   any
   any
   any
-  any
-  any
-  any
-  any
   closecapture 26
-  closecapture 25
   ret
 
-isolate:
+span:
+  char 00
+  char 20
+  char 03
+  char e1
   opencapture 27
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  closecapture 27
+  ret
+
+testany:
   char 00
   char 04
-  char 30
   char 03
+  char 06
   opencapture 28
   any
   any
   any
   any
   closecapture 28
-  closecapture 27
   ret
 
-jump:
-  opencapture 29
+testchar:
   char 00
-  char 04
+  char 08
   char 03
-  char 33
+  char 9a
+  opencapture 29
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  closecapture 29
+  ret
+
+testquad:
+  char 00
+  char 08
+  char 03
+  char db
   opencapture 30
   any
   any
   any
   any
+  any
+  any
+  any
+  any
   closecapture 30
-  closecapture 29
-  ret
-
-maskedchar:
-  opencapture 31
-  char 00
-  char 08
-  char 03
-  char 65
-  opencapture 32
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  closecapture 32
-  closecapture 31
-  ret
-
-noop:
-  opencapture 33
-  char 00
-  char 00
-  char 00
-  char 00
-  closecapture 33
-  ret
-
-opencapture:
-  opencapture 34
-  char 00
-  char 04
-  char 03
-  char 9c
-  opencapture 35
-  any
-  any
-  any
-  any
-  closecapture 35
-  closecapture 34
-  ret
-
-partialcommit:
-  opencapture 36
-  char 00
-  char 04
-  char 03
-  char b4
-  opencapture 37
-  any
-  any
-  any
-  any
-  closecapture 37
-  closecapture 36
-  ret
-
-quad:
-  opencapture 38
-  char 00
-  char 04
-  char 03
-  char 7e
-  opencapture 39
-  any
-  any
-  any
-  any
-  closecapture 39
-  closecapture 38
-  ret
-
-range:
-  opencapture 40
-  char 00
-  char 08
-  char 03
-  char bd
-  opencapture 41
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  closecapture 41
-  closecapture 40
-  ret
-
-replace:
-  opencapture 42
-  char 00
-  char 08
-  char 03
-  char 48
-  opencapture 43
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  closecapture 43
-  closecapture 42
-  ret
-
-ret:
-  opencapture 44
-  char 00
-  char 00
-  char 03
-  char a0
-  closecapture 44
-  ret
-
-set:
-  opencapture 45
-  char 00
-  char 20
-  char 03
-  char ca
-  opencapture 46
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  closecapture 46
-  closecapture 45
-  ret
-
-skip:
-  opencapture 47
-  char 00
-  char 04
-  char 03
-  char 30
-  opencapture 48
-  any
-  any
-  any
-  any
-  closecapture 48
-  closecapture 47
-  ret
-
-span:
-  opencapture 49
-  char 00
-  char 20
-  char 03
-  char e1
-  opencapture 50
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  closecapture 50
-  closecapture 49
-  ret
-
-testany:
-  opencapture 51
-  char 00
-  char 04
-  char 03
-  char 06
-  opencapture 52
-  any
-  any
-  any
-  any
-  closecapture 52
-  closecapture 51
-  ret
-
-testchar:
-  opencapture 53
-  char 00
-  char 08
-  char 03
-  char 9a
-  opencapture 54
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  closecapture 54
-  closecapture 53
-  ret
-
-testquad:
-  opencapture 55
-  char 00
-  char 08
-  char 03
-  char db
-  opencapture 56
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  closecapture 56
-  closecapture 55
   ret
 
 testset:
-  opencapture 57
   char 00
   char 24
   char 03
   char 63
-  opencapture 58
+  opencapture 31
   any
   any
   any
@@ -737,31 +684,28 @@ testset:
   any
   any
   any
-  closecapture 58
-  closecapture 57
+  closecapture 31
   ret
 
 trap:
-  opencapture 59
+  opencapture 32
   char ff
   char 00
   char ff
   char ff
-  closecapture 59
+  closecapture 32
   ret
 
 var:
-  opencapture 60
   char 00
   char 04
   char 03
   char ee
-  opencapture 61
+  opencapture 33
   any
   any
   any
   any
-  closecapture 61
-  closecapture 60
+  closecapture 33
   ret
 

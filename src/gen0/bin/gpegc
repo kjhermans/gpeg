@@ -367,7 +367,8 @@ sub rearrange_groups
 sub slotmap_ident
 {
   my $str = '';
-  if ($capturerule && length($_[ 0 ]->{string})) {
+#  if ($capturerule && length($_[ 0 ]->{string})) {
+  if (length($_[ 0 ]->{string})) {
     $str = $_[ 0 ]->{string};
   } else {
     foreach my $elt (@_) {

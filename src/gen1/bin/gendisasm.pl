@@ -10,12 +10,15 @@ INSTRUCTION <- " . join(" /\n  ", sort(keys(%{$instrhash}))) . "\n\n";
 foreach my $key (sort(keys(%{$instrhash}))) {
   my $instr = $instrhash->{$key};
   print "$instr->{mnem} <- ";
+  if ($instr->{size} <= 4) {
+    print "{ ";
+  }
   my @array = ( $instr->{opcode} =~ m/../g );
   print "0x" . join(' 0x', @array);
   if ($instr->{size} > 4) {
     print " { " . join('', (('.') x ($instr->{size}-4))) . " }\n";
   } else {
-    print "\n";
+    print " }\n";
   }
 }
 
