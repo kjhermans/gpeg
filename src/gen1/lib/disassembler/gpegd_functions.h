@@ -31,29 +31,7 @@ int handle_any
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_any
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_backcommit
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_backcommit
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -75,29 +53,7 @@ int handle_call
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_call
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_catch
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_catch
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -119,29 +75,7 @@ int handle_char
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_char
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_closecapture
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_closecapture
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -163,29 +97,7 @@ int handle_commit
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_commit
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_condjump
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_condjump
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -207,29 +119,7 @@ int handle_counter
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_counter
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_end
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_end
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -251,29 +141,7 @@ int handle_endisolate
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_endisolate
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_endreplace
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_endreplace
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -295,29 +163,7 @@ int handle_fail
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_fail
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_failtwice
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_failtwice
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -339,29 +185,7 @@ int handle_intrpcapture
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_intrpcapture
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_isolate
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_isolate
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -383,29 +207,7 @@ int handle_jump
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_jump
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_maskedchar
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_maskedchar
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -427,29 +229,7 @@ int handle_noop
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_noop
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_opencapture
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_opencapture
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -471,29 +251,7 @@ int handle_partialcommit
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_partialcommit
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_quad
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_quad
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -515,29 +273,7 @@ int handle_range
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_range
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_replace
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_replace
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -559,29 +295,7 @@ int handle_ret
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_ret
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_set
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_set
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -603,29 +317,7 @@ int handle_skip
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_skip
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_span
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_span
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -647,29 +339,7 @@ int handle_testany
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_testany
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_testchar
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_testchar
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -691,29 +361,7 @@ int handle_testquad
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_testquad
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_testset
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_testset
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -735,29 +383,7 @@ int handle_trap
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_post_trap
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
 int handle_var
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./disasm_handler.c */
-extern
-int handle_post_var
   (
     gpeg_capture_t* parent,
     unsigned index,
