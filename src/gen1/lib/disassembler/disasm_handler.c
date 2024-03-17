@@ -157,6 +157,13 @@ int handle_catch
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: catch %u\n", gpegd->offset, offset);
+  gpegd->offset += INSTR_LENGTH_CATCH;
+
   return 0;
 }
 
@@ -202,6 +209,13 @@ int handle_post_char
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned chr = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: char %.2x\n", gpegd->offset, chr);
+  gpegd->offset += INSTR_LENGTH_CHAR;
+
   return 0;
 }
 
@@ -217,6 +231,13 @@ int handle_closecapture
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned slot = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: closecapture %u\n", gpegd->offset, slot);
+  gpegd->offset += INSTR_LENGTH_CLOSECAPTURE;
+
   return 0;
 }
 
@@ -247,6 +268,13 @@ int handle_commit
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: commit %u\n", gpegd->offset, offset);
+  gpegd->offset += INSTR_LENGTH_COMMIT;
+
   return 0;
 }
 
@@ -277,6 +305,14 @@ int handle_condjump
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned p1 = ntohl(*((uint32_t*)(capture->data.data)));
+  unsigned p2 = ntohl(*((uint32_t*)(capture->data.data + 4)));
+
+  vec_printf(gpegd->output, "%u: condjump %u %u\n", gpegd->offset, p1, p2);
+  gpegd->offset += INSTR_LENGTH_CONDJUMP;
+
   return 0;
 }
 
@@ -307,6 +343,14 @@ int handle_counter
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned p1 = ntohl(*((uint32_t*)(capture->data.data)));
+  unsigned p2 = ntohl(*((uint32_t*)(capture->data.data + 4)));
+
+  vec_printf(gpegd->output, "%u: counter %u %u\n", gpegd->offset, p1, p2);
+  gpegd->offset += INSTR_LENGTH_COUNTER;
+
   return 0;
 }
 
@@ -434,6 +478,12 @@ int handle_fail
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  vec_printf(gpegd->output, "%u: fail\n", gpegd->offset);
+  gpegd->offset += INSTR_LENGTH_FAIL;
+
   return 0;
 }
 
@@ -464,6 +514,12 @@ int handle_failtwice
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  vec_printf(gpegd->output, "%u: failtwice\n", gpegd->offset);
+  gpegd->offset += INSTR_LENGTH_FAILTWICE;
+
   return 0;
 }
 
@@ -644,6 +700,13 @@ int handle_opencapture
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned slot = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: opencapture %u\n", gpegd->offset, slot);
+  gpegd->offset += INSTR_LENGTH_OPENCAPTURE;
+
   return 0;
 }
 
@@ -674,6 +737,13 @@ int handle_partialcommit
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: partialcommit %u\n", gpegd->offset, offset);
+  gpegd->offset += INSTR_LENGTH_PARTIALCOMMIT;
+
   return 0;
 }
 
@@ -704,6 +774,17 @@ int handle_quad
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned char* quad = capture->data.data;
+
+  vec_printf(gpegd->output,
+    "%u: quad %.2x%.2x%.2x%.2x\n"
+    , gpegd->offset
+    , quad[ 0 ], quad[ 1 ], quad[ 2 ], quad[ 3 ]
+  );
+  gpegd->offset += INSTR_LENGTH_QUAD;
+
   return 0;
 }
 
@@ -830,6 +911,16 @@ int handle_set
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned char* set = capture->data.data;
+
+  vec_printf(gpegd->output, "%u: set ", gpegd->offset);
+  for (unsigned i=0; i < 32; i++) {
+    vec_printf(gpegd->output, "%.2x", set[ i ]);
+  }
+  vec_printf(gpegd->output, "\n");
+  gpegd->offset += INSTR_LENGTH_SET;
   return 0;
 }
 
@@ -860,6 +951,13 @@ int handle_skip
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned length = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: skip %u\n", gpegd->offset, length);
+  gpegd->offset += INSTR_LENGTH_SKIP;
+
   return 0;
 }
 
