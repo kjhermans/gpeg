@@ -99,5 +99,8 @@ int main
   }
   fprintf(out, "%s", (char*)(output.data));
 
+  free(output.data);
+  free(input.data);
+
   return 0;
 }

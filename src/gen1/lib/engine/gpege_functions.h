@@ -24,6 +24,13 @@ GPEG_ERR_T gpege_actions2captures
   (vec_t* input, gpege_actionlist_t* actions, gpeg_capturelist_t* captures)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./gpege_ec_free.c */
+#define gpege_ec_free gen0_gpege_ec_free
+
+extern
+void gpege_ec_free
+  (gpege_ec_t* ec);
+
 /* declared in ./gpege_ec_init.c */
 #define gpege_ec_init gen0_gpege_ec_init
 

@@ -118,5 +118,8 @@ GPEG_ERR_T gpegc_compile
     return (GPEG_ERR_T){ .code = e };
   }
 
+  gpege_ec_free(&ec);
+  gpeg_capturelist_free(&captures);
+
   return GPEG_OK;
 }
