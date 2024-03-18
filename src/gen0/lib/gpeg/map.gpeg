@@ -1,0 +1,21 @@
+-- Labelmap, slotmap
+
+TOP                <- MAP END
+
+S                  <- %s+
+
+MULTILINECOMMENT   <- '--[[' ( !']]' .)* ']]'
+
+COMMENT            <- '--' [^\n]* '\n'
+
+__prefix           <- ( MULTILINECOMMENT / COMMENT / S )*
+
+END                <- !.
+
+MAP                <- { MAPPING }*
+
+MAPPING            <- IDENT S NUMBER
+
+IDENT              <- { [a-zA-Z_][a-zA-Z0-9_]^0-63 }
+
+NUMBER             <- { [0-9]+ }
