@@ -35,6 +35,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gpeg/lib/gpeg/gpeg_capturelist.h>
 
+#undef ARRAY_FREE_ITEM
+#define ARRAY_FREE_ITEM(itm) { \
+  free(itm.data.data); \
+  gpeg_capturelist_free(&(itm.children)); \
+}
+
 #undef ARRAY_EQUALS
 #define ARRAY_EQUALS(a,b) (&a == &b)
 MAKE_ARRAY_CODE(gpeg_capture_t, gpeg_capturelist_)

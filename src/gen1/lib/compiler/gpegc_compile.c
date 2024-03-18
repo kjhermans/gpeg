@@ -34,6 +34,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "gpegc_private.h"
 #include <gpeg/previous/lib/engine/gpege.h>
 
+#undef ARRAY_FREE_ITEM
+#define ARRAY_FREE_ITEM(itm) { \
+  gpegc_matcherlist_free(&(itm.group)); \
+  gpegc_matcherlist_free(&(itm.altgroup)); \
+}
 #undef ARRAY_EQUALS
 #define ARRAY_EQUALS(a,b) (&a == &b)
 MAKE_ARRAY_CODE(gpegc_matcher_t, gpegc_matcherlist_)
