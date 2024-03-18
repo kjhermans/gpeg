@@ -63,6 +63,10 @@
 #define ARRAY_REDUCE 1
 #endif
 
+#ifndef ARRAY_FREE_ITEM
+#define ARRAY_FREE_ITEM(itm)
+#endif
+
 #define MAKE_ARRAY_HEADER(T, prefix)                                \
   typedef struct {                                                  \
     T*        list;                                                 \
@@ -146,6 +150,9 @@
   }                                                                 \
                                                                     \
   void COMBINE(prefix, free)(COMBINE(prefix, t)* list) {            \
+    for (unsigned i=0; i < list->count; i++) {                      \
+      ARRAY_FREE_ITEM(list->list[i]);                               \
+    }                                                               \
     if (list->list) { free(list->list); }                           \
     memset(list, 0, sizeof(*list));                                 \
   }                                                                 \
