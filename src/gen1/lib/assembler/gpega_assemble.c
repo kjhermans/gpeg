@@ -100,5 +100,9 @@ GPEG_ERR_T gpega_assemble
     return (GPEG_ERR_T){ .code = e };
   }
 
+  str2int_map_free(&(gpega.labelmap));
+  gpege_ec_free(&ec);
+  gpeg_capturelist_free(&captures);
+
   return GPEG_OK;
 }

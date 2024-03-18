@@ -91,5 +91,8 @@ int main
 
   fwrite(output.data, 1, output.size, out);
 
+  free(output.data);
+  free(input.data);
+
   return 0;
 }
