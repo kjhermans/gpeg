@@ -751,6 +751,12 @@ int handle_trap
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  vec_printf(gpegd->output, "%u: trap\n", gpegd->offset);
+  gpegd->offset += INSTR_LENGTH_TRAP;
+
   return 0;
 }
 
@@ -768,6 +774,13 @@ int handle_var
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd = arg;
+  unsigned varno = ntohl(*((uint32_t*)(capture->data.data)));
+
+  vec_printf(gpegd->output, "%u: var %u\n", gpegd->offset, varno);
+  gpegd->offset += INSTR_LENGTH_VAR;
+
   return 0;
 }
 
