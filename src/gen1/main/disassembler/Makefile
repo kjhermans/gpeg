@@ -14,7 +14,8 @@ LIBS=\
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS) $(LIBS)
-	$(CC) -o $(TARGET) $(OBJECTS) $(LIBS)
+	$(CC) -o $(TARGET) $(OBJECTS) $(LIBS) -static -static-libgcc
+	if [ "x$(DEBUG)" = "x" ]; then strip $(TARGET); fi
 
 clean:
 	rm -f $(OBJECTS) $(TARGET)
