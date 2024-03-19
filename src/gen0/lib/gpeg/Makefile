@@ -5,15 +5,26 @@ AR=$(ARCH)ar
 CURGEN?=../..
 CFLAGS=-g -Wall -Wextra $(DEBUG) -I$(CURGEN)/include
 
-all: instructionsheader functionsheader $(LIB)
+all: maph instructionsh functionsh $(LIB)
 
-instructionsheader: ../../include/gpeg/lib/gpeg/gpeg_instructions.h
+maph: map.h
+
+map.h: map.byc
+	xxd -c 8 -p map.byc | sed 's/\(..\)/0x\1, /g' > map.h
+
+map.byc: map.asm $(CURGEN)/bin/gpega
+	$(CURGEN)/bin/gpega -i map.asm -o map.byc
+
+map.asm: map.gpeg $(CURGEN)/bin/gpegc
+	$(CURGEN)/bin/gpegc -i map.gpeg -o map.asm
+
+instructionsh: ../../include/gpeg/lib/gpeg/gpeg_instructions.h
 
 ../../include/gpeg/lib/gpeg/gpeg_instructions.h: ../../res/instructions.pl
 	$(CURGEN)/bin/geninstrhdr ../../res/instructions.pl > \
 	  ../../include/gpeg/lib/gpeg/gpeg_instructions.h
 
-functionsheader: ../../include/gpeg/lib/gpeg/gpeg_functions.h gpeg_functions.h
+functionsh: ../../include/gpeg/lib/gpeg/gpeg_functions.h gpeg_functions.h
 
 ../../include/gpeg/lib/gpeg/gpeg_functions.h: *.c
 	$(CURGEN)/bin/genfnchdr -t GPEG_ERR_T -i GPEG_FUNCTIONS . > \
@@ -32,4 +43,5 @@ clean:
 superclean: clean
 	rm -f gpeg_functions.h \
 	  ../../include/gpeg/lib/gpeg/gpeg_instructions.h \
-	  ../../include/gpeg/lib/gpeg/gpeg_functions.h
+	  ../../include/gpeg/lib/gpeg/gpeg_functions.h \
+	  map.h map.byc map.asm
