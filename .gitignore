@@ -3,6 +3,12 @@ src/gen1/main/assembler/gpega
 src/gen1/main/compiler/gpegc
 src/gen1/main/disassembler/gpegd
 
+doc/compendium/compendium.aux
+doc/compendium/compendium.log
+doc/compendium/compendium.lot
+doc/compendium/compendium.pdf
+doc/compendium/compendium.toc
+
 # Prerequisites
 *.d
 
