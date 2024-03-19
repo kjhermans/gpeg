@@ -1848,6 +1848,9 @@ int handle_post_RULE
   if (e.code) {
     return e.code;
   }
+  if (0 == strcmp(gpegc->currentrule.name, "__main")) {
+    gpegc->startrule = gpegc->currentrule.name;
+  }
   gpegc->currentrule.name = NULL;
   gpegc_matcherlist_free(&(gpegc->currentrule.matchers));
   gpegc->currentmatcher = NULL;
