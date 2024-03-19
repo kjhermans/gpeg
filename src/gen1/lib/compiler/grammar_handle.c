@@ -1832,7 +1832,6 @@ int handle_post_RULE
     return e.code;
   }
   gpegc->currentrule.name = NULL;
-// the following function will not free 'child' matcherlists
   gpegc_matcherlist_free(&(gpegc->currentrule.matchers));
   gpegc->currentmatcher = NULL;
   gpegc->currentmatcherlist = NULL;
