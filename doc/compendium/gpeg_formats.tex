@@ -44,7 +44,7 @@ API users can use easy-to-remember \#defines to address their captures.
 
 \subsection{Disassembly}
 
-The gpeg disassembler, naid, will take bytecode and reproduce the
+The gpeg disassembler, gpegd, will take bytecode and reproduce the
 assembly. This assembly will be different from the original assembly
 in that:
 
@@ -57,7 +57,7 @@ in that:
 
 \subsection{Engine Debug Logs}
 
-Running the gpeg engine, naie, in debug mode will yield, on standard error,
+Running the gpeg engine, gpege, in debug mode will yield, on standard error,
 a log, which will contain, per instruction executed, a line representing
 the engine's internal state, most notably its stack, like so:
 
@@ -126,7 +126,7 @@ The labelmap format is optionally emitted by the assembler, and exists to:
 
 \subsection{Engine Output Format}
 
-The gpeg bytecode execution engine, naie, produces, on success, output for
+The gpeg bytecode execution engine, gpege, produces, on success, output for
 digital processing, in the form of a binary table, which is structured
 as follows:
 
