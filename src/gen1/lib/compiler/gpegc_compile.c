@@ -126,14 +126,25 @@ GPEG_ERR_T gpegc_compile
 
   if (slotmapfile) {
     FILE* slotmap = fopen(slotmapfile, "w+");
-    for (unsigned i=0; i < gpegc.slotmap.count; i++) {
-      fprintf(slotmap, "%s %u\n", gpegc.slotmap.keys[ i ], gpegc.slotmap.values[ i ]);
+    if (slotmap) {
+      for (unsigned i=0; i < gpegc.slotmap.count; i++) {
+        fprintf(slotmap,
+                  "%s %u\n"
+                  , gpegc.slotmap.keys[ i ]
+                  , gpegc.slotmap.values[ i ]
+        );
+      }
+      fclose(slotmap);
     }
-    fclose(slotmap);
   }
 
   gpege_ec_free(&ec);
   gpeg_capturelist_free(&captures);
+
+  for (unsigned i=0; i < gpegc.slotmap.count; i++) {
+    free(gpegc.slotmap.keys[ i ]);
+  }
+  str2int_map_free(&(gpegc.slotmap));
 
   return GPEG_OK;
 }
