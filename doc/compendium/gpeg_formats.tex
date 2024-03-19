@@ -20,6 +20,20 @@ For the use of gpega, see [\ref{exe:gpega}].
 
 \subsection{Maps}
 
+When gpeg tooling outputs maps (and there are two: slotmaps and labelmaps)
+it does so in a single, simple textual format: rows of an identifier followed
+by a space followed by a number (followed by a new line).
+
+For example:
+
+\begin{myquote}
+\begin{verbatim}
+
+//.. TODO
+
+\end{verbatim}
+\end{myquote}
+
 \subsection{Slotmap.h}
 
 The gpeg compiler assigns a slot number to each capture it encounters.
@@ -76,7 +90,7 @@ The slotmap file exists to help developers by easing access to
 captures in complex grammars.
 
 The gpeg grammar compiler can be instructed to emit a slotmap file.
-This is a file which maps a unique name to a capture region's index.
+This is a file which maps a unique name to a capture region's unique index.
 This is provided so that, instead of using the index of capture region
 (which requires hand counting them in your grammar file, which can be
 tedious and error-prone, and something that would not survive
@@ -85,10 +99,8 @@ the one you're interested in), you can use a naming scheme for your
 capture regions.
 
 Names in the slotmap file are bound semantically to the capture region:
-they are made up of the name of the rule,
-an underscore, and all alphabetic characters in the capture region,
-cast to uppercase. Should any name occur twice, it will be postfixed with
-a counter until it's unique.
+they are made up of the name of the rule, optionally followed by the
+index of the capture region within the rule's definition.
 
 For example, the following rule with capture region definition:
 
@@ -98,27 +110,7 @@ RULE <- { IDENT } OPTARGS LEFTARROW EXPRESSION
 \end{verbatim}
 \end{myquote}
 
-will result in slotmap identifier 'RULE\_IDENT'.
-
-The binary format of a slotmap file is composed as a sequence of binary records:
-the slot index, denoted as a 32 bit network order unsigned integer, a
-field of 32 bit all ones, and the slot name, denoted as a zero-terminated
-string.
-
-\begin{myquote}
-\begin{verbatim}
-00 00 00 00 ff ff ff ff 52 55 4c 45 5f 49 44 45  ........RULE_IDE
-4e 54 00 00 00 00 01 ff ff ff ff 45 58 50 52 45  NT.........EXPRE
-53 53 49 4f 4e 5f 54 45 52 4d 53 00 00 00 00 02  SSION_TERMS.....
-ff ff ff ff 45 58 50 52 45 53 53 49 4f 4e 5f 54  ....EXPRESSION_T
-45 52 4d 53 5f 31 00 00 00 00 03 ff ff ff ff 45  ERMS_1.........E
-58 50 52 45 53 53 49 4f 4e 5f 54 45 52 4d 53 5f  XPRESSION_TERMS_
-32 00 00 00 00 04 ff ff ff ff 54 45 52 4d 53 5f  2.........TERMS_
-54 45 52 4d 00 00 00 00 05 ff ff ff ff 54 45 52  TERM.........TER
-4d 5f 4e 4f 54 41 4e 44 00 00 00 00 06 ff ff ff  M_NOTAND........
-\end{verbatim}
-\end{myquote}
-\textit{Example of the head of a slotmap file, hex dumped}
+will result in slotmap identifier 'RULE\_0'.
 
 \subsection{Labelmap Format}
 
@@ -131,35 +123,6 @@ The labelmap format is optionally emitted by the assembler, and exists to:
 \item Allow for calling the bytecode at symbols directly, which in turn
       allows you to use a bytecode blob more as a database of functions.
 \end{itemize}
-
-The binary format of the labelmap file is composed as a sequence of
-binary records: the bytecode offset, denoted as a 32 bit network order
-unsigned integer, followed by the labelstring, followed by a zero byte.
-
-\begin{myquote}
-\begin{verbatim}
-00 00 00 10 47 52 41 4d 4d 41 52 00 00 00 00 28  ....GRAMMAR....(
-5f 5f 4c 41 42 45 4c 5f 31 31 00 00 00 00 38 5f  __LABEL_11....8_
-5f 4c 41 42 45 4c 5f 31 32 00 00 00 00 40 5f 5f  _LABEL_12....@__
-4c 41 42 45 4c 5f 36 00 00 00 00 48 5f 5f 4c 41  LABEL_6....H__LA
-42 45 4c 5f 37 00 00 00 00 54 5f 5f 70 72 65 66  BEL_7....T__pref
-69 78 00 00 00 00 5c 5f 5f 4c 41 42 45 4c 5f 32  ix....\__LABEL_2
-39 00 00 00 00 7c 5f 5f 4c 41 42 45 4c 5f 34 33  9....|__LABEL_43
-00 00 00 00 a8 5f 5f 4c 41 42 45 4c 5f 34 34 00  .....__LABEL_44.
-00 00 00 b8 5f 5f 4c 41 42 45 4c 5f 33 32 00 00  ....__LABEL_32..
-00 00 e4 5f 5f 4c 41 42 45 4c 5f 35 35 00 00 00  ...__LABEL_55...
-01 10 5f 5f 4c 41 42 45 4c 5f 35 36 00 00 00 01  ..__LABEL_56....
-10 5f 5f 4c 41 42 45 4c 5f 33 33 00 00 00 01 18  .__LABEL_33.....
-5f 5f 4c 41 42 45 4c 5f 33 30 00 00 00 01 1c 45  __LABEL_30.....E
-4e 44 00 00 00 01 34 5f 5f 4c 41 42 45 4c 5f 35  ND....4__LABEL_5
-38 00 00 00 01 38 44 45 46 49 4e 49 54 49 4f 4e  8....8DEFINITION
-00 00 00 01 4c 53 49 4e 47 4c 45 5f 45 58 50 52  ....LSINGLE_EXPR
-45 53 53 49 4f 4e 00 00 00 01 60 52 55 4c 45 00  ESSION....`RULE.
-00 00 01 a0 45 58 50 52 45 53 53 49 4f 4e 00 00  ....EXPRESSION..
-00 01 e4 5f 5f 4c 41 42 45 4c 5f 31 30 36 00 00  ...__LABEL_106..
-\end{verbatim}
-\end{myquote}
-\textit{Example of a section of labelmap file, hex dumped}
 
 \subsection{Engine Output Format}
 
