@@ -1,14 +1,16 @@
 \section{Executables}
+\label{exe:main}
 
 \subsection{The Compiler}
+\label{exe:gpegc}
 
-The gpeg grammar compiler is called 'naic'.
+The gpeg grammar compiler is called 'gpegc'.
 It takes a grammar file as input, and outputs assembly text.
 It can be invoked as follows:
 
 \begin{myquote}
 \begin{verbatim}
-$ naic -i myfile.niag -o myfile.asm
+$ gpegc -i myfile.niag -o myfile.asm
 \end{verbatim}
 \end{myquote}
 \textit{Example of the invocation of the gpeg grammar compiler}
@@ -29,14 +31,15 @@ You may also use the following options:
 \end{itemize}
 
 \subsection{The Assembler}
+\label{exe:gpega}
 
-The gpeg grammar assember is called 'naia'.
+The gpeg grammar assember is called 'gpega'.
 It takes an assembly file as input, and outputs bytecode.
 It can be invoked as follows:
 
 \begin{myquote}
 \begin{verbatim}
-$ naia -i myfile.asm -o myfile.byc
+$ gpega -i myfile.asm -o myfile.byc
 \end{verbatim}
 \end{myquote}
 \textit{Example of the invocation of the gpeg assembler}

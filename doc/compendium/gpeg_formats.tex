@@ -3,23 +3,24 @@
 This section describes all the user available memory and file formats
 associated with gpeg.
 
-\subsection{Text Formats}
+\subsection{Grammar}
 
-\subsubsection{Grammar}
-
-The gpeg grammar text format is descibed in [REF].
+The gpeg grammar text format is descibed in [\ref{sec:grammar}].
 Various pre-compilers can potentially produce these format however,
 these are out of scope of this documentation. The grammar format is
-consumed by the gpeg assembler, naic. For the use of naic, see [REF].
+consumed by the gpeg assembler, gpegc. For the use of gpegc, see
+[\ref{exe:gpegc}].
 
-\subsubsection{Assembly}
+\subsection{Assembly}
 
-The gpeg assembly text format is descibed in [REF].
-This format is produced by the gpeg compiler, naic,
-and is consumed by the gpeg assembler, naia.
-For the use of naia, see [REF].
+The gpeg assembly text format is descibed in [\ref{sec:assembly}].
+This format is produced by the gpeg compiler, gpegc,
+and is consumed by the gpeg assembler, gpega.
+For the use of gpega, see [\ref{exe:gpega}].
 
-\subsubsection{Slotmap.h}
+\subsection{Maps}
+
+\subsection{Slotmap.h}
 
 The gpeg compiler assigns a slot number to each capture it encounters.
 It then assigns an internal unique name to those capture numbers, or slots.
@@ -27,7 +28,7 @@ Finally, the compiler can be requested, through the command line, to
 'rain down' these named mappings to slot number in a C-header file, so that
 API users can use easy-to-remember \#defines to address their captures.
 
-\subsubsection{Disassembly}
+\subsection{Disassembly}
 
 The gpeg disassembler, naid, will take bytecode and reproduce the
 assembly. This assembly will be different from the original assembly
@@ -40,7 +41,7 @@ in that:
 \item These offsets will then also be used in jumps.
 \end{itemize}
 
-\subsubsection{Engine Debug Logs}
+\subsection{Engine Debug Logs}
 
 Running the gpeg engine, naie, in debug mode will yield, on standard error,
 a log, which will contain, per instruction executed, a line representing
@@ -66,12 +67,10 @@ These lines are built up as follows:
       (with their jump-to addresses in case they catch a FAIL condition).
 \end{itemize}
 
-\subsection{Binary Formats}
-
 This section describes the formats used by the gpeg tooling, other than
 the ones described in the sections on grammar, assembly and bytecode.
 
-\subsubsection{Slotmap Format}
+\subsection{Slotmap Format}
 
 The slotmap file exists to help developers by easing access to
 captures in complex grammars.
@@ -121,7 +120,7 @@ ff ff ff ff 45 58 50 52 45 53 53 49 4f 4e 5f 54  ....EXPRESSION_T
 \end{myquote}
 \textit{Example of the head of a slotmap file, hex dumped}
 
-\subsubsection{Labelmap Format}
+\subsection{Labelmap Format}
 
 The labelmap format is optionally emitted by the assembler, and exists to:
 
@@ -162,7 +161,7 @@ unsigned integer, followed by the labelstring, followed by a zero byte.
 \end{myquote}
 \textit{Example of a section of labelmap file, hex dumped}
 
-\subsubsection{Engine Output Format}
+\subsection{Engine Output Format}
 
 The gpeg bytecode execution engine, naie, produces, on success, output for
 digital processing, in the form of a binary table, which is structured
