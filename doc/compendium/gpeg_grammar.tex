@@ -14,9 +14,8 @@ such as Backus-Naur, Regular Expressions, Lex and Yacc.
 \begin{myquote}
 \begin{verbatim}
 -- JSON; JavaScript Object Notation.
-TOP          <- JSON
 __prefix     <- %s*
-JSON         <- HASH END
+__main       <- HASH END
 HASH         <- CBOPEN OPTHASHELTS CBCLOSE
 OPTHASHELTS  <- HASHELTS / ...
 HASHELTS     <- HASHELT COMMA HASHELTS / HASHELT
