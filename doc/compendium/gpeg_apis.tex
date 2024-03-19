@@ -9,7 +9,21 @@
 \subsubsection{Error Handling}
 
 gpeg C library function prototypes are (almost) all typed to return
-the GPEG\_ERR\_T type.
+the GPEG\_ERR\_T type, which is defined as follows:
+
+\begin{myquote}
+\begin{verbatim}
+typedef struct
+{
+  int code;
+}
+GPEG_ERR_T;
+\end{verbatim}
+\end{myquote}
+
+The generated code are all typed to return either void or int types,
+where, in the case of an int type return that is non zero, an
+error state is communicated to the caller.
 
 \subsection{Compiler}
 
@@ -25,7 +39,7 @@ The compound API provides an interface to all of the action in one place.
 
 \begin{myquote}
 \begin{verbatim}
-#include <naigama/naigama.h>
+#include <gpeg/lib/gpeg/gpeg.h>
 \end{verbatim}
 \end{myquote}
 
@@ -35,134 +49,21 @@ The compound API provides an interface to all of the action in one place.
 
 \begin{myquote}
 \begin{verbatim}
-GPEG_ERR_T naig_compile
-  (naig_t* naig, char* grammar, int traps);
-\end{verbatim}
-\end{myquote}
+#define GPEG_COMPILE_FLAG_RULECAPTURE   (1<<0)
 
-\begin{myquote}
-\begin{verbatim}
-GPEG_ERR_T naig_run
-  (
-    naig_t*         naig,
-    unsigned char*  input,
-    unsigned        input_length,
-    naio_result_t*  result
-  );
-\end{verbatim}
-\end{myquote}
-
-\subsubsection{Using the Result Structure}
-
-To include the proper types and functions, use:
-
-\begin{myquote}
-\begin{verbatim}
-#include <naigama/memio/naio.h>
-\end{verbatim}
-\end{myquote}
-
-The definition of the associated types:
-
-\begin{myquote}
-\begin{verbatim}
-typedef struct {
-  uint32_t              action;
-  uint32_t              slot;
-  uint32_t              start;
-  uint32_t              length; // dubs as char/quad in replace
-}
-naio_resact_t;
-
-typedef struct
-{
-  int                   code;
-  naio_resact_t*        actions;
-  unsigned              length; // allocated
-  unsigned              count;  // used
-}
-naio_result_t;
-\end{verbatim}
-\end{myquote}
-
-You can step through each action (up to result-$>$count),
-and for each result-$>$actions[ i ], check its action
-(which can be one of GPEG\_ACTION\_OPENCAPTURE,
-GPEG\_ACTION\_DELETE, GPEG\_ACTION\_REPLACE\_CHAR, or
-GPEG\_ACTION\_REPLACE\_QUAD),
-its slot number (this will be the iterator that the compiler uses
-for each encountered capture region), and its start and length.
-You'll still need the input buffer handy, because this type does
-not provide you with the capture data itself.
-
-If you're only interested in capturing, then you'll only
-need the GPEG\_ACTION\_OPENCAPTURE action type. Also when
-your grammar does not contain any replacement definitions, you'll never
-encounter any other action type in the capture list.
-
-\subsubsection{Performing Replacements}
-
-...
-
-\subsubsection{Getting a Malloced Capture Tree}
-
-To handle capture data independently of the input buffer, and
-preprocessed to represent a capture tree, you can use the following API:
-
-\begin{myquote}
-\begin{verbatim}
 extern
-naio_resobj_t* naio_result_object
+GPEG_ERR_T gpegc_compile
   (
-    const unsigned char*  input,
-    unsigned              inputlength,
-    naio_result_t*        result
+    vec_t* input,
+    vec_t* output,
+    vec_t* error,
+    unsigned flags,
+    char* slotmap
   )
   __attribute__ ((warn_unused_result));
 \end{verbatim}
 \end{myquote}
 
-\begin{myquote}
-\begin{verbatim}
-struct naio_resobj
-{
-  unsigned              type;
-  char*                 string;
-  unsigned              stringlen;
-  unsigned              origoffset;
-  naio_resobj_t*        parent;
-  naio_resobj_t**       children;
-  unsigned              nchildren;
-  unsigned              slotnumber;
-  void*                 auxptr; /* this one is for you */
-};
-\end{verbatim}
-\end{myquote}
+\subsubsection{Using the Result Structure}
 
-Below is a simplified version of the naio\_result\_object\_debug function,
-which shows you how you can recursively step through your capture
-list and print an indented capture result tree.
-
-\begin{myquote}
-\begin{verbatim}
-void naio_result_object_debug
-  (naio_resobj_t* object, unsigned indent)
-{
-  unsigned i;
-
-  if ((int)(object->type) == -1) {
-    fprintf(stderr, "TOP  - ");
-  } else {
-    fprintf(stderr, "%.4u ", object->type);
-  }
-  for (i=0; i < indent; i++) {
-    fprintf(stderr, "--");
-  }
-  fprintf(stderr, "| %s\n", object->string);
-  for (i=0; i < object->nchildren; i++) {
-    naio_result_object_debug(object->children[ i ], indent + 1);
-  }
-}
-\end{verbatim}
-\end{myquote}
-
+[tbw]
