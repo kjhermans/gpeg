@@ -15,7 +15,7 @@
 
 extern
 GPEG_ERR_T gpegc_compile
-  (vec_t* input, vec_t* output, vec_t* error, unsigned flags)
+  (vec_t* input, vec_t* output, vec_t* error, unsigned flags, char* slotmap)
   __attribute__ ((warn_unused_result));
 
 #endif

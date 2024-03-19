@@ -63,7 +63,13 @@ unsigned char bytecode[] = {
  *
  */
 GPEG_ERR_T gpegc_compile
-  (vec_t* input, vec_t* output, vec_t* error, unsigned flags)
+  (
+    vec_t* input,
+    vec_t* output,
+    vec_t* error,
+    unsigned flags,
+    char* slotmapfile
+  )
 {
   DEBUGFUNCTION
   ASSERT(input)
@@ -116,6 +122,14 @@ GPEG_ERR_T gpegc_compile
       , e, yx0[ 0 ], yx0[ 1 ], yx1[ 0 ], yx1[ 1 ]
     );
     return (GPEG_ERR_T){ .code = e };
+  }
+
+  if (slotmapfile) {
+    FILE* slotmap = fopen(slotmapfile, "w+");
+    for (unsigned i=0; i < gpegc.slotmap.count; i++) {
+      fprintf(slotmap, "%s %u\n", gpegc.slotmap.keys[ i ], gpegc.slotmap.values[ i ]);
+    }
+    fclose(slotmap);
   }
 
   gpege_ec_free(&ec);

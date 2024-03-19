@@ -12,7 +12,13 @@
 /* declared in ./gpegc_compile.c */
 extern
 GPEG_ERR_T gpegc_compile
-  (vec_t* input, vec_t* output, vec_t* error, unsigned flags)
+  (
+    vec_t* input,
+    vec_t* output,
+    vec_t* error,
+    unsigned flags,
+    char* slotmapfile
+  )
   __attribute__ ((warn_unused_result));
 
 /* declared in ./gpegc_matcher.c */

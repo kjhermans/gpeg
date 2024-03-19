@@ -152,9 +152,20 @@ int handle_CAPTURE
   (void)arg;
 
   gpegc_t* gpegc = arg;
+  char slotname[ 128 ];
 
   gpegc->currentmatcher->type = GPEGC_MATCH_CAPTURE;
   gpegc->currentmatcher->value.capture = (gpegc->cslot)++;
+  snprintf(slotname, sizeof(slotname),
+    "%s_%u"
+    , gpegc->currentrule.name,
+    (gpegc->currentrule.slotcount)++
+  );
+  str2int_map_put(
+    &(gpegc->slotmap),
+    strdup(slotname),
+    gpegc->currentmatcher->value.capture
+  );
   capture->attachment.value_ptr = gpegc->currentmatcherlist;
   gpegc->currentmatcherlist = &(gpegc->currentmatcher->group);
 
@@ -1788,6 +1799,7 @@ int handle_RULE
   gpegc_t* gpegc = arg;
 
   gpegc->currentrule.name = (char*)(capture->children.list[ 0 ].data.data);
+  gpegc->currentrule.slotcount = 0;
   gpegc->currentmatcherlist = &(gpegc->currentrule.matchers);
   if (NULL == gpegc->startrule) {
     gpegc->startrule = (char*)(capture->children.list[ 0 ].data.data);
@@ -1819,6 +1831,11 @@ int handle_post_RULE
   if (gpegc->rulecapture && strcmp(gpegc->currentrule.name, "__prefix")) {
     slot = (gpegc->cslot)++;
     vec_printf(gpegc->output, "  opencapture %u\n", slot);
+
+    char slotname[ 128 ];
+    snprintf(slotname, sizeof(slotname), "%s" , gpegc->currentrule.name);
+    str2int_map_put( &(gpegc->slotmap), strdup(slotname), slot);
+
   }
   e = gpegc_matcherlist(gpegc, &(gpegc->currentrule.matchers));
   if (gpegc->rulecapture && strcmp(gpegc->currentrule.name, "__prefix")) {

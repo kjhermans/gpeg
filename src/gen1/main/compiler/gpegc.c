@@ -48,6 +48,7 @@ int main
 {
   char* inputfile = "-";
   char* outputfile = "-";
+  char* slotmapfile = NULL;
   vec_t input = { 0 };
   vec_t output = { 0 };
   vec_t error = { 0 };
@@ -74,6 +75,7 @@ int main
   }
   queryargs(argc, argv, 'i', "input", 0, 1, 0, &inputfile);
   queryargs(argc, argv, 'o', "output", 0, 1, 0, &outputfile);
+  queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &slotmapfile);
   if (queryargs(argc, argv, 'C', "defaultcaptures", 0, 0, 0, 0) == 0) {
     rulecapture = 1;
   }
@@ -83,7 +85,13 @@ int main
     return -1;
   }
   flags = (rulecapture ? GPEG_COMPILE_FLAG_RULECAPTURE : 0);
-  e = gpegc_compile(&input, &output, &error, flags);
+  e = gpegc_compile(
+        &input,
+        &output,
+        &error,
+        flags,
+        slotmapfile
+  );
   if (e.code) {
     fprintf(stderr, "Compiler error code %d: %s", e.code, (char*)(error.data));
     return e.code;

@@ -36,6 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gpeg/private/util/stringlist.h>
 #include <gpeg/private/util/vec_t.h>
+#include <gpeg/private/util/str2int_map.h>
 
 
 
@@ -93,6 +94,7 @@ typedef struct
   struct {
     char*                 name;
     gpegc_matcherlist_t   matchers;
+    unsigned              slotcount;
   }                     currentrule;
   gpegc_matcher_t*      currentmatcher;
   gpegc_matcherlist_t*  currentmatcherlist;
@@ -105,6 +107,7 @@ typedef struct
   int                   prefixgiven;
   int                   rulecapture;
   char*                 startrule;
+  str2int_map_t         slotmap;
 }
 gpegc_t;
 
