@@ -41,7 +41,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <gpeg/private/util/strxypos.h>
 
 /**
- *
+ * Compiler main function.
+ * Interprets command line arguments,
+ * calls the compiler library main function (gpegc_compile),
+ * and processes its results.
  */
 int main
   (int argc, char* argv[])

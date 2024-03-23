@@ -41,7 +41,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <gpeg/private/util/strxypos.h>
 
 /**
- *
+ * Assembler main function.
+ * Interprets command line arguments,
+ * calls the assembler library main function (gpega_assemble),
+ * and processes its results.
  */
 int main
   (int argc, char* argv[])

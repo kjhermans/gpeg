@@ -60,7 +60,15 @@ unsigned char bytecode[] = {
 #define JOIN_AGAIN(a,b) a ## b
 
 /**
+ * Main access function to the compilation part of the library.
  *
+ * \param input        Buffer containing the (grammar) input.
+ * \param output       Buffer that, on success, will contain the (assembly) output.
+ * \param error        Buffer that, on error, will contain the error messages.
+ * \param flags        Flags that control the compilation process.
+ * \param slotmapfile  Slotmap file, when non NULL, to contain the slotmap.
+ *
+ * \returns            GPEG_OK on success, any GPEG_ERR_ on error.
  */
 GPEG_ERR_T gpegc_compile
   (

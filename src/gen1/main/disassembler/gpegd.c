@@ -41,7 +41,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <gpeg/private/util/strxypos.h>
 
 /**
- *
+ * Disassembler main function.
+ * Interprets command line arguments,
+ * calls the disassembler library main function (gpegd_disassemble),
+ * and processes its results.
  */
 int main
   (int argc, char* argv[])
