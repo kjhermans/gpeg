@@ -71,17 +71,10 @@ unsigned char bytecode[] = {
  * \returns            GPEG_OK on success, any GPEG_ERR_ on error.
  */
 GPEG_ERR_T gpegc_compile
-  (
-    vec_t* input,
-    vec_t* output,
-    vec_t* error,
-    unsigned flags,
-    char* slotmapfile
-  )
+  (gpegc_compiler_t* c)
 {
   DEBUGFUNCTION
-  ASSERT(input)
-  ASSERT(output)
+  ASSERT(c)
 
   gpege_t gpege = { 0 };
   gpege_ec_t ec = { 0 };
@@ -90,7 +83,7 @@ GPEG_ERR_T gpegc_compile
   gpege.bytecode.data = bytecode;
   gpege.bytecode.size = sizeof(bytecode);
 
-  ec.input = *input;
+  ec.input = &(c->input);
 
 #ifdef _DEBUG
   gpege.debugger = gpege_debug_verbose;
@@ -102,7 +95,7 @@ GPEG_ERR_T gpegc_compile
   );
   GPEG_CHECK(
     gpege_actions2captures(
-      &(ec.input),
+      ec.input,
       &(ec.actions),
       &captures
     ),
@@ -110,30 +103,28 @@ GPEG_ERR_T gpegc_compile
   );
 
   gpegc_t gpegc = { 0 };
-  gpegc.output = output;
-  gpegc.error = error;
-  gpegc.rulecapture = (flags & GPEG_COMPILE_FLAG_RULECAPTURE);
+  gpegc.compiler = c;
 
   int e = grammar_process_node(&(captures.list[ 0 ]), &gpegc);
 
   if (gpegc.startrule) {
-    vec_printf_insert(output, 0, "  call %s\n  end 0\n\n", gpegc.startrule);
+    vec_printf_insert(&(c->output), 0, "  call %s\n  end 0\n\n", gpegc.startrule);
   }
 
   if (e) {
     unsigned yx0[ 2 ];
     unsigned yx1[ 2 ];
-    strxypos((char*)(ec.input.data), ec.input_offset, yx0);
-    strxypos((char*)(ec.input.data), ec.input_offset_max, yx1);
-    vec_printf(error,
+    strxypos((char*)(c->input.data), ec.input_offset, yx0);
+    strxypos((char*)(c->input.data), ec.input_offset_max, yx1);
+    vec_printf(&(c->error),
       "Engine running error %d, at line %u, pos %u; max line %u, pos %u\n"
       , e, yx0[ 0 ], yx0[ 1 ], yx1[ 0 ], yx1[ 1 ]
     );
     return (GPEG_ERR_T){ .code = e };
   }
 
-  if (slotmapfile) {
-    FILE* slotmap = fopen(slotmapfile, "w+");
+  if (c->slotmap) {
+    FILE* slotmap = fopen(c->slotmap, "w+");
     if (slotmap) {
       for (unsigned i=0; i < gpegc.slotmap.count; i++) {
         fprintf(slotmap,

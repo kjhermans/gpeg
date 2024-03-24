@@ -51,22 +51,21 @@ int main
 {
   char* inputfile = "-";
   char* outputfile = "-";
-  char* slotmapfile = NULL;
-  vec_t input = { 0 };
-  vec_t output = { 0 };
-  vec_t error = { 0 };
+  gpegc_compiler_t compiler = { 0 };
   FILE* out;
   GPEG_ERR_T e;
   int rulecapture = 0;
-  unsigned flags = 0;
 
   if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0) {
     fprintf(stderr,
 "%s [options]\n"
-"Options (all are optional):\n"
+"Options:\n"
 "-i <path>  Take path as input (default '-' or stdin).\n"
 "-o <path>  Take path as output (default '-' or stdout).\n"
+"-b         Incorporate the assembler and emit bytecode at -o <path>.\n"
+"-a <path>  Emit bytecode at -o <path>, assembly at -a <path> (implies -b).\n"
 "-C         Generate default captures for each rule.\n"
+"-t         Generate traps around rules.\n"
 "-G <path>  Generate C code for the parse tree.\n"
 "-m <path>  Output slotmap file.\n"
 "-M <path>  Output slotmap.h file.\n"
@@ -78,25 +77,19 @@ int main
   }
   queryargs(argc, argv, 'i', "input", 0, 1, 0, &inputfile);
   queryargs(argc, argv, 'o', "output", 0, 1, 0, &outputfile);
-  queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &slotmapfile);
+  queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &(compiler.slotmap));
   if (queryargs(argc, argv, 'C', "defaultcaptures", 0, 0, 0, 0) == 0) {
     rulecapture = 1;
   }
 
-  if (absorb_file(inputfile, &(input.data), &(input.size))) {
+  if (absorb_file(inputfile, &(compiler.input.data), &(compiler.input.size))) {
     fprintf(stderr, "Could not absorb input file '%s'\n", inputfile);
     return -1;
   }
-  flags = (rulecapture ? GPEG_COMPILE_FLAG_RULECAPTURE : 0);
-  e = gpegc_compile(
-        &input,
-        &output,
-        &error,
-        flags,
-        slotmapfile
-  );
+  compiler.flags = (rulecapture ? GPEGC_FLAG_GENCAPTURES : 0);
+  e = gpegc_compile(&compiler);
   if (e.code) {
-    fprintf(stderr, "Compiler error code %d: %s", e.code, (char*)(error.data));
+    fprintf(stderr, "Compiler error code %d: %s", e.code, (char*)(compiler.error.data));
     return e.code;
   }
 
@@ -108,10 +101,13 @@ int main
       return -1;
     }
   }
-  fprintf(out, "%s", (char*)(output.data));
+  fprintf(out, "%s", (char*)(compiler.output.data));
 
-  free(output.data);
-  free(input.data);
+  if (compiler.error.data) {
+    free(compiler.error.data);
+  }
+  free(compiler.output.data);
+  free(compiler.input.data);
 
   return 0;
 }

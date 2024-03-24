@@ -95,14 +95,14 @@ int main
   }
 
   gpege.bytecode = bytecode;
-  ec.input = input;
+  ec.input = &input;
 
   e = gpege_run(&gpege, &ec);
   if (e.code) {
     unsigned yx0[ 2 ];
     unsigned yx1[ 2 ];
-    strxypos((char*)(ec.input.data), ec.input_offset, yx0);
-    strxypos((char*)(ec.input.data), ec.input_offset_max, yx1);
+    strxypos((char*)(ec.input->data), ec.input_offset, yx0);
+    strxypos((char*)(ec.input->data), ec.input_offset_max, yx1);
     fprintf(stderr,
       "Engine running error %d, at line %u, pos %u; max line %u, pos %u\n"
       , e.code, yx0[ 0 ], yx0[ 1 ], yx1[ 0 ], yx1[ 1 ]

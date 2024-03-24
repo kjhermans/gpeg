@@ -43,7 +43,7 @@ void gpegc_matcher_char
     //..
   } else {
     if (matcher->value.string.quadoffset == 4) {
-      vec_printf(gpegc->output, "  quad %.2x%.2x%.2x%.2x\n"
+      vec_printf(&(gpegc->compiler->output), "  quad %.2x%.2x%.2x%.2x\n"
                                 , matcher->value.string.quad[ 0 ]
                                 , matcher->value.string.quad[ 1 ]
                                 , matcher->value.string.quad[ 2 ]
@@ -91,7 +91,7 @@ void gpegc_matcher_string
   }
   if (matcher->value.string.quadoffset) {
     if (matcher->value.string.quadoffset == 4) {
-      vec_printf(gpegc->output, "  quad %.2x%.2x%.2x%.2x\n"
+      vec_printf(&(gpegc->compiler->output), "  quad %.2x%.2x%.2x%.2x\n"
                                 , matcher->value.string.quad[ 0 ]
                                 , matcher->value.string.quad[ 1 ]
                                 , matcher->value.string.quad[ 2 ]
@@ -99,7 +99,7 @@ void gpegc_matcher_string
       );
     } else {
       for (unsigned i=0; i < matcher->value.string.quadoffset; i++) {
-        vec_printf(gpegc->output, "  char %.2x\n"
+        vec_printf(&(gpegc->compiler->output), "  char %.2x\n"
                                   , matcher->value.string.quad[ i ]
         );
       }
@@ -113,37 +113,37 @@ GPEG_ERR_T gpegc_matcher_
 {
   switch (matcher->type) {
   case GPEGC_MATCH_ANY:
-    vec_printf(gpegc->output, "  any\n");
+    vec_printf(&(gpegc->compiler->output), "  any\n");
     break;
   case GPEGC_MATCH_CHAR:
-    vec_printf(gpegc->output, "  char %.2x\n", matcher->value.chr);
+    vec_printf(&(gpegc->compiler->output), "  char %.2x\n", matcher->value.chr);
     break;
   case GPEGC_MATCH_REFERENCE:
-    vec_printf(gpegc->output, "  call %s\n", matcher->value.string.value);
+    vec_printf(&(gpegc->compiler->output), "  call %s\n", matcher->value.string.value);
     break;
   case GPEGC_MATCH_STRING:
     gpegc_matcher_string(gpegc, matcher);
     break;
   case GPEGC_MATCH_SET:
-    vec_printf(gpegc->output, "  set ");
+    vec_printf(&(gpegc->compiler->output), "  set ");
     for (unsigned i=0; i < 32; i++) {
       unsigned char byt = matcher->value.set.bitmask[ i ];
       if (matcher->value.set.inverted) {
         byt = ~byt;
       }
-      vec_printf(gpegc->output, "%.2x", byt);
+      vec_printf(&(gpegc->compiler->output), "%.2x", byt);
     }
-    vec_printf(gpegc->output, "\n");
+    vec_printf(&(gpegc->compiler->output), "\n");
     break;
   case GPEGC_MATCH_ENDFORCE:
-    vec_printf(gpegc->output, "  end %u\n", matcher->value.number);
+    vec_printf(&(gpegc->compiler->output), "  end %u\n", matcher->value.number);
     break;
   case GPEGC_MATCH_CAPTURE:
-    vec_printf(gpegc->output, "  opencapture %u\n"
+    vec_printf(&(gpegc->compiler->output), "  opencapture %u\n"
                               , matcher->value.capture
     );
     GPEG_CHECK(gpegc_matcherlist(gpegc, &(matcher->group)), PROPAGATE);
-    vec_printf(gpegc->output, "  closecapture %u\n"
+    vec_printf(&(gpegc->compiler->output), "  closecapture %u\n"
                               , matcher->value.capture
     );
     break;
@@ -154,17 +154,17 @@ GPEG_ERR_T gpegc_matcher_
     {
       unsigned label1 = ++(gpegc->clabel);
       unsigned label2 = ++(gpegc->clabel);
-      vec_printf(gpegc->output, "  catch __L%u\n"
+      vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
                                 , label1
       );
       GPEG_CHECK(gpegc_matcherlist(gpegc, &(matcher->group)), PROPAGATE);
-      vec_printf(gpegc->output, "  commit __L%u\n"
+      vec_printf(&(gpegc->compiler->output), "  commit __L%u\n"
                                 "__L%u:\n"
                                 , label2
                                 , label1
       );
       GPEG_CHECK(gpegc_matcherlist(gpegc, &(matcher->altgroup)), PROPAGATE);
-      vec_printf(gpegc->output, "__L%u:\n"
+      vec_printf(&(gpegc->compiler->output), "__L%u:\n"
                                 , label2
       );
     }
@@ -180,13 +180,13 @@ GPEG_ERR_T gpegc_matcher_to_endless
   unsigned label1 = ++(gpegc->clabel);
   unsigned label2 = ++(gpegc->clabel);
 
-  vec_printf(gpegc->output, "  catch __L%u\n"
+  vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
                             "__L%u:\n"
                             , label1
                             , label2
   );
   GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-  vec_printf(gpegc->output, "  partialcommit __L%u\n"
+  vec_printf(&(gpegc->compiler->output), "  partialcommit __L%u\n"
                             "__L%u:\n"
                             , label2
                             , label1
@@ -201,14 +201,14 @@ GPEG_ERR_T gpegc_matcher_to_count
   unsigned label1 = ++(gpegc->clabel);
   unsigned counter = ++(gpegc->ccount);
 
-  vec_printf(gpegc->output, "  counter %u %d\n"
+  vec_printf(&(gpegc->compiler->output), "  counter %u %d\n"
                             "__L%u:\n"
                             , counter
                             , count
                             , label1
   );
   GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-  vec_printf(gpegc->output, "  condjump %u __L%u\n"
+  vec_printf(&(gpegc->compiler->output), "  condjump %u __L%u\n"
                             , counter
                             , label1
   );
@@ -222,11 +222,11 @@ GPEG_ERR_T gpegc_matcher_optional
   if (count == 1) {
     unsigned label1 = ++(gpegc->clabel);
   
-    vec_printf(gpegc->output, "  catch __L%u\n"
+    vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
                               , label1
     );
     GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-    vec_printf(gpegc->output, "  commit __NEXT__\n"
+    vec_printf(&(gpegc->compiler->output), "  commit __NEXT__\n"
                               "__L%u:\n"
                               , label1
     );
@@ -235,7 +235,7 @@ GPEG_ERR_T gpegc_matcher_optional
     unsigned label2 = ++(gpegc->clabel);
     unsigned counter = ++(gpegc->ccount);
   
-    vec_printf(gpegc->output, "  catch __L%u\n"
+    vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
                               "  counter %u %d\n"
                               "__L%u:\n"
                               , label1
@@ -244,7 +244,7 @@ GPEG_ERR_T gpegc_matcher_optional
                               , label2
     );
     GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-    vec_printf(gpegc->output, "  partialcommit __NEXT__\n"
+    vec_printf(&(gpegc->compiler->output), "  partialcommit __NEXT__\n"
                               "  condjump %u __L%u\n"
                               "  commit __NEXT__\n"
                               "__L%u:\n"
@@ -265,11 +265,11 @@ GPEG_ERR_T gpegc_matcher_modified
 
   switch (matcher->modifier) {
   case GPEGC_MODI_AND:
-    vec_printf(gpegc->output, "  catch __L%u\n"
+    vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
                               , label1
     );
     GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-    vec_printf(gpegc->output, "  backcommit __L%u\n"
+    vec_printf(&(gpegc->compiler->output), "  backcommit __L%u\n"
                               "__L%u:\n"
                               "  fail\n"
                               "__L%u:\n"
@@ -279,11 +279,11 @@ GPEG_ERR_T gpegc_matcher_modified
     );
     break;
   case GPEGC_MODI_NOT:
-    vec_printf(gpegc->output, "  catch __L%u\n"
+    vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
                               , label1
     );
     GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-    vec_printf(gpegc->output, "  failtwice\n"
+    vec_printf(&(gpegc->compiler->output), "  failtwice\n"
                               "__L%u:\n"
                               , label1
     );
@@ -327,7 +327,7 @@ GPEG_ERR_T gpegc_matcher_quantified
       return gpegc_matcher_to_endless(gpegc, matcher);
     default:
       if (q[ 0 ] > q[ 1 ]) {
-        vec_printf(gpegc->error, "Quantifier range error.");
+        vec_printf(&(gpegc->compiler->error), "Quantifier range error.");
         return GPEG_ERR_QUANTIFIER;
       } else if (q[ 0 ] < q[ 1 ]) {
         int diff = q[ 1 ] - q[ 0 ];
@@ -339,6 +339,11 @@ GPEG_ERR_T gpegc_matcher_quantified
 }
 
 /**
+ * Main access function to render a matcher structure into
+ * gpeg assembly.
+ *
+ * \param gpegc    Compilation data structure.
+ * \param matcher  Matcher to be translated into assembly.
  *
  */
 GPEG_ERR_T gpegc_matcher

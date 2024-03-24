@@ -42,6 +42,6 @@ void gpege_ec_init
 {
   memset(ec, 0, sizeof(*ec));
   if (input) {
-    vec_append(&(ec->input), input, inputlen);
+    vec_append(ec->input, input, inputlen);
   }
 }

@@ -9,13 +9,12 @@
 #ifndef _GPEGC_FUNCTIONS_H__FUNCTIONS_H_
 #define _GPEGC_FUNCTIONS_H__FUNCTIONS_H_
 
-#include <gpeg/private/util/vec_t.h>
-
-#define GPEG_COMPILE_FLAG_RULECAPTURE   (1<<0)
+#include <gpeg/lib/gpeg/gpeg_defines.h>
+#include <gpeg/lib/compiler/gpegc_types.h>
 
 extern
 GPEG_ERR_T gpegc_compile
-  (vec_t* input, vec_t* output, vec_t* error, unsigned flags, char* slotmap)
+  (gpegc_compiler_t* c)
   __attribute__ ((warn_unused_result));
 
 #endif

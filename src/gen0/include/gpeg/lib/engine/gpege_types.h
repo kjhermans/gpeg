@@ -59,8 +59,8 @@ struct gpege
 
 struct gpege_ec
 {
-  vec_t                         input;
-  vec_t                         errorstr;
+  vec_t*                        input;
+  vec_t*                        errorstr;
   unsigned                      input_offset;
   unsigned                      input_offset_max;
   unsigned                      bytecode_offset;

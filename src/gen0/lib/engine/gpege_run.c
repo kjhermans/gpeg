@@ -50,7 +50,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 #define HANDLE_ANY { \
-  if (ec->input_offset < ec->input.size) { \
+  if (ec->input_offset < ec->input->size) { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
   } else { \
@@ -63,7 +63,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
   ); \
-  if (ec->input_offset <= ec->input.size - param) { \
+  if (ec->input_offset <= ec->input->size - param) { \
     ec->input_offset += param; \
     ec->bytecode_offset += instruction_size; \
   } else { \
@@ -76,8 +76,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
   ); \
-  if (ec->input_offset < ec->input.size && \
-      ec->input.data[ ec->input_offset ] == param) \
+  if (ec->input_offset < ec->input->size && \
+      ec->input->data[ ec->input_offset ] == param) \
   { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
@@ -95,9 +95,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 8 \
   ); \
-  if (ec->input_offset < ec->input.size && \
-      ec->input.data[ ec->input_offset ] >= param1 && \
-      ec->input.data[ ec->input_offset ] <= param2) \
+  if (ec->input_offset < ec->input->size && \
+      ec->input->data[ ec->input_offset ] >= param1 && \
+      ec->input->data[ ec->input_offset ] <= param2) \
   { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
@@ -115,8 +115,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 8 \
   ); \
-  if (ec->input_offset < ec->input.size && \
-      (ec->input.data[ ec->input_offset ] & param2) == param1) \
+  if (ec->input_offset < ec->input->size && \
+      (ec->input->data[ ec->input_offset ] & param2) == param1) \
   { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
@@ -127,8 +127,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define HANDLE_QUAD { \
   unsigned char* set = gpege->bytecode.data + ec->bytecode_offset + 4; \
-  if (ec->input_offset <= ec->input.size - 4 && \
-      0 == memcmp(ec->input.data + ec->input_offset, set, 4)) \
+  if (ec->input_offset <= ec->input->size - 4 && \
+      0 == memcmp(ec->input->data + ec->input_offset, set, 4)) \
   { \
     (ec->input_offset) += 4; \
     ec->bytecode_offset += instruction_size; \
@@ -139,8 +139,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define HANDLE_SET { \
   unsigned char* set = gpege->bytecode.data + ec->bytecode_offset + 4; \
-  if (ec->input_offset < ec->input.size && \
-      GPEGE_DATA_IN_SET(set, ec->input.data[ ec->input_offset ])) \
+  if (ec->input_offset < ec->input->size && \
+      GPEGE_DATA_IN_SET(set, ec->input->data[ ec->input_offset ])) \
   { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
@@ -154,7 +154,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
   ); \
-  if (ec->input_offset < ec->input.size) { \
+  if (ec->input_offset < ec->input->size) { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
   } else { \
@@ -171,8 +171,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
   ); \
-  if (ec->input_offset < ec->input.size && \
-      ec->input.data[ ec->input_offset ] == param2) \
+  if (ec->input_offset < ec->input->size && \
+      ec->input->data[ ec->input_offset ] == param2) \
   { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
@@ -187,8 +187,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     ec->bytecode_offset + 4 \
   ); \
   unsigned char* set = gpege->bytecode.data + ec->bytecode_offset + 8; \
-  if (ec->input_offset < ec->input.size && \
-      GPEGE_DATA_IN_SET(set, ec->input.data[ ec->input_offset ])) \
+  if (ec->input_offset < ec->input->size && \
+      GPEGE_DATA_IN_SET(set, ec->input->data[ ec->input_offset ])) \
   { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
@@ -207,8 +207,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   GPEG_CHECK(gpege_variable(gpege, ec, param, &value, &valuesize), PROPAGATE); \
   if (valuesize == 0) { \
     ec->failed = 1; \
-  } else if (ec->input_offset + valuesize <= ec->input.size && \
-             0 == memcmp(ec->input.data + ec->input_offset, value, valuesize)) \
+  } else if (ec->input_offset + valuesize <= ec->input->size && \
+             0 == memcmp(ec->input->data + ec->input_offset, value, valuesize)) \
   { \
     ec->input_offset += valuesize; \
     ec->bytecode_offset += instruction_size; \
@@ -228,7 +228,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       .type = GPEGE_STACK_CALL, \
       .address = ec->bytecode_offset + instruction_size, \
       .input_offset = ec->input_offset, \
-      .input_length = ec->input.size, \
+      .input_length = ec->input->size, \
       .action_count = ec->actions.count, \
       .register_count = ec->reg.count \
     } \
@@ -236,7 +236,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (ec->stack.count > ec->stack_max) { ec->stack_max = ec->stack.count; } \
   ec->bytecode_offset = param; \
   if (ec->reg_ilen_set) { \
-    ec->input.size = ec->reg_ilen; \
+    ec->input->size = ec->reg_ilen; \
     ec->reg_ilen_set = 0; \
     ec->reg_ilen = 0; \
   } \
@@ -248,7 +248,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege_stack_pop(&(ec->stack), &elt); \
     if (elt.type == GPEGE_STACK_CALL) { \
       ec->bytecode_offset = elt.address; \
-      ec->input.size = elt.input_length; \
+      ec->input->size = elt.input_length; \
       break; \
     } \
   } \
@@ -266,7 +266,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       .type = GPEGE_STACK_CATCH, \
       .address = param, \
       .input_offset = ec->input_offset, \
-      .input_length = ec->input.size, \
+      .input_length = ec->input->size, \
       .action_count = ec->actions.count, \
       .register_count = ec->reg.count \
     } \
@@ -459,7 +459,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         ((valuesize > 2) ? (value[ 2 ] << ((valuesize-3) * 8)) : 0) | \
         ((valuesize > 3) ? (value[ 3 ]) : 0); \
       ec->reg_ilen += ec->input_offset; \
-      if (ec->reg_ilen > ec->input.size) { \
+      if (ec->reg_ilen > ec->input->size) { \
         RETURNERR(GPEG_ERR_INTRPCAPTURE); \
       } \
       ec->reg_ilen_set = 1; \

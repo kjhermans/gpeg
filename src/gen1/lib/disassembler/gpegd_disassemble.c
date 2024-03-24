@@ -65,7 +65,7 @@ GPEG_ERR_T gpegd_disassemble
   gpege.bytecode.data = bytecode;
   gpege.bytecode.size = sizeof(bytecode);
 
-  ec.input = *input;
+  ec.input = input;
 
 #ifdef _DEBUG
   gpege.debugger = gpege_debug_verbose;
@@ -77,7 +77,7 @@ GPEG_ERR_T gpegd_disassemble
   );
   GPEG_CHECK(
     gpege_actions2captures(
-      &(ec.input),
+      ec.input,
       &(ec.actions),
       &captures
     ),

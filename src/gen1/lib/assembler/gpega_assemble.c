@@ -45,7 +45,9 @@ unsigned char bytecode[] = {
 #define JOIN_AGAIN(a,b) a ## b
 
 /**
- *
+ * Library main access function.
+ * Parses the assembly given in input,
+ * and emits the corresponing bytecode in output.
  */
 GPEG_ERR_T gpega_assemble
   (vec_t* input, vec_t* output, vec_t* error, unsigned flags)
@@ -65,7 +67,7 @@ GPEG_ERR_T gpega_assemble
   gpege.bytecode.data = bytecode;
   gpege.bytecode.size = sizeof(bytecode);
 
-  ec.input = *input;
+  ec.input = input;
 
 #ifdef _DEBUG
   gpege.debugger = gpege_debug_verbose;
@@ -77,7 +79,7 @@ GPEG_ERR_T gpega_assemble
   );
   GPEG_CHECK(
     gpege_actions2captures(
-      &(ec.input),
+      ec.input,
       &(ec.actions),
       &captures
     ),

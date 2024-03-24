@@ -54,8 +54,8 @@ GPEG_ERR_T gpege_debug_verbose
       , ec->input_offset
     );
     for (unsigned i=0; i < 8; i++) {
-      if (ec->input_offset + i < ec->input.size) {
-        unsigned char c = ec->input.data[ ec->input_offset + i ];
+      if (ec->input_offset + i < ec->input->size) {
+        unsigned char c = ec->input->data[ ec->input_offset + i ];
         if (c >= 32 && c < 127) {
           fprintf(stderr, "%c", c);
         } else {

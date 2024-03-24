@@ -34,4 +34,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _GPEG_GEN1_GPEG_COMPILER_GPEGC_TYPES_H_
 #define _GPEG_GEN1_GPEG_COMPILER_GPEGC_TYPES_H_
 
+typedef struct
+{
+  vec_t             input;
+  vec_t             output;
+  vec_t             error;
+  char*             slotmap;
+  char*             slotmaph;
+  struct {
+    char*             path[ 32 ];
+    unsigned          count;
+  }                 import;
+
+#define GPEGC_FLAG_GENTRAPS     (1<<0)
+#define GPEGC_FLAG_GENCAPTURES  (1<<1)
+  unsigned          flags;
+}
+gpegc_compiler_t;
+
 #endif

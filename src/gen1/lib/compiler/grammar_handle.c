@@ -1824,13 +1824,15 @@ int handle_post_RULE
   GPEG_ERR_T e;
   unsigned slot = 0;
 
-  vec_printf(gpegc->output, "%s:\n", gpegc->currentrule.name);
+  vec_printf(&(gpegc->compiler->output), "%s:\n", gpegc->currentrule.name);
   if (gpegc->prefixgiven) {
-    vec_printf(gpegc->output, "  call __prefix\n");
+    vec_printf(&(gpegc->compiler->output), "  call __prefix\n");
   }
-  if (gpegc->rulecapture && strcmp(gpegc->currentrule.name, "__prefix")) {
+  if ((gpegc->compiler->flags & GPEGC_FLAG_GENCAPTURES)
+      && strcmp(gpegc->currentrule.name, "__prefix"))
+  {
     slot = (gpegc->cslot)++;
-    vec_printf(gpegc->output, "  opencapture %u\n", slot);
+    vec_printf(&(gpegc->compiler->output), "  opencapture %u\n", slot);
 
     char slotname[ 128 ];
     snprintf(slotname, sizeof(slotname), "%s" , gpegc->currentrule.name);
@@ -1838,10 +1840,12 @@ int handle_post_RULE
 
   }
   e = gpegc_matcherlist(gpegc, &(gpegc->currentrule.matchers));
-  if (gpegc->rulecapture && strcmp(gpegc->currentrule.name, "__prefix")) {
-    vec_printf(gpegc->output, "  closecapture %u\n", slot);
+  if ((gpegc->compiler->flags & GPEGC_FLAG_GENCAPTURES)
+      && strcmp(gpegc->currentrule.name, "__prefix"))
+  {
+    vec_printf(&(gpegc->compiler->output), "  closecapture %u\n", slot);
   }
-  vec_printf(gpegc->output, "  ret\n\n");
+  vec_printf(&(gpegc->compiler->output), "  ret\n\n");
   if (0 == strcmp(gpegc->currentrule.name, "__prefix")) {
     gpegc->prefixgiven = 1;
   }
