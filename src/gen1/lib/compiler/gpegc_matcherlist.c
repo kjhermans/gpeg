@@ -50,6 +50,9 @@ GPEG_ERR_T gpegc_matcherlist
   return GPEG_OK;
 }
 
+/**
+ * 
+ */
 void gpegc_matcherlist_debug
   (gpegc_matcherlist_t* list, unsigned level)
 {

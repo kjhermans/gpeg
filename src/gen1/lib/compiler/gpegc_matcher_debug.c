@@ -34,7 +34,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "gpegc_private.h"
 
 /**
- *
+ * Sends a matcher's content to stderr,
+ * potentially recursively (if it has children matchers).
  */
 void gpegc_matcher_debug
   (gpegc_matcher_t* m, unsigned level)
