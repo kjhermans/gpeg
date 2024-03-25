@@ -78,6 +78,7 @@ int main
   queryargs(argc, argv, 'i', "input", 0, 1, 0, &inputfile);
   queryargs(argc, argv, 'o', "output", 0, 1, 0, &outputfile);
   queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &(compiler.slotmap));
+  queryargs(argc, argv, 'M', "slotmaph", 0, 1, 0, &(compiler.slotmaph));
   if (queryargs(argc, argv, 'C', "defaultcaptures", 0, 0, 0, 0) == 0) {
     rulecapture = 1;
   }

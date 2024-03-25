@@ -137,6 +137,22 @@ GPEG_ERR_T gpegc_compile
     }
   }
 
+  if (c->slotmaph) {
+    FILE* slotmaph = fopen(c->slotmaph, "w+");
+    if (slotmaph) {
+      fprintf(slotmaph, "#ifndef _SLOTMAP_H_\n#define _SLOTMAP_H_\n\n");
+      for (unsigned i=0; i < gpegc.slotmap.count; i++) {
+        fprintf(slotmaph,
+                  "#define SLOT_%s %u\n"
+                  , gpegc.slotmap.keys[ i ]
+                  , gpegc.slotmap.values[ i ]
+        );
+      }
+      fprintf(slotmaph, "\n#endif\n");
+      fclose(slotmaph);
+    }
+  }
+
   gpege_ec_free(&ec);
   gpeg_capturelist_free(&captures);
 
