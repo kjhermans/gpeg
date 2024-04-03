@@ -52,11 +52,12 @@ struct gpegc_matcher
 #define GPEGC_MATCH_CHAR        2
 #define GPEGC_MATCH_SET         3
 #define GPEGC_MATCH_REFERENCE   4
-#define GPEGC_MATCH_STRING      5
-#define GPEGC_MATCH_ENDFORCE    6
-#define GPEGC_MATCH_CAPTURE     7
-#define GPEGC_MATCH_GROUP       8
-#define GPEGC_MATCH_CHOICE      9
+#define GPEGC_MATCH_VARIABLE    5
+#define GPEGC_MATCH_STRING      6
+#define GPEGC_MATCH_ENDFORCE    7
+#define GPEGC_MATCH_CAPTURE     8
+#define GPEGC_MATCH_GROUP       9
+#define GPEGC_MATCH_CHOICE      10
   unsigned                      type;
 
   union {

@@ -2304,6 +2304,24 @@ int handle_VARCAPTURE
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegc_t* gpegc = arg;
+  char slotname[ 128 ];
+
+  gpegc->currentmatcher->type = GPEGC_MATCH_CAPTURE;
+  gpegc->currentmatcher->value.capture = (gpegc->cslot)++;
+  snprintf(slotname, sizeof(slotname),
+    "%s"
+    , capture->children.list[ 2 ].data.data
+  );
+  str2int_map_put(
+    &(gpegc->slotmap),
+    strdup(slotname),
+    gpegc->currentmatcher->value.capture
+  );
+  capture->attachment.value_ptr = gpegc->currentmatcherlist;
+  gpegc->currentmatcherlist = &(gpegc->currentmatcher->group);
+
   return 0;
 }
 
@@ -2334,6 +2352,12 @@ int handle_VARREFERENCE
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegc_t* gpegc = arg;
+
+  gpegc->currentmatcher->type = GPEGC_MATCH_VARIABLE;
+  gpegc->currentmatcher->value.string.value = (char*)(capture->data.data);
+
   return 0;
 }
 

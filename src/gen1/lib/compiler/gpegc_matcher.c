@@ -121,6 +121,24 @@ GPEG_ERR_T gpegc_matcher_
   case GPEGC_MATCH_REFERENCE:
     vec_printf(&(gpegc->compiler->output), "  call %s\n", matcher->value.string.value);
     break;
+  case GPEGC_MATCH_VARIABLE:
+    {
+      unsigned slot;
+      if (str2int_map_get(
+            &(gpegc->slotmap),
+            &(matcher->value.string.value[1]),
+            &slot) == 0)
+      {
+        vec_printf(&(gpegc->compiler->output), "  var %u\n", slot);
+      } else {
+        vec_printf(&(gpegc->compiler->error),
+          "Could not resolve reference '%s'\n"
+          , matcher->value.string.value
+        );
+        return GPEG_ERR_REFERENCE;
+      }
+    }
+    break;
   case GPEGC_MATCH_STRING:
     gpegc_matcher_string(gpegc, matcher);
     break;
