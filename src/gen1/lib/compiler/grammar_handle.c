@@ -2273,20 +2273,7 @@ int handle_VARCAPTURE
   return 0;
 }
 
-int handle_post_VARCAPTURE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(VARCAPTURE)
 
 int handle_VARREFERENCE
   (
@@ -2309,17 +2296,4 @@ int handle_VARREFERENCE
   return 0;
 }
 
-int handle_post_VARREFERENCE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(VARREFERENCE)
