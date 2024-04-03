@@ -345,7 +345,9 @@ GPEG_ERR_T gpegc_matcher_quantified
       return gpegc_matcher_to_endless(gpegc, matcher);
     default:
       if (q[ 0 ] > q[ 1 ]) {
-        vec_printf(&(gpegc->compiler->error), "Quantifier range error.");
+        vec_printf(&(gpegc->compiler->error),
+          "Quantifier range error %d > %d.\n", q[ 0 ], q[ 1 ]
+        );
         return GPEG_ERR_QUANTIFIER;
       } else if (q[ 0 ] < q[ 1 ]) {
         int diff = q[ 1 ] - q[ 0 ];
