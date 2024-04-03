@@ -59,29 +59,7 @@ int handle_AND
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_AND
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
 int handle_ANY
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_ANY
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -126,28 +104,6 @@ int handle_CAPTURE
 /* declared in ./grammar_handle.c */
 extern
 int handle_post_CAPTURE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_CAPTUREEND
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_CAPTUREEND
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -357,17 +313,6 @@ int handle_post_GROUP
 /* declared in ./grammar_handle.c */
 extern
 int handle_HEXLITERAL
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_HEXLITERAL
   (
     gpeg_capture_t* parent,
     unsigned index,

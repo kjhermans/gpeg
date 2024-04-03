@@ -32,6 +32,22 @@ int COMBINE(handle_post_,ident)  \
   return 0;                      \
 }
 
+#define IGNOREPOSTHANDLER(ident) \
+int COMBINE(handle_post_,ident)  \
+  (                              \
+    gpeg_capture_t* parent,      \
+    unsigned index,              \
+    gpeg_capture_t* capture,     \
+    void* arg                    \
+  )                              \
+{                                \
+  (void)parent;                  \
+  (void)index;                   \
+  (void)capture;                 \
+  (void)arg;                     \
+  return 0;                      \
+}
+
 IGNOREHANDLER(ABCLOSE)
 IGNOREHANDLER(ABOPEN)
 
@@ -54,20 +70,7 @@ int handle_AND
   return 0;
 }
 
-int handle_post_AND
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(AND)
 
 int handle_ANY
   (
@@ -88,21 +91,7 @@ int handle_ANY
   return 0;
 }
 
-int handle_post_ANY
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-
-  return 0;
-}
+IGNOREPOSTHANDLER(ANY)
 
 IGNOREHANDLER(BCLOSE)
 
@@ -192,35 +181,7 @@ int handle_post_CAPTURE
   return 0;
 }
 
-int handle_CAPTUREEND
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_CAPTUREEND
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREHANDLER(CAPTUREEND)
 
 int handle_CAPTURETYPE
   (
@@ -600,20 +561,7 @@ int handle_HEXLITERAL
   return 0;
 }
 
-int handle_post_HEXLITERAL
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(HEXLITERAL)
 
 int handle_IDENT
   (
