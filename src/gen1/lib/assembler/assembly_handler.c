@@ -1323,20 +1323,7 @@ int handle_TRAPINSTR
   return 0;
 }
 
-int handle_post_TRAPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(TRAPINSTR)
 
 IGNOREHANDLER(TYPE)
 IGNOREHANDLER(UNSIGNED)
