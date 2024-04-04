@@ -2273,7 +2273,25 @@ int handle_VARCAPTURE
   return 0;
 }
 
-IGNOREPOSTHANDLER(VARCAPTURE)
+int handle_post_VARCAPTURE
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegc_t* gpegc = arg;
+
+  gpegc->currentmatcherlist = capture->attachment.value_ptr;
+
+  return 0;
+}
 
 int handle_VARREFERENCE
   (

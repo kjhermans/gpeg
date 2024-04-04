@@ -1390,6 +1390,17 @@ int handle_VARCAPTURE
 
 /* declared in ./grammar_handle.c */
 extern
+int handle_post_VARCAPTURE
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./grammar_handle.c */
+extern
 int handle_VARREFERENCE
   (
     gpeg_capture_t* parent,

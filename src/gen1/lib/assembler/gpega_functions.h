@@ -614,29 +614,7 @@ int handle_TRAPINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_TRAPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_VARINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_VARINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,

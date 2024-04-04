@@ -1340,20 +1340,22 @@ int handle_VARINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_VAR);
+  uint32_t slot = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &slot, sizeof(slot));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_VAR;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_VARINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(VARINSTR)
