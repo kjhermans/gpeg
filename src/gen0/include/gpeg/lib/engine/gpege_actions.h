@@ -44,6 +44,7 @@ typedef struct
   int                   type;
   uint32_t              slot;
   unsigned              input_offset;
+  unsigned              call_context;
 }
 gpege_action_t;
 

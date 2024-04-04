@@ -40,6 +40,7 @@ struct gpege_varfind_helper
   uint32_t slot;
   unsigned offset_start;
   unsigned offset_stop;
+  unsigned call_context;
 };
 
 static
@@ -53,12 +54,13 @@ int gpege_variable_find
   if (h->found_start && h->found_stop) {
     return 0;
   }
-  if (action->slot == h->slot) {
+  if (action->slot == h->slot && action->call_context == h->call_context) {
     if (action->type == GPEGE_ACTION_OPENCAPTURE && h->found_stop) {
       h->offset_start = action->input_offset;
       h->found_start = 1;
     } else if (action->type == GPEGE_ACTION_CLOSECAPTURE) {
       h->offset_stop = action->input_offset;
+      h->call_context = action->call_context;
       h->found_stop = 1;
     }
   }
@@ -83,7 +85,8 @@ GPEG_ERR_T gpege_variable
     .found_stop = 0,
     .slot = slot,
     .offset_start = 0,
-    .offset_stop = 0
+    .offset_stop = 0,
+    .call_context = ec->currentcall
   };
   int r;
   (void)gpege;
@@ -93,7 +96,11 @@ GPEG_ERR_T gpege_variable
 
   r = gpege_actionlist_reverse(&(ec->actions), gpege_variable_find, &h);
   (void)r;
-  if (h.found_start && h.found_stop && h.offset_start <= h.offset_stop) {
+  if (h.found_start &&
+      h.found_stop &&
+      h.offset_start <= h.offset_stop &&
+      h.call_context == ec->currentcall)
+  {
     *valuesize = h.offset_stop - h.offset_start;
     *value = ec->input->data + h.offset_start;
     return GPEG_OK;

@@ -71,6 +71,8 @@ struct gpege_ec
   unsigned                      stack_max;
   unsigned                      reg_ilen;
   int                           reg_ilen_set;
+  unsigned                      callcounter;
+  unsigned                      currentcall;
   gpege_actionlist_t            actions;
   gpege_register_t              reg;
 };

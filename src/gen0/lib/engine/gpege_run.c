@@ -222,6 +222,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
   ); \
+  unsigned callcontext = ++(ec->callcounter); \
   gpege_stack_push( \
     &(ec->stack), \
     (gpege_stackelt_t) { \
@@ -230,11 +231,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       .input_offset = ec->input_offset, \
       .input_length = ec->input->size, \
       .action_count = ec->actions.count, \
-      .register_count = ec->reg.count \
+      .register_count = ec->reg.count, \
+      .call_context = ec->currentcall \
     } \
   ); \
   if (ec->stack.count > ec->stack_max) { ec->stack_max = ec->stack.count; } \
   ec->bytecode_offset = param; \
+  ec->currentcall = callcontext; \
   if (ec->reg_ilen_set) { \
     ec->input->size = ec->reg_ilen; \
     ec->reg_ilen_set = 0; \
@@ -249,6 +252,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     if (elt.type == GPEGE_STACK_CALL) { \
       ec->bytecode_offset = elt.address; \
       ec->input->size = elt.input_length; \
+      ec->currentcall = elt.call_context; \
       break; \
     } \
   } \
@@ -355,7 +359,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   gpege_actionlist_push(&(ec->actions), (gpege_action_t){ \
     .type = GPEGE_ACTION_OPENCAPTURE, \
     .slot = param, \
-    .input_offset = ec->input_offset \
+    .input_offset = ec->input_offset, \
+    .call_context = ec->currentcall \
   }); \
   ec->bytecode_offset += instruction_size; \
 }
@@ -368,7 +373,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   gpege_actionlist_push(&(ec->actions), (gpege_action_t){ \
     .type = GPEGE_ACTION_CLOSECAPTURE, \
     .slot = param, \
-    .input_offset = ec->input_offset \
+    .input_offset = ec->input_offset, \
+    .call_context = ec->currentcall \
   }); \
   ec->bytecode_offset += instruction_size; \
 }
@@ -428,6 +434,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       ec->actions.count = elt.action_count; \
       ec->reg.count = elt.register_count; \
       break; \
+    } else if (elt.type == GPEGE_STACK_CALL) { \
+      ec->currentcall = elt.call_context; \
     } \
   } \
   if (0 == gpege_stack_size(&(ec->stack))) { \

@@ -44,6 +44,7 @@ typedef struct
   unsigned              input_length;
   unsigned              action_count;
   unsigned              register_count;
+  unsigned              call_context;
 }
 gpege_stackelt_t;
 
