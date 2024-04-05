@@ -61,4 +61,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define RETURNERR(e) return e;
 #endif
 
+#ifdef _DEBUG
+#define DEBUGMSG(...) fprintf(stderr, __VA_ARGS__)
+#else
+#define DEBUGMSG(...)
+#endif
+
 #endif
