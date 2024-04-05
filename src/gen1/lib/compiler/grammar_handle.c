@@ -605,6 +605,11 @@ int handle_IMPORTDECL
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegc_t* gpegc = arg;
+
+  gpegc->importdecl = 1;
+
   return 0;
 }
 
@@ -620,6 +625,11 @@ int handle_post_IMPORTDECL
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegc_t* gpegc = arg;
+
+  gpegc->importdecl = 0;
+
   return 0;
 }
 
@@ -2122,8 +2132,13 @@ int handle_STRINGLITERAL_0
 
   gpegc_t* gpegc = arg;
 
-  gpegc->currentmatcher->type = GPEGC_MATCH_STRING;
-  gpegc->currentmatcher->value.string.value = (char*)(capture->data.data);
+  if (gpegc->importdecl) {
+    DEBUGMSG("Importing %s\n", (char*)(capture->data.data));
+//.. Implement
+  } else {
+    gpegc->currentmatcher->type = GPEGC_MATCH_STRING;
+    gpegc->currentmatcher->value.string.value = (char*)(capture->data.data);
+  }
 
   return 0;
 }

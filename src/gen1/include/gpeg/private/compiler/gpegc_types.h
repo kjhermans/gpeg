@@ -106,6 +106,7 @@ typedef struct
   unsigned              clabel;
   unsigned              cslot;
   int                   prefixgiven;
+  int                   importdecl;
   char*                 startrule;
   str2int_map_t         slotmap;
 }
