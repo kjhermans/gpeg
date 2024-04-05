@@ -96,11 +96,7 @@ GPEG_ERR_T gpege_variable
 
   r = gpege_actionlist_reverse(&(ec->actions), gpege_variable_find, &h);
   (void)r;
-  if (h.found_start &&
-      h.found_stop &&
-      h.offset_start <= h.offset_stop &&
-      h.call_context == ec->currentcall)
-  {
+  if (h.found_start && h.found_stop && h.offset_start <= h.offset_stop) {
     *valuesize = h.offset_stop - h.offset_start;
     *value = ec->input->data + h.offset_start;
     return GPEG_OK;
