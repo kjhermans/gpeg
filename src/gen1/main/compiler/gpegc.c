@@ -84,6 +84,22 @@ int main
   queryargs(argc, argv, 'o', "output", 0, 1, 0, &outputfile);
   queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &(compiler.slotmap));
   queryargs(argc, argv, 'M', "slotmaph", 0, 1, 0, &(compiler.slotmaph));
+  {
+    unsigned i = 0;
+    char* path = 0;
+    while (1) {
+      if (queryargs(argc, argv, 'I', "import", i++, 1, 0, &path) == 0) {
+        if (compiler.import.count < GPEGC_MAX_PATHS) {
+          compiler.import.path[ (compiler.import.count)++ ] = path;
+        } else {
+          fprintf(stderr, "Too many import paths specified.\n");
+          return -1;
+        }
+      } else {
+        break;
+      }
+    }
+  }
   if (queryargs(argc, argv, 'C', "defaultcaptures", 0, 0, 0, 0) == 0) {
     rulecapture = 1;
   }

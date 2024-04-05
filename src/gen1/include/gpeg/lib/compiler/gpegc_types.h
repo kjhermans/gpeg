@@ -42,7 +42,8 @@ typedef struct
   char*             slotmap;
   char*             slotmaph;
   struct {
-    char*             path[ 32 ];
+#define GPEGC_MAX_PATHS 32
+    char*             path[ GPEGC_MAX_PATHS ];
     unsigned          count;
   }                 import;
 
