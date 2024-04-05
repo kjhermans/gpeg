@@ -32,6 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "gpegc_private.h"
+#include "grammar.slotmap.h"
 #include <gpeg/previous/lib/engine/gpege.h>
 
 #undef ARRAY_FREE_ITEM
@@ -100,7 +101,11 @@ GPEG_ERR_T gpegc_compile
       &captures
     ),
     PROPAGATE
-  );
+  ); 
+
+  gpeg_capturelist_remove(&captures, SLOT_S);
+  gpeg_capturelist_remove(&captures, SLOT_MULTILINECOMMENT);
+  gpeg_capturelist_remove(&captures, SLOT_COMMENT);
 
   gpegc_t gpegc = { 0 };
   gpegc.compiler = c;
