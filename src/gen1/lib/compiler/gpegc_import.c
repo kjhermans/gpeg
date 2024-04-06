@@ -57,6 +57,7 @@ GPEG_ERR_T gpegc_import
   (gpegc_t* gpegc, char* path)
 {
   char foundpath[ 256 ] = { 0 };
+  gpegc_compiler_t compiler = { 0 };
 
   if (gpegc_import_trypath(foundpath, sizeof(foundpath), 0, path)) {
     for (unsigned i=0; i < gpegc->compiler->import.count; i++) {
@@ -70,13 +71,15 @@ GPEG_ERR_T gpegc_import
     return GPEG_ERR_PATHNOTFOUND;
   }
 
-  unsigned char* buf;
-  unsigned bufsize;
-  if (absorb_file(foundpath, &buf, &bufsize)) {
+  if (absorb_file(path, &(compiler.input.data), &(compiler.input.size))) {
+    fprintf(stderr, "Could not absorb input file '%s'\n", path);
     return GPEG_ERR_PATHOPEN;
   }
 
-//.. TODO: Something with buf
+  compiler.flags = gpegc->compiler->flags;
+  GPEG_CHECK(gpegc_compile(&compiler), PROPAGATE);
+
+  vec_append(&(gpegc->compiler->output), compiler.output.data, compiler.output.size);
 
   return GPEG_OK;
 }
