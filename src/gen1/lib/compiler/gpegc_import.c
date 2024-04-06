@@ -68,18 +68,23 @@ GPEG_ERR_T gpegc_import
   }
 
   if (foundpath[ 0 ] == 0) {
+    vec_printf(&(gpegc->compiler->error), "Could not resolve path '%s'\n", path);
     return GPEG_ERR_PATHNOTFOUND;
   }
 
-  if (absorb_file(path, &(compiler.input.data), &(compiler.input.size))) {
-    fprintf(stderr, "Could not absorb input file '%s'\n", path);
+  if (absorb_file(foundpath, &(compiler.input.data), &(compiler.input.size))) {
+    vec_printf(&(gpegc->compiler->error), "Could not absorb input file '%s'\n", foundpath);
     return GPEG_ERR_PATHOPEN;
   }
 
   compiler.flags = gpegc->compiler->flags;
   GPEG_CHECK(gpegc_compile(&compiler), PROPAGATE);
 
-  vec_append(&(gpegc->compiler->output), compiler.output.data, compiler.output.size);
+  free(compiler.input.data);
+  if (compiler.output.data) {
+    vec_append(&(gpegc->compiler->output), compiler.output.data, compiler.output.size);
+    free(compiler.output.data);
+  }
 
   return GPEG_OK;
 }
