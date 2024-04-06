@@ -1,7 +1,7 @@
 /**
  * This file is part of GPEG, a parsing environment
 
-Copyright (c) 2023, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
+Copyright (c) 2024, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -31,48 +31,52 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GEN0_GPEG_GPEG_GPEG_DEFINES_H_
-#define _GEN0_GPEG_GPEG_GPEG_DEFINES_H_
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
-typedef struct {
-  int code;
-} GPEG_ERR_T;
+#include "gpegc_private.h"
 
-#define GPEG_OK                  (GPEG_ERR_T){ .code = 0 }
-#define GPEG_ERR_NOTFOUND        (GPEG_ERR_T){ .code = 1 }
-#define GPEG_ERR_OVERFLOW        (GPEG_ERR_T){ .code = 2 }
-#define GPEG_ERR_TRAP            (GPEG_ERR_T){ .code = 3 }
-#define GPEG_ERR_INTRPCAPTURE    (GPEG_ERR_T){ .code = 4 }
-#define GPEG_ERR_NOMATCH         (GPEG_ERR_T){ .code = 5 }
-#define GPEG_ERR_BYTECODE        (GPEG_ERR_T){ .code = 6 }
-#define GPEG_ERR_MAXINSTRUCTIONS (GPEG_ERR_T){ .code = 7 }
+static
+int gpegc_import_trypath
+  (char* foundpath, unsigned size, char* search, char* path)
+{
+  struct stat s;
 
-#define GPEG_ERR_QUANTIFIER      (GPEG_ERR_T){ .code = 32 }
-#define GPEG_ERR_REFERENCE       (GPEG_ERR_T){ .code = 33 }
-#define GPEG_ERR_PATHNOTFOUND    (GPEG_ERR_T){ .code = 34 }
-#define GPEG_ERR_PATHOPEN        (GPEG_ERR_T){ .code = 35 }
-
-#define GPEG_ERR_LABEL           (GPEG_ERR_T){ .code = 64 }
-
-#define PROPAGATE { return __e; }
-
-#ifdef _DEBUG
-#define GPEG_CHECK(fnc,alt) { \
-  GPEG_ERR_T __e = (fnc); \
-  if (__e.code) { \
-    fprintf(stderr, "Error %d in %s:%d\n", __e.code, __FILE__, __LINE__); \
-    (alt); \
-    if (__e.code < 0) { return __e; } \
-  } \
+  snprintf(foundpath, size, "%s%s%s", (search ? search : ""), (search ? "/" : ""), path);
+  if (stat(foundpath, &s) == 0 && (s.st_mode & S_IFMT) == S_IFREG) {
+    return 0;
+  }
+  return ~0;
 }
-#else
-#define GPEG_CHECK(fnc,alt) { \
-  GPEG_ERR_T __e = (fnc); \
-  if (__e.code) { \
-    (alt); \
-    if (__e.code < 0) { return __e; } \
-  } \
-}
-#endif
 
-#endif
+/**
+ *
+ */
+GPEG_ERR_T gpegc_import
+  (gpegc_t* gpegc, char* path)
+{
+  char foundpath[ 256 ] = { 0 };
+
+  if (gpegc_import_trypath(foundpath, sizeof(foundpath), 0, path)) {
+    for (unsigned i=0; i < gpegc->compiler->import.count; i++) {
+      if (gpegc_import_trypath(foundpath, sizeof(foundpath), gpegc->compiler->import.path[ i ], path) == 0) {
+        break;
+      }
+    }
+  }
+
+  if (foundpath[ 0 ] == 0) {
+    return GPEG_ERR_PATHNOTFOUND;
+  }
+
+  unsigned char* buf;
+  unsigned bufsize;
+  if (absorb_file(foundpath, &buf, &bufsize)) {
+    return GPEG_ERR_PATHOPEN;
+  }
+
+//.. TODO: Something with buf
+
+  return GPEG_OK;
+}

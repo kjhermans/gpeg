@@ -2134,7 +2134,10 @@ int handle_STRINGLITERAL_0
 
   if (gpegc->importdecl) {
     DEBUGMSG("Importing %s\n", (char*)(capture->data.data));
-//.. Implement
+    GPEG_ERR_T e = gpegc_import(gpegc, (char*)(capture->data.data));
+    if (e.code) {
+      return e.code;
+    }
   } else {
     gpegc->currentmatcher->type = GPEGC_MATCH_STRING;
     gpegc->currentmatcher->value.string.value = (char*)(capture->data.data);

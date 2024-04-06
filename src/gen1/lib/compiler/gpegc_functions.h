@@ -15,6 +15,12 @@ GPEG_ERR_T gpegc_compile
   (gpegc_compiler_t* c)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./gpegc_import.c */
+extern
+GPEG_ERR_T gpegc_import
+  (gpegc_t* gpegc, char* path)
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./gpegc_matcher.c */
 extern
 GPEG_ERR_T gpegc_matcher
