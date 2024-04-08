@@ -430,7 +430,7 @@ int handle_jump
 
 IGNOREPOSTHANDLER(jump)
 
-int handle_maskedchar
+int handle_bitmask
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -445,7 +445,7 @@ int handle_maskedchar
   return 0;
 }
 
-IGNOREPOSTHANDLER(maskedchar)
+IGNOREPOSTHANDLER(bitmask)
 
 int handle_noop
   (

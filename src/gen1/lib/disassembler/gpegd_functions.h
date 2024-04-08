@@ -207,7 +207,7 @@ int handle_jump
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_maskedchar
+int handle_bitmask
   (
     gpeg_capture_t* parent,
     unsigned index,

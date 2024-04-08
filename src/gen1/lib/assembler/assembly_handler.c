@@ -760,7 +760,46 @@ int handle_LABELDEF
 
 IGNOREPOSTHANDLER(LABELDEF)
 
-int handle_MASKEDCHARINSTR
+int handle_BITMASKINSTR
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpega_t* gpega = arg;
+
+  switch (gpega->round) {
+  case 1:
+    {
+      uint32_t opcode = htonl(INSTR_OPCODE_BITMASK);
+      uint32_t nbits = atoi((char*)(capture->children.list[ 1 ].data.data));
+      uint32_t bits = strtol((char*)(capture->children.list[ 2 ].data.data), 0, 16);
+      uint32_t andmask = strtol((char*)(capture->children.list[ 3 ].data.data), 0, 16);
+      uint32_t ormask = strtol((char*)(capture->children.list[ 4 ].data.data), 0, 16);
+      vec_append(gpega->output, &opcode, sizeof(opcode));
+      vec_append(gpega->output, &nbits, sizeof(nbits));
+      vec_append(gpega->output, &bits, sizeof(bits));
+      vec_append(gpega->output, &andmask, sizeof(andmask));
+      vec_append(gpega->output, &ormask, sizeof(ormask));
+    }
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_BITMASK;
+    break;
+  }
+
+
+  return 0;
+}
+
+int handle_post_BITMASKINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -775,7 +814,22 @@ int handle_MASKEDCHARINSTR
   return 0;
 }
 
-int handle_post_MASKEDCHARINSTR
+int handle_HEXQUAD
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+  return 0;
+}
+
+int handle_post_HEXQUAD
   (
     gpeg_capture_t* parent,
     unsigned index,

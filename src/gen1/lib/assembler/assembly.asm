@@ -116,7 +116,7 @@ __L24:
   commit __L27
 __L26:
   catch __L28
-  call MASKEDCHARINSTR
+  call BITMASKINSTR
   commit __L29
 __L28:
   catch __L30
@@ -323,17 +323,21 @@ CHARINSTR:
   closecapture 12
   ret
 
-MASKEDCHARINSTR:
+BITMASKINSTR:
   call __prefix
   opencapture 13
-  quad 6d61736b
-  quad 65646368
+  quad 6269746d
   char 61
-  char 72
+  char 73
+  char 6b
   call S
-  call HEXBYTE
+  call UNSIGNED
   call S
-  call HEXBYTE
+  call HEXQUAD
+  call S
+  call HEXQUAD
+  call S
+  call HEXQUAD
   closecapture 13
   ret
 
@@ -672,14 +676,14 @@ __L87:
   closecapture 44
   ret
 
-LABEL:
+HEXQUAD:
   call __prefix
   opencapture 45
-  set 000000000000ff03feffff87feffff0700000000000000000000000000000000
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
   catch __L88
-  counter 1 63
+  counter 1 7
 __L89:
-  set 000000000000ff03feffff87feffff0700000000000000000000000000000000
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
   partialcommit __NEXT__
   condjump 1 __L89
   commit __L88
@@ -687,127 +691,142 @@ __L88:
   closecapture 45
   ret
 
-UNSIGNED:
+LABEL:
   call __prefix
   opencapture 46
-  set 000000000000ff03000000000000000000000000000000000000000000000000
+  set 000000000000ff03feffff87feffff0700000000000000000000000000000000
   catch __L90
+  counter 2 63
 __L91:
-  set 000000000000ff03000000000000000000000000000000000000000000000000
-  partialcommit __L91
+  set 000000000000ff03feffff87feffff0700000000000000000000000000000000
+  partialcommit __NEXT__
+  condjump 2 __L91
+  commit __L90
 __L90:
   closecapture 46
   ret
 
-NUMBER:
+UNSIGNED:
   call __prefix
   opencapture 47
+  set 000000000000ff03000000000000000000000000000000000000000000000000
   catch __L92
-  char 2d
-  commit __L92
+__L93:
+  set 000000000000ff03000000000000000000000000000000000000000000000000
+  partialcommit __L93
 __L92:
-  set 000000000000ff03000000000000000000000000000000000000000000000000
-  catch __L94
-__L95:
-  set 000000000000ff03000000000000000000000000000000000000000000000000
-  partialcommit __L95
-__L94:
   closecapture 47
+  ret
+
+NUMBER:
+  call __prefix
+  opencapture 48
+  catch __L94
+  char 2d
+  commit __L94
+__L94:
+  set 000000000000ff03000000000000000000000000000000000000000000000000
+  catch __L96
+__L97:
+  set 000000000000ff03000000000000000000000000000000000000000000000000
+  partialcommit __L97
+__L96:
+  closecapture 48
   ret
 
 QUAD:
   call __prefix
-  opencapture 48
-  counter 3 8
-__L96:
+  opencapture 49
+  counter 4 8
+__L98:
   set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 3 __L96
-  closecapture 48
+  condjump 4 __L98
+  closecapture 49
   ret
 
 SET:
   call __prefix
-  opencapture 49
-  counter 4 64
-__L97:
-  set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 4 __L97
-  closecapture 49
-  ret
-
-SLOT:
-  call __prefix
   opencapture 50
-  call UNSIGNED
+  counter 5 64
+__L99:
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
+  condjump 5 __L99
   closecapture 50
   ret
 
-REGISTER:
+SLOT:
   call __prefix
   opencapture 51
   call UNSIGNED
   closecapture 51
   ret
 
-TYPE:
+REGISTER:
   call __prefix
   opencapture 52
   call UNSIGNED
   closecapture 52
   ret
 
-COLON:
+TYPE:
   call __prefix
   opencapture 53
-  char 3a
+  call UNSIGNED
   closecapture 53
+  ret
+
+COLON:
+  call __prefix
+  opencapture 54
+  char 3a
+  closecapture 54
   ret
 
 AMPERSAND:
   call __prefix
-  opencapture 54
+  opencapture 55
   char 26
-  closecapture 54
+  closecapture 55
   ret
 
 STRINGLITERAL:
   call __prefix
-  opencapture 55
-  char 27
   opencapture 56
-  catch __L98
-__L99:
+  char 27
+  opencapture 57
   catch __L100
-  char 5c
+__L101:
   catch __L102
+  char 5c
+  catch __L104
   set 0000000080000000000000100040540000000000000000000000000000000000
+  commit __L105
+__L104:
+  counter 6 3
+__L106:
+  set 000000000000ff03000000000000000000000000000000000000000000000000
+  condjump 6 __L106
+__L105:
   commit __L103
 __L102:
-  counter 5 3
-__L104:
-  set 000000000000ff03000000000000000000000000000000000000000000000000
-  condjump 5 __L104
-__L103:
-  commit __L101
-__L100:
   set ffffffff7fffffffffffffefffffffffffffffffffffffffffffffffffffffff
-__L101:
-  partialcommit __L99
-__L98:
-  closecapture 56
+__L103:
+  partialcommit __L101
+__L100:
+  closecapture 57
   char 27
-  closecapture 55
+  closecapture 56
   ret
 
 INTRPCAPTURETYPES:
   call __prefix
-  opencapture 57
   opencapture 58
+  opencapture 59
   quad 7275696e
   char 74
   char 33
   char 32
+  closecapture 59
   closecapture 58
-  closecapture 57
   ret
 

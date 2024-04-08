@@ -12,6 +12,8 @@ extern int handle_any(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_any(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_backcommit(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_backcommit(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_bitmask(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_bitmask(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_call(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_call(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_catch(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -42,8 +44,6 @@ extern int handle_isolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_isolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_jump(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_jump(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_maskedchar(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_maskedchar(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_noop(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_noop(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_opencapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -131,11 +131,27 @@ int do_node
   case 2:
     {
       ++(indices[ 2 ]);
-      if ((e = handle_call(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_bitmask(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
         if ((e = do_node(capture, indices[ 2 ], &(capture->children.list[ i ]), ptr)) != 0) {
+          return e;
+        }
+      }
+      if ((e = handle_post_bitmask(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+    }
+    break;
+  case 3:
+    {
+      ++(indices[ 3 ]);
+      if ((e = handle_call(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+      for (unsigned i=0; i < capture->children.count; i++) {
+        if ((e = do_node(capture, indices[ 3 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -144,14 +160,14 @@ int do_node
       }
     }
     break;
-  case 3:
+  case 4:
     {
-      ++(indices[ 3 ]);
+      ++(indices[ 4 ]);
       if ((e = handle_catch(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 3 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 4 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -160,14 +176,14 @@ int do_node
       }
     }
     break;
-  case 4:
+  case 5:
     {
-      ++(indices[ 4 ]);
+      ++(indices[ 5 ]);
       if ((e = handle_char(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 4 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 5 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -176,14 +192,14 @@ int do_node
       }
     }
     break;
-  case 5:
+  case 6:
     {
-      ++(indices[ 5 ]);
+      ++(indices[ 6 ]);
       if ((e = handle_closecapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 5 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 6 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -192,14 +208,14 @@ int do_node
       }
     }
     break;
-  case 6:
+  case 7:
     {
-      ++(indices[ 6 ]);
+      ++(indices[ 7 ]);
       if ((e = handle_commit(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 6 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 7 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -208,14 +224,14 @@ int do_node
       }
     }
     break;
-  case 7:
+  case 8:
     {
-      ++(indices[ 7 ]);
+      ++(indices[ 8 ]);
       if ((e = handle_condjump(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 7 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 8 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -224,14 +240,14 @@ int do_node
       }
     }
     break;
-  case 8:
+  case 9:
     {
-      ++(indices[ 8 ]);
+      ++(indices[ 9 ]);
       if ((e = handle_counter(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 8 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 9 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -240,14 +256,14 @@ int do_node
       }
     }
     break;
-  case 9:
+  case 10:
     {
-      ++(indices[ 9 ]);
+      ++(indices[ 10 ]);
       if ((e = handle_end(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 9 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 10 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -256,14 +272,14 @@ int do_node
       }
     }
     break;
-  case 10:
+  case 11:
     {
-      ++(indices[ 10 ]);
+      ++(indices[ 11 ]);
       if ((e = handle_endisolate(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 10 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 11 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -272,14 +288,14 @@ int do_node
       }
     }
     break;
-  case 11:
+  case 12:
     {
-      ++(indices[ 11 ]);
+      ++(indices[ 12 ]);
       if ((e = handle_endreplace(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 11 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 12 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -288,14 +304,14 @@ int do_node
       }
     }
     break;
-  case 12:
+  case 13:
     {
-      ++(indices[ 12 ]);
+      ++(indices[ 13 ]);
       if ((e = handle_fail(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 12 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 13 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -304,14 +320,14 @@ int do_node
       }
     }
     break;
-  case 13:
+  case 14:
     {
-      ++(indices[ 13 ]);
+      ++(indices[ 14 ]);
       if ((e = handle_failtwice(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 13 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 14 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -320,14 +336,14 @@ int do_node
       }
     }
     break;
-  case 14:
+  case 15:
     {
-      ++(indices[ 14 ]);
+      ++(indices[ 15 ]);
       if ((e = handle_intrpcapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 14 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 15 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -336,14 +352,14 @@ int do_node
       }
     }
     break;
-  case 15:
+  case 16:
     {
-      ++(indices[ 15 ]);
+      ++(indices[ 16 ]);
       if ((e = handle_isolate(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 15 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 16 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -352,26 +368,10 @@ int do_node
       }
     }
     break;
-  case 16:
-    {
-      ++(indices[ 16 ]);
-      if ((e = handle_jump(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 16 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_jump(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
   case 17:
     {
       ++(indices[ 17 ]);
-      if ((e = handle_maskedchar(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_jump(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -379,7 +379,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_maskedchar(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_jump(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }

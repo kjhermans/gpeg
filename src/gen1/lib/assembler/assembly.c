@@ -14,6 +14,8 @@ extern int handle_ANYINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_ANYINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_BACKCOMMITINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_BACKCOMMITINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_BITMASKINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_BITMASKINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_CALLINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_CALLINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_CATCHINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -48,6 +50,8 @@ extern int handle_FAILTWICEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*)
 extern int handle_post_FAILTWICEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_HEXBYTE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_HEXBYTE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_HEXQUAD(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_HEXQUAD(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_INSTRUCTION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_INSTRUCTION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_INSTRUCTIONS(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -66,8 +70,6 @@ extern int handle_LABEL(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_LABEL(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_LABELDEF(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_LABELDEF(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_MASKEDCHARINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_MASKEDCHARINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_MULTILINECOMMENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_MULTILINECOMMENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_NOOPINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -143,17 +145,17 @@ int do_node
   (gpeg_capture_t* parent, unsigned index, gpeg_capture_t* capture, void* ptr)
 {
   int e;
-  unsigned indices[ 59 ] = { 0 };
+  unsigned indices[ 60 ] = { 0 };
 
   switch (capture->type) {
-  case 54:
+  case 55:
     {
-      ++(indices[ 54 ]);
+      ++(indices[ 55 ]);
       if ((e = handle_AMPERSAND(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 54 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 55 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -190,6 +192,22 @@ int do_node
         }
       }
       if ((e = handle_post_BACKCOMMITINSTR(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+    }
+    break;
+  case 13:
+    {
+      ++(indices[ 13 ]);
+      if ((e = handle_BITMASKINSTR(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+      for (unsigned i=0; i < capture->children.count; i++) {
+        if ((e = do_node(capture, indices[ 13 ], &(capture->children.list[ i ]), ptr)) != 0) {
+          return e;
+        }
+      }
+      if ((e = handle_post_BITMASKINSTR(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -274,14 +292,14 @@ int do_node
       }
     }
     break;
-  case 53:
+  case 54:
     {
-      ++(indices[ 53 ]);
+      ++(indices[ 54 ]);
       if ((e = handle_COLON(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 53 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 54 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -466,6 +484,22 @@ int do_node
       }
     }
     break;
+  case 45:
+    {
+      ++(indices[ 45 ]);
+      if ((e = handle_HEXQUAD(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+      for (unsigned i=0; i < capture->children.count; i++) {
+        if ((e = do_node(capture, indices[ 45 ], &(capture->children.list[ i ]), ptr)) != 0) {
+          return e;
+        }
+      }
+      if ((e = handle_post_HEXQUAD(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+    }
+    break;
   case 5:
     {
       ++(indices[ 5 ]);
@@ -514,14 +548,14 @@ int do_node
       }
     }
     break;
-  case 57:
+  case 58:
     {
-      ++(indices[ 57 ]);
+      ++(indices[ 58 ]);
       if ((e = handle_INTRPCAPTURETYPES(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 57 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 58 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -530,14 +564,14 @@ int do_node
       }
     }
     break;
-  case 58:
+  case 59:
     {
-      ++(indices[ 58 ]);
+      ++(indices[ 59 ]);
       if ((e = handle_INTRPCAPTURETYPES_0(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 58 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 59 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -578,14 +612,14 @@ int do_node
       }
     }
     break;
-  case 45:
+  case 46:
     {
-      ++(indices[ 45 ]);
+      ++(indices[ 46 ]);
       if ((e = handle_LABEL(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 45 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 46 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -606,22 +640,6 @@ int do_node
         }
       }
       if ((e = handle_post_LABELDEF(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 13:
-    {
-      ++(indices[ 13 ]);
-      if ((e = handle_MASKEDCHARINSTR(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 13 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_MASKEDCHARINSTR(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -658,14 +676,14 @@ int do_node
       }
     }
     break;
-  case 47:
+  case 48:
     {
-      ++(indices[ 47 ]);
+      ++(indices[ 48 ]);
       if ((e = handle_NUMBER(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 47 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 48 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -706,14 +724,14 @@ int do_node
       }
     }
     break;
-  case 48:
+  case 49:
     {
-      ++(indices[ 48 ]);
+      ++(indices[ 49 ]);
       if ((e = handle_QUAD(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 48 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 49 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -754,14 +772,14 @@ int do_node
       }
     }
     break;
-  case 51:
+  case 52:
     {
-      ++(indices[ 51 ]);
+      ++(indices[ 52 ]);
       if ((e = handle_REGISTER(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 51 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 52 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -834,14 +852,14 @@ int do_node
       }
     }
     break;
-  case 49:
+  case 50:
     {
-      ++(indices[ 49 ]);
+      ++(indices[ 50 ]);
       if ((e = handle_SET(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 49 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 50 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -882,14 +900,14 @@ int do_node
       }
     }
     break;
-  case 50:
+  case 51:
     {
-      ++(indices[ 50 ]);
+      ++(indices[ 51 ]);
       if ((e = handle_SLOT(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 50 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 51 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -914,14 +932,14 @@ int do_node
       }
     }
     break;
-  case 55:
+  case 56:
     {
-      ++(indices[ 55 ]);
+      ++(indices[ 56 ]);
       if ((e = handle_STRINGLITERAL(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 55 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 56 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -930,14 +948,14 @@ int do_node
       }
     }
     break;
-  case 56:
+  case 57:
     {
-      ++(indices[ 56 ]);
+      ++(indices[ 57 ]);
       if ((e = handle_STRINGLITERAL_0(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 56 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 57 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -1042,14 +1060,14 @@ int do_node
       }
     }
     break;
-  case 52:
+  case 53:
     {
-      ++(indices[ 52 ]);
+      ++(indices[ 53 ]);
       if ((e = handle_TYPE(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 52 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 53 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -1058,14 +1076,14 @@ int do_node
       }
     }
     break;
-  case 46:
+  case 47:
     {
-      ++(indices[ 46 ]);
+      ++(indices[ 47 ]);
       if ((e = handle_UNSIGNED(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 46 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 47 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }

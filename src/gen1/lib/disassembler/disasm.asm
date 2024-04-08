@@ -20,67 +20,67 @@ __L3:
   commit __L6
 __L5:
   catch __L7
-  call call
+  call bitmask
   commit __L8
 __L7:
   catch __L9
-  call catch
+  call call
   commit __L10
 __L9:
   catch __L11
-  call char
+  call catch
   commit __L12
 __L11:
   catch __L13
-  call closecapture
+  call char
   commit __L14
 __L13:
   catch __L15
-  call commit
+  call closecapture
   commit __L16
 __L15:
   catch __L17
-  call condjump
+  call commit
   commit __L18
 __L17:
   catch __L19
-  call counter
+  call condjump
   commit __L20
 __L19:
   catch __L21
-  call end
+  call counter
   commit __L22
 __L21:
   catch __L23
-  call endisolate
+  call end
   commit __L24
 __L23:
   catch __L25
-  call endreplace
+  call endisolate
   commit __L26
 __L25:
   catch __L27
-  call fail
+  call endreplace
   commit __L28
 __L27:
   catch __L29
-  call failtwice
+  call fail
   commit __L30
 __L29:
   catch __L31
-  call intrpcapture
+  call failtwice
   commit __L32
 __L31:
   catch __L33
-  call isolate
+  call intrpcapture
   commit __L34
 __L33:
   catch __L35
-  call jump
+  call isolate
   commit __L36
 __L35:
   catch __L37
-  call maskedchar
+  call jump
   commit __L38
 __L37:
   catch __L39
@@ -201,12 +201,24 @@ backcommit:
   closecapture 1
   ret
 
-call:
+bitmask:
   char 00
-  char 04
+  char 10
   char 03
-  char 82
+  char 65
   opencapture 2
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
+  any
   any
   any
   any
@@ -214,11 +226,11 @@ call:
   closecapture 2
   ret
 
-catch:
+call:
   char 00
   char 04
   char 03
-  char 93
+  char 82
   opencapture 3
   any
   any
@@ -227,11 +239,11 @@ catch:
   closecapture 3
   ret
 
-char:
+catch:
   char 00
   char 04
   char 03
-  char d7
+  char 93
   opencapture 4
   any
   any
@@ -240,11 +252,11 @@ char:
   closecapture 4
   ret
 
-closecapture:
+char:
   char 00
   char 04
   char 03
-  char 00
+  char d7
   opencapture 5
   any
   any
@@ -253,11 +265,11 @@ closecapture:
   closecapture 5
   ret
 
-commit:
+closecapture:
   char 00
   char 04
   char 03
-  char 36
+  char 00
   opencapture 6
   any
   any
@@ -266,16 +278,12 @@ commit:
   closecapture 6
   ret
 
-condjump:
+commit:
   char 00
-  char 08
+  char 04
   char 03
-  char 21
+  char 36
   opencapture 7
-  any
-  any
-  any
-  any
   any
   any
   any
@@ -283,11 +291,11 @@ condjump:
   closecapture 7
   ret
 
-counter:
+condjump:
   char 00
   char 08
   char 03
-  char 56
+  char 21
   opencapture 8
   any
   any
@@ -300,12 +308,16 @@ counter:
   closecapture 8
   ret
 
-end:
+counter:
   char 00
-  char 04
-  char 00
-  char d8
+  char 08
+  char 03
+  char 56
   opencapture 9
+  any
+  any
+  any
+  any
   any
   any
   any
@@ -313,40 +325,53 @@ end:
   closecapture 9
   ret
 
-endisolate:
+end:
+  char 00
+  char 04
+  char 00
+  char d8
   opencapture 10
+  any
+  any
+  any
+  any
+  closecapture 10
+  ret
+
+endisolate:
+  opencapture 11
   char 00
   char 00
   char 30
   char 05
-  closecapture 10
-  ret
-
-endreplace:
-  opencapture 11
-  char 00
-  char 00
-  char 03
-  char 99
   closecapture 11
   ret
 
-fail:
+endreplace:
   opencapture 12
   char 00
   char 00
   char 03
-  char 4b
+  char 99
   closecapture 12
   ret
 
-failtwice:
+fail:
   opencapture 13
   char 00
   char 00
   char 03
-  char 90
+  char 4b
   closecapture 13
+  ret
+
+failtwice:
+  opencapture 14
+  char 00
+  char 00
+  char 03
+  char 90
+  closecapture 14
   ret
 
 intrpcapture:
@@ -354,24 +379,11 @@ intrpcapture:
   char 08
   char 00
   char 0f
-  opencapture 14
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  any
-  closecapture 14
-  ret
-
-isolate:
-  char 00
-  char 04
-  char 30
-  char 03
   opencapture 15
+  any
+  any
+  any
+  any
   any
   any
   any
@@ -379,11 +391,11 @@ isolate:
   closecapture 15
   ret
 
-jump:
+isolate:
   char 00
   char 04
+  char 30
   char 03
-  char 33
   opencapture 16
   any
   any
@@ -392,16 +404,12 @@ jump:
   closecapture 16
   ret
 
-maskedchar:
+jump:
   char 00
-  char 08
+  char 04
   char 03
-  char 65
+  char 33
   opencapture 17
-  any
-  any
-  any
-  any
   any
   any
   any

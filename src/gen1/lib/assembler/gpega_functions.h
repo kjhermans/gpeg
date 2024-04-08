@@ -317,7 +317,7 @@ int handle_LABELDEF
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_MASKEDCHARINSTR
+int handle_BITMASKINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -328,7 +328,29 @@ int handle_MASKEDCHARINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_MASKEDCHARINSTR
+int handle_post_BITMASKINSTR
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./assembly_handler.c */
+extern
+int handle_HEXQUAD
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./assembly_handler.c */
+extern
+int handle_post_HEXQUAD
   (
     gpeg_capture_t* parent,
     unsigned index,
