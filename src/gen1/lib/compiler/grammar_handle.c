@@ -108,32 +108,43 @@ int handle_BITMASK
   (void)capture;
   (void)arg;
 
-gpeg_capture_debug(capture);
-  for (unsigned i=1; i < capture->data.size-1; i++) {
-    switch (capture->data.data[ i ]) {
+  ASSERT(capture->data.size >= 2
+         && capture->data.data[ 0 ] == '|'
+         && capture->data.data[ capture->data.size-1 ] == '|')
+
+  gpegc_t* gpegc = arg;
+  unsigned char* mask = &(capture->data.data[ 1 ]);
+  uint32_t nbits = capture->data.size-2;
+  uint32_t bits = 0;
+  uint32_t andmask = 0;
+  uint32_t ormask = 0;
+
+  for (unsigned i=0; i < nbits; i++) {
+    uint32_t bit = (1<<(nbits-(i+1)));
+    switch (mask[ i ]) {
     case '0': // must match zero
+      andmask |= bit;
+      break;
     case '1': // must match one
+      bits |= bit;
+      andmask |= bit;
+      break;
     case '_': // don't care
+      ormask |= bit;
+      break;
     }
   }
 
+  gpegc->currentmatcher->type = GPEGC_MATCH_BITMASK; 
+  gpegc->currentmatcher->value.bitmask.nbits = nbits;
+  gpegc->currentmatcher->value.bitmask.bits = bits;
+  gpegc->currentmatcher->value.bitmask.andmask = andmask;
+  gpegc->currentmatcher->value.bitmask.ormask = ormask;
+
   return 0;
 }
 
-int handle_post_BITMASK
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(BITMASK)
 
 IGNOREHANDLER(BOPEN)
 

@@ -34,6 +34,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _GPEG_GEN1_GPEG_PRIVATE_COMPILER_TYPES_H_
 #define _GPEG_GEN1_GPEG_PRIVATE_COMPILER_TYPES_H_
 
+#include <inttypes.h>
+
 #include <gpeg/private/util/stringlist.h>
 #include <gpeg/private/util/vec_t.h>
 #include <gpeg/private/util/str2int_map.h>
@@ -54,10 +56,11 @@ struct gpegc_matcher
 #define GPEGC_MATCH_REFERENCE   4
 #define GPEGC_MATCH_VARIABLE    5
 #define GPEGC_MATCH_STRING      6
-#define GPEGC_MATCH_ENDFORCE    7
-#define GPEGC_MATCH_CAPTURE     8
-#define GPEGC_MATCH_GROUP       9
-#define GPEGC_MATCH_CHOICE      10
+#define GPEGC_MATCH_BITMASK     7
+#define GPEGC_MATCH_ENDFORCE    8
+#define GPEGC_MATCH_CAPTURE     9
+#define GPEGC_MATCH_GROUP       10
+#define GPEGC_MATCH_CHOICE      11
   unsigned                      type;
 
   union {
@@ -74,6 +77,12 @@ struct gpegc_matcher
       unsigned                      from;
       unsigned char                 bitmask[ 32 ];
     }                             set;
+    struct {
+      uint32_t                      nbits;
+      uint32_t                      bits;
+      uint32_t                      andmask;
+      uint32_t                      ormask;
+    }                             bitmask;
   }                             value;
   gpegc_matcherlist_t           group;
   gpegc_matcherlist_t           altgroup;

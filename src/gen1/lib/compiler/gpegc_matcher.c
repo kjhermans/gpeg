@@ -153,6 +153,15 @@ GPEG_ERR_T gpegc_matcher_
     }
     vec_printf(&(gpegc->compiler->output), "\n");
     break;
+  case GPEGC_MATCH_BITMASK:
+    vec_printf(&(gpegc->compiler->output),
+      "  bitmask %u %x %x %x\n"
+      , matcher->value.bitmask.nbits
+      , matcher->value.bitmask.bits
+      , matcher->value.bitmask.andmask
+      , matcher->value.bitmask.ormask
+    );
+    break;
   case GPEGC_MATCH_ENDFORCE:
     vec_printf(&(gpegc->compiler->output), "  end %u\n", matcher->value.number);
     break;

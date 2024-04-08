@@ -87,17 +87,6 @@ int handle_BITMASK
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_BITMASK
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
 int handle_CAPTURE
   (
     gpeg_capture_t* parent,
