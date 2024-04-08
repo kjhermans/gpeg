@@ -107,6 +107,16 @@ int handle_BITMASK
   (void)index;
   (void)capture;
   (void)arg;
+
+gpeg_capture_debug(capture);
+  for (unsigned i=1; i < capture->data.size-1; i++) {
+    switch (capture->data.data[ i ]) {
+    case '0': // must match zero
+    case '1': // must match one
+    case '_': // don't care
+    }
+  }
+
   return 0;
 }
 
