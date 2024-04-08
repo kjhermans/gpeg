@@ -58,7 +58,7 @@ MATCHER            <- ANY /
                       REFERENCE /
                       LIMITEDCALL
 
-BITMASK            <- '|' [01_C]^1-32 '|'
+BITMASK            <- '|' [01_]^1-32 '|'
 
 VARCAPTURE         <- CBOPEN COLON IDENT CAPTURETYPE? COLON
                       EXPRESSION CBCLOSE CAPTUREEND
