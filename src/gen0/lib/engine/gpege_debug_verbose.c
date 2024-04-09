@@ -127,7 +127,7 @@ GPEG_ERR_T gpege_debug_verbose
     case OPCODE_ENDISOLATE:
     case OPCODE_ENDREPLACE:
     case OPCODE_ISOLATE:
-    case OPCODE_MASKEDCHAR:
+    case OPCODE_BITMASK:
     case OPCODE_REPLACE:
     case OPCODE_SET:
     case OPCODE_SPAN:

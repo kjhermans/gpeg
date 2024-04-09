@@ -106,7 +106,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   } \
 }
 
-#define HANDLE_MASKEDCHAR { \
+#define HANDLE_BITMASK { \
   uint32_t param1 = GET_32BIT_VALUE( \
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
@@ -115,6 +115,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 8 \
   ); \
+  uint32_t param3 = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 12 \
+  ); \
+  uint32_t param4 = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 16 \
+  ); \
+  { /* TODO: THE FOLLOWING CODE DOESNT IMPLEMENT THE FUNCTION !! */ } \
   if (ec->input_offset < ec->input->size && \
       (ec->input->data[ ec->input_offset ] & param2) == param1) \
   { \
@@ -524,7 +533,7 @@ GPEG_ERR_T gpege_run
     case OPCODE_SKIP:            { HANDLE_SKIP }            break;
     case OPCODE_CHAR:            { HANDLE_CHAR }            break;
     case OPCODE_RANGE:           { HANDLE_RANGE }           break;
-    case OPCODE_MASKEDCHAR:      { HANDLE_MASKEDCHAR }      break;
+    case OPCODE_BITMASK:         { HANDLE_BITMASK }         break;
     case OPCODE_QUAD:            { HANDLE_QUAD }            break;
     case OPCODE_SET:             { HANDLE_SET }             break;
     case OPCODE_TESTANY:         { HANDLE_TESTANY }         break;

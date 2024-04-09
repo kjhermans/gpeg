@@ -140,14 +140,26 @@ $VAR1 = {
                       'size' => 8,
                       'terse' => 1
                     },
-          'maskedchar' => {
-                            'instr' => 525157,
-                            'mnem' => 'maskedchar',
+#          'maskedchar' => {
+#                            'instr' => 525157,
+#                            'mnem' => 'maskedchar',
+#                            'mode' => 0,
+#                            'opcode' => '00080365',
+#                            'param1' => 'char',
+#                            'param2' => 'mask',
+#                            'size' => 12,
+#                            'terse' => 1
+#                          },
+          'bitmask' => {
+                            'instr' => 1049445,
+                            'mnem' => 'bitmask',
                             'mode' => 0,
-                            'opcode' => '00080365',
-                            'param1' => 'char',
-                            'param2' => 'mask',
-                            'size' => 12,
+                            'opcode' => '00100365',
+                            'param1' => 'nbits',
+                            'param2' => 'bits',
+                            'param3' => 'andmask',
+                            'param4' => 'ormask',
+                            'size' => 20,
                             'terse' => 1
                           },
           'noop' => {

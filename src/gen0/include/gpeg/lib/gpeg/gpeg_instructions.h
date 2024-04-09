@@ -3,6 +3,7 @@
 
 #define OPCODE_ANY 996
 #define OPCODE_BACKCOMMIT 263104
+#define OPCODE_BITMASK 1049445
 #define OPCODE_CALL 263042
 #define OPCODE_CATCH 263059
 #define OPCODE_CHAR 263127
@@ -18,7 +19,6 @@
 #define OPCODE_INTRPCAPTURE 524303
 #define OPCODE_ISOLATE 274435
 #define OPCODE_JUMP 262963
-#define OPCODE_MASKEDCHAR 525157
 #define OPCODE_NOOP 0
 #define OPCODE_OPENCAPTURE 263068
 #define OPCODE_PARTIALCOMMIT 263092
@@ -40,6 +40,7 @@
 #define OPCODE_STRINGS_DEF static char* opcode_strings[] = { \
   "ANY", \
   "BACKCOMMIT", \
+  "BITMASK", \
   "CALL", \
   "CATCH", \
   "CHAR", \
@@ -55,7 +56,6 @@
   "INTRPCAPTURE", \
   "ISOLATE", \
   "JUMP", \
-  "MASKEDCHAR", \
   "NOOP", \
   "OPENCAPTURE", \
   "PARTIALCOMMIT", \
@@ -78,22 +78,22 @@
 #define OPCODE_STRINGS_SWITCH switch (opcode) { \
   case OPCODE_ANY: return opcode_strings[ 0 ]; \
   case OPCODE_BACKCOMMIT: return opcode_strings[ 1 ]; \
-  case OPCODE_CALL: return opcode_strings[ 2 ]; \
-  case OPCODE_CATCH: return opcode_strings[ 3 ]; \
-  case OPCODE_CHAR: return opcode_strings[ 4 ]; \
-  case OPCODE_CLOSECAPTURE: return opcode_strings[ 5 ]; \
-  case OPCODE_COMMIT: return opcode_strings[ 6 ]; \
-  case OPCODE_CONDJUMP: return opcode_strings[ 7 ]; \
-  case OPCODE_COUNTER: return opcode_strings[ 8 ]; \
-  case OPCODE_END: return opcode_strings[ 9 ]; \
-  case OPCODE_ENDISOLATE: return opcode_strings[ 10 ]; \
-  case OPCODE_ENDREPLACE: return opcode_strings[ 11 ]; \
-  case OPCODE_FAIL: return opcode_strings[ 12 ]; \
-  case OPCODE_FAILTWICE: return opcode_strings[ 13 ]; \
-  case OPCODE_INTRPCAPTURE: return opcode_strings[ 14 ]; \
-  case OPCODE_ISOLATE: return opcode_strings[ 15 ]; \
-  case OPCODE_JUMP: return opcode_strings[ 16 ]; \
-  case OPCODE_MASKEDCHAR: return opcode_strings[ 17 ]; \
+  case OPCODE_BITMASK: return opcode_strings[ 2 ]; \
+  case OPCODE_CALL: return opcode_strings[ 3 ]; \
+  case OPCODE_CATCH: return opcode_strings[ 4 ]; \
+  case OPCODE_CHAR: return opcode_strings[ 5 ]; \
+  case OPCODE_CLOSECAPTURE: return opcode_strings[ 6 ]; \
+  case OPCODE_COMMIT: return opcode_strings[ 7 ]; \
+  case OPCODE_CONDJUMP: return opcode_strings[ 8 ]; \
+  case OPCODE_COUNTER: return opcode_strings[ 9 ]; \
+  case OPCODE_END: return opcode_strings[ 10 ]; \
+  case OPCODE_ENDISOLATE: return opcode_strings[ 11 ]; \
+  case OPCODE_ENDREPLACE: return opcode_strings[ 12 ]; \
+  case OPCODE_FAIL: return opcode_strings[ 13 ]; \
+  case OPCODE_FAILTWICE: return opcode_strings[ 14 ]; \
+  case OPCODE_INTRPCAPTURE: return opcode_strings[ 15 ]; \
+  case OPCODE_ISOLATE: return opcode_strings[ 16 ]; \
+  case OPCODE_JUMP: return opcode_strings[ 17 ]; \
   case OPCODE_NOOP: return opcode_strings[ 18 ]; \
   case OPCODE_OPENCAPTURE: return opcode_strings[ 19 ]; \
   case OPCODE_PARTIALCOMMIT: return opcode_strings[ 20 ]; \
