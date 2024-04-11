@@ -14,7 +14,7 @@
 
 extern
 GPEG_ERR_T gpegc_compile
-  (gpegc_compiler_t* c)
+  (gpegc_compiler_t c[ static 1 ])
   __attribute__ ((warn_unused_result));
 
 #endif

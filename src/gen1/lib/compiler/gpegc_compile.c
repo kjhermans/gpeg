@@ -72,10 +72,9 @@ unsigned char bytecode[] = {
  * \returns            GPEG_OK on success, any GPEG_ERR_ on error.
  */
 GPEG_ERR_T gpegc_compile
-  (gpegc_compiler_t* c)
+  (gpegc_compiler_t c[ static 1 ])
 {
   DEBUGFUNCTION
-  ASSERT(c)
 
   gpege_t gpege = { 0 };
   gpege_ec_t ec = { 0 };
@@ -156,6 +155,10 @@ GPEG_ERR_T gpegc_compile
       fprintf(slotmaph, "\n#endif\n");
       fclose(slotmaph);
     }
+  }
+
+  if (c->parserc) {
+    GPEG_CHECK(gpegc_generate_cfile(&gpegc, c->parserc), PROPAGATE);
   }
 
   gpege_ec_free(&ec);

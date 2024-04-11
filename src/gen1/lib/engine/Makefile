@@ -14,11 +14,11 @@ functionsheader: ../../include/gpeg/lib/engine/gpege_functions.h \
 	gpege_functions.h
 
 gpege_functions.h: *.c
-	$(CURGEN)/bin/genfnchdr -t GPEG_ERR_T -i GPEGE_PR_FUNCTIONS -g 0 . > \
+	$(CURGEN)/bin/genfnchdr -t GPEG_ERR_T -i GPEGE_PR_FUNCTIONS -g 1 . > \
 	  gpege_functions.h
 
 ../../include/gpeg/lib/engine/gpege_functions.h: *.c
-	$(CURGEN)/bin/genfnchdr -t GPEG_ERR_T -i GPEGE_PR_FUNCTIONS -G 0 . > \
+	$(CURGEN)/bin/genfnchdr -t GPEG_ERR_T -i GPEGE_PR_FUNCTIONS -G 1 . > \
 	  ../../include/gpeg/lib/engine/gpege_functions.h
 
 $(LIB): $(OBJECTS)

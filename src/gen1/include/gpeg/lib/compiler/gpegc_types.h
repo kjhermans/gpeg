@@ -41,6 +41,7 @@ typedef struct
   vec_t             error;
   char*             slotmap;
   char*             slotmaph;
+  char*             parserc;
   struct {
 #define GPEGC_MAX_PATHS 32
     char*             path[ GPEGC_MAX_PATHS ];

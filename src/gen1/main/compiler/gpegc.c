@@ -73,7 +73,7 @@ int main
 "-C         Generate default captures for each rule.\n"
 "-T         Generate traps around rules.\n"
 "-S         Generate sets as ranges.\n"
-"-C         Generate quantifiers as raw matchers.\n"
+"-Q         Generate quantifiers as raw matchers.\n"
 "    -- other --\n"
 "-?         Print this help and exit.\n"
       , argv[ 0 ]
@@ -84,6 +84,7 @@ int main
   queryargs(argc, argv, 'o', "output", 0, 1, 0, &outputfile);
   queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &(compiler.slotmap));
   queryargs(argc, argv, 'M', "slotmaph", 0, 1, 0, &(compiler.slotmaph));
+  queryargs(argc, argv, 'G', "parserc", 0, 1, 0, &(compiler.parserc));
   {
     unsigned i = 0;
     char* path = 0;
@@ -111,7 +112,11 @@ int main
   compiler.flags = (rulecapture ? GPEGC_FLAG_GENCAPTURES : 0);
   e = gpegc_compile(&compiler);
   if (e.code) {
-    fprintf(stderr, "Compiler error code %d: %s", e.code, (char*)(compiler.error.data));
+    fprintf(stderr,
+      "Compiler error code %d: %s"
+      , e.code
+      , (char*)(compiler.error.data)
+    );
     return e.code;
   }
 

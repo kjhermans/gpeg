@@ -12,7 +12,13 @@
 /* declared in ./gpegc_compile.c */
 extern
 GPEG_ERR_T gpegc_compile
-  (gpegc_compiler_t* c)
+  (gpegc_compiler_t c[ static 1 ])
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./gpegc_generate_cfile.c */
+extern
+GPEG_ERR_T gpegc_generate_cfile
+  (gpegc_t* gpegc, char* path)
   __attribute__ ((warn_unused_result));
 
 /* declared in ./gpegc_import.c */

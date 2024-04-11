@@ -10,14 +10,14 @@
 #define _GPEGE_PR_FUNCTIONS_FUNCTIONS_H_
 
 /* declared in ./gpege_actions.c */
-#define gpege_actionlist_debug gen0_gpege_actionlist_debug
+#define gpege_actionlist_debug gen1_gpege_actionlist_debug
 
 extern
 void gpege_actionlist_debug
   (gpege_actionlist_t* list);
 
 /* declared in ./gpege_actions2captures.c */
-#define gpege_actions2captures gen0_gpege_actions2captures
+#define gpege_actions2captures gen1_gpege_actions2captures
 
 extern
 GPEG_ERR_T gpege_actions2captures
@@ -25,28 +25,28 @@ GPEG_ERR_T gpege_actions2captures
   __attribute__ ((warn_unused_result));
 
 /* declared in ./gpege_ec_free.c */
-#define gpege_ec_free gen0_gpege_ec_free
+#define gpege_ec_free gen1_gpege_ec_free
 
 extern
 void gpege_ec_free
   (gpege_ec_t* ec);
 
 /* declared in ./gpege_ec_init.c */
-#define gpege_ec_init gen0_gpege_ec_init
+#define gpege_ec_init gen1_gpege_ec_init
 
 extern
 void gpege_ec_init
   (gpege_ec_t* ec, void* input, unsigned inputlen);
 
 /* declared in ./gpege_init.c */
-#define gpege_init gen0_gpege_init
+#define gpege_init gen1_gpege_init
 
 extern
 void gpege_init
   (gpege_t* gpege);
 
 /* declared in ./gpege_run.c */
-#define gpege_run gen0_gpege_run
+#define gpege_run gen1_gpege_run
 
 extern
 GPEG_ERR_T gpege_run
@@ -54,14 +54,14 @@ GPEG_ERR_T gpege_run
   __attribute__ ((warn_unused_result));
 
 /* declared in ./gpege_stack.c */
-#define gpege_stack_get_furthest gen0_gpege_stack_get_furthest
+#define gpege_stack_get_furthest gen1_gpege_stack_get_furthest
 
 extern
 void gpege_stack_get_furthest
   (gpege_stack_t* stack, unsigned* index, gpege_stackelt_t* elt);
 
 /* declared in ./gpege_variable.c */
-#define gpege_variable gen0_gpege_variable
+#define gpege_variable gen1_gpege_variable
 
 extern
 GPEG_ERR_T gpege_variable

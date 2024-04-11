@@ -107,28 +107,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 #define HANDLE_BITMASK { \
-  uint32_t param1 = GET_32BIT_VALUE( \
+  uint32_t nbits = GET_32BIT_VALUE( \
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
   ); \
-  uint32_t param2 = GET_32BIT_VALUE( \
+  uint32_t bits = GET_32BIT_VALUE( \
     gpege->bytecode.data, \
     ec->bytecode_offset + 8 \
   ); \
-  uint32_t param3 = GET_32BIT_VALUE( \
+  uint32_t andmask = GET_32BIT_VALUE( \
     gpege->bytecode.data, \
     ec->bytecode_offset + 12 \
   ); \
-  uint32_t param4 = GET_32BIT_VALUE( \
-    gpege->bytecode.data, \
-    ec->bytecode_offset + 16 \
-  ); \
-  { /* TODO: THE FOLLOWING CODE DOESNT IMPLEMENT THE FUNCTION !! */ } \
-  if (ec->input_offset < ec->input->size && \
-      (ec->input->data[ ec->input_offset ] & param2) == param1) \
-  { \
-    ++(ec->input_offset); \
-    ec->bytecode_offset += instruction_size; \
+  uint32_t nbytes = (nbits / 8) + 1; \
+  if (ec->input_offset + nbytes <= ec->input->size) { \
+    for (unsigned i=0; i < nbytes; i++) { \
+      uint8_t byte = bits & 0xff; \
+      uint8_t mask = andmask & 0xff; \
+      nbits -= 8; \
+      byte >>= 8; \
+      andmask >>= 8; \
+      if ((ec->input->data[ ec->input_offset ] & byte) != mask) { \
+        ec->failed = 1; \
+        break; \
+      } \
+    } \
+    if (!(ec->failed)) { \
+      ec->input_offset += nbytes; \
+      ec->bytecode_offset += instruction_size; \
+    } \
   } else { \
     ec->failed = 1; \
   } \
