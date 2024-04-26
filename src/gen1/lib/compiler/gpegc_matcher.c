@@ -40,10 +40,33 @@ void gpegc_matcher_char
   if (matcher->caseinsensitive
       && ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')))
   {
-    //..
+    unsigned label1 = ++(gpegc->clabel);
+    unsigned label2 = ++(gpegc->clabel);
+    char alt = (c >= 'A' && c <= 'Z') ? c + 32 : c - 32;
+
+    vec_printf(&(gpegc->compiler->output),
+                                "  catch __L%u\n"
+                                "  char %.2x\n"
+                                "  commit __L%u\n"
+                                "__L%u:\n"
+                                "  char %.2x\n"
+                                "__L%u:\n"
+                                , label1
+                                , c
+                                , label2
+                                , label1
+                                , alt
+                                , label2
+    );
+  } else if (gpegc->compiler->flags & GPEGC_FLAG_GENNOQUADS) {
+    vec_printf(&(gpegc->compiler->output),
+                                "  char %.2x\n"
+                                , c
+    );
   } else {
     if (matcher->value.string.quadoffset == 4) {
-      vec_printf(&(gpegc->compiler->output), "  quad %.2x%.2x%.2x%.2x\n"
+      vec_printf(&(gpegc->compiler->output),
+                                "  quad %.2x%.2x%.2x%.2x\n"
                                 , matcher->value.string.quad[ 0 ]
                                 , matcher->value.string.quad[ 1 ]
                                 , matcher->value.string.quad[ 2 ]
@@ -228,17 +251,25 @@ GPEG_ERR_T gpegc_matcher_to_count
   unsigned label1 = ++(gpegc->clabel);
   unsigned counter = ++(gpegc->ccount);
 
-  vec_printf(&(gpegc->compiler->output), "  counter %u %d\n"
-                            "__L%u:\n"
-                            , counter
-                            , count
-                            , label1
-  );
-  GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-  vec_printf(&(gpegc->compiler->output), "  condjump %u __L%u\n"
-                            , counter
-                            , label1
-  );
+  if (gpegc->compiler->flags & GPEGC_FLAG_GENRAWQUANTIFIERS) {
+    for (int i=0; i < count; i++) {
+      GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
+    }
+  } else {
+    vec_printf(&(gpegc->compiler->output),
+                              "  counter %u %d\n"
+                              "__L%u:\n"
+                              , counter
+                              , count
+                              , label1
+    );
+    GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
+    vec_printf(&(gpegc->compiler->output),
+                              "  condjump %u __L%u\n"
+                              , counter
+                              , label1
+    );
+  }
   return GPEG_OK;
 }
 
@@ -253,7 +284,23 @@ GPEG_ERR_T gpegc_matcher_optional
                               , label1
     );
     GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-    vec_printf(&(gpegc->compiler->output), "  commit __NEXT__\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  commit __NEXT__\n"
+                              "__L%u:\n"
+                              , label1
+    );
+  } else if (gpegc->compiler->flags & GPEGC_FLAG_GENRAWQUANTIFIERS) {
+    unsigned label1 = ++(gpegc->clabel);
+  
+    vec_printf(&(gpegc->compiler->output),
+                              "  catch __L%u\n"
+                              , label1
+    );
+    for (int i=0; i < count; i++) {
+      GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
+    }
+    vec_printf(&(gpegc->compiler->output),
+                              "  commit __NEXT__\n"
                               "__L%u:\n"
                               , label1
     );

@@ -54,7 +54,6 @@ int main
   gpegc_compiler_t compiler = { 0 };
   FILE* out;
   GPEG_ERR_T e;
-  int rulecapture = 0;
 
   if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0) {
     fprintf(stderr,
@@ -73,7 +72,9 @@ int main
 "-C         Generate default captures for each rule.\n"
 "-T         Generate traps around rules.\n"
 "-S         Generate sets as ranges.\n"
-"-Q         Generate quantifiers as raw matchers.\n"
+"-Q         Generate quantifiers as raw (iterated) matchers.\n"
+"-N         Generate no quads.\n"
+"-L         Generate LPEG compatible instructions (-N -Q).\n"
 "    -- other --\n"
 "-?         Print this help and exit.\n"
       , argv[ 0 ]
@@ -102,14 +103,28 @@ int main
     }
   }
   if (queryargs(argc, argv, 'C', "defaultcaptures", 0, 0, 0, 0) == 0) {
-    rulecapture = 1;
+    compiler.flags |= GPEGC_FLAG_GENCAPTURES;
+  }
+  if (queryargs(argc, argv, 'T', "traps", 0, 0, 0, 0) == 0) {
+    compiler.flags |= GPEGC_FLAG_GENTRAPS;
+  }
+  if (queryargs(argc, argv, 'S', "ranges", 0, 0, 0, 0) == 0) {
+    compiler.flags |= GPEGC_FLAG_GENRANGES;
+  }
+  if (queryargs(argc, argv, 'Q', "rawquantifiers", 0, 0, 0, 0) == 0) {
+    compiler.flags |= GPEGC_FLAG_GENRAWQUANTIFIERS;
+  }
+  if (queryargs(argc, argv, 'N', "noquads", 0, 0, 0, 0) == 0) {
+    compiler.flags |= GPEGC_FLAG_GENNOQUADS;
+  }
+  if (queryargs(argc, argv, 'L', "lpeg", 0, 0, 0, 0) == 0) {
+    compiler.flags |= (GPEGC_FLAG_GENNOQUADS|GPEGC_FLAG_GENRAWQUANTIFIERS);
   }
 
   if (absorb_file(inputfile, &(compiler.input.data), &(compiler.input.size))) {
     fprintf(stderr, "Could not absorb input file '%s'\n", inputfile);
     return -1;
   }
-  compiler.flags = (rulecapture ? GPEGC_FLAG_GENCAPTURES : 0);
   e = gpegc_compile(&compiler);
   if (e.code) {
     fprintf(stderr,

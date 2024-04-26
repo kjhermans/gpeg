@@ -48,8 +48,11 @@ typedef struct
     unsigned          count;
   }                 import;
 
-#define GPEGC_FLAG_GENTRAPS     (1<<0)
-#define GPEGC_FLAG_GENCAPTURES  (1<<1)
+#define GPEGC_FLAG_GENTRAPS            (1<<0)
+#define GPEGC_FLAG_GENCAPTURES         (1<<1)
+#define GPEGC_FLAG_GENRANGES           (1<<2)
+#define GPEGC_FLAG_GENRAWQUANTIFIERS   (1<<3)
+#define GPEGC_FLAG_GENNOQUADS          (1<<4)
   unsigned          flags;
 }
 gpegc_compiler_t;
