@@ -179,21 +179,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 #define HANDLE_TESTCHAR { \
-  uint32_t param1 = GET_32BIT_VALUE( \
+  uint32_t offset = GET_32BIT_VALUE( \
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
   ); \
-  uint32_t param2 = GET_32BIT_VALUE( \
+  uint32_t matchchar = GET_32BIT_VALUE( \
     gpege->bytecode.data, \
     ec->bytecode_offset + 4 \
   ); \
   if (ec->input_offset < ec->input->size && \
-      ec->input->data[ ec->input_offset ] == param2) \
+      ec->input->data[ ec->input_offset ] == matchchar) \
   { \
     ++(ec->input_offset); \
     ec->bytecode_offset += instruction_size; \
   } else { \
-    ec->bytecode_offset = param1; \
+    ec->bytecode_offset = offset; \
   } \
 }
 
