@@ -48,6 +48,7 @@ int main
 {
   char* inputfile = "-";
   char* bytecodefile = "-";
+  char* arg;
   vec_t input = { 0 };
   vec_t bytecode = { 0 };
   gpege_t gpege = { 0 };
@@ -74,6 +75,7 @@ int main
 "-I          Input is a string. Text position is displayed on error\n"
 "-s <size>   Stack size\n"
 "-e          Toggle endless loop checking (default on)\n"
+"-M <n>      Set maximum number of executed instructions.\n"
       , argv[ 0 ]
     );
     return 0;
@@ -92,6 +94,9 @@ int main
   }
   if (queryargs(argc, argv, 'v', "verbose", 0, 0, 0, 0) == 0) {
     gpege.debugger = gpege_debug_verbose;
+  }
+  if (queryargs(argc, argv, 'M', "maxinstructions", 0, 1, 0, &arg) == 0) {
+    gpege.maxinstructions = strtoul(arg, 0, 10);
   }
 
   gpege.bytecode = bytecode;
