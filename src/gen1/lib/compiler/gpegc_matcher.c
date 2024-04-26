@@ -114,7 +114,8 @@ void gpegc_matcher_string
   }
   if (matcher->value.string.quadoffset) {
     if (matcher->value.string.quadoffset == 4) {
-      vec_printf(&(gpegc->compiler->output), "  quad %.2x%.2x%.2x%.2x\n"
+      vec_printf(&(gpegc->compiler->output),
+                                "  quad %.2x%.2x%.2x%.2x\n"
                                 , matcher->value.string.quad[ 0 ]
                                 , matcher->value.string.quad[ 1 ]
                                 , matcher->value.string.quad[ 2 ]
@@ -122,7 +123,8 @@ void gpegc_matcher_string
       );
     } else {
       for (unsigned i=0; i < matcher->value.string.quadoffset; i++) {
-        vec_printf(&(gpegc->compiler->output), "  char %.2x\n"
+        vec_printf(&(gpegc->compiler->output),
+                                  "  char %.2x\n"
                                   , matcher->value.string.quad[ i ]
         );
       }
@@ -176,6 +178,13 @@ GPEG_ERR_T gpegc_matcher_
     }
     vec_printf(&(gpegc->compiler->output), "\n");
     break;
+  case GPEGC_MATCH_RANGE:
+    vec_printf(&(gpegc->compiler->output), 
+                                  "  range %.2x %.2x\n"
+                                  , matcher->value.range.from
+                                  , matcher->value.range.until
+    );
+    break;
   case GPEGC_MATCH_BITMASK:
     vec_printf(&(gpegc->compiler->output),
       "  bitmask %u %x %x %x\n"
@@ -186,14 +195,19 @@ GPEG_ERR_T gpegc_matcher_
     );
     break;
   case GPEGC_MATCH_ENDFORCE:
-    vec_printf(&(gpegc->compiler->output), "  end %u\n", matcher->value.number);
+    vec_printf(&(gpegc->compiler->output),
+                              "  end %u\n"
+                              , matcher->value.number
+    );
     break;
   case GPEGC_MATCH_CAPTURE:
-    vec_printf(&(gpegc->compiler->output), "  opencapture %u\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  opencapture %u\n"
                               , matcher->value.capture
     );
     GPEG_CHECK(gpegc_matcherlist(gpegc, &(matcher->group)), PROPAGATE);
-    vec_printf(&(gpegc->compiler->output), "  closecapture %u\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  closecapture %u\n"
                               , matcher->value.capture
     );
     break;
@@ -204,17 +218,20 @@ GPEG_ERR_T gpegc_matcher_
     {
       unsigned label1 = ++(gpegc->clabel);
       unsigned label2 = ++(gpegc->clabel);
-      vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
+      vec_printf(&(gpegc->compiler->output),
+                                "  catch __L%u\n"
                                 , label1
       );
       GPEG_CHECK(gpegc_matcherlist(gpegc, &(matcher->group)), PROPAGATE);
-      vec_printf(&(gpegc->compiler->output), "  commit __L%u\n"
+      vec_printf(&(gpegc->compiler->output),
+                                "  commit __L%u\n"
                                 "__L%u:\n"
                                 , label2
                                 , label1
       );
       GPEG_CHECK(gpegc_matcherlist(gpegc, &(matcher->altgroup)), PROPAGATE);
-      vec_printf(&(gpegc->compiler->output), "__L%u:\n"
+      vec_printf(&(gpegc->compiler->output),
+                                "__L%u:\n"
                                 , label2
       );
     }
@@ -230,13 +247,15 @@ GPEG_ERR_T gpegc_matcher_to_endless
   unsigned label1 = ++(gpegc->clabel);
   unsigned label2 = ++(gpegc->clabel);
 
-  vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
+  vec_printf(&(gpegc->compiler->output),
+                            "  catch __L%u\n"
                             "__L%u:\n"
                             , label1
                             , label2
   );
   GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-  vec_printf(&(gpegc->compiler->output), "  partialcommit __L%u\n"
+  vec_printf(&(gpegc->compiler->output),
+                            "  partialcommit __L%u\n"
                             "__L%u:\n"
                             , label2
                             , label1
@@ -280,7 +299,8 @@ GPEG_ERR_T gpegc_matcher_optional
   if (count == 1) {
     unsigned label1 = ++(gpegc->clabel);
   
-    vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  catch __L%u\n"
                               , label1
     );
     GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
@@ -309,7 +329,8 @@ GPEG_ERR_T gpegc_matcher_optional
     unsigned label2 = ++(gpegc->clabel);
     unsigned counter = ++(gpegc->ccount);
   
-    vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  catch __L%u\n"
                               "  counter %u %d\n"
                               "__L%u:\n"
                               , label1
@@ -339,11 +360,13 @@ GPEG_ERR_T gpegc_matcher_modified
 
   switch (matcher->modifier) {
   case GPEGC_MODI_AND:
-    vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  catch __L%u\n"
                               , label1
     );
     GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-    vec_printf(&(gpegc->compiler->output), "  backcommit __L%u\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  backcommit __L%u\n"
                               "__L%u:\n"
                               "  fail\n"
                               "__L%u:\n"
@@ -353,11 +376,13 @@ GPEG_ERR_T gpegc_matcher_modified
     );
     break;
   case GPEGC_MODI_NOT:
-    vec_printf(&(gpegc->compiler->output), "  catch __L%u\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  catch __L%u\n"
                               , label1
     );
     GPEG_CHECK(gpegc_matcher_(gpegc, matcher), PROPAGATE);
-    vec_printf(&(gpegc->compiler->output), "  failtwice\n"
+    vec_printf(&(gpegc->compiler->output),
+                              "  failtwice\n"
                               "__L%u:\n"
                               , label1
     );
