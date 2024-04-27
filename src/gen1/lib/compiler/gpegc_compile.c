@@ -44,13 +44,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define ARRAY_EQUALS(a,b) (&a == &b)
 MAKE_ARRAY_CODE(gpegc_matcher_t, gpegc_matcherlist_)
 
-/*
-#undef ARRAY_EQUALS
-#define ARRAY_EQUALS(a,b) \
-  (a.size == b.size && 0 == memcmp(a.data, b.data, b.size))
-MAKE_ARRAY_CODE(vec_t, veclist_)
-*/
-
 static
 unsigned char bytecode[] = {
   #include "grammar.h"
@@ -64,8 +57,8 @@ unsigned char bytecode[] = {
  * Main access function to the compilation part of the library.
  *
  * \param input        Buffer containing the (grammar) input.
- * \param output       Buffer that, on success, will contain the (assembly) output.
- * \param error        Buffer that, on error, will contain the error messages.
+ * \param output       Buffer that, on success, contains the (assembly) output.
+ * \param error        Buffer that, on error, contains the error messages.
  * \param flags        Flags that control the compilation process.
  * \param slotmapfile  Slotmap file, when non NULL, to contain the slotmap.
  *
