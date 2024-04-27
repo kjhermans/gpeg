@@ -5,8 +5,8 @@ OBJECTS:=$(shell ls *.c | sort | sed -e 's/\.c$$/.o/')
 LIB=libgpegc.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
-INCLUDE=$(CURGEN)/include
-CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen0_ -I$(INCLUDE)
+INCLUDE=-I$(CURGEN)/include -I$(PREVGEN)/include
+CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen0_ $(INCLUDE)
 
 all: grammarh functionsh lib
 
