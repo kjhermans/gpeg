@@ -518,9 +518,9 @@ RANGEINSTR:
   quad 72616e67
   char 65
   call S
-  call UNSIGNED
+  call HEXBYTE
   call S
-  call UNSIGNED
+  call HEXBYTE
   closecapture 30
   ret
 

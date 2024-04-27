@@ -1015,21 +1015,25 @@ int handle_RANGEINSTR
   (void)index;
   (void)capture;
   (void)arg;
-  return 0;
-}
 
-int handle_post_RANGEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_RANGE);
+  unsigned char* hex = capture->children.list[ 0 ].data.data;
+  uint32_t from = htonl(hexcodon(hex[ 0 ], hex[ 1 ]));
+  hex = capture->children.list[ 1 ].data.data;
+  uint32_t until = htonl(hexcodon(hex[ 0 ], hex[ 1 ]));
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    vec_append(gpega->output, &from, sizeof(from));
+    vec_append(gpega->output, &until, sizeof(until));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_RANGE;
+    break;
+  }
+
   return 0;
 }
 

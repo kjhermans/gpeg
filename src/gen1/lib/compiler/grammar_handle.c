@@ -883,7 +883,9 @@ int handle_MACRO
   } else if (0 == strcmp((char*)(capture->data.data), "%n")) {
     set_bits(gpegc->currentmatcher->value.set.bitmask, '0', '9');
   } else if (0 == strcmp((char*)(capture->data.data), "%p")) {
-    set_bits(gpegc->currentmatcher->value.set.bitmask, 32, 127);
+    gpegc->currentmatcher->type = GPEGC_MATCH_RANGE;
+    gpegc->currentmatcher->value.range.from = 32;
+    gpegc->currentmatcher->value.range.until = 127;
   }
 
   return 0;

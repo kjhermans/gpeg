@@ -53,7 +53,7 @@ REPLACEINSTR       <- 'replace' S SLOT S LABEL
 ENDREPLACEINSTR    <- 'endreplace'
 RETINSTR           <- 'ret'
 SETINSTR           <- 'set' S SET
-RANGEINSTR         <- 'range' S UNSIGNED S UNSIGNED
+RANGEINSTR         <- 'range' S HEXBYTE S HEXBYTE
 SKIPINSTR          <- 'skip' S UNSIGNED
 SPANINSTR          <- 'span' S SET
 TESTANYINSTR       <- 'testany' S LABEL

@@ -53,14 +53,15 @@ struct gpegc_matcher
 #define GPEGC_MATCH_ANY         1
 #define GPEGC_MATCH_CHAR        2
 #define GPEGC_MATCH_SET         3
-#define GPEGC_MATCH_REFERENCE   4
-#define GPEGC_MATCH_VARIABLE    5
-#define GPEGC_MATCH_STRING      6
-#define GPEGC_MATCH_BITMASK     7
-#define GPEGC_MATCH_ENDFORCE    8
-#define GPEGC_MATCH_CAPTURE     9
-#define GPEGC_MATCH_GROUP       10
-#define GPEGC_MATCH_CHOICE      11
+#define GPEGC_MATCH_RANGE       4
+#define GPEGC_MATCH_REFERENCE   5
+#define GPEGC_MATCH_VARIABLE    6
+#define GPEGC_MATCH_STRING      7
+#define GPEGC_MATCH_BITMASK     8
+#define GPEGC_MATCH_ENDFORCE    9
+#define GPEGC_MATCH_CAPTURE     10
+#define GPEGC_MATCH_GROUP       11
+#define GPEGC_MATCH_CHOICE      12
   unsigned                      type;
 
   union {
@@ -83,6 +84,10 @@ struct gpegc_matcher
       uint32_t                      andmask;
       uint32_t                      ormask;
     }                             bitmask;
+    struct {
+      uint8_t                       from;
+      uint8_t                       until;
+    }                             range;
   }                             value;
   gpegc_matcherlist_t           group;
   gpegc_matcherlist_t           altgroup;
