@@ -273,20 +273,7 @@ int handle_CLOSECAPTUREINSTR
   return 0;
 }
 
-int handle_post_CLOSECAPTUREINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(CLOSECAPTUREINSTR)
 
 IGNOREHANDLER(CODE)
 IGNOREHANDLER(COLON)
@@ -461,20 +448,7 @@ int handle_ENDISOLATEINSTR
   return 0;
 }
 
-int handle_post_ENDISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(ENDISOLATEINSTR)
 
 int handle_ENDREPLACEINSTR
   (
@@ -491,20 +465,7 @@ int handle_ENDREPLACEINSTR
   return 0;
 }
 
-int handle_post_ENDREPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(ENDREPLACEINSTR)
 
 int handle_FAILINSTR
   (
@@ -585,80 +546,10 @@ int handle_INTRPCAPTUREINSTR
   return 0;
 }
 
-int handle_post_INTRPCAPTUREINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(INTRPCAPTUREINSTR)
 
-int handle_INTRPCAPTURETYPES
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_INTRPCAPTURETYPES
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_INTRPCAPTURETYPES_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_INTRPCAPTURETYPES_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREHANDLER(INTRPCAPTURETYPES)
+IGNOREHANDLER(INTRPCAPTURETYPES_0)
 
 int handle_ISOLATEINSTR
   (
@@ -675,20 +566,7 @@ int handle_ISOLATEINSTR
   return 0;
 }
 
-int handle_post_ISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(ISOLATEINSTR)
 
 int handle_JUMPINSTR
   (
@@ -799,51 +677,9 @@ int handle_BITMASKINSTR
   return 0;
 }
 
-int handle_post_BITMASKINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(BITMASKINSTR)
 
-int handle_HEXQUAD
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_HEXQUAD
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
+IGNOREHANDLER(HEXQUAD)
 IGNOREHANDLER(MULTILINECOMMENT)
 
 int handle_NOOPINSTR
@@ -874,20 +710,7 @@ int handle_NOOPINSTR
   return 0;
 }
 
-int handle_post_NOOPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(NOOPINSTR)
 
 IGNOREHANDLER(NUMBER)
 
@@ -1037,6 +860,8 @@ int handle_RANGEINSTR
   return 0;
 }
 
+IGNOREPOSTHANDLER(RANGEINSTR)
+
 IGNOREHANDLER(REGISTER)
 
 int handle_REPLACEINSTR
@@ -1054,20 +879,7 @@ int handle_REPLACEINSTR
   return 0;
 }
 
-int handle_post_REPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(REPLACEINSTR)
 
 int handle_RETINSTR
   (
@@ -1136,20 +948,7 @@ int handle_SETINSTR
   return 0;
 }
 
-int handle_post_SETINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(SETINSTR)
 
 int handle_SKIPINSTR
   (
@@ -1181,20 +980,7 @@ int handle_SKIPINSTR
   return 0;
 }
 
-int handle_post_SKIPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(SKIPINSTR)
 
 IGNOREHANDLER(SLOT)
 
@@ -1210,23 +996,13 @@ int handle_SPANINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  fprintf(stderr, "Warning: span instruction not implemented.\n");
+
   return 0;
 }
 
-int handle_post_SPANINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(SPANINSTR)
 
 IGNOREHANDLER(STRINGLITERAL)
 IGNOREHANDLER(STRINGLITERAL_0)
@@ -1243,23 +1019,36 @@ int handle_TESTANYINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+
+  switch (gpega->round) {
+  case 1:
+    {
+      uint32_t opcode = htonl(INSTR_OPCODE_TESTANY);
+      char* label = (char*)(capture->children.list[ 0 ].data.data);
+      unsigned offset = 0;
+      uint32_t o;
+
+      if (0 == strcmp(label, "__NEXT__")) {
+        offset = gpega->offset + INSTR_LENGTH_TESTANY;
+      } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
+        return GPEG_ERR_LABEL.code;
+      }
+      o = htonl(offset);
+      vec_append(gpega->output, &opcode, sizeof(opcode));
+      vec_append(gpega->output, &o, sizeof(o));
+    }
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_TESTANY;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_TESTANYINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(TESTANYINSTR)
 
 int handle_TESTCHARINSTR
   (
@@ -1273,23 +1062,39 @@ int handle_TESTCHARINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+
+  switch (gpega->round) {
+  case 1:
+    {
+      uint32_t opcode = htonl(INSTR_OPCODE_TESTCHAR);
+      char* label = (char*)(capture->children.list[ 1 ].data.data);
+      unsigned offset = 0;
+      uint32_t o;
+      unsigned char* hex = capture->children.list[ 0 ].data.data;
+      uint32_t value = htonl(hexcodon(hex[ 0 ], hex[ 1 ]));
+
+      if (0 == strcmp(label, "__NEXT__")) {
+        offset = gpega->offset + INSTR_LENGTH_TESTCHAR;
+      } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
+        return GPEG_ERR_LABEL.code;
+      }
+      o = htonl(offset);
+      vec_append(gpega->output, &opcode, sizeof(opcode));
+      vec_append(gpega->output, &o, sizeof(o));
+      vec_append(gpega->output, &value, sizeof(value));
+    }
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_TESTCHAR;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_TESTCHARINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(TESTCHARINSTR)
 
 int handle_TESTQUADINSTR
   (
@@ -1303,23 +1108,13 @@ int handle_TESTQUADINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  fprintf(stderr, "Warning: testquad instruction not implemented.\n");
+
   return 0;
 }
 
-int handle_post_TESTQUADINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(TESTQUADINSTR)
 
 int handle_TESTSETINSTR
   (
@@ -1333,23 +1128,13 @@ int handle_TESTSETINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  fprintf(stderr, "Warning: testset instruction not implemented.\n");
+
   return 0;
 }
 
-int handle_post_TESTSETINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(TESTSETINSTR)
 
 IGNOREHANDLER(TOP)
 
