@@ -86,17 +86,6 @@ int handle_CLOSECAPTUREINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_CLOSECAPTUREINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_COMMITINSTR
   (
     gpeg_capture_t* parent,
@@ -152,29 +141,7 @@ int handle_ENDISOLATEINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_ENDISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_ENDREPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_ENDREPLACEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -218,73 +185,7 @@ int handle_INTRPCAPTUREINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_INTRPCAPTUREINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_INTRPCAPTURETYPES
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_INTRPCAPTURETYPES
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_INTRPCAPTURETYPES_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_INTRPCAPTURETYPES_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_ISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_ISOLATEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -328,51 +229,7 @@ int handle_BITMASKINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_BITMASKINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_HEXQUAD
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_HEXQUAD
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_NOOPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_NOOPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -427,29 +284,7 @@ int handle_RANGEINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_RANGEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_REPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_REPLACEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -482,29 +317,7 @@ int handle_SETINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_SETINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_SKIPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_SKIPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -526,29 +339,7 @@ int handle_SPANINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_SPANINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_TESTANYINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_TESTANYINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -570,17 +361,6 @@ int handle_TESTCHARINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_TESTCHARINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_TESTQUADINSTR
   (
     gpeg_capture_t* parent,
@@ -592,29 +372,7 @@ int handle_TESTQUADINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_post_TESTQUADINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int handle_TESTSETINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int handle_post_TESTSETINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
