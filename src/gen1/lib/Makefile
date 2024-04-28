@@ -3,5 +3,5 @@ all:
 	cd gpeg && make
 	cd compiler && make
 	cd assembler && make
-	cd engine && make
 	cd disassembler && make
+	cd engine && make
