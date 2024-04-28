@@ -24,6 +24,14 @@ GPEG_ERR_T gpege_actions2captures
   (vec_t* input, gpege_actionlist_t* actions, gpeg_capturelist_t* captures)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./gpege_debug_verbose.c */
+#define gen1_gpege_debug_verbose gpege_debug_verbose
+
+extern
+GPEG_ERR_T gpege_debug_verbose
+  (gpege_t* gpege, gpege_ec_t* ec, uint32_t opcode, void* arg)
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./gpege_ec_free.c */
 #define gen1_gpege_ec_free gpege_ec_free
 
