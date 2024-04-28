@@ -35,6 +35,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "grammar.slotmap.h"
 #include <gpeg/previous/lib/engine/gpege.h>
 
+static
+unsigned char bytecode[] = {
+  #include "grammar.h"
+};
+
 #undef ARRAY_FREE_ITEM
 #define ARRAY_FREE_ITEM(itm) { \
   gpegc_matcherlist_free(&(itm.group)); \
@@ -43,11 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #undef ARRAY_EQUALS
 #define ARRAY_EQUALS(a,b) (&a == &b)
 MAKE_ARRAY_CODE(gpegc_matcher_t, gpegc_matcherlist_)
-
-static
-unsigned char bytecode[] = {
-  #include "grammar.h"
-};
 
 #define GENCALL(f) JOIN(PREVGEN, f)
 #define JOIN(a, b) JOIN_AGAIN(a, b)
