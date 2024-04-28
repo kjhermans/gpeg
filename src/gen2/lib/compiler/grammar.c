@@ -21,8 +21,6 @@ extern int handle_DEFINITION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_DEFINITION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_RULE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_RULE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_EXPRESSION_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_EXPRESSION_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_EXPRESSION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_EXPRESSION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_TERMS(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -41,22 +39,14 @@ extern int handle_Q_ONEORMORE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_Q_ONEORMORE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_Q_ZEROORMORE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_Q_ZEROORMORE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_Q_FROMTO_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_Q_FROMTO_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_Q_FROMTO_1(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_Q_FROMTO_1(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_Q_FROMTO(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_Q_FROMTO(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_Q_UNTIL_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_Q_UNTIL_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_Q_FROMTO_1(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_Q_FROMTO_1(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_Q_UNTIL(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_Q_UNTIL(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_Q_FROM_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_Q_FROM_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_Q_FROM(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_Q_FROM(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_Q_SPECIFIC_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_Q_SPECIFIC_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_Q_SPECIFIC(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_Q_SPECIFIC(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_Q_VAR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -77,16 +67,14 @@ extern int handle_GROUP(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_GROUP(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_CAPTUREEND(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_CAPTUREEND(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_SET_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_SET_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_SET(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_SET(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_SET_1(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_SET_1(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_SET_2(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_SET_2(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_SET_3(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_SET_3(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_SET(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_SET(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_VARREFERENCE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_VARREFERENCE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_REFERENCE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -137,8 +125,6 @@ extern int handle_OPTNAMESPACE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_OPTNAMESPACE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_KW_AS(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_KW_AS(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_STRINGLITERAL_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_STRINGLITERAL_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_STRINGLITERAL(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_STRINGLITERAL(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_IDENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -179,7 +165,7 @@ int do_node
   )
 {
   int e;
-  unsigned indices[ 76 ] = { 0 };
+  unsigned indices[ 69 ] = { 0 };
 
   switch (capture->type) {
   case 0:
@@ -297,27 +283,11 @@ int do_node
   case 7:
     {
       ++indices[ 7 ];
-      if ((e = handle_EXPRESSION_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 7 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_EXPRESSION_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 8:
-    {
-      ++indices[ 8 ];
       if ((e = handle_EXPRESSION(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 8 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 7 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -457,7 +427,7 @@ int do_node
   case 17:
     {
       ++indices[ 17 ];
-      if ((e = handle_Q_FROMTO_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_Q_FROMTO(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -465,7 +435,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_Q_FROMTO_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_Q_FROMTO(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -486,46 +456,14 @@ int do_node
       }
     }
     break;
-  case 19:
-    {
-      ++indices[ 19 ];
-      if ((e = handle_Q_FROMTO(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 19 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_Q_FROMTO(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
   case 20:
     {
       ++indices[ 20 ];
-      if ((e = handle_Q_UNTIL_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 20 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_Q_UNTIL_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 21:
-    {
-      ++indices[ 21 ];
       if ((e = handle_Q_UNTIL(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 21 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 20 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -537,27 +475,11 @@ int do_node
   case 22:
     {
       ++indices[ 22 ];
-      if ((e = handle_Q_FROM_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 22 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_Q_FROM_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 23:
-    {
-      ++indices[ 23 ];
       if ((e = handle_Q_FROM(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 23 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 22 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -569,27 +491,11 @@ int do_node
   case 24:
     {
       ++indices[ 24 ];
-      if ((e = handle_Q_SPECIFIC_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 24 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_Q_SPECIFIC_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 25:
-    {
-      ++indices[ 25 ];
       if ((e = handle_Q_SPECIFIC(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 25 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 24 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -745,7 +651,7 @@ int do_node
   case 35:
     {
       ++indices[ 35 ];
-      if ((e = handle_SET_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_SET(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -753,7 +659,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_SET_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_SET(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -802,22 +708,6 @@ int do_node
         }
       }
       if ((e = handle_post_SET_3(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 39:
-    {
-      ++indices[ 39 ];
-      if ((e = handle_SET(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 39 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_SET(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -1225,27 +1115,11 @@ int do_node
   case 65:
     {
       ++indices[ 65 ];
-      if ((e = handle_STRINGLITERAL_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 65 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = handle_post_STRINGLITERAL_0(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 66:
-    {
-      ++indices[ 66 ];
       if ((e = handle_STRINGLITERAL(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 66 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 65 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }

@@ -166,11 +166,19 @@ int handle_CAPTURE
 
   gpegc->currentmatcher->type = GPEGC_MATCH_CAPTURE;
   gpegc->currentmatcher->value.capture = (gpegc->cslot)++;
-  snprintf(slotname, sizeof(slotname),
-    "%s_%u"
-    , gpegc->currentrule.name,
-    (gpegc->currentrule.slotcount)++
-  );
+  if (gpegc->currentrule.slotcount == 0) {
+    snprintf(slotname, sizeof(slotname),
+      "%s"
+      , gpegc->currentrule.name
+    );
+    (gpegc->currentrule.slotcount)++;
+  } else {
+    snprintf(slotname, sizeof(slotname),
+      "%s_%u"
+      , gpegc->currentrule.name,
+      (gpegc->currentrule.slotcount)++
+    );
+  }
   str2int_map_put(
     &(gpegc->slotmap),
     strdup(slotname),

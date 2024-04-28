@@ -7,74 +7,74 @@
 extern int grammar_process_node(gpeg_capture_t*, void*);
 static int do_node(gpeg_capture_t*, unsigned, gpeg_capture_t*, void*);
 
-extern int handle_instr_any_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_any_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_backcommit_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_backcommit_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_bitmask_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_bitmask_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_call_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_call_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_catch_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_catch_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_char_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_char_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_closecapture_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_closecapture_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_commit_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_commit_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_condjump_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_condjump_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_counter_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_counter_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_end_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_end_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_endisolate_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_endisolate_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_endreplace_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_endreplace_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_fail_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_fail_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_failtwice_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_failtwice_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_intrpcapture_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_intrpcapture_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_isolate_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_isolate_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_jump_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_jump_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_noop_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_noop_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_opencapture_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_opencapture_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_partialcommit_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_partialcommit_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_quad_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_quad_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_range_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_range_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_replace_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_replace_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_ret_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_ret_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_set_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_set_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_skip_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_skip_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_span_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_span_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_testany_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_testany_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_testchar_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_testchar_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_testquad_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_testquad_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_testset_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_testset_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_trap_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_trap_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_instr_var_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int handle_post_instr_var_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_any(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_any(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_backcommit(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_backcommit(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_bitmask(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_bitmask(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_call(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_call(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_catch(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_catch(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_char(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_char(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_closecapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_closecapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_commit(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_commit(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_condjump(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_condjump(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_counter(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_counter(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_end(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_end(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_endisolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_endisolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_endreplace(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_endreplace(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_fail(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_fail(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_failtwice(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_failtwice(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_intrpcapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_intrpcapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_isolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_isolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_jump(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_jump(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_noop(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_noop(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_opencapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_opencapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_partialcommit(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_partialcommit(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_quad(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_quad(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_range(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_range(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_replace(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_replace(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_ret(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_ret(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_set(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_set(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_skip(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_skip(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_span(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_span(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_testany(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_testany(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_testchar(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_testchar(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_testquad(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_testquad(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_testset(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_testset(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_trap(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_trap(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_instr_var(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_instr_var(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 
 int grammar_process_node
   (
@@ -101,7 +101,7 @@ int do_node
   case 0:
     {
       ++indices[ 0 ];
-      if ((e = handle_instr_any_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_any(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -109,7 +109,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_any_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_any(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -117,7 +117,7 @@ int do_node
   case 1:
     {
       ++indices[ 1 ];
-      if ((e = handle_instr_backcommit_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_backcommit(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -125,7 +125,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_backcommit_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_backcommit(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -133,7 +133,7 @@ int do_node
   case 2:
     {
       ++indices[ 2 ];
-      if ((e = handle_instr_bitmask_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_bitmask(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -141,7 +141,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_bitmask_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_bitmask(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -149,7 +149,7 @@ int do_node
   case 3:
     {
       ++indices[ 3 ];
-      if ((e = handle_instr_call_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_call(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -157,7 +157,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_call_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_call(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -165,7 +165,7 @@ int do_node
   case 4:
     {
       ++indices[ 4 ];
-      if ((e = handle_instr_catch_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_catch(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -173,7 +173,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_catch_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_catch(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -181,7 +181,7 @@ int do_node
   case 5:
     {
       ++indices[ 5 ];
-      if ((e = handle_instr_char_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_char(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -189,7 +189,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_char_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_char(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -197,7 +197,7 @@ int do_node
   case 6:
     {
       ++indices[ 6 ];
-      if ((e = handle_instr_closecapture_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_closecapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -205,7 +205,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_closecapture_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_closecapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -213,7 +213,7 @@ int do_node
   case 7:
     {
       ++indices[ 7 ];
-      if ((e = handle_instr_commit_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_commit(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -221,7 +221,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_commit_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_commit(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -229,7 +229,7 @@ int do_node
   case 8:
     {
       ++indices[ 8 ];
-      if ((e = handle_instr_condjump_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_condjump(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -237,7 +237,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_condjump_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_condjump(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -245,7 +245,7 @@ int do_node
   case 9:
     {
       ++indices[ 9 ];
-      if ((e = handle_instr_counter_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_counter(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -253,7 +253,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_counter_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_counter(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -261,7 +261,7 @@ int do_node
   case 10:
     {
       ++indices[ 10 ];
-      if ((e = handle_instr_end_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_end(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -269,7 +269,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_end_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_end(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -277,7 +277,7 @@ int do_node
   case 11:
     {
       ++indices[ 11 ];
-      if ((e = handle_instr_endisolate_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_endisolate(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -285,7 +285,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_endisolate_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_endisolate(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -293,7 +293,7 @@ int do_node
   case 12:
     {
       ++indices[ 12 ];
-      if ((e = handle_instr_endreplace_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_endreplace(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -301,7 +301,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_endreplace_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_endreplace(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -309,7 +309,7 @@ int do_node
   case 13:
     {
       ++indices[ 13 ];
-      if ((e = handle_instr_fail_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_fail(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -317,7 +317,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_fail_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_fail(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -325,7 +325,7 @@ int do_node
   case 14:
     {
       ++indices[ 14 ];
-      if ((e = handle_instr_failtwice_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_failtwice(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -333,7 +333,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_failtwice_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_failtwice(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -341,7 +341,7 @@ int do_node
   case 15:
     {
       ++indices[ 15 ];
-      if ((e = handle_instr_intrpcapture_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_intrpcapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -349,7 +349,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_intrpcapture_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_intrpcapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -357,7 +357,7 @@ int do_node
   case 16:
     {
       ++indices[ 16 ];
-      if ((e = handle_instr_isolate_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_isolate(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -365,7 +365,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_isolate_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_isolate(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -373,7 +373,7 @@ int do_node
   case 17:
     {
       ++indices[ 17 ];
-      if ((e = handle_instr_jump_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_jump(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -381,7 +381,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_jump_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_jump(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -389,7 +389,7 @@ int do_node
   case 18:
     {
       ++indices[ 18 ];
-      if ((e = handle_instr_noop_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_noop(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -397,7 +397,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_noop_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_noop(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -405,7 +405,7 @@ int do_node
   case 19:
     {
       ++indices[ 19 ];
-      if ((e = handle_instr_opencapture_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_opencapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -413,7 +413,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_opencapture_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_opencapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -421,7 +421,7 @@ int do_node
   case 20:
     {
       ++indices[ 20 ];
-      if ((e = handle_instr_partialcommit_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_partialcommit(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -429,7 +429,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_partialcommit_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_partialcommit(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -437,7 +437,7 @@ int do_node
   case 21:
     {
       ++indices[ 21 ];
-      if ((e = handle_instr_quad_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_quad(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -445,7 +445,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_quad_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_quad(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -453,7 +453,7 @@ int do_node
   case 22:
     {
       ++indices[ 22 ];
-      if ((e = handle_instr_range_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_range(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -461,7 +461,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_range_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_range(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -469,7 +469,7 @@ int do_node
   case 23:
     {
       ++indices[ 23 ];
-      if ((e = handle_instr_replace_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_replace(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -477,7 +477,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_replace_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_replace(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -485,7 +485,7 @@ int do_node
   case 24:
     {
       ++indices[ 24 ];
-      if ((e = handle_instr_ret_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_ret(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -493,7 +493,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_ret_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_ret(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -501,7 +501,7 @@ int do_node
   case 25:
     {
       ++indices[ 25 ];
-      if ((e = handle_instr_set_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_set(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -509,7 +509,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_set_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_set(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -517,7 +517,7 @@ int do_node
   case 26:
     {
       ++indices[ 26 ];
-      if ((e = handle_instr_skip_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_skip(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -525,7 +525,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_skip_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_skip(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -533,7 +533,7 @@ int do_node
   case 27:
     {
       ++indices[ 27 ];
-      if ((e = handle_instr_span_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_span(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -541,7 +541,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_span_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_span(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -549,7 +549,7 @@ int do_node
   case 28:
     {
       ++indices[ 28 ];
-      if ((e = handle_instr_testany_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_testany(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -557,7 +557,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_testany_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_testany(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -565,7 +565,7 @@ int do_node
   case 29:
     {
       ++indices[ 29 ];
-      if ((e = handle_instr_testchar_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_testchar(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -573,7 +573,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_testchar_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_testchar(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -581,7 +581,7 @@ int do_node
   case 30:
     {
       ++indices[ 30 ];
-      if ((e = handle_instr_testquad_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_testquad(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -589,7 +589,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_testquad_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_testquad(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -597,7 +597,7 @@ int do_node
   case 31:
     {
       ++indices[ 31 ];
-      if ((e = handle_instr_testset_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_testset(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -605,7 +605,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_testset_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_testset(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -613,7 +613,7 @@ int do_node
   case 32:
     {
       ++indices[ 32 ];
-      if ((e = handle_instr_trap_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_trap(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -621,7 +621,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_trap_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_trap(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
@@ -629,7 +629,7 @@ int do_node
   case 33:
     {
       ++indices[ 33 ];
-      if ((e = handle_instr_var_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_instr_var(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -637,7 +637,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_instr_var_0(parent, index, capture, ptr)) != 0) {
+      if ((e = handle_post_instr_var(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }
