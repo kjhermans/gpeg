@@ -20,7 +20,7 @@ int grammar_process_node
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_any
+int handle_instr_any
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -31,7 +31,7 @@ int handle_any
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_backcommit
+int handle_instr_backcommit
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -42,7 +42,7 @@ int handle_backcommit
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_call
+int handle_instr_call
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -53,7 +53,7 @@ int handle_call
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_catch
+int handle_instr_catch
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -64,7 +64,7 @@ int handle_catch
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_char
+int handle_instr_char
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -75,7 +75,7 @@ int handle_char
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_closecapture
+int handle_instr_closecapture
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -86,7 +86,7 @@ int handle_closecapture
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_commit
+int handle_instr_commit
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -97,7 +97,7 @@ int handle_commit
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_condjump
+int handle_instr_condjump
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -108,7 +108,7 @@ int handle_condjump
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_counter
+int handle_instr_counter
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -119,7 +119,7 @@ int handle_counter
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_end
+int handle_instr_end
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -130,7 +130,7 @@ int handle_end
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_endisolate
+int handle_instr_endisolate
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -141,7 +141,7 @@ int handle_endisolate
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_endreplace
+int handle_instr_endreplace
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -152,7 +152,7 @@ int handle_endreplace
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_fail
+int handle_instr_fail
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -163,7 +163,7 @@ int handle_fail
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_failtwice
+int handle_instr_failtwice
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -174,7 +174,7 @@ int handle_failtwice
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_intrpcapture
+int handle_instr_intrpcapture
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -185,7 +185,7 @@ int handle_intrpcapture
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_isolate
+int handle_instr_isolate
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -196,7 +196,7 @@ int handle_isolate
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_jump
+int handle_instr_jump
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -207,7 +207,7 @@ int handle_jump
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_bitmask
+int handle_instr_bitmask
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -218,7 +218,7 @@ int handle_bitmask
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_noop
+int handle_instr_noop
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -229,7 +229,7 @@ int handle_noop
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_opencapture
+int handle_instr_opencapture
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -240,7 +240,7 @@ int handle_opencapture
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_partialcommit
+int handle_instr_partialcommit
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -251,7 +251,7 @@ int handle_partialcommit
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_quad
+int handle_instr_quad
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -262,7 +262,7 @@ int handle_quad
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_range
+int handle_instr_range
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -273,7 +273,7 @@ int handle_range
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_replace
+int handle_instr_replace
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -284,7 +284,7 @@ int handle_replace
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_ret
+int handle_instr_ret
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -295,7 +295,7 @@ int handle_ret
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_set
+int handle_instr_set
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -306,7 +306,7 @@ int handle_set
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_skip
+int handle_instr_skip
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -317,7 +317,7 @@ int handle_skip
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_span
+int handle_instr_span
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -328,7 +328,7 @@ int handle_span
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_testany
+int handle_instr_testany
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -339,7 +339,7 @@ int handle_testany
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_testchar
+int handle_instr_testchar
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -350,7 +350,7 @@ int handle_testchar
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_testquad
+int handle_instr_testquad
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -361,7 +361,7 @@ int handle_testquad
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_testset
+int handle_instr_testset
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -372,7 +372,7 @@ int handle_testset
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_trap
+int handle_instr_trap
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -383,7 +383,7 @@ int handle_trap
 
 /* declared in ./disasm_handler.c */
 extern
-int handle_var
+int handle_instr_var
   (
     gpeg_capture_t* parent,
     unsigned index,

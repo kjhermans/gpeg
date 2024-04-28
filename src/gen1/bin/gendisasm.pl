@@ -5,11 +5,11 @@ my $instrperl = `cat $instrfile`;
 my $instrhash = eval $instrperl || die "Need instructions file";
 
 print "TOP <- INSTRUCTION+
-INSTRUCTION <- " . join(" /\n  ", sort(keys(%{$instrhash}))) . "\n\n";
+INSTRUCTION <- instr_" . join(" /\n  instr_", sort(keys(%{$instrhash}))) . "\n\n";
 
 foreach my $key (sort(keys(%{$instrhash}))) {
   my $instr = $instrhash->{$key};
-  print "$instr->{mnem} <- ";
+  print "instr_$instr->{mnem} <- ";
   if ($instr->{size} <= 4) {
     print "{ ";
   }

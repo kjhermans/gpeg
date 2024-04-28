@@ -12,138 +12,138 @@ __L1:
 
 INSTRUCTION:
   catch __L3
-  call any
+  call instr_any
   commit __L4
 __L3:
   catch __L5
-  call backcommit
+  call instr_backcommit
   commit __L6
 __L5:
   catch __L7
-  call bitmask
+  call instr_bitmask
   commit __L8
 __L7:
   catch __L9
-  call call
+  call instr_call
   commit __L10
 __L9:
   catch __L11
-  call catch
+  call instr_catch
   commit __L12
 __L11:
   catch __L13
-  call char
+  call instr_char
   commit __L14
 __L13:
   catch __L15
-  call closecapture
+  call instr_closecapture
   commit __L16
 __L15:
   catch __L17
-  call commit
+  call instr_commit
   commit __L18
 __L17:
   catch __L19
-  call condjump
+  call instr_condjump
   commit __L20
 __L19:
   catch __L21
-  call counter
+  call instr_counter
   commit __L22
 __L21:
   catch __L23
-  call end
+  call instr_end
   commit __L24
 __L23:
   catch __L25
-  call endisolate
+  call instr_endisolate
   commit __L26
 __L25:
   catch __L27
-  call endreplace
+  call instr_endreplace
   commit __L28
 __L27:
   catch __L29
-  call fail
+  call instr_fail
   commit __L30
 __L29:
   catch __L31
-  call failtwice
+  call instr_failtwice
   commit __L32
 __L31:
   catch __L33
-  call intrpcapture
+  call instr_intrpcapture
   commit __L34
 __L33:
   catch __L35
-  call isolate
+  call instr_isolate
   commit __L36
 __L35:
   catch __L37
-  call jump
+  call instr_jump
   commit __L38
 __L37:
   catch __L39
-  call noop
+  call instr_noop
   commit __L40
 __L39:
   catch __L41
-  call opencapture
+  call instr_opencapture
   commit __L42
 __L41:
   catch __L43
-  call partialcommit
+  call instr_partialcommit
   commit __L44
 __L43:
   catch __L45
-  call quad
+  call instr_quad
   commit __L46
 __L45:
   catch __L47
-  call range
+  call instr_range
   commit __L48
 __L47:
   catch __L49
-  call replace
+  call instr_replace
   commit __L50
 __L49:
   catch __L51
-  call ret
+  call instr_ret
   commit __L52
 __L51:
   catch __L53
-  call set
+  call instr_set
   commit __L54
 __L53:
   catch __L55
-  call skip
+  call instr_skip
   commit __L56
 __L55:
   catch __L57
-  call span
+  call instr_span
   commit __L58
 __L57:
   catch __L59
-  call testany
+  call instr_testany
   commit __L60
 __L59:
   catch __L61
-  call testchar
+  call instr_testchar
   commit __L62
 __L61:
   catch __L63
-  call testquad
+  call instr_testquad
   commit __L64
 __L63:
   catch __L65
-  call testset
+  call instr_testset
   commit __L66
 __L65:
   catch __L67
-  call trap
+  call instr_trap
   commit __L68
 __L67:
-  call var
+  call instr_var
 __L68:
 __L66:
 __L64:
@@ -179,7 +179,7 @@ __L6:
 __L4:
   ret
 
-any:
+instr_any:
   opencapture 0
   char 00
   char 00
@@ -188,7 +188,7 @@ any:
   closecapture 0
   ret
 
-backcommit:
+instr_backcommit:
   char 00
   char 04
   char 03
@@ -201,7 +201,7 @@ backcommit:
   closecapture 1
   ret
 
-bitmask:
+instr_bitmask:
   char 00
   char 10
   char 03
@@ -226,7 +226,7 @@ bitmask:
   closecapture 2
   ret
 
-call:
+instr_call:
   char 00
   char 04
   char 03
@@ -239,7 +239,7 @@ call:
   closecapture 3
   ret
 
-catch:
+instr_catch:
   char 00
   char 04
   char 03
@@ -252,7 +252,7 @@ catch:
   closecapture 4
   ret
 
-char:
+instr_char:
   char 00
   char 04
   char 03
@@ -265,7 +265,7 @@ char:
   closecapture 5
   ret
 
-closecapture:
+instr_closecapture:
   char 00
   char 04
   char 03
@@ -278,7 +278,7 @@ closecapture:
   closecapture 6
   ret
 
-commit:
+instr_commit:
   char 00
   char 04
   char 03
@@ -291,7 +291,7 @@ commit:
   closecapture 7
   ret
 
-condjump:
+instr_condjump:
   char 00
   char 08
   char 03
@@ -308,7 +308,7 @@ condjump:
   closecapture 8
   ret
 
-counter:
+instr_counter:
   char 00
   char 08
   char 03
@@ -325,7 +325,7 @@ counter:
   closecapture 9
   ret
 
-end:
+instr_end:
   char 00
   char 04
   char 00
@@ -338,7 +338,7 @@ end:
   closecapture 10
   ret
 
-endisolate:
+instr_endisolate:
   opencapture 11
   char 00
   char 00
@@ -347,7 +347,7 @@ endisolate:
   closecapture 11
   ret
 
-endreplace:
+instr_endreplace:
   opencapture 12
   char 00
   char 00
@@ -356,7 +356,7 @@ endreplace:
   closecapture 12
   ret
 
-fail:
+instr_fail:
   opencapture 13
   char 00
   char 00
@@ -365,7 +365,7 @@ fail:
   closecapture 13
   ret
 
-failtwice:
+instr_failtwice:
   opencapture 14
   char 00
   char 00
@@ -374,7 +374,7 @@ failtwice:
   closecapture 14
   ret
 
-intrpcapture:
+instr_intrpcapture:
   char 00
   char 08
   char 00
@@ -391,7 +391,7 @@ intrpcapture:
   closecapture 15
   ret
 
-isolate:
+instr_isolate:
   char 00
   char 04
   char 30
@@ -404,7 +404,7 @@ isolate:
   closecapture 16
   ret
 
-jump:
+instr_jump:
   char 00
   char 04
   char 03
@@ -417,7 +417,7 @@ jump:
   closecapture 17
   ret
 
-noop:
+instr_noop:
   opencapture 18
   char 00
   char 00
@@ -426,7 +426,7 @@ noop:
   closecapture 18
   ret
 
-opencapture:
+instr_opencapture:
   char 00
   char 04
   char 03
@@ -439,7 +439,7 @@ opencapture:
   closecapture 19
   ret
 
-partialcommit:
+instr_partialcommit:
   char 00
   char 04
   char 03
@@ -452,7 +452,7 @@ partialcommit:
   closecapture 20
   ret
 
-quad:
+instr_quad:
   char 00
   char 04
   char 03
@@ -465,7 +465,7 @@ quad:
   closecapture 21
   ret
 
-range:
+instr_range:
   char 00
   char 08
   char 03
@@ -482,7 +482,7 @@ range:
   closecapture 22
   ret
 
-replace:
+instr_replace:
   char 00
   char 08
   char 03
@@ -499,7 +499,7 @@ replace:
   closecapture 23
   ret
 
-ret:
+instr_ret:
   opencapture 24
   char 00
   char 00
@@ -508,7 +508,7 @@ ret:
   closecapture 24
   ret
 
-set:
+instr_set:
   char 00
   char 20
   char 03
@@ -549,7 +549,7 @@ set:
   closecapture 25
   ret
 
-skip:
+instr_skip:
   char 00
   char 04
   char 03
@@ -562,7 +562,7 @@ skip:
   closecapture 26
   ret
 
-span:
+instr_span:
   char 00
   char 20
   char 03
@@ -603,7 +603,7 @@ span:
   closecapture 27
   ret
 
-testany:
+instr_testany:
   char 00
   char 04
   char 03
@@ -616,7 +616,7 @@ testany:
   closecapture 28
   ret
 
-testchar:
+instr_testchar:
   char 00
   char 08
   char 03
@@ -633,7 +633,7 @@ testchar:
   closecapture 29
   ret
 
-testquad:
+instr_testquad:
   char 00
   char 08
   char 03
@@ -650,7 +650,7 @@ testquad:
   closecapture 30
   ret
 
-testset:
+instr_testset:
   char 00
   char 24
   char 03
@@ -695,7 +695,7 @@ testset:
   closecapture 31
   ret
 
-trap:
+instr_trap:
   opencapture 32
   char ff
   char 00
@@ -704,7 +704,7 @@ trap:
   closecapture 32
   ret
 
-var:
+instr_var:
   char 00
   char 04
   char 03
