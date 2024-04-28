@@ -4,6 +4,9 @@ all:
 debug:
 	make all DEBUG="-D_DEBUG=1"
 
+specials:
+	cd src/specials && make
+
 .PHONY: test
 test:
 	cd test && make

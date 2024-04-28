@@ -768,7 +768,7 @@ int handle_LABELDEF
 
 IGNOREPOSTHANDLER(LABELDEF)
 
-int handle_MASKEDCHARINSTR
+int handle_BITMASKINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -786,7 +786,7 @@ int handle_MASKEDCHARINSTR
   return 0;
 }
 
-int handle_post_MASKEDCHARINSTR
+int handle_post_BITMASKINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -801,6 +801,7 @@ int handle_post_MASKEDCHARINSTR
   return 0;
 }
 
+IGNOREHANDLER(HEXQUAD)
 IGNOREHANDLER(MULTILINECOMMENT)
 
 int handle_NOOPINSTR
