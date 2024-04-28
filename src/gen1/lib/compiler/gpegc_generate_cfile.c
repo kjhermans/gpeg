@@ -53,6 +53,18 @@ GPEG_ERR_T gpegc_generate_cfile
     "extern int grammar_process_node(gpeg_capture_t*, void*);\n"
     "static int do_node(gpeg_capture_t*, unsigned, gpeg_capture_t*, void*);\n"
     "\n"
+  );
+  for (unsigned i=0; i < gpegc->slotmap.count; i++) {
+    char* slotname = gpegc->slotmap.keys[ i ];
+    //unsigned slot = gpegc->slotmap.values[ i ];
+    fprintf(file,
+      "extern int handle_%s(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n"
+      "extern int handle_post_%s(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n"
+      , slotname
+      , slotname
+    );
+  }
+  fprintf(file,
     "\n"
     "int grammar_process_node\n"
     "  (\n"
