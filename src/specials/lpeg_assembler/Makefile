@@ -10,4 +10,4 @@ lpega:
 	$(CC) -o lpega *.o $(LIBS)
 
 clean:
-	rm -f assembly_handler.o
+	rm -f assembly_handler.o lpega
