@@ -5,7 +5,7 @@ OBJECTS:=$(shell ls *.c | sort | sed -e 's/\.c$$/.o/')
 LIB=libgpegd.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
-INCLUDE=-I$(CURGEN)/include -I$(PREVGEN)/include
+INCLUDE=-I$(CURGEN)/include
 CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen0_ $(INCLUDE)
 
 all: disasmh functionsh instructionsh lib
