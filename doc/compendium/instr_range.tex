@@ -12,9 +12,9 @@
 
 \begin{myquote}
 \begin{verbatim}
-RANGEINSTR <- 'range' S UNSIGNED S UNSIGNED
+RANGEINSTR <- 'range' S HEXBYTE S HEXBYTE
 S <- %s+
-UNSIGNED <- [0-9]+
+HEXBYTE <- [0-9a-fA-F]^2
 \end{verbatim}
 \end{myquote}
 
