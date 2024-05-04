@@ -6,6 +6,9 @@ debug:
 
 world: clean all specials doc test
 
+install:
+	./bin/install.sh
+
 specials:
 	cd src/specials && make
 
