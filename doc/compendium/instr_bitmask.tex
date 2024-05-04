@@ -1,0 +1,155 @@
+\subsection{Instruction: bitmask}
+
+\subsubsection{Summary}
+
+\InputIfFileExists{instr_bitmask_summary.tex}{}{}
+
+\subsubsection{Grammar and Compiling}
+
+\InputIfFileExists{instr_bitmask_compiling.tex}{}{}
+
+\subsubsection{Assembly Syntax}
+
+\begin{myquote}
+\begin{verbatim}
+BITMASKINSTR <- 'bitmask' S UNSIGNED S HEXQUAD S HEXQUAD S HEXQUAD
+S <- %s+
+UNSIGNED <- [0-9]+
+HEXQUAD <- [0-9a-fA-F]^1-8
+\end{verbatim}
+\end{myquote}
+
+\InputIfFileExists{instr_bitmask_assembly.tex}{}{}
+
+\subsubsection{Bytecode Encoding}
+
+This instruction has a size of 20 bytes and is structured in bytecode as follows:
+
+%DEADBEEF
+$_{00}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+10
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+03
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+65
+  }%
+}
+
+
+
+$_{04}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+
+
+
+$_{08}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+
+
+
+$_{12}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+
+
+
+$_{16}$\ 
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+\fbox{%
+  \parbox{20pt}{%
+00
+  }%
+}
+
+%DEADBEEF
+\InputIfFileExists{instr_bitmask_bytecode.tex}{}{}
+
+\subsubsection{Execution State Change}
+
+.
+
+\InputIfFileExists{instr_bitmask_state.tex}{}{}
+

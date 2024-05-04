@@ -1,0 +1,194 @@
+\section{Specification of Bytecode}
+
+\subsection{Instruction: Noop}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |0|0|0|0|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Range}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+
+  |0|0|0|1| |c|c|c|c|c|c|c|c| |C|C|C|C|C|C|C|C|
+  +-+-+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Call}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |0|0|1|0|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Ret}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |0|0|1|1|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Catch}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |0|1|0|0|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Commit}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |0|1|0|1|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Backcommit}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |0|1|1|0|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Partialcommit}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |0|1|1|1|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Fail}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |1|0|0|0|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Failtwice}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |1|0|0|1|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: End}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |1|0|1|0|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Var}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |1|0|1|1|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Opencapture}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |1|1|0|0|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Closecapture}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |1|1|0|1|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Counter
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |1|1|1|0|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
+\subsection{Instruction: Condjump}
+
+Bitspec:
+
+\begin{myquote}
+\begin{verbatim}
+  +-+-+-+-+
+  |1|1|1|1|
+  +-+-+-+-+
+\end{verbatim}
+\end{myquote}
+  
