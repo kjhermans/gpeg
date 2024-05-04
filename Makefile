@@ -4,6 +4,8 @@ all:
 debug:
 	make all DEBUG="-D_DEBUG=1"
 
+world: clean all specials doc test
+
 specials:
 	cd src/specials && make
 
