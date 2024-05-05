@@ -104,7 +104,7 @@ void gpegc_matcher_string
         i += 2;
         break;
       default:
-        gpegc_matcher_char(gpegc, matcher, matcher->value.string.value[ ++i ]);
+        gpegc_matcher_char(gpegc, matcher, matcher->value.string.value[ i ]);
         break;
       }
       break;
