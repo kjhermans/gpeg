@@ -166,17 +166,16 @@ int handle_CAPTURE
 
   gpegc->currentmatcher->type = GPEGC_MATCH_CAPTURE;
   gpegc->currentmatcher->value.capture = (gpegc->cslot)++;
-  if (gpegc->currentrule.slotcount == 0) {
-    snprintf(slotname, sizeof(slotname),
-      "%s"
-      , gpegc->currentrule.name
-    );
-    (gpegc->currentrule.slotcount)++;
-  } else {
+  if (str2int_map_has(&(gpegc->slotmap), gpegc->currentrule.name)) {
     snprintf(slotname, sizeof(slotname),
       "%s_%u"
       , gpegc->currentrule.name,
       (gpegc->currentrule.slotcount)++
+    );
+  } else {
+    snprintf(slotname, sizeof(slotname),
+      "%s"
+      , gpegc->currentrule.name
     );
   }
   str2int_map_put(
@@ -1794,6 +1793,25 @@ int handle_RULE
     gpegc->startrule = (char*)(capture->children.list[ 0 ].data.data);
   }
 
+  if (gpegc->compiler->flags & GPEGC_FLAG_GENTRAPS) {
+    vec_printf(&(gpegc->compiler->output), "  trap\n");
+  }
+  vec_printf(&(gpegc->compiler->output), "%s:\n", gpegc->currentrule.name);
+  if (gpegc->prefixgiven) {
+    vec_printf(&(gpegc->compiler->output), "  call __prefix\n");
+  }
+  if ((gpegc->compiler->flags & GPEGC_FLAG_GENCAPTURES)
+      && strcmp(gpegc->currentrule.name, "__prefix"))
+  {
+    gpegc->currentrule.slot = (gpegc->cslot)++;
+    vec_printf(&(gpegc->compiler->output), "  opencapture %u\n"
+                                           , gpegc->currentrule.slot);
+
+    char slotname[ 128 ];
+    snprintf(slotname, sizeof(slotname), "%s" , gpegc->currentrule.name);
+    str2int_map_put(&(gpegc->slotmap), strdup(slotname), gpegc->currentrule.slot);
+  }
+
   return 0;
 }
 
@@ -1811,31 +1829,13 @@ int handle_post_RULE
 
   gpegc_t* gpegc = arg;
   GPEG_ERR_T e;
-  unsigned slot = 0;
 
-  if (gpegc->compiler->flags & GPEGC_FLAG_GENTRAPS) {
-    vec_printf(&(gpegc->compiler->output), "  trap\n");
-  }
-  vec_printf(&(gpegc->compiler->output), "%s:\n", gpegc->currentrule.name);
-  if (gpegc->prefixgiven) {
-    vec_printf(&(gpegc->compiler->output), "  call __prefix\n");
-  }
-  if ((gpegc->compiler->flags & GPEGC_FLAG_GENCAPTURES)
-      && strcmp(gpegc->currentrule.name, "__prefix"))
-  {
-    slot = (gpegc->cslot)++;
-    vec_printf(&(gpegc->compiler->output), "  opencapture %u\n", slot);
-
-    char slotname[ 128 ];
-    snprintf(slotname, sizeof(slotname), "%s" , gpegc->currentrule.name);
-    str2int_map_put( &(gpegc->slotmap), strdup(slotname), slot);
-
-  }
   e = gpegc_matcherlist(gpegc, &(gpegc->currentrule.matchers));
   if ((gpegc->compiler->flags & GPEGC_FLAG_GENCAPTURES)
       && strcmp(gpegc->currentrule.name, "__prefix"))
   {
-    vec_printf(&(gpegc->compiler->output), "  closecapture %u\n", slot);
+    vec_printf(&(gpegc->compiler->output), "  closecapture %u\n"
+                                           , gpegc->currentrule.slot);
   }
   vec_printf(&(gpegc->compiler->output), "  ret\n\n");
   if (gpegc->compiler->flags & GPEGC_FLAG_GENTRAPS) {

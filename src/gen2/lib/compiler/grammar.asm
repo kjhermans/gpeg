@@ -111,17 +111,17 @@ RULE:
 
 EXPRESSION:
   call __prefix
-  opencapture 8
+  opencapture 7
   call TERMS
   catch __L23
 __L24:
-  opencapture 7
+  opencapture 8
   call OR
   call TERMS
-  closecapture 7
+  closecapture 8
   partialcommit __L24
 __L23:
-  closecapture 8
+  closecapture 7
   ret
 
 TERMS:
@@ -237,73 +237,73 @@ Q_ZEROORMORE:
 
 Q_FROMTO:
   call __prefix
-  opencapture 19
-  char 5e
   opencapture 17
+  char 5e
+  opencapture 18
   set 000000000000ff03000000000000000000000000000000000000000000000000
   catch __L46
 __L47:
   set 000000000000ff03000000000000000000000000000000000000000000000000
   partialcommit __L47
 __L46:
-  closecapture 17
+  closecapture 18
   char 2d
-  opencapture 18
+  opencapture 19
   set 000000000000ff03000000000000000000000000000000000000000000000000
   catch __L48
 __L49:
   set 000000000000ff03000000000000000000000000000000000000000000000000
   partialcommit __L49
 __L48:
-  closecapture 18
   closecapture 19
+  closecapture 17
   ret
 
 Q_UNTIL:
   call __prefix
-  opencapture 21
+  opencapture 20
   char 5e
   char 2d
-  opencapture 20
+  opencapture 21
   set 000000000000ff03000000000000000000000000000000000000000000000000
   catch __L50
 __L51:
   set 000000000000ff03000000000000000000000000000000000000000000000000
   partialcommit __L51
 __L50:
-  closecapture 20
   closecapture 21
+  closecapture 20
   ret
 
 Q_FROM:
   call __prefix
-  opencapture 23
-  char 5e
   opencapture 22
+  char 5e
+  opencapture 23
   set 000000000000ff03000000000000000000000000000000000000000000000000
   catch __L52
 __L53:
   set 000000000000ff03000000000000000000000000000000000000000000000000
   partialcommit __L53
 __L52:
-  closecapture 22
-  char 2d
   closecapture 23
+  char 2d
+  closecapture 22
   ret
 
 Q_SPECIFIC:
   call __prefix
-  opencapture 25
-  char 5e
   opencapture 24
+  char 5e
+  opencapture 25
   set 000000000000ff03000000000000000000000000000000000000000000000000
   catch __L54
 __L55:
   set 000000000000ff03000000000000000000000000000000000000000000000000
   partialcommit __L55
 __L54:
-  closecapture 24
   closecapture 25
+  closecapture 24
   ret
 
 Q_VAR:
@@ -476,18 +476,18 @@ __L85:
 
 SET:
   call __prefix
-  opencapture 39
+  opencapture 35
   call ABOPEN
   catch __L88
-  opencapture 35
+  opencapture 36
   char 5e
-  closecapture 35
+  closecapture 36
   commit __NEXT__
 __L88:
   catch __L89
-  opencapture 36
+  opencapture 37
   catch __L91
-  char 00
+  char 5c
   catch __L93
   set 0000000000200000000000300040540000000000000000000000000000000000
   commit __L94
@@ -503,11 +503,11 @@ __L94:
 __L91:
   set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L92:
-  closecapture 36
+  closecapture 37
   char 2d
-  opencapture 37
+  opencapture 38
   catch __L96
-  char 00
+  char 5c
   catch __L98
   set 0000000000200000000000300040540000000000000000000000000000000000
   commit __L99
@@ -523,12 +523,12 @@ __L99:
 __L96:
   set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L97:
-  closecapture 37
+  closecapture 38
   commit __L90
 __L89:
-  opencapture 38
+  opencapture 39
   catch __L101
-  char 00
+  char 5c
   catch __L103
   set 0000000000200000000000300040540000000000000000000000000000000000
   commit __L104
@@ -544,14 +544,14 @@ __L104:
 __L101:
   set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L102:
-  closecapture 38
+  closecapture 39
 __L90:
   catch __L106
 __L107:
   catch __L108
-  opencapture 36
+  opencapture 37
   catch __L110
-  char 00
+  char 5c
   catch __L112
   set 0000000000200000000000300040540000000000000000000000000000000000
   commit __L113
@@ -567,11 +567,11 @@ __L113:
 __L110:
   set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L111:
-  closecapture 36
+  closecapture 37
   char 2d
-  opencapture 37
+  opencapture 38
   catch __L115
-  char 00
+  char 5c
   catch __L117
   set 0000000000200000000000300040540000000000000000000000000000000000
   commit __L118
@@ -587,12 +587,12 @@ __L118:
 __L115:
   set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L116:
-  closecapture 37
+  closecapture 38
   commit __L109
 __L108:
-  opencapture 38
+  opencapture 39
   catch __L120
-  char 00
+  char 5c
   catch __L122
   set 0000000000200000000000300040540000000000000000000000000000000000
   commit __L123
@@ -608,12 +608,12 @@ __L123:
 __L120:
   set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L121:
-  closecapture 38
+  closecapture 39
 __L109:
   partialcommit __L107
 __L106:
   call ABCLOSE
-  closecapture 39
+  closecapture 35
   ret
 
 VARREFERENCE:
@@ -883,13 +883,13 @@ KW_AS:
 
 STRINGLITERAL:
   call __prefix
-  opencapture 66
-  char 00
   opencapture 65
+  char 27
+  opencapture 66
   catch __L149
 __L150:
   catch __L151
-  char 00
+  char 5c
   catch __L153
   set 0000000080000000000000100040540000000000000000000000000000000000
   commit __L154
@@ -906,9 +906,9 @@ __L151:
 __L152:
   partialcommit __L150
 __L149:
-  closecapture 65
-  char 00
   closecapture 66
+  char 27
+  closecapture 65
   ret
 
 IDENT:

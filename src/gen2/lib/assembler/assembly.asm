@@ -791,13 +791,13 @@ AMPERSAND:
 
 STRINGLITERAL:
   call __prefix
-  opencapture 57
-  char 00
   opencapture 56
+  char 27
+  opencapture 57
   catch __L101
 __L102:
   catch __L103
-  char 00
+  char 5c
   catch __L105
   set 0000000080000000000000100040540000000000000000000000000000000000
   commit __L106
@@ -813,20 +813,20 @@ __L103:
 __L104:
   partialcommit __L102
 __L101:
-  closecapture 56
-  char 00
   closecapture 57
+  char 27
+  closecapture 56
   ret
 
 INTRPCAPTURETYPES:
   call __prefix
-  opencapture 59
   opencapture 58
+  opencapture 59
   quad 7275696e
   char 74
   char 33
   char 32
-  closecapture 58
   closecapture 59
+  closecapture 58
   ret
 

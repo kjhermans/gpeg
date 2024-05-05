@@ -121,8 +121,12 @@ extern int handle_AMPERSAND(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_AMPERSAND(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_STRINGLITERAL(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_STRINGLITERAL(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_STRINGLITERAL_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_STRINGLITERAL_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_INTRPCAPTURETYPES(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int handle_post_INTRPCAPTURETYPES(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_INTRPCAPTURETYPES_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int handle_post_INTRPCAPTURETYPES_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 
 int grammar_process_node
   (
@@ -143,7 +147,7 @@ int do_node
   )
 {
   int e;
-  unsigned indices[ 58 ] = { 0 };
+  unsigned indices[ 60 ] = { 0 };
 
   switch (capture->type) {
   case 0:
@@ -1058,6 +1062,22 @@ int do_node
       }
     }
     break;
+  case 57:
+    {
+      ++indices[ 57 ];
+      if ((e = handle_STRINGLITERAL_0(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+      for (unsigned i=0; i < capture->children.count; i++) {
+        if ((e = do_node(capture, indices[ 57 ], &(capture->children.list[ i ]), ptr)) != 0) {
+          return e;
+        }
+      }
+      if ((e = handle_post_STRINGLITERAL_0(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+    }
+    break;
   case 58:
     {
       ++indices[ 58 ];
@@ -1070,6 +1090,22 @@ int do_node
         }
       }
       if ((e = handle_post_INTRPCAPTURETYPES(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+    }
+    break;
+  case 59:
+    {
+      ++indices[ 59 ];
+      if ((e = handle_INTRPCAPTURETYPES_0(parent, index, capture, ptr)) != 0) {
+        return e;
+      }
+      for (unsigned i=0; i < capture->children.count; i++) {
+        if ((e = do_node(capture, indices[ 59 ], &(capture->children.list[ i ]), ptr)) != 0) {
+          return e;
+        }
+      }
+      if ((e = handle_post_INTRPCAPTURETYPES_0(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }

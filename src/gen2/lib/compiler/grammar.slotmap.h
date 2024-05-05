@@ -9,6 +9,7 @@
 #define SLOT_DEFINITION 5
 #define SLOT_RULE 6
 #define SLOT_EXPRESSION 7
+#define SLOT_EXPRESSION_0 8
 #define SLOT_TERMS 9
 #define SLOT_TERM 10
 #define SLOT_SCANMATCHER 11
@@ -18,10 +19,14 @@
 #define SLOT_Q_ONEORMORE 15
 #define SLOT_Q_ZEROORMORE 16
 #define SLOT_Q_FROMTO 17
-#define SLOT_Q_FROMTO_1 18
+#define SLOT_Q_FROMTO_0 18
+#define SLOT_Q_FROMTO_1 19
 #define SLOT_Q_UNTIL 20
+#define SLOT_Q_UNTIL_0 21
 #define SLOT_Q_FROM 22
+#define SLOT_Q_FROM_0 23
 #define SLOT_Q_SPECIFIC 24
+#define SLOT_Q_SPECIFIC_0 25
 #define SLOT_Q_VAR 26
 #define SLOT_MATCHER 27
 #define SLOT_BITMASK 28
@@ -32,9 +37,10 @@
 #define SLOT_GROUP 33
 #define SLOT_CAPTUREEND 34
 #define SLOT_SET 35
-#define SLOT_SET_1 36
-#define SLOT_SET_2 37
-#define SLOT_SET_3 38
+#define SLOT_SET_0 36
+#define SLOT_SET_1 37
+#define SLOT_SET_2 38
+#define SLOT_SET_3 39
 #define SLOT_VARREFERENCE 40
 #define SLOT_REFERENCE 41
 #define SLOT_LIMITEDCALL 42
@@ -61,6 +67,7 @@
 #define SLOT_OPTNAMESPACE 63
 #define SLOT_KW_AS 64
 #define SLOT_STRINGLITERAL 65
+#define SLOT_STRINGLITERAL_0 66
 #define SLOT_IDENT 67
 #define SLOT_BOPEN 68
 #define SLOT_BCLOSE 69

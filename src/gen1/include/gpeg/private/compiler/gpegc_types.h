@@ -112,6 +112,7 @@ typedef struct
     char*                 name;
     gpegc_matcherlist_t   matchers;
     unsigned              slotcount;
+    unsigned              slot;
   }                     currentrule;
   gpegc_matcher_t*      currentmatcher;
   gpegc_matcherlist_t*  currentmatcherlist;
