@@ -1,7 +1,15 @@
+bin/gpega
+bin/gpegc
+bin/gpegd
+bin/gpege
+bin/lpega
 src/gen0/main/engine/gpege
 src/gen1/main/assembler/gpega
 src/gen1/main/compiler/gpegc
 src/gen1/main/disassembler/gpegd
+src/gen2/main/assembler/gpega
+src/gen2/main/compiler/gpegc
+src/gen2/main/disassembler/gpegd
 
 doc/compendium/compendium.aux
 doc/compendium/compendium.log
