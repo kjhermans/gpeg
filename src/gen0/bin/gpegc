@@ -881,9 +881,9 @@ sub generate_slotmaphfile
 {
   my $f = shift;
   my $code = '';
-  foreach my $key (sort(keys(%slotmap))) {
-    $code .= "#define SLOT_$key $slotmap{$key}\n";
-    $code .= "#define SLOT_$slotmap{$key} $key\n";
+  foreach my $key (sort { $a <=> $b } keys(%inverse_slotmap)) {
+#    $code .= "#define SLOT_$key "$inverse_slotmap{$key}"\n";
+    $code .= "#define SLOT_$inverse_slotmap{$key} $key\n";
   }
   open FILE, "> $f" || die "Could not open slotmap.h file $f for writing.";
   print FILE
