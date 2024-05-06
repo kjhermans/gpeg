@@ -75,6 +75,11 @@ lpeg_opcode_t;
 #define LPEG_INSTR_LENGTH_JUMP          8
 #define LPEG_INSTR_LENGTH_PARTIALCOMMIT 8
 #define LPEG_INSTR_LENGTH_RET           4
+#define LPEG_INSTR_LENGTH_OPENCAPTURE   4
+#define LPEG_INSTR_LENGTH_CLOSECAPTURE  4
+#define LPEG_INSTR_LENGTH_SET           36
+#define LPEG_INSTR_LENGTH_SPAN          36
+#define LPEG_INSTR_LENGTH_TESTANY       8
 #define LPEG_INSTR_LENGTH_              4
 
 #include <inttypes.h>

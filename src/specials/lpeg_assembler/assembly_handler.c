@@ -282,24 +282,26 @@ int handle_CLOSECAPTUREINSTR
   (void)capture;
   (void)arg;
 
-  fprintf(stderr, "Warning: closecapture instruction not emitted.\n");
+  gpega_t* gpega = arg;
+  lpeg_instr_t instr = {
+    .instr.code = ICloseCapture,
+    .instr.aux = 0,
+    .instr.key = 0
+  };
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &instr, sizeof(instr));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += LPEG_INSTR_LENGTH_CLOSECAPTURE;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_CLOSECAPTUREINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(CLOSECAPTUREINSTR)
 
 IGNOREHANDLER(CODE)
 IGNOREHANDLER(COLON)
@@ -585,80 +587,10 @@ int handle_INTRPCAPTUREINSTR
   return 0;
 }
 
-int handle_post_INTRPCAPTUREINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(INTRPCAPTUREINSTR)
 
-int handle_INTRPCAPTURETYPES
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_INTRPCAPTURETYPES
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_INTRPCAPTURETYPES_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_INTRPCAPTURETYPES_0
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREHANDLER(INTRPCAPTURETYPES)
+IGNOREHANDLER(INTRPCAPTURETYPES_0)
 
 int handle_ISOLATEINSTR
   (
@@ -678,20 +610,7 @@ int handle_ISOLATEINSTR
   return 0;
 }
 
-int handle_post_ISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(ISOLATEINSTR)
 
 int handle_JUMPINSTR
   (
@@ -786,20 +705,7 @@ int handle_BITMASKINSTR
   return 0;
 }
 
-int handle_post_BITMASKINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(BITMASKINSTR)
 
 IGNOREHANDLER(HEXQUAD)
 IGNOREHANDLER(MULTILINECOMMENT)
@@ -822,20 +728,7 @@ int handle_NOOPINSTR
   return 0;
 }
 
-int handle_post_NOOPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(NOOPINSTR)
 
 IGNOREHANDLER(NUMBER)
 
@@ -852,7 +745,21 @@ int handle_OPENCAPTUREINSTR
   (void)capture;
   (void)arg;
 
-  fprintf(stderr, "Warning: opencapture instruction not emitted.\n");
+  gpega_t* gpega = arg;
+  lpeg_instr_t instr = {
+    .instr.code = IOpenCapture,
+    .instr.aux = 0,
+    .instr.key = 0
+  };
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &instr, sizeof(instr));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += LPEG_INSTR_LENGTH_OPENCAPTURE;
+    break;
+  }
 
   return 0;
 }
@@ -952,20 +859,7 @@ int handle_RANGEINSTR
   return 0;
 }
 
-int handle_post_RANGEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(RANGEINSTR)
 
 IGNOREHANDLER(REGISTER)
 
@@ -981,23 +875,13 @@ int handle_REPLACEINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  fprintf(stderr, "Warning: replace instruction not emitted.\n");
+
   return 0;
 }
 
-int handle_post_REPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(REPLACEINSTR)
 
 int handle_RETINSTR
   (
@@ -1051,32 +935,30 @@ int handle_SETINSTR
   (void)arg;
 
   gpega_t* gpega = arg;
+  unsigned char* hex = capture->children.list[ 0 ].data.data;
+  lpeg_instr_t instr = {
+    .instr.code = ISet,
+    .instr.aux = 0,
+    .instr.key = 0
+  };
 
   switch (gpega->round) {
   case 1:
+    vec_append(gpega->output, &instr, sizeof(instr));
+    for (unsigned i=0; i < 64; i += 2) {
+      uint8_t c = hexcodon(hex[ i ], hex[ i+1 ]);
+      vec_appendchr(gpega->output, c);
+    }
     __attribute__ ((fallthrough));
   case 0:
-    //gpega->offset += INSTR_LENGTH_SET;
+    gpega->offset += LPEG_INSTR_LENGTH_SET;
     break;
   }
 
   return 0;
 }
 
-int handle_post_SETINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(SETINSTR)
 
 int handle_SKIPINSTR
   (
@@ -1091,33 +973,17 @@ int handle_SKIPINSTR
   (void)capture;
   (void)arg;
 
-  gpega_t* gpega = arg;
+  char* nstring = (char*)(capture->children.list[ 0 ].data.data);
+  unsigned n = strtoul(nstring, 0, 10);
 
-  switch (gpega->round) {
-  case 1:
-    __attribute__ ((fallthrough));
-  case 0:
-    //gpega->offset += INSTR_LENGTH_SKIP;
-    break;
+  for (unsigned i=0; i < n; i++) {
+    handle_ANYINSTR(parent, index, capture, arg);
   }
 
   return 0;
 }
 
-int handle_post_SKIPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(SKIPINSTR)
 
 IGNOREHANDLER(SLOT)
 
@@ -1133,6 +999,28 @@ int handle_SPANINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  unsigned char* hex = capture->children.list[ 0 ].data.data;
+  lpeg_instr_t instr = {
+    .instr.code = ISpan,
+    .instr.aux = 0,
+    .instr.key = 0
+  };
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &instr, sizeof(instr));
+    for (unsigned i=0; i < 64; i += 2) {
+      uint8_t c = hexcodon(hex[ i ], hex[ i+1 ]);
+      vec_appendchr(gpega->output, c);
+    }
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += LPEG_INSTR_LENGTH_SPAN;
+    break;
+  }
+
   return 0;
 }
 
@@ -1166,23 +1054,41 @@ int handle_TESTANYINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  char* label = (char*)(capture->children.list[ 0 ].data.data);
+  unsigned offset = 0;
+
+  if (0 == strcmp(label, "__NEXT__")) {
+    offset = gpega->offset + LPEG_INSTR_LENGTH_TESTANY;
+  } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
+    return GPEG_ERR_LABEL.code;
+  }
+
+  lpeg_instr_t instr[ 2 ] = {
+    {
+      .instr.code = ITestAny,
+      .instr.aux = 0,
+      .instr.key = 0
+    },
+    {
+      .offset = offset
+    }
+  };
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, instr, sizeof(instr));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += LPEG_INSTR_LENGTH_TESTANY;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_TESTANYINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(TESTANYINSTR)
 
 int handle_TESTCHARINSTR
   (
@@ -1289,33 +1195,12 @@ int handle_TRAPINSTR
   (void)capture;
   (void)arg;
 
-  gpega_t* gpega = arg;
-
-  switch (gpega->round) {
-  case 1:
-    __attribute__ ((fallthrough));
-  case 0:
-    //gpega->offset += INSTR_LENGTH_TRAP;
-    break;
-  }
+  fprintf(stderr, "Warning: trap instruction not emitted.\n");
 
   return 0;
 }
 
-int handle_post_TRAPINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(TRAPINSTR)
 
 IGNOREHANDLER(TYPE)
 IGNOREHANDLER(UNSIGNED)
@@ -1332,20 +1217,10 @@ int handle_VARINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  fprintf(stderr, "Warning: var instruction not emitted.\n");
+
   return 0;
 }
 
-int handle_post_VARINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(VARINSTR)
