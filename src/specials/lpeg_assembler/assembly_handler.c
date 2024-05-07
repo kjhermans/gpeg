@@ -119,7 +119,7 @@ int handle_BACKCOMMITINSTR
       .instr.key = 0
     },
     {
-      .offset = offset
+      .offset = offset / 4
     }
   };
 
@@ -167,7 +167,7 @@ int handle_CALLINSTR
       .instr.key = 0
     },
     {
-      .offset = offset
+      .offset = offset / 4
     }
   };
 
@@ -215,7 +215,7 @@ int handle_CATCHINSTR
       .instr.key = 0
     },
     {
-      .offset = offset
+      .offset = offset / 4
     }
   };
 
@@ -337,7 +337,7 @@ int handle_COMMITINSTR
       .instr.key = 0
     },
     {
-      .offset = offset
+      .offset = offset / 4
     }
   };
 
@@ -642,7 +642,7 @@ int handle_JUMPINSTR
       .instr.key = 0
     },
     {
-      .offset = offset
+      .offset = offset / 4
     }
   };
 
@@ -796,7 +796,7 @@ int handle_PARTIALCOMMITINSTR
       .instr.key = 0
     },
     {
-      .offset = offset
+      .offset = offset / 4
     }
   };
 
@@ -1072,7 +1072,7 @@ int handle_TESTANYINSTR
       .instr.key = 0
     },
     {
-      .offset = offset
+      .offset = offset / 4
     }
   };
 
@@ -1122,7 +1122,7 @@ int handle_TESTCHARINSTR
       .instr.key = 0
     },
     {
-      .offset = offset
+      .offset = offset / 4
     }
   };
 
