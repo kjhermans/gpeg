@@ -1102,23 +1102,43 @@ int handle_TESTCHARINSTR
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpega_t* gpega = arg;
+  unsigned char* hex = capture->children.list[ 0 ].data.data;
+  uint32_t value = htonl(hexcodon(hex[ 0 ], hex[ 1 ]));
+  char* label = (char*)(capture->children.list[ 1 ].data.data);
+  unsigned offset = 0;
+
+  if (0 == strcmp(label, "__NEXT__")) {
+    offset = gpega->offset + LPEG_INSTR_LENGTH_TESTANY;
+  } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
+    return GPEG_ERR_LABEL.code;
+  }
+
+  lpeg_instr_t instr[ 2 ] = {
+    {
+      .instr.code = ITestChar,
+      .instr.aux = value,
+      .instr.key = 0
+    },
+    {
+      .offset = offset
+    }
+  };
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, instr, sizeof(instr));
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += LPEG_INSTR_LENGTH_TESTCHAR;
+    break;
+  }
+
   return 0;
 }
 
-int handle_post_TESTCHARINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
+IGNOREPOSTHANDLER(TESTCHARINSTR)
 
 int handle_TESTQUADINSTR
   (
