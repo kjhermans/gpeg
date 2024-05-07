@@ -79,75 +79,75 @@ int main
 
   while (offset < buflen) {
     lpeg_instr_t* instr = (lpeg_instr_t*)(&(buf[ offset ]));
+    fprintf(stdout, "%u: ", offset/4);
     offset += 4;
     switch (instr->instr.code) {
     case IAny:
-      fprintf(stdout, "%u: any\n", (offset-4)/4);
+      fprintf(stdout, "any\n");
       break;
     case IChar:
-      fprintf(stdout, "%u: char %.2x\n", (offset-4)/4, instr->instr.aux);
+      fprintf(stdout, "char %.2x\n", instr->instr.aux);
       break;
     case ISet:
       {
-        fprintf(stdout, "%u: set %s\n", (offset-4)/4, setstring(&(buf[ offset ])));
+        fprintf(stdout, "set %s\n", setstring(&(buf[ offset ])));
         offset += 32;
       }
       break;
     case ITestAny:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: testany %u\n", (offset-4)/4, param);
+        fprintf(stdout, "testany %u\n", param);
         offset += 4;
       }
       break;
     case ITestChar:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: testchar %.2x %u\n"
-                        , (offset-4)/4, instr->instr.aux, param);
+        fprintf(stdout, "testchar %.2x %u\n", instr->instr.aux, param);
         offset += 4;
       }
       break;
     case ITestSet:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: testset %s %u\n"
-                        , (offset-4)/4, setstring(&(buf[ offset + 4 ])), param);
+        fprintf(stdout, "testset %s %u\n"
+                        , setstring(&(buf[ offset + 4 ])), param);
         offset += 36;
       }
       break;
     case ISpan:
       {
-        fprintf(stdout, "%u: span %s\n", (offset-4)/4, setstring(&(buf[ offset ])));
+        fprintf(stdout, "span %s\n", setstring(&(buf[ offset ])));
         offset += 32;
       }
       break;
     case IBehind:
       break;
     case IRet:
-      fprintf(stdout, "%u: ret\n", (offset-4)/4);
+      fprintf(stdout, "ret\n");
       break;
     case IEnd:
-      fprintf(stdout, "%u: end\n", (offset-4)/4);
+      fprintf(stdout, "end\n");
       break;
     case IChoice:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: choice %u\n", (offset-4)/4, param);
+        fprintf(stdout, "choice %u\n", param);
         offset += 4;
       }
       break;
     case IJmp:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: jmp %u\n", (offset-4)/4, param);
+        fprintf(stdout, "jmp %u\n", param);
         offset += 4;
       }
       break;
     case ICall:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: call %u\n", (offset-4)/4, param);
+        fprintf(stdout, "call %u\n", param);
         offset += 4;
       }
       break;
@@ -156,42 +156,44 @@ int main
     case ICommit:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: commit %u\n", (offset-4)/4, param);
+        fprintf(stdout, "commit %u\n", param);
         offset += 4;
       }
       break;
     case IPartialCommit:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: partialcommit %u\n", (offset-4)/4, param);
+        fprintf(stdout, "partialcommit %u\n", param);
         offset += 4;
       }
       break;
     case IBackCommit:
       {
         uint32_t param = *((uint32_t*)(&(buf[ offset ])));
-        fprintf(stdout, "%u: backcommit %u\n", (offset-4)/4, param);
+        fprintf(stdout, "backcommit %u\n", param);
         offset += 4;
       }
       break;
     case IFailTwice:
-      fprintf(stdout, "%u: failtwice\n", (offset-4)/4);
+      fprintf(stdout, "failtwice\n");
       break;
     case IFail:
-      fprintf(stdout, "%u: fail\n", (offset-4)/4);
+      fprintf(stdout, "fail\n");
       break;
     case IGiveup:
       break;
     case IFullCapture:
       break;
     case IOpenCapture:
-      fprintf(stdout, "%u: opencapture\n", (offset-4)/4);
+      fprintf(stdout, "opencapture\n");
       break;
     case ICloseCapture:
-      fprintf(stdout, "%u: closecapture\n", (offset-4)/4);
+      fprintf(stdout, "closecapture\n");
       break;
     case ICloseRunTime:
       break;
+    default:
+      fprintf(stdout, "-- unknown opcode %u\n", instr->instr.code);
     }
   }
 
