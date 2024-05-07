@@ -935,7 +935,7 @@ int handle_SETINSTR
   switch (gpega->round) {
   case 1:
     vec_append(gpega->output, &opcode, sizeof(opcode));
-    for (unsigned i=0; i<64; i+=2) {
+    for (unsigned i=0; i < 64; i += 2) {
       unsigned chr = hexcodon(set[ i ], set[ i+1 ]);
       vec_appendchr(gpega->output, chr);
     }
