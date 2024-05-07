@@ -997,7 +997,22 @@ int handle_SPANINSTR
   (void)capture;
   (void)arg;
 
-  fprintf(stderr, "Warning: span instruction not implemented.\n");
+  gpega_t* gpega = arg;
+  uint32_t opcode = htonl(INSTR_OPCODE_SPAN);
+  char* set = (char*)(capture->children.list[ 0 ].data.data);
+
+  switch (gpega->round) {
+  case 1:
+    vec_append(gpega->output, &opcode, sizeof(opcode));
+    for (unsigned i=0; i < 64; i += 2) {
+      unsigned chr = hexcodon(set[ i ], set[ i+1 ]);
+      vec_appendchr(gpega->output, chr);
+    }
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_SPAN;
+    break;
+  }
 
   return 0;
 }
@@ -1069,10 +1084,10 @@ int handle_TESTCHARINSTR
   case 1:
     {
       uint32_t opcode = htonl(INSTR_OPCODE_TESTCHAR);
+      unsigned char* hex = capture->children.list[ 0 ].data.data;
       char* label = (char*)(capture->children.list[ 1 ].data.data);
       unsigned offset = 0;
       uint32_t o;
-      unsigned char* hex = capture->children.list[ 0 ].data.data;
       uint32_t value = htonl(hexcodon(hex[ 0 ], hex[ 1 ]));
 
       if (0 == strcmp(label, "__NEXT__")) {
@@ -1109,7 +1124,35 @@ int handle_TESTQUADINSTR
   (void)capture;
   (void)arg;
 
-  fprintf(stderr, "Warning: testquad instruction not implemented.\n");
+  gpega_t* gpega = arg;
+
+  switch (gpega->round) {
+  case 1:
+    {
+      uint32_t opcode = htonl(INSTR_OPCODE_TESTQUAD);
+      char* quad = (char*)(capture->children.list[ 0 ].data.data);
+      char* label = (char*)(capture->children.list[ 1 ].data.data);
+      unsigned offset = 0;
+      uint32_t o;
+
+      if (0 == strcmp(label, "__NEXT__")) {
+        offset = gpega->offset + INSTR_LENGTH_TESTQUAD;
+      } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
+        return GPEG_ERR_LABEL.code;
+      }
+      o = htonl(offset);
+      vec_append(gpega->output, &opcode, sizeof(opcode));
+      vec_append(gpega->output, &o, sizeof(o));
+      vec_appendchr(gpega->output, hexcodon(quad[ 0 ], quad[ 1 ]));
+      vec_appendchr(gpega->output, hexcodon(quad[ 2 ], quad[ 3 ]));
+      vec_appendchr(gpega->output, hexcodon(quad[ 4 ], quad[ 5 ]));
+      vec_appendchr(gpega->output, hexcodon(quad[ 6 ], quad[ 7 ]));
+    }
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_TESTQUAD;
+    break;
+  }
 
   return 0;
 }
@@ -1129,7 +1172,36 @@ int handle_TESTSETINSTR
   (void)capture;
   (void)arg;
 
-  fprintf(stderr, "Warning: testset instruction not implemented.\n");
+  gpega_t* gpega = arg;
+
+  switch (gpega->round) {
+  case 1:
+    {
+      uint32_t opcode = htonl(INSTR_OPCODE_TESTSET);
+      char* set = (char*)(capture->children.list[ 0 ].data.data);
+      char* label = (char*)(capture->children.list[ 1 ].data.data);
+      unsigned offset = 0;
+      uint32_t o;
+
+      if (0 == strcmp(label, "__NEXT__")) {
+        offset = gpega->offset + INSTR_LENGTH_TESTSET;
+      } else if (str2int_map_get(&(gpega->labelmap), label, &offset)) {
+        return GPEG_ERR_LABEL.code;
+      }
+      o = htonl(offset);
+
+      vec_append(gpega->output, &opcode, sizeof(opcode));
+      vec_append(gpega->output, &o, sizeof(o));
+      for (unsigned i=0; i < 64; i += 2) {
+        unsigned chr = hexcodon(set[ i ], set[ i+1 ]);
+        vec_appendchr(gpega->output, chr);
+      }
+    }
+    __attribute__ ((fallthrough));
+  case 0:
+    gpega->offset += INSTR_LENGTH_TESTSET;
+    break;
+  }
 
   return 0;
 }
