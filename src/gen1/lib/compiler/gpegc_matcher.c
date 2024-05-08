@@ -236,6 +236,21 @@ GPEG_ERR_T gpegc_matcher_
       );
     }
     break;
+  case GPEGC_MATCH_LIMITEDCALL:
+    {
+      char* dflt = "default";
+      if (0 == strcmp(matcher->value.limitedcall.slot, "$_")) {
+        matcher->value.limitedcall.slot = dflt;
+      }
+      vec_printf(&(gpegc->compiler->output),
+                                "  intrpcapture %s %s\n"
+                                "  call %s\n"
+                                , matcher->value.limitedcall.type
+                                , matcher->value.limitedcall.slot
+                                , matcher->value.limitedcall.rule
+      );
+    }
+    break;
   }
   return GPEG_OK;
 }

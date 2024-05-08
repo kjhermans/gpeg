@@ -823,6 +823,17 @@ int handle_LIMITEDCALL
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegc_t* gpegc = arg;
+  char* type = (char*)(capture->children.list[ 0 ].data.data);
+  char* slot = (char*)(capture->children.list[ 2 ].data.data);
+  char* rule = (char*)(capture->children.list[ 4 ].data.data);
+
+  gpegc->currentmatcher->type = GPEGC_MATCH_LIMITEDCALL;
+  gpegc->currentmatcher->value.limitedcall.type = type;
+  gpegc->currentmatcher->value.limitedcall.slot = slot;
+  gpegc->currentmatcher->value.limitedcall.rule = rule;
+
   return 0;
 }
 

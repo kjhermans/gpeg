@@ -62,6 +62,7 @@ struct gpegc_matcher
 #define GPEGC_MATCH_CAPTURE     10
 #define GPEGC_MATCH_GROUP       11
 #define GPEGC_MATCH_CHOICE      12
+#define GPEGC_MATCH_LIMITEDCALL 13
   unsigned                      type;
 
   union {
@@ -88,6 +89,11 @@ struct gpegc_matcher
       uint8_t                       from;
       uint8_t                       until;
     }                             range;
+    struct {
+      char*                         type;
+      char*                         slot;
+      char*                         rule;
+    }                             limitedcall;
   }                             value;
   gpegc_matcherlist_t           group;
   gpegc_matcherlist_t           altgroup;
