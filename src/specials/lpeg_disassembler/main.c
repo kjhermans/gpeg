@@ -86,7 +86,11 @@ int main
       fprintf(stdout, "any\n");
       break;
     case IChar:
-      fprintf(stdout, "char %.2x\n", instr->instr.aux);
+      fprintf(stdout, "char %.2x -- '%c'\n"
+                      , instr->instr.aux
+                      , (instr->instr.aux > 31 && instr->instr.aux < 127)
+                        ? instr->instr.aux : 0x3f
+      );
       break;
     case ISet:
       {
@@ -97,6 +101,7 @@ int main
     case ITestAny:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "testany %d\n", param);
         offset += 4;
       }
@@ -104,6 +109,7 @@ int main
     case ITestChar:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "testchar %.2x %d\n", instr->instr.aux, param);
         offset += 4;
       }
@@ -111,6 +117,7 @@ int main
     case ITestSet:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "testset %s %d\n"
                         , setstring(&(buf[ offset + 4 ])), param);
         offset += 36;
@@ -133,6 +140,7 @@ int main
     case IChoice:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "choice %d\n", param);
         offset += 4;
       }
@@ -140,6 +148,7 @@ int main
     case IJmp:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "jmp %d\n", param);
         offset += 4;
       }
@@ -147,6 +156,7 @@ int main
     case ICall:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "call %d\n", param);
         offset += 4;
       }
@@ -156,6 +166,7 @@ int main
     case ICommit:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "commit %d\n", param);
         offset += 4;
       }
@@ -163,6 +174,7 @@ int main
     case IPartialCommit:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "partialcommit %d\n", param);
         offset += 4;
       }
@@ -170,6 +182,7 @@ int main
     case IBackCommit:
       {
         int32_t param = *((int32_t*)(&(buf[ offset ])));
+        param = ((offset - 4) / 4) + param;
         fprintf(stdout, "backcommit %d\n", param);
         offset += 4;
       }
