@@ -92,7 +92,7 @@ typedef union
     uint8_t               aux;
     uint16_t              key;
   }                     instr;
-  uint32_t              offset;
+  int32_t              offset;
   uint8_t               buffer[ 1 ];
 }
 lpeg_instr_t;

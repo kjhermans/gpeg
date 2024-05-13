@@ -33,7 +33,7 @@ END                <- !.
 ANYINSTR           <- 'any'
 BACKCOMMITINSTR    <- 'backcommit' S LABEL
 CALLINSTR          <- 'call' S LABEL
-CATCHINSTR         <- 'catch' S LABEL
+CATCHINSTR         <- ( 'catch' / 'choice' ) S LABEL
 CHARINSTR          <- 'char' S HEXBYTE
 BITMASKINSTR       <- 'bitmask' S UNSIGNED S HEXQUAD S HEXQUAD S HEXQUAD
 CLOSECAPTUREINSTR  <- 'closecapture' S SLOT
