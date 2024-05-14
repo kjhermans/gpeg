@@ -442,6 +442,18 @@ int handle_instr_bitmask
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpegd_t* gpegd   = arg;
+  unsigned nbits   = ntohl(*((uint32_t*)(capture->data.data)));
+  unsigned bits    = ntohl(*((uint32_t*)(capture->data.data + 4)));
+  unsigned andmask = ntohl(*((uint32_t*)(capture->data.data + 8)));
+  unsigned ormask  = ntohl(*((uint32_t*)(capture->data.data + 12)));
+
+  vec_printf(gpegd->output, "%u: bitmask %u %x %x %x\n"
+                            , gpegd->offset, nbits, bits, andmask, ormask
+  );
+  gpegd->offset += INSTR_LENGTH_BITMASK;
+
   return 0;
 }
 

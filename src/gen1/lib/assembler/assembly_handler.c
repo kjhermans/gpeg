@@ -656,11 +656,12 @@ int handle_BITMASKINSTR
   switch (gpega->round) {
   case 1:
     {
+gpeg_capture_debug(capture);
       uint32_t opcode = htonl(INSTR_OPCODE_BITMASK);
-      uint32_t nbits = atoi((char*)(capture->children.list[ 1 ].data.data));
-      uint32_t bits = strtol((char*)(capture->children.list[ 2 ].data.data), 0, 16);
-      uint32_t andmask = strtol((char*)(capture->children.list[ 3 ].data.data), 0, 16);
-      uint32_t ormask = strtol((char*)(capture->children.list[ 4 ].data.data), 0, 16);
+      uint32_t nbits = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
+      uint32_t bits = htonl(strtol((char*)(capture->children.list[ 1 ].data.data), 0, 16));
+      uint32_t andmask = htonl(strtol((char*)(capture->children.list[ 2 ].data.data), 0, 16));
+      uint32_t ormask = htonl(strtol((char*)(capture->children.list[ 3 ].data.data), 0, 16));
       vec_append(gpega->output, &opcode, sizeof(opcode));
       vec_append(gpega->output, &nbits, sizeof(nbits));
       vec_append(gpega->output, &bits, sizeof(bits));
