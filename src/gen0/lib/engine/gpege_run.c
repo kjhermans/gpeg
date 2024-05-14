@@ -119,18 +119,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     gpege->bytecode.data, \
     ec->bytecode_offset + 12 \
   ); \
-  uint32_t nbytes = (nbits / 8) + 1; \
+  uint32_t nbytes = ((nbits + 7) / 8); \
   if (ec->input_offset + nbytes <= ec->input->size) { \
     for (unsigned i=0; i < nbytes; i++) { \
       uint8_t byte = bits & 0xff; \
       uint8_t mask = andmask & 0xff; \
-      nbits -= 8; \
-      byte >>= 8; \
-      andmask >>= 8; \
-      if ((ec->input->data[ ec->input_offset ] & byte) != mask) { \
+      if ((ec->input->data[ ec->input_offset+i ] & mask) != byte) { \
         ec->failed = 1; \
         break; \
       } \
+      nbits -= 8; \
+      bits >>= 8; \
+      andmask >>= 8; \
     } \
     if (!(ec->failed)) { \
       ec->input_offset += nbytes; \
