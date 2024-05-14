@@ -72,7 +72,9 @@ struct gpegc_matcher
       unsigned char                 quad[ 4 ];
       unsigned                      quadoffset;
     }                             string;
-    unsigned                      capture;
+    struct {
+      unsigned                      slot;
+    }                             capture;
     unsigned                      number;
     struct {
       int                           inverted;

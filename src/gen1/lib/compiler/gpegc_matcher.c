@@ -203,12 +203,12 @@ GPEG_ERR_T gpegc_matcher_
   case GPEGC_MATCH_CAPTURE:
     vec_printf(&(gpegc->compiler->output),
                               "  opencapture %u\n"
-                              , matcher->value.capture
+                              , matcher->value.capture.slot
     );
     GPEG_CHECK(gpegc_matcherlist(gpegc, &(matcher->group)), PROPAGATE);
     vec_printf(&(gpegc->compiler->output),
                               "  closecapture %u\n"
-                              , matcher->value.capture
+                              , matcher->value.capture.slot
     );
     break;
   case GPEGC_MATCH_GROUP:

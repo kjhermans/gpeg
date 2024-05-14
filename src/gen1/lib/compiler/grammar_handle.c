@@ -165,7 +165,7 @@ int handle_CAPTURE
   char slotname[ 128 ];
 
   gpegc->currentmatcher->type = GPEGC_MATCH_CAPTURE;
-  gpegc->currentmatcher->value.capture = (gpegc->cslot)++;
+  gpegc->currentmatcher->value.capture.slot = (gpegc->cslot)++;
   if (str2int_map_has(&(gpegc->slotmap), gpegc->currentrule.name)) {
     snprintf(slotname, sizeof(slotname),
       "%s_%u"
@@ -181,7 +181,7 @@ int handle_CAPTURE
   str2int_map_put(
     &(gpegc->slotmap),
     strdup(slotname),
-    gpegc->currentmatcher->value.capture
+    gpegc->currentmatcher->value.capture.slot
   );
   capture->attachment.value_ptr = gpegc->currentmatcherlist;
   gpegc->currentmatcherlist = &(gpegc->currentmatcher->group);
@@ -208,8 +208,6 @@ int handle_post_CAPTURE
 
   return 0;
 }
-
-IGNOREHANDLER(CAPTUREEND)
 
 int handle_CAPTURETYPE
   (
@@ -430,36 +428,6 @@ int handle_post_EXPRESSION_0
 
   gpegc->currentmatcherlist = capture->attachment.value_ptr;
 
-  return 0;
-}
-
-int handle_FATARROW
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_FATARROW
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
   return 0;
 }
 
@@ -1599,36 +1567,6 @@ int handle_post_Q_ZEROORONE
   return 0;
 }
 
-int handle_RECYCLE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_RECYCLE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_REFERENCE
   (
     gpeg_capture_t* parent,
@@ -1649,126 +1587,6 @@ int handle_REFERENCE
 }
 
 int handle_post_REFERENCE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_REPLACE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_REPLACE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_REPLACETERM
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_REPLACETERM
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_REPLACETERMS
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_REPLACETERMS
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_RIGHTARROW
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_post_RIGHTARROW
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2323,7 +2141,7 @@ int handle_VARCAPTURE
   char slotname[ 128 ];
 
   gpegc->currentmatcher->type = GPEGC_MATCH_CAPTURE;
-  gpegc->currentmatcher->value.capture = (gpegc->cslot)++;
+  gpegc->currentmatcher->value.capture.slot = (gpegc->cslot)++;
   snprintf(slotname, sizeof(slotname),
     "%s"
     , capture->children.list[ 2 ].data.data
@@ -2331,7 +2149,7 @@ int handle_VARCAPTURE
   str2int_map_put(
     &(gpegc->slotmap),
     strdup(slotname),
-    gpegc->currentmatcher->value.capture
+    gpegc->currentmatcher->value.capture.slot
   );
   capture->attachment.value_ptr = gpegc->currentmatcherlist;
   gpegc->currentmatcherlist = &(gpegc->currentmatcher->group);

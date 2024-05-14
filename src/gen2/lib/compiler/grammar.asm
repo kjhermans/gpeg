@@ -413,7 +413,6 @@ __L82:
   call COLON
   call EXPRESSION
   call CBCLOSE
-  call CAPTUREEND
   closecapture 29
   ret
 
@@ -446,7 +445,6 @@ CAPTURE:
   call CBOPEN
   call EXPRESSION
   call CBCLOSE
-  call CAPTUREEND
   closecapture 32
   ret
 
@@ -459,526 +457,450 @@ GROUP:
   closecapture 33
   ret
 
-CAPTUREEND:
-  call __prefix
-  opencapture 34
-  catch __L85
-  catch __L86
-  call REPLACE
-  commit __L87
-__L86:
-  call RECYCLE
-__L87:
-  commit __NEXT__
-__L85:
-  closecapture 34
-  ret
-
 SET:
   call __prefix
-  opencapture 35
+  opencapture 34
   call ABOPEN
-  catch __L88
-  opencapture 36
+  catch __L85
+  opencapture 35
   char 5e
-  closecapture 36
+  closecapture 35
   commit __NEXT__
-__L88:
-  catch __L89
-  opencapture 37
-  catch __L91
+__L85:
+  catch __L86
+  opencapture 36
+  catch __L88
   char 5c
-  catch __L93
+  catch __L90
   set 0000000000200000000000300040540000000000000000000000000000000000
-  commit __L94
-__L93:
+  commit __L91
+__L90:
   char 30
   char 78
   counter 2 2
-__L95:
-  set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 2 __L95
-__L94:
-  commit __L92
-__L91:
-  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L92:
-  closecapture 37
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
+  condjump 2 __L92
+__L91:
+  commit __L89
+__L88:
+  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
+__L89:
+  closecapture 36
   char 2d
-  opencapture 38
-  catch __L96
+  opencapture 37
+  catch __L93
   char 5c
-  catch __L98
+  catch __L95
   set 0000000000200000000000300040540000000000000000000000000000000000
-  commit __L99
-__L98:
+  commit __L96
+__L95:
   char 30
   char 78
   counter 3 2
-__L100:
-  set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 3 __L100
-__L99:
-  commit __L97
-__L96:
-  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L97:
-  closecapture 38
-  commit __L90
-__L89:
-  opencapture 39
-  catch __L101
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
+  condjump 3 __L97
+__L96:
+  commit __L94
+__L93:
+  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
+__L94:
+  closecapture 37
+  commit __L87
+__L86:
+  opencapture 38
+  catch __L98
   char 5c
-  catch __L103
+  catch __L100
   set 0000000000200000000000300040540000000000000000000000000000000000
-  commit __L104
-__L103:
+  commit __L101
+__L100:
   char 30
   char 78
   counter 4 2
-__L105:
-  set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 4 __L105
-__L104:
-  commit __L102
-__L101:
-  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L102:
-  closecapture 39
-__L90:
-  catch __L106
-__L107:
-  catch __L108
-  opencapture 37
-  catch __L110
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
+  condjump 4 __L102
+__L101:
+  commit __L99
+__L98:
+  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
+__L99:
+  closecapture 38
+__L87:
+  catch __L103
+__L104:
+  catch __L105
+  opencapture 36
+  catch __L107
   char 5c
-  catch __L112
+  catch __L109
   set 0000000000200000000000300040540000000000000000000000000000000000
-  commit __L113
-__L112:
+  commit __L110
+__L109:
   char 30
   char 78
   counter 5 2
-__L114:
-  set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 5 __L114
-__L113:
-  commit __L111
-__L110:
-  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L111:
-  closecapture 37
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
+  condjump 5 __L111
+__L110:
+  commit __L108
+__L107:
+  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
+__L108:
+  closecapture 36
   char 2d
-  opencapture 38
-  catch __L115
+  opencapture 37
+  catch __L112
   char 5c
-  catch __L117
+  catch __L114
   set 0000000000200000000000300040540000000000000000000000000000000000
-  commit __L118
-__L117:
+  commit __L115
+__L114:
   char 30
   char 78
   counter 6 2
-__L119:
-  set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 6 __L119
-__L118:
-  commit __L116
-__L115:
-  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L116:
-  closecapture 38
-  commit __L109
-__L108:
-  opencapture 39
-  catch __L120
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
+  condjump 6 __L116
+__L115:
+  commit __L113
+__L112:
+  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
+__L113:
+  closecapture 37
+  commit __L106
+__L105:
+  opencapture 38
+  catch __L117
   char 5c
-  catch __L122
+  catch __L119
   set 0000000000200000000000300040540000000000000000000000000000000000
-  commit __L123
-__L122:
+  commit __L120
+__L119:
   char 30
   char 78
   counter 7 2
-__L124:
-  set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 7 __L124
-__L123:
-  commit __L121
-__L120:
-  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
 __L121:
-  closecapture 39
-__L109:
-  partialcommit __L107
+  set 000000000000ff037e0000007e00000000000000000000000000000000000000
+  condjump 7 __L121
+__L120:
+  commit __L118
+__L117:
+  set ffffffffffffffffffffffcfffffffffffffffffffffffffffffffffffffffff
+__L118:
+  closecapture 38
 __L106:
+  partialcommit __L104
+__L103:
   call ABCLOSE
-  closecapture 35
+  closecapture 34
   ret
 
 VARREFERENCE:
   call __prefix
-  opencapture 40
+  opencapture 39
   char 24
-  catch __L125
+  catch __L122
   call IDENT
-  commit __L126
-__L125:
+  commit __L123
+__L122:
   call NUMBER
-__L126:
-  catch __L127
+__L123:
+  catch __L124
   char 2d
   call BITMASK
   commit __NEXT__
-__L127:
-  closecapture 40
+__L124:
+  closecapture 39
   ret
 
 REFERENCE:
   call __prefix
-  opencapture 41
-  catch __L128
+  opencapture 40
+  catch __L125
   call KW_IMPORT
   failtwice
-__L128:
+__L125:
   call IDENT
-  catch __L130
+  catch __L127
   call LEFTARROW
   failtwice
-__L130:
-  closecapture 41
+__L127:
+  closecapture 40
   ret
 
 LIMITEDCALL:
   call __prefix
-  opencapture 42
+  opencapture 41
   char 3c
   call LCMODES
   call COLON
   call LCPARAM
   call COLON
   call IDENT
-  catch __L132
-__L133:
+  catch __L129
+__L130:
   set 002e000001000000000000000000000000000000000000000000000000000000
-  partialcommit __L133
-__L132:
+  partialcommit __L130
+__L129:
   char 3e
-  closecapture 42
+  closecapture 41
   ret
 
 LCMODES:
   call __prefix
-  opencapture 43
+  opencapture 42
   quad 7275696e
   char 74
   char 33
   char 32
-  closecapture 43
+  closecapture 42
   ret
 
 LCPARAM:
   call __prefix
-  opencapture 44
-  catch __L134
-__L135:
+  opencapture 43
+  catch __L131
+__L132:
   set ffd1fffffefffffbffffffffffffffffffffffffffffffffffffffffffffffff
-  partialcommit __L135
-__L134:
-  closecapture 44
-  ret
-
-REPLACE:
-  call __prefix
-  opencapture 45
-  call RIGHTARROW
-  call REPLACETERMS
-  closecapture 45
-  ret
-
-REPLACETERMS:
-  call __prefix
-  opencapture 46
-  call REPLACETERM
-  catch __L136
-__L137:
-  call REPLACETERM
-  partialcommit __L137
-__L136:
-  closecapture 46
-  ret
-
-REPLACETERM:
-  call __prefix
-  opencapture 47
-  catch __L138
-  catch __L140
-  call STRINGLITERAL
-  commit __L141
-__L140:
-  call HEXLITERAL
-__L141:
-  commit __L139
-__L138:
-  call VARREFERENCE
-__L139:
-  closecapture 47
-  ret
-
-RECYCLE:
-  call __prefix
-  opencapture 48
-  call FATARROW
-  call IDENT
-  closecapture 48
+  partialcommit __L132
+__L131:
+  closecapture 43
   ret
 
 LEFTARROW:
   call __prefix
-  opencapture 49
+  opencapture 44
   char 3c
   char 2d
-  closecapture 49
-  ret
-
-RIGHTARROW:
-  call __prefix
-  opencapture 50
-  char 2d
-  char 3e
-  closecapture 50
-  ret
-
-FATARROW:
-  call __prefix
-  opencapture 51
-  char 3d
-  char 3e
-  closecapture 51
+  closecapture 44
   ret
 
 NOT:
   call __prefix
-  opencapture 52
+  opencapture 45
   char 21
-  closecapture 52
+  closecapture 45
   ret
 
 AND:
   call __prefix
-  opencapture 53
+  opencapture 46
   char 26
-  closecapture 53
+  closecapture 46
   ret
 
 MACRO:
   call __prefix
-  opencapture 54
+  opencapture 47
   char 25
   set 0000000000000000feffff07feffff0700000000000000000000000000000000
-  catch __L142
-__L143:
+  catch __L133
+__L134:
   set 000000000000ff03feffff07feffff0700000000000000000000000000000000
-  partialcommit __L143
-__L142:
-  closecapture 54
+  partialcommit __L134
+__L133:
+  closecapture 47
   ret
 
 ENDFORCE:
   call __prefix
-  opencapture 55
+  opencapture 48
   quad 5f5f656e
   char 64
   call S
   call NUMBER
-  closecapture 55
+  closecapture 48
   ret
 
 HEXLITERAL:
   call __prefix
-  opencapture 56
+  opencapture 49
   char 30
   char 78
   counter 8 2
-__L144:
+__L135:
   set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 8 __L144
-  closecapture 56
+  condjump 8 __L135
+  closecapture 49
   ret
 
 NUMBER:
   call __prefix
-  opencapture 57
+  opencapture 50
   set 000000000000ff03000000000000000000000000000000000000000000000000
-  catch __L145
-__L146:
+  catch __L136
+__L137:
   set 000000000000ff03000000000000000000000000000000000000000000000000
-  partialcommit __L146
-__L145:
-  closecapture 57
+  partialcommit __L137
+__L136:
+  closecapture 50
   ret
 
 STRING:
   call __prefix
-  opencapture 58
+  opencapture 51
   call STRINGLITERAL
-  catch __L147
+  catch __L138
   char 69
   commit __NEXT__
-__L147:
-  closecapture 58
+__L138:
+  closecapture 51
   ret
 
 OR:
   call __prefix
-  opencapture 59
+  opencapture 52
   char 2f
-  closecapture 59
+  closecapture 52
   ret
 
 ANY:
   call __prefix
-  opencapture 60
+  opencapture 53
   char 2e
-  closecapture 60
+  closecapture 53
   ret
 
 IMPORTDECL:
   call __prefix
-  opencapture 61
+  opencapture 54
   call KW_IMPORT
   call STRINGLITERAL
   call OPTNAMESPACE
   call SEMICOLON
-  closecapture 61
+  closecapture 54
   ret
 
 KW_IMPORT:
   call __prefix
-  opencapture 62
+  opencapture 55
   quad 696d706f
   char 72
   char 74
-  closecapture 62
+  closecapture 55
   ret
 
 OPTNAMESPACE:
   call __prefix
-  opencapture 63
-  catch __L148
+  opencapture 56
+  catch __L139
   call KW_AS
   call IDENT
   commit __NEXT__
-__L148:
-  closecapture 63
+__L139:
+  closecapture 56
   ret
 
 KW_AS:
   call __prefix
-  opencapture 64
+  opencapture 57
   char 61
   char 73
-  closecapture 64
+  closecapture 57
   ret
 
 STRINGLITERAL:
   call __prefix
-  opencapture 65
+  opencapture 58
   char 27
-  opencapture 66
-  catch __L149
-__L150:
-  catch __L151
+  opencapture 59
+  catch __L140
+__L141:
+  catch __L142
   char 5c
-  catch __L153
+  catch __L144
   set 0000000080000000000000100040540000000000000000000000000000000000
-  commit __L154
-__L153:
+  commit __L145
+__L144:
   char 78
   counter 9 2
-__L155:
+__L146:
   set 000000000000ff037e0000007e00000000000000000000000000000000000000
-  condjump 9 __L155
-__L154:
-  commit __L152
-__L151:
+  condjump 9 __L146
+__L145:
+  commit __L143
+__L142:
   set ffffffff7fffffffffffffefffffffffffffffffffffffffffffffffffffffff
-__L152:
-  partialcommit __L150
-__L149:
-  closecapture 66
+__L143:
+  partialcommit __L141
+__L140:
+  closecapture 59
   char 27
-  closecapture 65
+  closecapture 58
   ret
 
 IDENT:
   call __prefix
-  opencapture 67
+  opencapture 60
   set 0000000000000000feffff87feffff0700000000000000000000000000000000
-  catch __L156
+  catch __L147
   counter 10 63
-__L157:
+__L148:
   set 000000000000ff03feffff87feffff0700000000000000000000000000000000
   partialcommit __NEXT__
-  condjump 10 __L157
+  condjump 10 __L148
   commit __NEXT__
-__L156:
-  closecapture 67
+__L147:
+  closecapture 60
   ret
 
 BOPEN:
   call __prefix
-  opencapture 68
+  opencapture 61
   char 28
-  closecapture 68
+  closecapture 61
   ret
 
 BCLOSE:
   call __prefix
-  opencapture 69
+  opencapture 62
   char 29
-  closecapture 69
+  closecapture 62
   ret
 
 CBOPEN:
   call __prefix
-  opencapture 70
+  opencapture 63
   char 7b
-  closecapture 70
+  closecapture 63
   ret
 
 CBCLOSE:
   call __prefix
-  opencapture 71
+  opencapture 64
   char 7d
-  closecapture 71
+  closecapture 64
   ret
 
 ABOPEN:
   call __prefix
-  opencapture 72
+  opencapture 65
   char 5b
-  closecapture 72
+  closecapture 65
   ret
 
 ABCLOSE:
   call __prefix
-  opencapture 73
+  opencapture 66
   char 5d
-  closecapture 73
+  closecapture 66
   ret
 
 COLON:
   call __prefix
-  opencapture 74
+  opencapture 67
   char 3a
-  closecapture 74
+  closecapture 67
   ret
 
 SEMICOLON:
   call __prefix
-  opencapture 75
+  opencapture 68
   char 3b
-  closecapture 75
+  closecapture 68
   ret
 

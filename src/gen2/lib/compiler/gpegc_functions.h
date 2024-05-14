@@ -247,28 +247,6 @@ int handle_post_EXPRESSION_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_FATARROW
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_FATARROW
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
 int handle_GRAMMAR
   (
     gpeg_capture_t* parent,
@@ -962,28 +940,6 @@ int handle_post_Q_ZEROORONE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_RECYCLE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_RECYCLE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
 int handle_REFERENCE
   (
     gpeg_capture_t* parent,
@@ -996,94 +952,6 @@ int handle_REFERENCE
 /* declared in ./grammar_handle.c */
 extern
 int handle_post_REFERENCE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_REPLACE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_REPLACE
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_REPLACETERM
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_REPLACETERM
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_REPLACETERMS
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_REPLACETERMS
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_RIGHTARROW
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./grammar_handle.c */
-extern
-int handle_post_RIGHTARROW
   (
     gpeg_capture_t* parent,
     unsigned index,
