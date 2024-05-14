@@ -656,7 +656,6 @@ int handle_BITMASKINSTR
   switch (gpega->round) {
   case 1:
     {
-gpeg_capture_debug(capture);
       uint32_t opcode = htonl(INSTR_OPCODE_BITMASK);
       uint32_t nbits = htonl(atoi((char*)(capture->children.list[ 0 ].data.data)));
       uint32_t bits = htonl(strtol((char*)(capture->children.list[ 1 ].data.data), 0, 16));
