@@ -1,0 +1,32 @@
+TRANSFORM          <- DEFINITION+ END
+
+S                  <- %s+
+
+MULTILINECOMMENT   <- '--[[' ( !']]' .)* ']]'
+
+COMMENT            <- '--' [^\n]* '\n'
+
+__prefix           <- ( MULTILINECOMMENT / COMMENT / S )*
+
+END                <- !.
+
+DEFINITION         <- SLOT COLON EXPRESSION
+
+SLOT               <- IDENT
+
+EXPRESSION         <- TERM+
+
+TERM               <- STRING / REFERENCE / CHAR
+
+STRING             <- '\''
+                      { ( '\\' ([nrtv\\'] / 'x' [0-9a-fA-F]^2) / [^'\\] )* }
+                      '\''
+
+REFERENCE          <- DOLLAR IDENT
+
+CHAR               <- '0x' [0-9a-fA-F]^2
+
+IDENT              <- [_a-zA-Z] [_0-9a-zA-Z]^0-63
+
+COLON              <- ':'
+DOLLAR             <- '$'

@@ -1,0 +1,69 @@
+#!/usr/bin/perl
+
+use strict;
+
+##---- functions ----##
+
+sub parse
+{
+  my $definition = shift;
+
+  my @tokens = tokenize($definition);
+  my @struct = structure(@tokens);
+
+  return @struct;
+}
+
+sub tokenize
+{
+  my $definition = shift;
+  my @tokens;
+  my $ident = '[a-zA-Z_][0-9a-zA-Z_]{0,63}';
+
+  while (length($definition)) {
+    while (1) {
+      last if ($definition !~ s/^\s+//
+            || $definition !~ s/^--\[\[.*?\]\]//s
+            || $definition !~ s/^--.*\n//);
+    }
+    last if (!length($definition));
+    if      ($definition =~ s/^($ident)\s*://) {
+      push @tokens, { type => 'transformrule', ident => $1 };
+    } elsif ($definition =~ s/^\$($ident)//) {
+      push @tokens, { type => 'reference', ident => $1 };
+    } elsif ($definition =~ s/^'(\\.|[^'])*'//) {
+      push @tokens, { type => 'string', string => $1 };
+    } elsif ($definition =~ s/^0x([a-fA-F0-9]{2})//) {
+      push @tokens, { type => 'char', hex => $1 };
+    }
+  }
+
+  return @tokens;
+}
+
+sub structure
+{
+  my @tokens = @_;
+  my @result;
+
+  while (scalar(@tokens)) {
+    my $token = shift @tokens;
+    if ($token->{type} ne 'transformrule') {
+      die "Expected transform rule at token.";
+    }
+    my $rule = { slot => $token, expression => [] };
+    push @result, $rule;
+    while (scalar(@tokens)) {
+      if ($tokens[ 0 ]->{type} ne 'transformrule') {
+        my $token = shift @tokens;
+        push @{$rule->{expression}}, $token;
+      } else {
+        last;
+      }
+    }
+  }
+
+  return @result;
+}
+
+1;
