@@ -48,7 +48,10 @@ int main
 {
   char* inputfile = "-";
   char* bytecodefile = "-";
+  char* slotmapfile = 0;
+  char* labelmapfile = 0;
   char* arg;
+  int displayactions = 0;
   vec_t input = { 0 };
   vec_t bytecode = { 0 };
   gpege_t gpege = { 0 };
@@ -61,11 +64,8 @@ int main
 "-? / -h     Display this message\n"
 "-c <path>   Bytecode file\n"
 "-i <path>   Data input file\n"
-"-o <path>   Output file (otherwise stdout)\n"
 "-l <path>   Labelmap file\n"
 "-m <path>   Slotmap file\n"
-"-r          Perform replacements and output result\n"
-"-S          Suppress binary output (implicit in -v and -r)\n"
 "-d          Start debugger\n"
 "-v          Verbose (prepare for a lot of data on stderr)\n"
 "-V          Super verbose (see above)\n"
@@ -83,6 +83,13 @@ int main
 
   queryargs(argc, argv, 'i', "input", 0, 1, 0, &inputfile);
   queryargs(argc, argv, 'c', "bytecode", 0, 1, 0, &bytecodefile);
+  if (queryargs(argc, argv, 't', "actions", 0, 0, 0, 0) == 0) {
+    displayactions = 1;
+  }
+  if (queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &slotmapfile) == 0) {
+  }
+  if (queryargs(argc, argv, 'l', "labelmap", 0, 1, 0, &labelmapfile) == 0) {
+  }
 
   if (absorb_file(inputfile, &(input.data), &(input.size))) {
     fprintf(stderr, "Could not absorb input file '%s'\n", inputfile);
@@ -113,6 +120,10 @@ int main
       , e.code, yx0[ 0 ], yx0[ 1 ], yx1[ 0 ], yx1[ 1 ]
     );
     return e.code;
+  }
+
+  if (displayactions) {
+    gpege_actionlist_output(&(ec.actions));
   }
 
   return 0;
