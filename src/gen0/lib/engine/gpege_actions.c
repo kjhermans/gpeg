@@ -57,3 +57,17 @@ void gpege_actionlist_debug
     );
   }
 }
+
+void gpege_actionlist_output
+  (gpege_actionlist_t* list)
+{
+  for (unsigned i=0; i < list->count; i++) {
+    fprintf(stdout,
+      "%u, %d, %u, %u\n"
+      , i
+      , list->list[ i ].type
+      , list->list[ i ].slot
+      , list->list[ i ].input_offset
+    );
+  }
+}

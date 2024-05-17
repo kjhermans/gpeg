@@ -16,6 +16,13 @@ extern
 void gpege_actionlist_debug
   (gpege_actionlist_t* list);
 
+/* declared in ./gpege_actions.c */
+#define gpege_actionlist_output gen1_gpege_actionlist_output
+
+extern
+void gpege_actionlist_output
+  (gpege_actionlist_t* list);
+
 /* declared in ./gpege_actions2captures.c */
 #define gpege_actions2captures gen1_gpege_actions2captures
 
