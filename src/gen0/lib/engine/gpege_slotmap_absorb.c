@@ -32,6 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "gpege_private.h"
+#include "simap.slotmap.h"
 
 static
 unsigned char bytecode[] = {
@@ -53,7 +54,22 @@ int gpege_slotmap_absorb
   simape.bytecode.size = sizeof(bytecode);
   simapec.input = &input;
 
-  gpege_run(&simape, &simapec);
+  GPEG_ERR_T e = gpege_run(&simape, &simapec);
+  e = gpege_actions2captures(
+    simapec.input,
+    &(simapec.actions),
+    &captures
+  );
+
+  if (e.code) {
+    fprintf(stderr, "Error loading slotmap.\n");
+    return ~0;
+  }
+
+  gpeg_capturelist_remove(&captures, SLOT_S);
+  gpeg_capturelist_remove(&captures, SLOT_MULTILINECOMMENT);
+  gpeg_capturelist_remove(&captures, SLOT_COMMENT);
+
   simap_grammar_process_node(&(captures.list[ 0 ]), gpege);
 
   return 0;

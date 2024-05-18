@@ -90,6 +90,14 @@ int simap_handle_DEFINITION
   (void)index;
   (void)capture;
   (void)arg;
+
+  gpege_t* gpege = (gpege_t*)arg;
+  char* keystring = (char*)(capture->children.list[ 0 ].data.data);
+  char* valstring = (char*)(capture->children.list[ 1 ].data.data);
+  unsigned value = strtoul(valstring, 0, 10);
+
+  str2int_map_put(&(gpege->slotmap), strdup(keystring), value);
+
   return 0;
 }
 

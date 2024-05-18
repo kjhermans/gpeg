@@ -37,6 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 
 #include <gpeg/private/util/vec_t.h>
+#include <gpeg/private/util/str2int_map.h>
 
 #include <gpeg/lib/gpeg/gpeg_defines.h>
 
@@ -55,6 +56,8 @@ struct gpege
   GPEG_ERR_T                  (*debugger)(gpege_t*,gpege_ec_t*,uint32_t,void*);
   void*                         debugarg;
   unsigned                      maxinstructions;
+  str2int_map_t                 slotmap;
+  str2int_map_t                 labelmap;
 };
 
 struct gpege_ec
