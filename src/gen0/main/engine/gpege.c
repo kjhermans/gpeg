@@ -87,11 +87,14 @@ int main
     displayactions = 1;
   }
   if (queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &slotmapfile) == 0) {
-    if (gpege_slotmap_absorb_file(&gpege, slotmapfile)) {
+    if (str2int_map_absorb_file(&(gpege.slotmap), slotmapfile)) {
 //..
     }
   }
   if (queryargs(argc, argv, 'l', "labelmap", 0, 1, 0, &labelmapfile) == 0) {
+    if (str2int_map_absorb_file(&(gpege.labelmap), labelmapfile)) {
+//..
+    }
   }
 
   if (absorb_file(inputfile, &(input.data), &(input.size))) {

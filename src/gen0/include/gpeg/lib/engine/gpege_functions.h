@@ -68,22 +68,6 @@ GPEG_ERR_T gpege_run
   (gpege_t* gpege, gpege_ec_t* ec)
   __attribute__ ((warn_unused_result));
 
-/* declared in ./gpege_slotmap_absorb.c */
-#define gen0_gpege_slotmap_absorb gpege_slotmap_absorb
-
-extern
-int gpege_slotmap_absorb
-  (gpege_t* gpege, char* slotmaptext)
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./gpege_slotmap_absorb.c */
-#define gen0_gpege_slotmap_absorb_file gpege_slotmap_absorb_file
-
-extern
-int gpege_slotmap_absorb_file
-  (gpege_t* gpege, char* path)
-  __attribute__ ((warn_unused_result));
-
 /* declared in ./gpege_stack.c */
 #define gen0_gpege_stack_get_furthest gpege_stack_get_furthest
 
@@ -322,6 +306,22 @@ int simap_handle_post_UNSIGNED
     gpeg_capture_t* capture,
     void* arg
   )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./str2int_map_absorb.c */
+#define gen0_str2int_map_absorb str2int_map_absorb
+
+extern
+int str2int_map_absorb
+  (str2int_map_t* map, char* maptext)
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./str2int_map_absorb.c */
+#define gen0_str2int_map_absorb_file str2int_map_absorb_file
+
+extern
+int str2int_map_absorb_file
+  (str2int_map_t* str2int_map, char* path)
   __attribute__ ((warn_unused_result));
 
 

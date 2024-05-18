@@ -91,12 +91,12 @@ int simap_handle_DEFINITION
   (void)capture;
   (void)arg;
 
-  gpege_t* gpege = (gpege_t*)arg;
+  str2int_map_t* map = (str2int_map_t*)arg;
   char* keystring = (char*)(capture->children.list[ 0 ].data.data);
   char* valstring = (char*)(capture->children.list[ 1 ].data.data);
   unsigned value = strtoul(valstring, 0, 10);
 
-  str2int_map_put(&(gpege->slotmap), strdup(keystring), value);
+  str2int_map_put(map, strdup(keystring), value);
 
   return 0;
 }

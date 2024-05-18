@@ -42,13 +42,13 @@ unsigned char bytecode[] = {
 /**
  *
  */
-int gpege_slotmap_absorb
-  (gpege_t* gpege, char* slotmaptext)
+int str2int_map_absorb
+  (str2int_map_t* map, char* maptext)
 {
   gpege_t simape = { 0 };
   gpege_ec_t simapec = { 0 };
   gpeg_capturelist_t captures = { 0 };
-  vec_t input = { slotmaptext, strlen(slotmaptext) };
+  vec_t input = { (unsigned char*)maptext, strlen(maptext) };
 
   simape.bytecode.data = bytecode;
   simape.bytecode.size = sizeof(bytecode);
@@ -62,7 +62,7 @@ int gpege_slotmap_absorb
   );
 
   if (e.code) {
-    fprintf(stderr, "Error loading slotmap.\n");
+    fprintf(stderr, "Error loading map.\n");
     return ~0;
   }
 
@@ -70,7 +70,7 @@ int gpege_slotmap_absorb
   gpeg_capturelist_remove(&captures, SLOT_MULTILINECOMMENT);
   gpeg_capturelist_remove(&captures, SLOT_COMMENT);
 
-  simap_grammar_process_node(&(captures.list[ 0 ]), gpege);
+  simap_grammar_process_node(&(captures.list[ 0 ]), map);
 
   return 0;
 }
@@ -78,20 +78,20 @@ int gpege_slotmap_absorb
 /**
  *
  */
-int gpege_slotmap_absorb_file
-  (gpege_t* gpege, char* path)
+int str2int_map_absorb_file
+  (str2int_map_t* str2int_map, char* path)
 {
-  char* slotmaptext = 0;
+  char* maptext = 0;
   unsigned l = 0;
 
-  if (absorb_file(path, (unsigned char**)&slotmaptext, &l)) {
+  if (absorb_file(path, (unsigned char**)&maptext, &l)) {
     return ~0; // TODO: Return relevant error code.
   }
-  if (gpege_slotmap_absorb(gpege, slotmaptext)) {
-    free(slotmaptext);
+  if (str2int_map_absorb(str2int_map, maptext)) {
+    free(maptext);
     return ~0; // TODO: Return relevant error code.
   }
-  free(slotmaptext);
+  free(maptext);
 
   return 0;
 }
