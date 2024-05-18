@@ -1,4 +1,4 @@
-OBJECTS:=$(shell ls *.c | sort | sed -e 's/\.c$$/.o/')
+OBJECTS:=$(shell ls *.c | sort | sed -e 's/\.c$$/.o/') simap.o
 LIB=libgpege.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
@@ -8,7 +8,21 @@ ADDITIONALOBJECTS=\
   ../gpeg/gpeg_capturelist.o \
   ../gpeg/gpeg_opcode2string.o \
 
-all: functionsheader $(LIB)
+all: maplogic functionsheader $(LIB)
+
+maplogic: simap.h
+
+simap.c: simap.asm
+
+simap.h: simap.byc
+	xxd -c 8 -p simap.byc | sed 's/\(..\)/0x\1, /g' > simap.h
+
+simap.byc: simap.asm
+	$(CURGEN)/bin/gpega -i simap.asm -o simap.byc
+
+simap.asm: simap.gpeg
+	$(CURGEN)/bin/gpegc -C -i simap.gpeg -o simap.asm \
+	  -G simap.c simap -M simap.slotmap.h
 
 functionsheader: ../../include/gpeg/lib/engine/gpege_functions.h \
 	gpege_functions.h
@@ -30,3 +44,4 @@ clean:
 superclean: clean
 	rm -f gpege_functions.h \
 	  ../../include/gpeg/lib/engine/gpege_functions.h
+	rm -f simap.h simap.byc simap.asm simap.slotmap.h simap.c

@@ -1,0 +1,17 @@
+MAP                <- DEFINITION+ END
+
+S                  <- %s+
+
+MULTILINECOMMENT   <- '--[[' ( !']]' .)* ']]'
+
+COMMENT            <- '--' [^\n]* '\n'
+
+__prefix           <- ( MULTILINECOMMENT / COMMENT / S )*
+
+END                <- !.
+
+DEFINITION         <- IDENT UNSIGNED
+
+IDENT              <- [a-zA-Z_][a-zA-Z_0-9]^0-63
+
+UNSIGNED           <- [0-9]+
