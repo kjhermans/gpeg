@@ -87,6 +87,9 @@ int main
     displayactions = 1;
   }
   if (queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &slotmapfile) == 0) {
+    if (gpege_slotmap_absorb_file(&gpege, slotmapfile)) {
+//..
+    }
   }
   if (queryargs(argc, argv, 'l', "labelmap", 0, 1, 0, &labelmapfile) == 0) {
   }

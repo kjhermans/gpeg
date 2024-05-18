@@ -68,6 +68,22 @@ GPEG_ERR_T gpege_run
   (gpege_t* gpege, gpege_ec_t* ec)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./gpege_slotmap_absorb.c */
+#define gpege_slotmap_absorb gen0_gpege_slotmap_absorb
+
+extern
+int gpege_slotmap_absorb
+  (gpege_t* gpege, char* slotmaptext)
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./gpege_slotmap_absorb.c */
+#define gpege_slotmap_absorb_file gen0_gpege_slotmap_absorb_file
+
+extern
+int gpege_slotmap_absorb_file
+  (gpege_t* gpege, char* path)
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./gpege_stack.c */
 #define gpege_stack_get_furthest gen0_gpege_stack_get_furthest
 
@@ -86,6 +102,225 @@ GPEG_ERR_T gpege_variable
     uint32_t slot,
     unsigned char** value,
     unsigned* valuesize
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap.c */
+#define simap_grammar_process_node gen0_simap_grammar_process_node
+
+extern
+int simap_grammar_process_node
+  (
+    gpeg_capture_t* capture,
+    void* ptr
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_COMMENT gen0_simap_handle_COMMENT
+
+extern
+int simap_handle_COMMENT
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_post_COMMENT gen0_simap_handle_post_COMMENT
+
+extern
+int simap_handle_post_COMMENT
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_DEFINITION gen0_simap_handle_DEFINITION
+
+extern
+int simap_handle_DEFINITION
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_post_DEFINITION gen0_simap_handle_post_DEFINITION
+
+extern
+int simap_handle_post_DEFINITION
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_END gen0_simap_handle_END
+
+extern
+int simap_handle_END
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_post_END gen0_simap_handle_post_END
+
+extern
+int simap_handle_post_END
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_IDENT gen0_simap_handle_IDENT
+
+extern
+int simap_handle_IDENT
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_post_IDENT gen0_simap_handle_post_IDENT
+
+extern
+int simap_handle_post_IDENT
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_MAP gen0_simap_handle_MAP
+
+extern
+int simap_handle_MAP
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_post_MAP gen0_simap_handle_post_MAP
+
+extern
+int simap_handle_post_MAP
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_MULTILINECOMMENT gen0_simap_handle_MULTILINECOMMENT
+
+extern
+int simap_handle_MULTILINECOMMENT
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_post_MULTILINECOMMENT gen0_simap_handle_post_MULTILINECOMMENT
+
+extern
+int simap_handle_post_MULTILINECOMMENT
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_S gen0_simap_handle_S
+
+extern
+int simap_handle_S
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_post_S gen0_simap_handle_post_S
+
+extern
+int simap_handle_post_S
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_UNSIGNED gen0_simap_handle_UNSIGNED
+
+extern
+int simap_handle_UNSIGNED
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./simap_handler.c */
+#define simap_handle_post_UNSIGNED gen0_simap_handle_post_UNSIGNED
+
+extern
+int simap_handle_post_UNSIGNED
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
   )
   __attribute__ ((warn_unused_result));
 
