@@ -65,7 +65,7 @@ int main
 "-I <path>  Add a directory path for inclusion when using imports.\n"
 "    -- optional artefacts --\n"
 "-a <path>  Emit bytecode at -o <path>, assembly at -a <path> (implies -b).\n"
-"-G <path>  Generate C code for the parse tree.\n"
+"-G <path> <ident> Generate C code for the parse tree.\n"
 "-m <path>  Output slotmap file.\n"
 "-M <path>  Output slotmap.h file.\n"
 "    -- tuning --\n"
@@ -85,7 +85,13 @@ int main
   queryargs(argc, argv, 'o', "output", 0, 1, 0, &outputfile);
   queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &(compiler.slotmap));
   queryargs(argc, argv, 'M', "slotmaph", 0, 1, 0, &(compiler.slotmaph));
-  queryargs(argc, argv, 'G', "parserc", 0, 1, 0, &(compiler.parserc));
+  if (queryargs(argc, argv, 'G', "parserc", 0, 1, 0, &(compiler.parserc)) == 0)
+  {
+    if ((compiler.parserc_ident = nextarg(argc, argv, compiler.parserc)) == NULL) {
+      fprintf(stderr, "-G expect two arguments, <path> and <ident>\n");
+      return -1;
+    }
+  }
   {
     unsigned i = 0;
     char* path = 0;

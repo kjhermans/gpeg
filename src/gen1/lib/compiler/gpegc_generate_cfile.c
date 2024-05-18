@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 GPEG_ERR_T gpegc_generate_cfile
-  (gpegc_t* gpegc, char* path)
+  (gpegc_t* gpegc, char* path, char* ident)
 {
   FILE* file = fopen(path, "w+");
 
@@ -50,23 +50,25 @@ GPEG_ERR_T gpegc_generate_cfile
     "#include <stdio.h>\n"
     "#endif\n"
     "\n"
-    "extern int grammar_process_node(gpeg_capture_t*, void*);\n"
-    "static int do_node(gpeg_capture_t*, unsigned, gpeg_capture_t*, void*);\n"
+    "extern int %s_grammar_process_node(gpeg_capture_t*,void*);\n"
+    "static int do_node(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n"
     "\n"
+    , ident
   );
   for (unsigned i=0; i < gpegc->slotmap.count; i++) {
     char* slotname = gpegc->slotmap.keys[ i ];
-    //unsigned slot = gpegc->slotmap.values[ i ];
     fprintf(file,
-      "extern int handle_%s(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n"
-      "extern int handle_post_%s(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n"
+      "extern int %s_handle_%s(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n"
+      "extern int %s_handle_post_%s(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n"
+      , ident
       , slotname
+      , ident
       , slotname
     );
   }
   fprintf(file,
     "\n"
-    "int grammar_process_node\n"
+    "int %s_grammar_process_node\n"
     "  (\n"
     "    gpeg_capture_t* capture,\n"
     "    void* ptr\n"
@@ -88,6 +90,7 @@ GPEG_ERR_T gpegc_generate_cfile
     "  unsigned indices[ %u ] = { 0 };\n"
     "\n"
     "  switch (capture->type) {\n"
+    , ident
     , gpegc->slotmap.count
   );
   for (unsigned i=0; i < gpegc->slotmap.count; i++) {
@@ -97,7 +100,7 @@ GPEG_ERR_T gpegc_generate_cfile
       "  case %u:\n"
       "    {\n"
       "      ++indices[ %u ];\n"
-      "      if ((e = handle_%s(parent, index, capture, ptr)) != 0) {\n"
+      "      if ((e = %s_handle_%s(parent, index, capture, ptr)) != 0) {\n"
       "        return e;\n"
       "      }\n"
       "      for (unsigned i=0; i < capture->children.count; i++) {\n"
@@ -105,15 +108,17 @@ GPEG_ERR_T gpegc_generate_cfile
       "          return e;\n"
       "        }\n"
       "      }\n"
-      "      if ((e = handle_post_%s(parent, index, capture, ptr)) != 0) {\n"
+      "      if ((e = %s_handle_post_%s(parent, index, capture, ptr)) != 0) {\n"
       "        return e;\n"
       "      }\n"
       "    }\n"
       "    break;\n"
       , slot
       , slot
+      , ident
       , slotname
       , slot
+      , ident
       , slotname
     );
   }

@@ -35,6 +35,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _GPEGG_GEN4_UTIL_QUERYARGS_H_
 
 extern
+char* nextarg
+  (unsigned argc, char* argv[], char* arg);
+
+extern
 int queryargs
   (
     unsigned argc,

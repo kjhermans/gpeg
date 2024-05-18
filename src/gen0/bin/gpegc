@@ -20,6 +20,7 @@ my (
   $labelcount,
   $counter,
   $cfile,
+  $cfileident,
   $currentrule,
   $slotmapfile,
   $slotmaphfile,
@@ -53,6 +54,7 @@ while (scalar(@ARGV)) {
     $capturerule = 1;
   } elsif ($arg eq '-G') {
     $cfile = shift @ARGV || die "-G; need C file";
+    $cfileident = shift @ARGV || die "-G; need identifier";
   } elsif ($arg eq '-m') {
     $slotmapfile = shift @ARGV || die "-m; need slotmap.json file";
   } elsif ($arg eq '-M') {
@@ -803,13 +805,13 @@ sub generate_cfile
 #include <stdio.h>
 #endif
 
-extern int grammar_process_node(gpeg_capture_t*, void*);
+extern int '.$cfileident.'_grammar_process_node(gpeg_capture_t*, void*);
 static int do_node(gpeg_capture_t*, unsigned, gpeg_capture_t*, void*);
 
 ';
   my $c = '
 
-int grammar_process_node
+int '.$cfileident.'_grammar_process_node
   (
     gpeg_capture_t* capture,
     void* ptr
@@ -830,14 +832,14 @@ int do_node
   foreach my $key (sort(keys(%slotmap))) {
     my $slotnumber = $slotmap{$key};
     my $slotname = inverse_slotmap_get($slotnumber);
-    $h .= "extern int handle_$slotname" .
+    $h .= "extern int $cfileident"."_handle_$slotname" .
           "(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n";
-    $h .= "extern int handle_post_$slotname" .
+    $h .= "extern int $cfileident"."_handle_post_$slotname" .
           "(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);\n";
     $c .= "  case $slotnumber:
     {
       ++(indices[ $slotnumber ]);
-      if ((e = handle_$slotname(parent, index, capture, ptr)) != 0) {
+      if ((e = $cfileident"."_handle_$slotname(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
@@ -845,7 +847,7 @@ int do_node
           return e;
         }
       }
-      if ((e = handle_post_$slotname(parent, index, capture, ptr)) != 0) {
+      if ((e = $cfileident"."_handle_post_$slotname(parent, index, capture, ptr)) != 0) {
         return e;
       }
     }

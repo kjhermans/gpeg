@@ -151,7 +151,7 @@ GPEG_ERR_T gpegc_compile
   }
 
   if (c->parserc) {
-    GPEG_CHECK(gpegc_generate_cfile(&gpegc, c->parserc), PROPAGATE);
+    GPEG_CHECK(gpegc_generate_cfile(&gpegc, c->parserc, c->parserc_ident), PROPAGATE);
   }
 
   gpege_ec_free(&ec);

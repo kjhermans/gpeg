@@ -42,6 +42,7 @@ typedef struct
   char*             slotmap;
   char*             slotmaph;
   char*             parserc;
+  char*             parserc_ident;
   struct {
 #define GPEGC_MAX_PATHS 32
     char*             path[ GPEGC_MAX_PATHS ];

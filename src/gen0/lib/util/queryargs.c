@@ -33,6 +33,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <string.h>
 
+char* nextarg
+  (unsigned argc, char* argv[], char* arg)
+{
+  for (unsigned i=0; i < argc-1; i++) {
+    if (argv[ i ] == arg) {
+      return argv[ i + 1 ];
+    }
+  }
+  return NULL;
+}
+
 /**
  * Queries the argument list.
  * If option and longoption are both zero (ie longoption == NULL)
