@@ -18,7 +18,7 @@ GPEG_ERR_T gpegc_compile
 /* declared in ./gpegc_generate_cfile.c */
 extern
 GPEG_ERR_T gpegc_generate_cfile
-  (gpegc_t* gpegc, char* path)
+  (gpegc_t* gpegc, char* path, char* ident)
   __attribute__ ((warn_unused_result));
 
 /* declared in ./gpegc_import.c */
@@ -51,7 +51,7 @@ void gpegc_matcherlist_debug
 
 /* declared in ./grammar.c */
 extern
-int grammar_process_node
+int gpegc_grammar_process_node
   (
     gpeg_capture_t* capture,
     void* ptr
@@ -60,7 +60,7 @@ int grammar_process_node
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_AND
+int gpegc_handle_AND
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -71,7 +71,7 @@ int handle_AND
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_ANY
+int gpegc_handle_ANY
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -82,7 +82,7 @@ int handle_ANY
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_BITMASK
+int gpegc_handle_BITMASK
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -93,7 +93,7 @@ int handle_BITMASK
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_CAPTURE
+int gpegc_handle_CAPTURE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -104,7 +104,7 @@ int handle_CAPTURE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_CAPTURE
+int gpegc_handle_post_CAPTURE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -115,7 +115,7 @@ int handle_post_CAPTURE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_CAPTURETYPE
+int gpegc_handle_CAPTURETYPE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -126,7 +126,7 @@ int handle_CAPTURETYPE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_CAPTURETYPE
+int gpegc_handle_post_CAPTURETYPE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -137,7 +137,7 @@ int handle_post_CAPTURETYPE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_DEFINITION
+int gpegc_handle_DEFINITION
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -148,7 +148,7 @@ int handle_DEFINITION
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_DEFINITION
+int gpegc_handle_post_DEFINITION
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -159,7 +159,7 @@ int handle_post_DEFINITION
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_END
+int gpegc_handle_END
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -170,7 +170,7 @@ int handle_END
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_END
+int gpegc_handle_post_END
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -181,7 +181,7 @@ int handle_post_END
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_ENDFORCE
+int gpegc_handle_ENDFORCE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -192,7 +192,7 @@ int handle_ENDFORCE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_ENDFORCE
+int gpegc_handle_post_ENDFORCE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -203,7 +203,7 @@ int handle_post_ENDFORCE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_EXPRESSION
+int gpegc_handle_EXPRESSION
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -214,7 +214,7 @@ int handle_EXPRESSION
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_EXPRESSION
+int gpegc_handle_post_EXPRESSION
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -225,7 +225,7 @@ int handle_post_EXPRESSION
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_EXPRESSION_0
+int gpegc_handle_EXPRESSION_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -236,7 +236,7 @@ int handle_EXPRESSION_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_EXPRESSION_0
+int gpegc_handle_post_EXPRESSION_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -247,7 +247,7 @@ int handle_post_EXPRESSION_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_GRAMMAR
+int gpegc_handle_GRAMMAR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -258,7 +258,7 @@ int handle_GRAMMAR
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_GRAMMAR
+int gpegc_handle_post_GRAMMAR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -269,7 +269,7 @@ int handle_post_GRAMMAR
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_GROUP
+int gpegc_handle_GROUP
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -280,7 +280,7 @@ int handle_GROUP
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_GROUP
+int gpegc_handle_post_GROUP
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -291,7 +291,7 @@ int handle_post_GROUP
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_HEXLITERAL
+int gpegc_handle_HEXLITERAL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -302,7 +302,7 @@ int handle_HEXLITERAL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_IDENT
+int gpegc_handle_IDENT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -313,7 +313,7 @@ int handle_IDENT
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_IDENT
+int gpegc_handle_post_IDENT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -324,7 +324,7 @@ int handle_post_IDENT
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_IMPORTDECL
+int gpegc_handle_IMPORTDECL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -335,7 +335,7 @@ int handle_IMPORTDECL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_IMPORTDECL
+int gpegc_handle_post_IMPORTDECL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -346,7 +346,7 @@ int handle_post_IMPORTDECL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_KW_AS
+int gpegc_handle_KW_AS
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -357,7 +357,7 @@ int handle_KW_AS
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_KW_AS
+int gpegc_handle_post_KW_AS
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -368,7 +368,7 @@ int handle_post_KW_AS
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_KW_IMPORT
+int gpegc_handle_KW_IMPORT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -379,7 +379,7 @@ int handle_KW_IMPORT
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_KW_IMPORT
+int gpegc_handle_post_KW_IMPORT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -390,7 +390,7 @@ int handle_post_KW_IMPORT
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_LCMODES
+int gpegc_handle_LCMODES
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -401,7 +401,7 @@ int handle_LCMODES
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_LCMODES
+int gpegc_handle_post_LCMODES
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -412,7 +412,7 @@ int handle_post_LCMODES
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_LCPARAM
+int gpegc_handle_LCPARAM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -423,7 +423,7 @@ int handle_LCPARAM
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_LCPARAM
+int gpegc_handle_post_LCPARAM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -434,7 +434,7 @@ int handle_post_LCPARAM
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_LEFTARROW
+int gpegc_handle_LEFTARROW
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -445,7 +445,7 @@ int handle_LEFTARROW
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_LEFTARROW
+int gpegc_handle_post_LEFTARROW
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -456,7 +456,7 @@ int handle_post_LEFTARROW
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_LIMITEDCALL
+int gpegc_handle_LIMITEDCALL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -467,7 +467,7 @@ int handle_LIMITEDCALL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_LIMITEDCALL
+int gpegc_handle_post_LIMITEDCALL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -478,7 +478,7 @@ int handle_post_LIMITEDCALL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_MACRO
+int gpegc_handle_MACRO
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -489,7 +489,7 @@ int handle_MACRO
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_MACRO
+int gpegc_handle_post_MACRO
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -500,7 +500,7 @@ int handle_post_MACRO
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_MATCHER
+int gpegc_handle_MATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -511,7 +511,7 @@ int handle_MATCHER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_MATCHER
+int gpegc_handle_post_MATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -522,7 +522,7 @@ int handle_post_MATCHER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_NOT
+int gpegc_handle_NOT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -533,7 +533,7 @@ int handle_NOT
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_NOT
+int gpegc_handle_post_NOT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -544,7 +544,7 @@ int handle_post_NOT
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_NUMBER
+int gpegc_handle_NUMBER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -555,7 +555,7 @@ int handle_NUMBER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_NUMBER
+int gpegc_handle_post_NUMBER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -566,7 +566,7 @@ int handle_post_NUMBER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_OPTNAMESPACE
+int gpegc_handle_OPTNAMESPACE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -577,7 +577,7 @@ int handle_OPTNAMESPACE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_OPTNAMESPACE
+int gpegc_handle_post_OPTNAMESPACE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -588,7 +588,7 @@ int handle_post_OPTNAMESPACE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_OR
+int gpegc_handle_OR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -599,7 +599,7 @@ int handle_OR
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_OR
+int gpegc_handle_post_OR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -610,7 +610,7 @@ int handle_post_OR
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_QUANTIFIEDMATCHER
+int gpegc_handle_QUANTIFIEDMATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -621,7 +621,7 @@ int handle_QUANTIFIEDMATCHER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_QUANTIFIEDMATCHER
+int gpegc_handle_post_QUANTIFIEDMATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -632,7 +632,7 @@ int handle_post_QUANTIFIEDMATCHER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_QUANTIFIER
+int gpegc_handle_QUANTIFIER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -643,7 +643,7 @@ int handle_QUANTIFIER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_QUANTIFIER
+int gpegc_handle_post_QUANTIFIER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -654,7 +654,7 @@ int handle_post_QUANTIFIER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_FROM
+int gpegc_handle_Q_FROM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -665,7 +665,7 @@ int handle_Q_FROM
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_FROM
+int gpegc_handle_post_Q_FROM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -676,7 +676,7 @@ int handle_post_Q_FROM
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_FROMTO
+int gpegc_handle_Q_FROMTO
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -687,7 +687,7 @@ int handle_Q_FROMTO
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_FROMTO
+int gpegc_handle_post_Q_FROMTO
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -698,7 +698,7 @@ int handle_post_Q_FROMTO
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_FROMTO_0
+int gpegc_handle_Q_FROMTO_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -709,7 +709,7 @@ int handle_Q_FROMTO_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_FROMTO_0
+int gpegc_handle_post_Q_FROMTO_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -720,7 +720,7 @@ int handle_post_Q_FROMTO_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_FROMTO_1
+int gpegc_handle_Q_FROMTO_1
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -731,7 +731,7 @@ int handle_Q_FROMTO_1
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_FROMTO_1
+int gpegc_handle_post_Q_FROMTO_1
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -742,7 +742,7 @@ int handle_post_Q_FROMTO_1
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_FROM_0
+int gpegc_handle_Q_FROM_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -753,7 +753,7 @@ int handle_Q_FROM_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_FROM_0
+int gpegc_handle_post_Q_FROM_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -764,7 +764,7 @@ int handle_post_Q_FROM_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_ONEORMORE
+int gpegc_handle_Q_ONEORMORE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -775,7 +775,7 @@ int handle_Q_ONEORMORE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_ONEORMORE
+int gpegc_handle_post_Q_ONEORMORE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -786,7 +786,7 @@ int handle_post_Q_ONEORMORE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_SPECIFIC
+int gpegc_handle_Q_SPECIFIC
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -797,7 +797,7 @@ int handle_Q_SPECIFIC
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_SPECIFIC
+int gpegc_handle_post_Q_SPECIFIC
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -808,7 +808,7 @@ int handle_post_Q_SPECIFIC
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_SPECIFIC_0
+int gpegc_handle_Q_SPECIFIC_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -819,7 +819,7 @@ int handle_Q_SPECIFIC_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_SPECIFIC_0
+int gpegc_handle_post_Q_SPECIFIC_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -830,7 +830,7 @@ int handle_post_Q_SPECIFIC_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_UNTIL
+int gpegc_handle_Q_UNTIL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -841,7 +841,7 @@ int handle_Q_UNTIL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_UNTIL
+int gpegc_handle_post_Q_UNTIL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -852,7 +852,7 @@ int handle_post_Q_UNTIL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_UNTIL_0
+int gpegc_handle_Q_UNTIL_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -863,7 +863,7 @@ int handle_Q_UNTIL_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_UNTIL_0
+int gpegc_handle_post_Q_UNTIL_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -874,7 +874,7 @@ int handle_post_Q_UNTIL_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_VAR
+int gpegc_handle_Q_VAR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -885,7 +885,7 @@ int handle_Q_VAR
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_VAR
+int gpegc_handle_post_Q_VAR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -896,7 +896,7 @@ int handle_post_Q_VAR
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_ZEROORMORE
+int gpegc_handle_Q_ZEROORMORE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -907,7 +907,7 @@ int handle_Q_ZEROORMORE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_ZEROORMORE
+int gpegc_handle_post_Q_ZEROORMORE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -918,7 +918,7 @@ int handle_post_Q_ZEROORMORE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_Q_ZEROORONE
+int gpegc_handle_Q_ZEROORONE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -929,7 +929,7 @@ int handle_Q_ZEROORONE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_Q_ZEROORONE
+int gpegc_handle_post_Q_ZEROORONE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -940,7 +940,7 @@ int handle_post_Q_ZEROORONE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_REFERENCE
+int gpegc_handle_REFERENCE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -951,7 +951,7 @@ int handle_REFERENCE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_REFERENCE
+int gpegc_handle_post_REFERENCE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -962,7 +962,7 @@ int handle_post_REFERENCE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_RULE
+int gpegc_handle_RULE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -973,7 +973,7 @@ int handle_RULE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_RULE
+int gpegc_handle_post_RULE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -984,7 +984,7 @@ int handle_post_RULE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_SCANMATCHER
+int gpegc_handle_SCANMATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -995,7 +995,7 @@ int handle_SCANMATCHER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_SCANMATCHER
+int gpegc_handle_post_SCANMATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1006,7 +1006,7 @@ int handle_post_SCANMATCHER
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_SET
+int gpegc_handle_SET
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1017,7 +1017,7 @@ int handle_SET
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_SET
+int gpegc_handle_post_SET
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1028,7 +1028,7 @@ int handle_post_SET
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_SET_0
+int gpegc_handle_SET_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1039,7 +1039,7 @@ int handle_SET_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_SET_0
+int gpegc_handle_post_SET_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1050,7 +1050,7 @@ int handle_post_SET_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_SET_3
+int gpegc_handle_SET_3
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1061,7 +1061,7 @@ int handle_SET_3
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_SET_1
+int gpegc_handle_post_SET_1
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1072,7 +1072,7 @@ int handle_post_SET_1
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_SET_1
+int gpegc_handle_SET_1
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1083,7 +1083,7 @@ int handle_SET_1
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_SET_2
+int gpegc_handle_post_SET_2
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1094,7 +1094,7 @@ int handle_post_SET_2
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_SET_2
+int gpegc_handle_SET_2
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1105,7 +1105,7 @@ int handle_SET_2
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_SET_3
+int gpegc_handle_post_SET_3
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1116,7 +1116,7 @@ int handle_post_SET_3
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_STRING
+int gpegc_handle_STRING
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1127,7 +1127,7 @@ int handle_STRING
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_STRING
+int gpegc_handle_post_STRING
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1138,7 +1138,7 @@ int handle_post_STRING
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_STRINGLITERAL
+int gpegc_handle_STRINGLITERAL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1149,7 +1149,7 @@ int handle_STRINGLITERAL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_STRINGLITERAL
+int gpegc_handle_post_STRINGLITERAL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1160,7 +1160,7 @@ int handle_post_STRINGLITERAL
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_STRINGLITERAL_0
+int gpegc_handle_STRINGLITERAL_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1171,7 +1171,7 @@ int handle_STRINGLITERAL_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_STRINGLITERAL_0
+int gpegc_handle_post_STRINGLITERAL_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1182,7 +1182,7 @@ int handle_post_STRINGLITERAL_0
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_TERM
+int gpegc_handle_TERM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1193,7 +1193,7 @@ int handle_TERM
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_TERM
+int gpegc_handle_post_TERM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1204,7 +1204,7 @@ int handle_post_TERM
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_TERMS
+int gpegc_handle_TERMS
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1215,7 +1215,7 @@ int handle_TERMS
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_TERMS
+int gpegc_handle_post_TERMS
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1226,7 +1226,7 @@ int handle_post_TERMS
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_TYPE
+int gpegc_handle_TYPE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1237,7 +1237,7 @@ int handle_TYPE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_TYPE
+int gpegc_handle_post_TYPE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1248,7 +1248,7 @@ int handle_post_TYPE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_VARCAPTURE
+int gpegc_handle_VARCAPTURE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1259,7 +1259,7 @@ int handle_VARCAPTURE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_post_VARCAPTURE
+int gpegc_handle_post_VARCAPTURE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1270,7 +1270,7 @@ int handle_post_VARCAPTURE
 
 /* declared in ./grammar_handle.c */
 extern
-int handle_VARREFERENCE
+int gpegc_handle_VARREFERENCE
   (
     gpeg_capture_t* parent,
     unsigned index,

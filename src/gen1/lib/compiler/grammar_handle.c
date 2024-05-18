@@ -3,7 +3,7 @@
 
 #define COMBINE(a, b) a##b
 #define IGNOREHANDLER(ident)     \
-int COMBINE(handle_,ident)       \
+int COMBINE(gpegc_handle_,ident) \
   (                              \
     gpeg_capture_t* parent,      \
     unsigned index,              \
@@ -17,7 +17,7 @@ int COMBINE(handle_,ident)       \
   (void)arg;                     \
   return 0;                      \
 }                                \
-int COMBINE(handle_post_,ident)  \
+int COMBINE(gpegc_handle_post_,ident) \
   (                              \
     gpeg_capture_t* parent,      \
     unsigned index,              \
@@ -33,7 +33,7 @@ int COMBINE(handle_post_,ident)  \
 }
 
 #define IGNOREPOSTHANDLER(ident) \
-int COMBINE(handle_post_,ident)  \
+int COMBINE(gpegc_handle_post_,ident) \
   (                              \
     gpeg_capture_t* parent,      \
     unsigned index,              \
@@ -51,7 +51,7 @@ int COMBINE(handle_post_,ident)  \
 IGNOREHANDLER(ABCLOSE)
 IGNOREHANDLER(ABOPEN)
 
-int handle_AND
+int gpegc_handle_AND
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -72,7 +72,7 @@ int handle_AND
 
 IGNOREPOSTHANDLER(AND)
 
-int handle_ANY
+int gpegc_handle_ANY
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -95,7 +95,7 @@ IGNOREPOSTHANDLER(ANY)
 
 IGNOREHANDLER(BCLOSE)
 
-int handle_BITMASK
+int gpegc_handle_BITMASK
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -148,7 +148,7 @@ IGNOREPOSTHANDLER(BITMASK)
 
 IGNOREHANDLER(BOPEN)
 
-int handle_CAPTURE
+int gpegc_handle_CAPTURE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -189,7 +189,7 @@ int handle_CAPTURE
   return 0;
 }
 
-int handle_post_CAPTURE
+int gpegc_handle_post_CAPTURE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -209,7 +209,7 @@ int handle_post_CAPTURE
   return 0;
 }
 
-int handle_CAPTURETYPE
+int gpegc_handle_CAPTURETYPE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -224,7 +224,7 @@ int handle_CAPTURETYPE
   return 0;
 }
 
-int handle_post_CAPTURETYPE
+int gpegc_handle_post_CAPTURETYPE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -244,7 +244,7 @@ IGNOREHANDLER(CBOPEN)
 IGNOREHANDLER(COLON)
 IGNOREHANDLER(COMMENT)
 
-int handle_DEFINITION
+int gpegc_handle_DEFINITION
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -259,7 +259,7 @@ int handle_DEFINITION
   return 0;
 }
 
-int handle_post_DEFINITION
+int gpegc_handle_post_DEFINITION
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -274,7 +274,7 @@ int handle_post_DEFINITION
   return 0;
 }
 
-int handle_END
+int gpegc_handle_END
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -289,7 +289,7 @@ int handle_END
   return 0;
 }
 
-int handle_post_END
+int gpegc_handle_post_END
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -304,7 +304,7 @@ int handle_post_END
   return 0;
 }
 
-int handle_ENDFORCE
+int gpegc_handle_ENDFORCE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -327,7 +327,7 @@ int handle_ENDFORCE
   return 0;
 }
 
-int handle_post_ENDFORCE
+int gpegc_handle_post_ENDFORCE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -342,7 +342,7 @@ int handle_post_ENDFORCE
   return 0;
 }
 
-int handle_EXPRESSION
+int gpegc_handle_EXPRESSION
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -362,7 +362,7 @@ int handle_EXPRESSION
   return 0;
 }
 
-int handle_post_EXPRESSION
+int gpegc_handle_post_EXPRESSION
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -382,7 +382,7 @@ int handle_post_EXPRESSION
   return 0;
 }
 
-int handle_EXPRESSION_0
+int gpegc_handle_EXPRESSION_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -411,7 +411,7 @@ int handle_EXPRESSION_0
   return 0;
 }
 
-int handle_post_EXPRESSION_0
+int gpegc_handle_post_EXPRESSION_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -431,7 +431,7 @@ int handle_post_EXPRESSION_0
   return 0;
 }
 
-int handle_GRAMMAR
+int gpegc_handle_GRAMMAR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -446,7 +446,7 @@ int handle_GRAMMAR
   return 0;
 }
 
-int handle_post_GRAMMAR
+int gpegc_handle_post_GRAMMAR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -461,7 +461,7 @@ int handle_post_GRAMMAR
   return 0;
 }
 
-int handle_GROUP
+int gpegc_handle_GROUP
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -483,7 +483,7 @@ int handle_GROUP
   return 0;
 }
 
-int handle_post_GROUP
+int gpegc_handle_post_GROUP
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -534,7 +534,7 @@ unsigned unescape
   }
 }
 
-int handle_HEXLITERAL
+int gpegc_handle_HEXLITERAL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -559,7 +559,7 @@ int handle_HEXLITERAL
 
 IGNOREPOSTHANDLER(HEXLITERAL)
 
-int handle_IDENT
+int gpegc_handle_IDENT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -574,7 +574,7 @@ int handle_IDENT
   return 0;
 }
 
-int handle_post_IDENT
+int gpegc_handle_post_IDENT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -589,7 +589,7 @@ int handle_post_IDENT
   return 0;
 }
 
-int handle_IMPORTDECL
+int gpegc_handle_IMPORTDECL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -609,7 +609,7 @@ int handle_IMPORTDECL
   return 0;
 }
 
-int handle_post_IMPORTDECL
+int gpegc_handle_post_IMPORTDECL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -629,7 +629,7 @@ int handle_post_IMPORTDECL
   return 0;
 }
 
-int handle_KW_AS
+int gpegc_handle_KW_AS
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -644,7 +644,7 @@ int handle_KW_AS
   return 0;
 }
 
-int handle_post_KW_AS
+int gpegc_handle_post_KW_AS
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -659,7 +659,7 @@ int handle_post_KW_AS
   return 0;
 }
 
-int handle_KW_IMPORT
+int gpegc_handle_KW_IMPORT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -674,7 +674,7 @@ int handle_KW_IMPORT
   return 0;
 }
 
-int handle_post_KW_IMPORT
+int gpegc_handle_post_KW_IMPORT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -689,7 +689,7 @@ int handle_post_KW_IMPORT
   return 0;
 }
 
-int handle_LCMODES
+int gpegc_handle_LCMODES
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -704,7 +704,7 @@ int handle_LCMODES
   return 0;
 }
 
-int handle_post_LCMODES
+int gpegc_handle_post_LCMODES
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -719,7 +719,7 @@ int handle_post_LCMODES
   return 0;
 }
 
-int handle_LCPARAM
+int gpegc_handle_LCPARAM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -734,7 +734,7 @@ int handle_LCPARAM
   return 0;
 }
 
-int handle_post_LCPARAM
+int gpegc_handle_post_LCPARAM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -749,7 +749,7 @@ int handle_post_LCPARAM
   return 0;
 }
 
-int handle_LEFTARROW
+int gpegc_handle_LEFTARROW
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -764,7 +764,7 @@ int handle_LEFTARROW
   return 0;
 }
 
-int handle_post_LEFTARROW
+int gpegc_handle_post_LEFTARROW
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -779,7 +779,7 @@ int handle_post_LEFTARROW
   return 0;
 }
 
-int handle_LIMITEDCALL
+int gpegc_handle_LIMITEDCALL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -805,7 +805,7 @@ int handle_LIMITEDCALL
   return 0;
 }
 
-int handle_post_LIMITEDCALL
+int gpegc_handle_post_LIMITEDCALL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -836,7 +836,7 @@ void set_bits
   }
 }
 
-int handle_MACRO
+int gpegc_handle_MACRO
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -877,7 +877,7 @@ int handle_MACRO
   return 0;
 }
 
-int handle_post_MACRO
+int gpegc_handle_post_MACRO
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -892,7 +892,7 @@ int handle_post_MACRO
   return 0;
 }
 
-int handle_MATCHER
+int gpegc_handle_MATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -907,7 +907,7 @@ int handle_MATCHER
   return 0;
 }
 
-int handle_post_MATCHER
+int gpegc_handle_post_MATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -924,7 +924,7 @@ int handle_post_MATCHER
 
 IGNOREHANDLER(MULTILINECOMMENT)
 
-int handle_NOT
+int gpegc_handle_NOT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -943,7 +943,7 @@ int handle_NOT
   return 0;
 }
 
-int handle_post_NOT
+int gpegc_handle_post_NOT
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -958,7 +958,7 @@ int handle_post_NOT
   return 0;
 }
 
-int handle_NUMBER
+int gpegc_handle_NUMBER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -973,7 +973,7 @@ int handle_NUMBER
   return 0;
 }
 
-int handle_post_NUMBER
+int gpegc_handle_post_NUMBER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -988,7 +988,7 @@ int handle_post_NUMBER
   return 0;
 }
 
-int handle_OPTNAMESPACE
+int gpegc_handle_OPTNAMESPACE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1003,7 +1003,7 @@ int handle_OPTNAMESPACE
   return 0;
 }
 
-int handle_post_OPTNAMESPACE
+int gpegc_handle_post_OPTNAMESPACE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1018,7 +1018,7 @@ int handle_post_OPTNAMESPACE
   return 0;
 }
 
-int handle_OR
+int gpegc_handle_OR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1033,7 +1033,7 @@ int handle_OR
   return 0;
 }
 
-int handle_post_OR
+int gpegc_handle_post_OR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1048,7 +1048,7 @@ int handle_post_OR
   return 0;
 }
 
-int handle_QUANTIFIEDMATCHER
+int gpegc_handle_QUANTIFIEDMATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1070,7 +1070,7 @@ int handle_QUANTIFIEDMATCHER
   return 0;
 }
 
-int handle_post_QUANTIFIEDMATCHER
+int gpegc_handle_post_QUANTIFIEDMATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1098,7 +1098,7 @@ int handle_post_QUANTIFIEDMATCHER
   return 0;
 }
 
-int handle_QUANTIFIER
+int gpegc_handle_QUANTIFIER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1114,7 +1114,7 @@ int handle_QUANTIFIER
   return 0;
 }
 
-int handle_post_QUANTIFIER
+int gpegc_handle_post_QUANTIFIER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1129,7 +1129,7 @@ int handle_post_QUANTIFIER
   return 0;
 }
 
-int handle_Q_FROM
+int gpegc_handle_Q_FROM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1151,7 +1151,7 @@ int handle_Q_FROM
   return 0;
 }
 
-int handle_post_Q_FROM
+int gpegc_handle_post_Q_FROM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1166,7 +1166,7 @@ int handle_post_Q_FROM
   return 0;
 }
 
-int handle_Q_FROMTO
+int gpegc_handle_Q_FROMTO
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1189,7 +1189,7 @@ int handle_Q_FROMTO
   return 0;
 }
 
-int handle_post_Q_FROMTO
+int gpegc_handle_post_Q_FROMTO
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1204,7 +1204,7 @@ int handle_post_Q_FROMTO
   return 0;
 }
 
-int handle_Q_FROMTO_0
+int gpegc_handle_Q_FROMTO_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1219,7 +1219,7 @@ int handle_Q_FROMTO_0
   return 0;
 }
 
-int handle_post_Q_FROMTO_0
+int gpegc_handle_post_Q_FROMTO_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1234,7 +1234,7 @@ int handle_post_Q_FROMTO_0
   return 0;
 }
 
-int handle_Q_FROMTO_1
+int gpegc_handle_Q_FROMTO_1
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1249,7 +1249,7 @@ int handle_Q_FROMTO_1
   return 0;
 }
 
-int handle_post_Q_FROMTO_1
+int gpegc_handle_post_Q_FROMTO_1
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1264,7 +1264,7 @@ int handle_post_Q_FROMTO_1
   return 0;
 }
 
-int handle_Q_FROM_0
+int gpegc_handle_Q_FROM_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1279,7 +1279,7 @@ int handle_Q_FROM_0
   return 0;
 }
 
-int handle_post_Q_FROM_0
+int gpegc_handle_post_Q_FROM_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1294,7 +1294,7 @@ int handle_post_Q_FROM_0
   return 0;
 }
 
-int handle_Q_ONEORMORE
+int gpegc_handle_Q_ONEORMORE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1315,7 +1315,7 @@ int handle_Q_ONEORMORE
   return 0;
 }
 
-int handle_post_Q_ONEORMORE
+int gpegc_handle_post_Q_ONEORMORE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1330,7 +1330,7 @@ int handle_post_Q_ONEORMORE
   return 0;
 }
 
-int handle_Q_SPECIFIC
+int gpegc_handle_Q_SPECIFIC
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1353,7 +1353,7 @@ int handle_Q_SPECIFIC
   return 0;
 }
 
-int handle_post_Q_SPECIFIC
+int gpegc_handle_post_Q_SPECIFIC
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1368,7 +1368,7 @@ int handle_post_Q_SPECIFIC
   return 0;
 }
 
-int handle_Q_SPECIFIC_0
+int gpegc_handle_Q_SPECIFIC_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1383,7 +1383,7 @@ int handle_Q_SPECIFIC_0
   return 0;
 }
 
-int handle_post_Q_SPECIFIC_0
+int gpegc_handle_post_Q_SPECIFIC_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1398,7 +1398,7 @@ int handle_post_Q_SPECIFIC_0
   return 0;
 }
 
-int handle_Q_UNTIL
+int gpegc_handle_Q_UNTIL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1420,7 +1420,7 @@ int handle_Q_UNTIL
   return 0;
 }
 
-int handle_post_Q_UNTIL
+int gpegc_handle_post_Q_UNTIL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1435,7 +1435,7 @@ int handle_post_Q_UNTIL
   return 0;
 }
 
-int handle_Q_UNTIL_0
+int gpegc_handle_Q_UNTIL_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1450,7 +1450,7 @@ int handle_Q_UNTIL_0
   return 0;
 }
 
-int handle_post_Q_UNTIL_0
+int gpegc_handle_post_Q_UNTIL_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1465,7 +1465,7 @@ int handle_post_Q_UNTIL_0
   return 0;
 }
 
-int handle_Q_VAR
+int gpegc_handle_Q_VAR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1480,7 +1480,7 @@ int handle_Q_VAR
   return 0;
 }
 
-int handle_post_Q_VAR
+int gpegc_handle_post_Q_VAR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1495,7 +1495,7 @@ int handle_post_Q_VAR
   return 0;
 }
 
-int handle_Q_ZEROORMORE
+int gpegc_handle_Q_ZEROORMORE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1516,7 +1516,7 @@ int handle_Q_ZEROORMORE
   return 0;
 }
 
-int handle_post_Q_ZEROORMORE
+int gpegc_handle_post_Q_ZEROORMORE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1531,7 +1531,7 @@ int handle_post_Q_ZEROORMORE
   return 0;
 }
 
-int handle_Q_ZEROORONE
+int gpegc_handle_Q_ZEROORONE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1552,7 +1552,7 @@ int handle_Q_ZEROORONE
   return 0;
 }
 
-int handle_post_Q_ZEROORONE
+int gpegc_handle_post_Q_ZEROORONE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1567,7 +1567,7 @@ int handle_post_Q_ZEROORONE
   return 0;
 }
 
-int handle_REFERENCE
+int gpegc_handle_REFERENCE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1586,7 +1586,7 @@ int handle_REFERENCE
   return 0;
 }
 
-int handle_post_REFERENCE
+int gpegc_handle_post_REFERENCE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1601,7 +1601,7 @@ int handle_post_REFERENCE
   return 0;
 }
 
-int handle_RULE
+int gpegc_handle_RULE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1644,7 +1644,7 @@ int handle_RULE
   return 0;
 }
 
-int handle_post_RULE
+int gpegc_handle_post_RULE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1689,7 +1689,7 @@ int handle_post_RULE
 
 IGNOREHANDLER(S)
 
-int handle_SCANMATCHER
+int gpegc_handle_SCANMATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1704,7 +1704,7 @@ int handle_SCANMATCHER
   return 0;
 }
 
-int handle_post_SCANMATCHER
+int gpegc_handle_post_SCANMATCHER
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1721,7 +1721,7 @@ int handle_post_SCANMATCHER
 
 IGNOREHANDLER(SEMICOLON)
 
-int handle_SET
+int gpegc_handle_SET
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1736,7 +1736,7 @@ int handle_SET
   return 0;
 }
 
-int handle_post_SET
+int gpegc_handle_post_SET
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1756,7 +1756,7 @@ int handle_post_SET
   return 0;
 }
 
-int handle_SET_0
+int gpegc_handle_SET_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1778,7 +1778,7 @@ int handle_SET_0
   return 0;
 }
 
-int handle_post_SET_0
+int gpegc_handle_post_SET_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1806,7 +1806,7 @@ unsigned get_bit
   }
 }
 
-int handle_SET_3
+int gpegc_handle_SET_3
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1827,7 +1827,7 @@ int handle_SET_3
   return 0;
 }
 
-int handle_post_SET_1
+int gpegc_handle_post_SET_1
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1842,7 +1842,7 @@ int handle_post_SET_1
   return 0;
 }
 
-int handle_SET_1
+int gpegc_handle_SET_1
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1863,7 +1863,7 @@ int handle_SET_1
   return 0;
 }
 
-int handle_post_SET_2
+int gpegc_handle_post_SET_2
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1878,7 +1878,7 @@ int handle_post_SET_2
   return 0;
 }
 
-int handle_SET_2
+int gpegc_handle_SET_2
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1901,7 +1901,7 @@ int handle_SET_2
   return 0;
 }
 
-int handle_post_SET_3
+int gpegc_handle_post_SET_3
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1916,7 +1916,7 @@ int handle_post_SET_3
   return 0;
 }
 
-int handle_STRING
+int gpegc_handle_STRING
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1938,7 +1938,7 @@ int handle_STRING
   return 0;
 }
 
-int handle_post_STRING
+int gpegc_handle_post_STRING
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1953,7 +1953,7 @@ int handle_post_STRING
   return 0;
 }
 
-int handle_STRINGLITERAL
+int gpegc_handle_STRINGLITERAL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1968,7 +1968,7 @@ int handle_STRINGLITERAL
   return 0;
 }
 
-int handle_post_STRINGLITERAL
+int gpegc_handle_post_STRINGLITERAL
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1983,7 +1983,7 @@ int handle_post_STRINGLITERAL
   return 0;
 }
 
-int handle_STRINGLITERAL_0
+int gpegc_handle_STRINGLITERAL_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2012,7 +2012,7 @@ int handle_STRINGLITERAL_0
   return 0;
 }
 
-int handle_post_STRINGLITERAL_0
+int gpegc_handle_post_STRINGLITERAL_0
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2027,7 +2027,7 @@ int handle_post_STRINGLITERAL_0
   return 0;
 }
 
-int handle_TERM
+int gpegc_handle_TERM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2049,7 +2049,7 @@ int handle_TERM
   return 0;
 }
 
-int handle_post_TERM
+int gpegc_handle_post_TERM
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2064,7 +2064,7 @@ int handle_post_TERM
   return 0;
 }
 
-int handle_TERMS
+int gpegc_handle_TERMS
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2079,7 +2079,7 @@ int handle_TERMS
   return 0;
 }
 
-int handle_post_TERMS
+int gpegc_handle_post_TERMS
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2094,7 +2094,7 @@ int handle_post_TERMS
   return 0;
 }
 
-int handle_TYPE
+int gpegc_handle_TYPE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2109,7 +2109,7 @@ int handle_TYPE
   return 0;
 }
 
-int handle_post_TYPE
+int gpegc_handle_post_TYPE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2124,7 +2124,7 @@ int handle_post_TYPE
   return 0;
 }
 
-int handle_VARCAPTURE
+int gpegc_handle_VARCAPTURE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2157,7 +2157,7 @@ int handle_VARCAPTURE
   return 0;
 }
 
-int handle_post_VARCAPTURE
+int gpegc_handle_post_VARCAPTURE
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -2177,7 +2177,7 @@ int handle_post_VARCAPTURE
   return 0;
 }
 
-int handle_VARREFERENCE
+int gpegc_handle_VARREFERENCE
   (
     gpeg_capture_t* parent,
     unsigned index,

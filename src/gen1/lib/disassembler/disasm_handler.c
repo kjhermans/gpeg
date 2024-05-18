@@ -36,7 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define COMBINE(a, b) a##b
 #define IGNOREPOSTHANDLER(ident) \
-int COMBINE(handle_post_,ident)  \
+int COMBINE(gpegd_handle_post_,ident) \
   (                              \
     gpeg_capture_t* parent,      \
     unsigned index,              \
@@ -51,7 +51,7 @@ int COMBINE(handle_post_,ident)  \
   return 0;                      \
 }
 
-int handle_instr_any
+int gpegd_handle_instr_any
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -74,7 +74,7 @@ int handle_instr_any
 
 IGNOREPOSTHANDLER(instr_any)
 
-int handle_instr_backcommit
+int gpegd_handle_instr_backcommit
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -98,7 +98,7 @@ int handle_instr_backcommit
 
 IGNOREPOSTHANDLER(instr_backcommit)
 
-int handle_instr_call
+int gpegd_handle_instr_call
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -122,7 +122,7 @@ int handle_instr_call
 
 IGNOREPOSTHANDLER(instr_call)
 
-int handle_instr_catch
+int gpegd_handle_instr_catch
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -146,7 +146,7 @@ int handle_instr_catch
 
 IGNOREPOSTHANDLER(instr_catch)
 
-int handle_instr_char
+int gpegd_handle_instr_char
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -170,7 +170,7 @@ int handle_instr_char
 
 IGNOREPOSTHANDLER(instr_char)
 
-int handle_instr_closecapture
+int gpegd_handle_instr_closecapture
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -194,7 +194,7 @@ int handle_instr_closecapture
 
 IGNOREPOSTHANDLER(instr_closecapture)
 
-int handle_instr_commit
+int gpegd_handle_instr_commit
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -218,7 +218,7 @@ int handle_instr_commit
 
 IGNOREPOSTHANDLER(instr_commit)
 
-int handle_instr_condjump
+int gpegd_handle_instr_condjump
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -243,7 +243,7 @@ int handle_instr_condjump
 
 IGNOREPOSTHANDLER(instr_condjump)
 
-int handle_instr_counter
+int gpegd_handle_instr_counter
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -268,7 +268,7 @@ int handle_instr_counter
 
 IGNOREPOSTHANDLER(instr_counter)
 
-int handle_instr_end
+int gpegd_handle_instr_end
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -292,7 +292,7 @@ int handle_instr_end
 
 IGNOREPOSTHANDLER(instr_end)
 
-int handle_instr_endisolate
+int gpegd_handle_instr_endisolate
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -309,7 +309,7 @@ int handle_instr_endisolate
 
 IGNOREPOSTHANDLER(instr_endisolate)
 
-int handle_instr_endreplace
+int gpegd_handle_instr_endreplace
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -326,7 +326,7 @@ int handle_instr_endreplace
 
 IGNOREPOSTHANDLER(instr_endreplace)
 
-int handle_instr_fail
+int gpegd_handle_instr_fail
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -349,7 +349,7 @@ int handle_instr_fail
 
 IGNOREPOSTHANDLER(instr_fail)
 
-int handle_instr_failtwice
+int gpegd_handle_instr_failtwice
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -372,7 +372,7 @@ int handle_instr_failtwice
 
 IGNOREPOSTHANDLER(instr_failtwice)
 
-int handle_instr_intrpcapture
+int gpegd_handle_instr_intrpcapture
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -389,7 +389,7 @@ int handle_instr_intrpcapture
 
 IGNOREPOSTHANDLER(instr_intrpcapture)
 
-int handle_instr_isolate
+int gpegd_handle_instr_isolate
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -406,7 +406,7 @@ int handle_instr_isolate
 
 IGNOREPOSTHANDLER(instr_isolate)
 
-int handle_instr_jump
+int gpegd_handle_instr_jump
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -430,7 +430,7 @@ int handle_instr_jump
 
 IGNOREPOSTHANDLER(instr_jump)
 
-int handle_instr_bitmask
+int gpegd_handle_instr_bitmask
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -459,7 +459,7 @@ int handle_instr_bitmask
 
 IGNOREPOSTHANDLER(instr_bitmask)
 
-int handle_instr_noop
+int gpegd_handle_instr_noop
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -482,7 +482,7 @@ int handle_instr_noop
 
 IGNOREPOSTHANDLER(instr_noop)
 
-int handle_instr_opencapture
+int gpegd_handle_instr_opencapture
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -506,7 +506,7 @@ int handle_instr_opencapture
 
 IGNOREPOSTHANDLER(instr_opencapture)
 
-int handle_instr_partialcommit
+int gpegd_handle_instr_partialcommit
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -530,7 +530,7 @@ int handle_instr_partialcommit
 
 IGNOREPOSTHANDLER(instr_partialcommit)
 
-int handle_instr_quad
+int gpegd_handle_instr_quad
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -558,7 +558,7 @@ int handle_instr_quad
 
 IGNOREPOSTHANDLER(instr_quad)
 
-int handle_instr_range
+int gpegd_handle_instr_range
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -575,7 +575,7 @@ int handle_instr_range
 
 IGNOREPOSTHANDLER(instr_range)
 
-int handle_instr_replace
+int gpegd_handle_instr_replace
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -592,7 +592,7 @@ int handle_instr_replace
 
 IGNOREPOSTHANDLER(instr_replace)
 
-int handle_instr_ret
+int gpegd_handle_instr_ret
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -615,7 +615,7 @@ int handle_instr_ret
 
 IGNOREPOSTHANDLER(instr_ret)
 
-int handle_instr_set
+int gpegd_handle_instr_set
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -642,7 +642,7 @@ int handle_instr_set
 
 IGNOREPOSTHANDLER(instr_set)
 
-int handle_instr_skip
+int gpegd_handle_instr_skip
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -666,7 +666,7 @@ int handle_instr_skip
 
 IGNOREPOSTHANDLER(instr_skip)
 
-int handle_instr_span
+int gpegd_handle_instr_span
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -683,7 +683,7 @@ int handle_instr_span
 
 IGNOREPOSTHANDLER(instr_span)
 
-int handle_instr_testany
+int gpegd_handle_instr_testany
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -700,7 +700,7 @@ int handle_instr_testany
 
 IGNOREPOSTHANDLER(instr_testany)
 
-int handle_instr_testchar
+int gpegd_handle_instr_testchar
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -717,7 +717,7 @@ int handle_instr_testchar
 
 IGNOREPOSTHANDLER(instr_testchar)
 
-int handle_instr_testquad
+int gpegd_handle_instr_testquad
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -734,7 +734,7 @@ int handle_instr_testquad
 
 IGNOREPOSTHANDLER(instr_testquad)
 
-int handle_instr_testset
+int gpegd_handle_instr_testset
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -751,7 +751,7 @@ int handle_instr_testset
 
 IGNOREPOSTHANDLER(instr_testset)
 
-int handle_instr_trap
+int gpegd_handle_instr_trap
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -774,7 +774,7 @@ int handle_instr_trap
 
 IGNOREPOSTHANDLER(instr_trap)
 
-int handle_instr_var
+int gpegd_handle_instr_var
   (
     gpeg_capture_t* parent,
     unsigned index,

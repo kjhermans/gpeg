@@ -102,7 +102,7 @@ GPEG_ERR_T gpegc_compile
   gpegc_t gpegc = { 0 };
   gpegc.compiler = c;
 
-  int e = grammar_process_node(&(captures.list[ 0 ]), &gpegc);
+  int e = gpegc_grammar_process_node(&(captures.list[ 0 ]), &gpegc);
 
   if (gpegc.startrule) {
     vec_printf_insert(&(c->output), 0, "  call %s\n  end 0\n\n", gpegc.startrule);

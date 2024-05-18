@@ -91,13 +91,13 @@ GPEG_ERR_T gpega_assemble
 
   gpega_t gpega = { 0 };
   gpega.output = output;
-  if ((e = grammar_process_node(&(captures.list[ 0 ]), &gpega)) != 0) {
+  if ((e = gpega_grammar_process_node(&(captures.list[ 0 ]), &gpega)) != 0) {
     vec_printf(error, "Assembly error code %d in round zero.", e);
     return (GPEG_ERR_T){ .code = e };
   }
   ++(gpega.round);
   gpega.offset = 0;
-  if ((e = grammar_process_node(&(captures.list[ 0 ]), &gpega)) != 0) {
+  if ((e = gpega_grammar_process_node(&(captures.list[ 0 ]), &gpega)) != 0) {
     vec_printf(error, "Assembly error code %d in round one.", e);
     return (GPEG_ERR_T){ .code = e };
   }

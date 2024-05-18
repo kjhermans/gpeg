@@ -11,7 +11,7 @@
 
 /* declared in ./assembly.c */
 extern
-int grammar_process_node
+int gpega_grammar_process_node
   (
     gpeg_capture_t* capture,
     void* ptr
@@ -20,7 +20,7 @@ int grammar_process_node
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_ANYINSTR
+int gpega_handle_ANYINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -31,7 +31,7 @@ int handle_ANYINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_BACKCOMMITINSTR
+int gpega_handle_BACKCOMMITINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -42,7 +42,7 @@ int handle_BACKCOMMITINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_CALLINSTR
+int gpega_handle_CALLINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -53,7 +53,7 @@ int handle_CALLINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_CATCHINSTR
+int gpega_handle_CATCHINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -64,7 +64,7 @@ int handle_CATCHINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_CHARINSTR
+int gpega_handle_CHARINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -75,7 +75,7 @@ int handle_CHARINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_CLOSECAPTUREINSTR
+int gpega_handle_CLOSECAPTUREINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -86,7 +86,7 @@ int handle_CLOSECAPTUREINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_COMMITINSTR
+int gpega_handle_COMMITINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -97,7 +97,7 @@ int handle_COMMITINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_CONDJUMPINSTR
+int gpega_handle_CONDJUMPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -108,7 +108,7 @@ int handle_CONDJUMPINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_COUNTERINSTR
+int gpega_handle_COUNTERINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -119,7 +119,7 @@ int handle_COUNTERINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_ENDINSTR
+int gpega_handle_ENDINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -130,7 +130,7 @@ int handle_ENDINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_ENDISOLATEINSTR
+int gpega_handle_ENDISOLATEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -141,7 +141,7 @@ int handle_ENDISOLATEINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_ENDREPLACEINSTR
+int gpega_handle_ENDREPLACEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -152,7 +152,7 @@ int handle_ENDREPLACEINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_FAILINSTR
+int gpega_handle_FAILINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -163,7 +163,7 @@ int handle_FAILINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_FAILTWICEINSTR
+int gpega_handle_FAILTWICEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -174,7 +174,7 @@ int handle_FAILTWICEINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_INTRPCAPTUREINSTR
+int gpega_handle_INTRPCAPTUREINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -185,7 +185,7 @@ int handle_INTRPCAPTUREINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_ISOLATEINSTR
+int gpega_handle_ISOLATEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -196,7 +196,7 @@ int handle_ISOLATEINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_JUMPINSTR
+int gpega_handle_JUMPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -207,7 +207,7 @@ int handle_JUMPINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_LABELDEF
+int gpega_handle_LABELDEF
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -218,7 +218,7 @@ int handle_LABELDEF
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_BITMASKINSTR
+int gpega_handle_BITMASKINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -229,7 +229,7 @@ int handle_BITMASKINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_NOOPINSTR
+int gpega_handle_NOOPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -240,7 +240,7 @@ int handle_NOOPINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_OPENCAPTUREINSTR
+int gpega_handle_OPENCAPTUREINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -251,7 +251,7 @@ int handle_OPENCAPTUREINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_PARTIALCOMMITINSTR
+int gpega_handle_PARTIALCOMMITINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -262,7 +262,7 @@ int handle_PARTIALCOMMITINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_QUADINSTR
+int gpega_handle_QUADINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -273,7 +273,7 @@ int handle_QUADINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_RANGEINSTR
+int gpega_handle_RANGEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -284,7 +284,7 @@ int handle_RANGEINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_REPLACEINSTR
+int gpega_handle_REPLACEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -295,7 +295,7 @@ int handle_REPLACEINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_RETINSTR
+int gpega_handle_RETINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -306,7 +306,7 @@ int handle_RETINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_SETINSTR
+int gpega_handle_SETINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -317,7 +317,7 @@ int handle_SETINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_SKIPINSTR
+int gpega_handle_SKIPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -328,7 +328,7 @@ int handle_SKIPINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_SPANINSTR
+int gpega_handle_SPANINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -339,7 +339,7 @@ int handle_SPANINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_TESTANYINSTR
+int gpega_handle_TESTANYINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -350,7 +350,7 @@ int handle_TESTANYINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_TESTCHARINSTR
+int gpega_handle_TESTCHARINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -361,7 +361,7 @@ int handle_TESTCHARINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_TESTQUADINSTR
+int gpega_handle_TESTQUADINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -372,7 +372,7 @@ int handle_TESTQUADINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_TESTSETINSTR
+int gpega_handle_TESTSETINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -383,7 +383,7 @@ int handle_TESTSETINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_TRAPINSTR
+int gpega_handle_TRAPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -394,7 +394,7 @@ int handle_TRAPINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int handle_VARINSTR
+int gpega_handle_VARINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
