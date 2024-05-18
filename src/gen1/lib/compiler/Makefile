@@ -24,8 +24,8 @@ grammar.byc:grammar.asm
 	$(PREVGEN)/bin/gpega -i grammar.asm -o grammar.byc
 
 grammar.asm: grammar.gpeg
-	$(PREVGEN)/bin/gpegc -C -i grammar.gpeg -o grammar.asm -G grammar.c \
-	  -M grammar.slotmap.h
+	$(PREVGEN)/bin/gpegc -C -i grammar.gpeg -o grammar.asm \
+	  -G grammar.c gpegc -M grammar.slotmap.h
 	grep 'include\|extern' grammar.c > grammar_functions.h
 
 functionsh: gpegc_functions.h

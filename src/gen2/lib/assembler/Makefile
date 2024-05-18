@@ -24,8 +24,8 @@ assembly.byc:assembly.asm
 	$(PREVGEN)/bin/gpega -i assembly.asm -o assembly.byc
 
 assembly.asm: assembly.gpeg
-	$(PREVGEN)/bin/gpegc -C -i assembly.gpeg -o assembly.asm -G assembly.c \
-	  -M assembly.slotmap.h
+	$(PREVGEN)/bin/gpegc -C -i assembly.gpeg -o assembly.asm \
+	  -G assembly.c gpega -M assembly.slotmap.h
 	grep 'include\|extern' assembly.c > assembly_functions.h
 
 instructionsh: gpega_instructions.h
