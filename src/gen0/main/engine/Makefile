@@ -4,10 +4,12 @@ CC=$(ARCH)gcc
 AR=$(ARCH)ar
 CFLAGS=-g -Wall -Wextra $(DEBUG) -I$(CURGEN)/include
 TARGET=gpege
+LIBNCURSES:=$(shell locate libncurses.a && echo "-lncurses -ltinfo")
 LIBS=\
   $(CURGEN)/lib/engine/libgpege.a \
   ../../lib/gpeg/libgpeg.a \
   ../../lib/util/libutil.a \
+  $(LIBNCURSES)
 
 all: $(TARGET)
 

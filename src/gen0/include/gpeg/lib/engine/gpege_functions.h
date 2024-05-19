@@ -31,6 +31,21 @@ GPEG_ERR_T gpege_actions2captures
   (vec_t* input, gpege_actionlist_t* actions, gpeg_capturelist_t* captures)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./gpege_debug_ncurses.c */
+#define gen0_gpege_debug_ncurses_exit gpege_debug_ncurses_exit
+
+extern
+void gpege_debug_ncurses_exit
+  ();
+
+/* declared in ./gpege_debug_ncurses.c */
+#define gen0_gpege_debug_ncurses gpege_debug_ncurses
+
+extern
+GPEG_ERR_T gpege_debug_ncurses
+  (gpege_t* gpege, gpege_ec_t* ec, uint32_t opcode, void* arg)
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./gpege_debug_verbose.c */
 #define gen0_gpege_debug_verbose gpege_debug_verbose
 

@@ -38,6 +38,8 @@ typedef struct {
   int code;
 } GPEG_ERR_T;
 
+#define GPEG_ERR_EXIT            (GPEG_ERR_T){ .code = -1 }
+
 #define GPEG_OK                  (GPEG_ERR_T){ .code = 0 }
 #define GPEG_ERR_NOTFOUND        (GPEG_ERR_T){ .code = 1 }
 #define GPEG_ERR_OVERFLOW        (GPEG_ERR_T){ .code = 2 }

@@ -40,6 +40,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <gpeg/private/util/absorb_file.h>
 #include <gpeg/private/util/strxypos.h>
 
+#if defined __has_include
+#  if __has_include (<ncurses.h>)
+#    define _HAS_NCURSES_
+#    include <ncurses.h>
+#  endif
+#endif
+
 /**
  *
  */
@@ -67,6 +74,9 @@ int main
 "-l <path>   Labelmap file\n"
 "-m <path>   Slotmap file\n"
 "-d          Start debugger\n"
+#ifdef _HAS_NCURSES_
+"-n          Start ncurses based debugger\n"
+#endif
 "-v          Verbose (prepare for a lot of data on stderr)\n"
 "-V          Super verbose (see above)\n"
 "-t          Provide capture tree at the end\n"
@@ -97,6 +107,12 @@ int main
     }
   }
 
+#ifdef _HAS_NCURSES_
+  if (queryargs(argc, argv, 'n', "ncurses", 0, 0, 0, 0) == 0) {
+    gpege.debugger = gpege_debug_ncurses;
+  }
+#endif
+
   if (absorb_file(inputfile, &(input.data), &(input.size))) {
     fprintf(stderr, "Could not absorb input file '%s'\n", inputfile);
     return -1;
@@ -116,6 +132,11 @@ int main
   ec.input = &input;
 
   e = gpege_run(&gpege, &ec);
+
+#ifdef _HAS_NCURSES_
+  gpege_debug_ncurses_exit();
+#endif
+
   if (e.code) {
     unsigned yx0[ 2 ];
     unsigned yx1[ 2 ];
