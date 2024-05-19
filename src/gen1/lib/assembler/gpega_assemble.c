@@ -50,7 +50,7 @@ unsigned char bytecode[] = {
  * and emits the corresponing bytecode in output.
  */
 GPEG_ERR_T gpega_assemble
-  (vec_t* input, vec_t* output, vec_t* error, unsigned flags)
+  (vec_t* input, vec_t* output, vec_t* error, char* labelmap, unsigned flags)
 {
   DEBUGFUNCTION
   ASSERT(input)
@@ -100,6 +100,10 @@ GPEG_ERR_T gpega_assemble
   if ((e = gpega_grammar_process_node(&(captures.list[ 0 ]), &gpega)) != 0) {
     vec_printf(error, "Assembly error code %d in round one.", e);
     return (GPEG_ERR_T){ .code = e };
+  }
+
+  if (labelmap) {
+    GPEG_CHECK(gpega_labelmap_write(&gpega, labelmap), PROPAGATE);
   }
 
   str2int_map_free(&(gpega.labelmap));

@@ -51,6 +51,7 @@ int main
 {
   char* inputfile = "-";
   char* outputfile = "-";
+  char* labelmapfile = 0;
   vec_t input = { 0 };
   vec_t output = { 0 };
   vec_t error = { 0 };
@@ -72,12 +73,13 @@ int main
   }
   queryargs(argc, argv, 'i', "input", 0, 1, 0, &inputfile);
   queryargs(argc, argv, 'o', "output", 0, 1, 0, &outputfile);
+  queryargs(argc, argv, 'l', "labelmap", 0, 1, 0, &labelmapfile);
 
   if (absorb_file(inputfile, &(input.data), &(input.size))) {
     fprintf(stderr, "Could not absorb input file '%s'\n", inputfile);
     return -1;
   }
-  e = gpega_assemble(&input, &output, &error, flags);
+  e = gpega_assemble(&input, &output, &error, labelmapfile, flags);
   if (e.code) {
     fprintf(stderr, "Assembler error code %d: %s", e.code, (char*)(error.data));
     return e.code;

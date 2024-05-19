@@ -406,7 +406,13 @@ int gpega_handle_VARINSTR
 /* declared in ./gpega_assemble.c */
 extern
 GPEG_ERR_T gpega_assemble
-  (vec_t* input, vec_t* output, vec_t* error, unsigned flags)
+  (vec_t* input, vec_t* output, vec_t* error, char* labelmap, unsigned flags)
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./gpega_labelmap_write.c */
+extern
+GPEG_ERR_T gpega_labelmap_write
+  (gpega_t* gpega, char* path)
   __attribute__ ((warn_unused_result));
 
 

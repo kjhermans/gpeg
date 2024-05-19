@@ -306,10 +306,11 @@ void gpege_dbgncrs_draw_input
 
 static
 void gpege_dbgncrs_draw_stack
-  (gpege_ec_t* ec)
+  (gpege_t* gpege, gpege_ec_t* ec)
 {
   unsigned start = 0;
   char line[ 80 ];
+  char* label;
 
   move(5 + gpege_dbgncrs_state.noinputlines, 0);
     addstr(
@@ -321,16 +322,28 @@ void gpege_dbgncrs_draw_stack
   for (unsigned i=start; i < ec->stack.count; i++) {
     move(6 + gpege_dbgncrs_state.noinputlines + i - start, 0);
     if (ec->stack.list[ i ].type == GPEGE_STACK_CATCH) {
+      label = str2int_map_reverse_lookup(
+                &(gpege->labelmap), ec->stack.list[ i ].address
+              );
       snprintf(line, sizeof(line),
-               "%.5u CATCH %u"
+               "%.5u CATCH %u (%s)"
                , i
                , ec->stack.list[ i ].address
+               , label ? label : "Not found"
       );
     } else if (ec->stack.list[ i ].type == GPEGE_STACK_CALL) {
+      uint32_t address = htonl(
+        *((int32_t*)
+          (&(gpege->bytecode.data[ ec->stack.list[ i ].address - 4 ])))
+      );
+      label = str2int_map_reverse_lookup(
+                &(gpege->labelmap), address
+              );
       snprintf(line, sizeof(line),
-               "%.5u CALL  %u"
+               "%.5u CALL  %u (%s)"
                , i
                , ec->stack.list[ i ].address
+               , label ? label : "Not found"
       );
     }
     addstr(line);
@@ -353,7 +366,7 @@ GPEG_ERR_T gpege_debug_ncurses
     clear();
     gpege_dbgncrs_draw_header(gpege, ec, opcode);
     gpege_dbgncrs_draw_input(ec);
-    gpege_dbgncrs_draw_stack(ec);
+    gpege_dbgncrs_draw_stack(gpege, ec);
 
     move(24, 1);
     addstr("<N>ext <Q>uit <R>unto <S>tepover <I>nput toggle");

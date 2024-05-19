@@ -1,7 +1,7 @@
 /**
  * This file is part of GPEG, a parsing environment
 
-Copyright (c) 2023, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
+Copyright (c) 2024, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -31,19 +31,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#define MAP_EQUALS(a,b) (0==strcmp(a,b))
+#include <stdio.h>
 
-#include <str2int_map.h>
+#include "gpega_private.h"
 
-MAKE_MAP_CODE(char*, unsigned, str2int_map_)
-
-char* str2int_map_reverse_lookup
-  (str2int_map_t* map, unsigned n)
+/**
+ *
+ */
+GPEG_ERR_T gpega_labelmap_write
+  (gpega_t* gpega, char* path)
 {
-  for (unsigned i=0; i < map->count; i++) {
-    if (map->values[ i ] == n) {
-      return map->keys[ i ];
+  FILE* labelmap = fopen(path, "w+");
+
+  if (labelmap) {
+    for (unsigned i=0; i < gpega->labelmap.count; i++) {
+      fprintf(labelmap,
+                "%s %u\n"
+                , gpega->labelmap.keys[ i ]
+                , gpega->labelmap.values[ i ]
+      );
     }
+    fclose(labelmap);
   }
-  return NULL;
+
+  return GPEG_OK;
 }
