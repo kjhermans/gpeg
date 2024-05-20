@@ -47,18 +47,28 @@ static int ncurses_init = 0;
 
 static struct
 {
+  unsigned          mode;
   unsigned          noinputlines;
   unsigned          rununtil;
   int               stepover;
   unsigned          nostacklines;
   unsigned          stacksize;
+  int               exp_input;
+  int               exp_stack;
+  int               exp_captures;
 }
 gpege_dbgncrs_state =
 {
+#define MODE_RUNNER   0
+#define MODE_SETTINGS 1
+  MODE_RUNNER,
   8,
   0,
   0,
   8,
+  0,
+  1,
+  1,
   0
 };
 
@@ -350,6 +360,76 @@ void gpege_dbgncrs_draw_stack
   }
 }
 
+static
+void gpege_dbgncrs_toggle
+  (
+    unsigned y,
+    unsigned x,
+    int* value,
+    int* retkey
+  )
+{
+  while (1) {
+    move(y, x);
+    if (*value) {
+      addstr("Enabled ");
+    } else {
+      addstr("Disabled");
+    }
+    *retkey = getch();
+    switch (*retkey) {
+    case KEY_UP: case KEY_DOWN: case 'q':
+      return;
+    default:
+      (*value) = !(*value);
+    }
+  }
+}
+
+static
+void gpege_dbgncrs_draw_settings
+  ()
+{
+  unsigned field = 0;
+  int k;
+
+  clear();
+  move(0, 0);
+  addstr(
+"============================================ GPEG Ncurses Debugger Settings =="
+  );
+  move(3,3); addstr("Expand Input");
+  move(4,3); addstr("Expand Stack");
+  move(5,3); addstr("Expand Captures");
+
+  move(10,3); addstr("<Q>uit Settings");
+
+  while (1) {
+    switch (field) {
+    case 0:
+      gpege_dbgncrs_toggle(
+        3, 24, &(gpege_dbgncrs_state.exp_input), &k
+      );
+      break;
+    case 1:
+      gpege_dbgncrs_toggle(
+        4, 24, &(gpege_dbgncrs_state.exp_stack), &k
+      );
+      break;
+    case 2:
+      gpege_dbgncrs_toggle(
+        5, 24, &(gpege_dbgncrs_state.exp_captures), &k
+      );
+      break;
+    }
+    switch (k) {
+    case 'q': return;
+    case KEY_UP: field--; field %= 3; break;
+    case KEY_DOWN: field++; field %= 3; break;
+    }
+  }
+}
+
 GPEG_ERR_T gpege_debug_ncurses
   (gpege_t* gpege, gpege_ec_t* ec, uint32_t opcode, void* arg)
 {
@@ -363,13 +443,19 @@ GPEG_ERR_T gpege_debug_ncurses
   }
 
   while (1) {
+
+    if (gpege_dbgncrs_state.mode == MODE_SETTINGS) {
+      gpege_dbgncrs_draw_settings();
+      gpege_dbgncrs_state.mode = MODE_RUNNER;
+    }
+
     clear();
     gpege_dbgncrs_draw_header(gpege, ec, opcode);
     gpege_dbgncrs_draw_input(ec);
     gpege_dbgncrs_draw_stack(gpege, ec);
 
     move(24, 1);
-    addstr("<N>ext <Q>uit <R>unto <S>tepover <I>nput toggle");
+    addstr("<N>ext <Q>uit <R>unto <S>tepover <C>onfig");
     refresh();
   
     if (gpege_dbgncrs_state.stepover) {
@@ -400,12 +486,8 @@ GPEG_ERR_T gpege_debug_ncurses
       gpege_dbgncrs_state.stacksize = ec->stack.count;
       goto OUT;
       break;
-    case 'i':
-      if (gpege_dbgncrs_state.noinputlines == 8) {
-        gpege_dbgncrs_state.noinputlines = 1;
-      } else {
-        gpege_dbgncrs_state.noinputlines = 8;
-      }
+    case 'c':
+      gpege_dbgncrs_state.mode = MODE_SETTINGS;
       break;
     }
   }
