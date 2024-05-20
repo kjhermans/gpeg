@@ -456,7 +456,7 @@ int gpege_dbgncrs_recalculate
   if (w < 40) {
     return ~0;
   }
-  if (h < 16) {
+  if (h < 12) {
     return ~0;
   }
   if (w > 128) {
@@ -471,7 +471,7 @@ int gpege_dbgncrs_recalculate
     gpege_dbgncrs_state.exp_stack +
     gpege_dbgncrs_state.exp_captures;
   if (nsections) {
-    sectionheight = ((h-4) / nsections) - 2;
+    sectionheight = ((h - 8) / nsections);
   }
   move(1,70); printw("ns: %u, sh: %u\n", nsections, sectionheight);
   if (gpege_dbgncrs_state.exp_input) {
@@ -501,6 +501,7 @@ GPEG_ERR_T gpege_debug_ncurses
     intrflush(stdscr, FALSE);
     keypad(stdscr, TRUE);
     ncurses_init = 1;
+    gpege_dbgncrs_recalculate();
   }
 
   while (1) {
