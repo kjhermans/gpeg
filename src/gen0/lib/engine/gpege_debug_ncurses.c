@@ -249,11 +249,7 @@ void gpege_dbgncrs_draw_header
       }
       break;
     case OPCODE_QUAD:
-    case OPCODE_ENDISOLATE:
-    case OPCODE_ENDREPLACE:
-    case OPCODE_ISOLATE:
     case OPCODE_BITMASK:
-    case OPCODE_REPLACE:
     case OPCODE_SET:
     case OPCODE_SPAN:
     case OPCODE_TESTQUAD:

@@ -433,40 +433,6 @@ int gpega_handle_ENDINSTR
 
 IGNOREPOSTHANDLER(ENDINSTR)
 
-int gpega_handle_ENDISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-IGNOREPOSTHANDLER(ENDISOLATEINSTR)
-
-int gpega_handle_ENDREPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-IGNOREPOSTHANDLER(ENDREPLACEINSTR)
-
 int gpega_handle_FAILINSTR
   (
     gpeg_capture_t* parent,
@@ -863,23 +829,6 @@ int gpega_handle_RANGEINSTR
 IGNOREPOSTHANDLER(RANGEINSTR)
 
 IGNOREHANDLER(REGISTER)
-
-int gpega_handle_REPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-IGNOREPOSTHANDLER(REPLACEINSTR)
 
 int gpega_handle_RETINSTR
   (

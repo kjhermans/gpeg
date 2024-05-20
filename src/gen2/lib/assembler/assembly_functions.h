@@ -53,10 +53,6 @@ extern int gpega_handle_PARTIALCOMMITINSTR(gpeg_capture_t*,unsigned,gpeg_capture
 extern int gpega_handle_post_PARTIALCOMMITINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_QUADINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_post_QUADINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpega_handle_REPLACEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpega_handle_post_REPLACEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpega_handle_ENDREPLACEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpega_handle_post_ENDREPLACEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_RETINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_post_RETINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_SETINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -81,10 +77,6 @@ extern int gpega_handle_COUNTERINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,vo
 extern int gpega_handle_post_COUNTERINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_CONDJUMPINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_post_CONDJUMPINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpega_handle_ISOLATEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpega_handle_post_ISOLATEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpega_handle_ENDISOLATEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpega_handle_post_ENDISOLATEINSTR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_LABELDEF(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_post_LABELDEF(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpega_handle_CODE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);

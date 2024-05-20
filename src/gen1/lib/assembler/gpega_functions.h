@@ -130,28 +130,6 @@ int gpega_handle_ENDINSTR
 
 /* declared in ./assembly_handler.c */
 extern
-int gpega_handle_ENDISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int gpega_handle_ENDREPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
 int gpega_handle_FAILINSTR
   (
     gpeg_capture_t* parent,
@@ -274,17 +252,6 @@ int gpega_handle_QUADINSTR
 /* declared in ./assembly_handler.c */
 extern
 int gpega_handle_RANGEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./assembly_handler.c */
-extern
-int gpega_handle_REPLACEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,

@@ -15,9 +15,7 @@ INSTRUCTION        <- RULEINSTR /
 RULEINSTR          <- ANYINSTR / BACKCOMMITINSTR / CALLINSTR /
                       CATCHINSTR / CHARINSTR / BITMASKINSTR /
                       CLOSECAPTUREINSTR / COMMITINSTR /
-                      ENDREPLACEINSTR / REPLACEINSTR /
                       INTRPCAPTUREINSTR /
-                      ISOLATEINSTR / ENDISOLATEINSTR /
                       ENDINSTR / FAILTWICEINSTR / FAILINSTR /
                       JUMPINSTR / NOOPINSTR / TRAPINSTR /
                       OPENCAPTUREINSTR / PARTIALCOMMITINSTR /
@@ -49,8 +47,6 @@ TRAPINSTR          <- 'trap'
 OPENCAPTUREINSTR   <- 'opencapture' S SLOT
 PARTIALCOMMITINSTR <- 'partialcommit' S LABEL
 QUADINSTR          <- 'quad' S QUAD
-REPLACEINSTR       <- 'replace' S SLOT S LABEL
-ENDREPLACEINSTR    <- 'endreplace'
 RETINSTR           <- 'ret'
 SETINSTR           <- 'set' S SET
 RANGEINSTR         <- 'range' S HEXBYTE S HEXBYTE
@@ -63,8 +59,6 @@ TESTSETINSTR       <- 'testset' S SET S LABEL
 VARINSTR           <- 'var' S SLOT
 COUNTERINSTR       <- 'counter' S REGISTER S UNSIGNED
 CONDJUMPINSTR      <- 'condjump' S REGISTER S LABEL
-ISOLATEINSTR       <- 'isolate' S SLOT
-ENDISOLATEINSTR    <- 'endisolate'
 
 LABELDEF           <- LABEL COLON
 

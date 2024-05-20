@@ -81,13 +81,13 @@ $VAR1 = {
                      'size' => 8,
                      'terse' => 1
                    },
-          'endreplace' => {
-                            'instr' => 921,
-                            'mnem' => 'endreplace',
-                            'opcode' => '00000399',
-                            'size' => 4,
-                            'terse' => 1
-                          },
+#          'endreplace' => {
+#                            'instr' => 921,
+#                            'mnem' => 'endreplace',
+#                            'opcode' => '00000399',
+#                            'size' => 4,
+#                            'terse' => 1
+#                          },
           'fail' => {
                       'instr' => 843,
                       'mnem' => 'fail',
@@ -155,15 +155,15 @@ $VAR1 = {
                        'size' => 12,
                        'terse' => 1
                      },
-          'replace' => {
-                         'instr' => 525128,
-                         'mnem' => 'replace',
-                         'opcode' => '00080348',
-                         'param1' => 'slot',
-                         'param2' => 'address',
-                         'size' => 12,
-                         'terse' => 1
-                       },
+#          'replace' => {
+#                         'instr' => 525128,
+#                         'mnem' => 'replace',
+#                         'opcode' => '00080348',
+#                         'param1' => 'slot',
+#                         'param2' => 'address',
+#                         'size' => 12,
+#                         'terse' => 1
+#                       },
           'ret' => {
                      'instr' => 928,
                      'mnem' => 'ret',

@@ -85,22 +85,22 @@ $VAR1 = {
                      'size' => 8,
                      'terse' => 1
                    },
-          'endisolate' => {
-                            'instr' => 12293,
-                            'mnem' => 'endisolate',
-                            'mode' => 0,
-                            'opcode' => '00003005',
-                            'size' => 4,
-                            'terse' => 0
-                          },
-          'endreplace' => {
-                            'instr' => 921,
-                            'mnem' => 'endreplace',
-                            'mode' => 0,
-                            'opcode' => '00000399',
-                            'size' => 4,
-                            'terse' => 1
-                          },
+#          'endisolate' => {
+#                            'instr' => 12293,
+#                            'mnem' => 'endisolate',
+#                            'mode' => 0,
+#                            'opcode' => '00003005',
+#                            'size' => 4,
+#                            'terse' => 0
+#                          },
+#          'endreplace' => {
+#                            'instr' => 921,
+#                            'mnem' => 'endreplace',
+#                            'mode' => 0,
+#                            'opcode' => '00000399',
+#                            'size' => 4,
+#                            'terse' => 1
+#                          },
           'fail' => {
                       'instr' => 843,
                       'mnem' => 'fail',
@@ -122,15 +122,15 @@ $VAR1 = {
                               'opcode' => '0008000f',
                               'size' => 12
                             },
-          'isolate' => {
-                         'instr' => 274435,
-                         'mnem' => 'isolate',
-                         'mode' => 0,
-                         'opcode' => '00043003',
-                         'param1' => 'slot',
-                         'size' => 8,
-                         'terse' => 0
-                       },
+#          'isolate' => {
+#                         'instr' => 274435,
+#                         'mnem' => 'isolate',
+#                         'mode' => 0,
+#                         'opcode' => '00043003',
+#                         'param1' => 'slot',
+#                         'size' => 8,
+#                         'terse' => 0
+#                       },
           'jump' => {
                       'instr' => 262963,
                       'mnem' => 'jump',
@@ -204,16 +204,16 @@ $VAR1 = {
                        'size' => 12,
                        'terse' => 1
                      },
-          'replace' => {
-                         'instr' => 525128,
-                         'mnem' => 'replace',
-                         'mode' => 0,
-                         'opcode' => '00080348',
-                         'param1' => 'slot',
-                         'param2' => 'address',
-                         'size' => 12,
-                         'terse' => 1
-                       },
+#          'replace' => {
+#                         'instr' => 525128,
+#                         'mnem' => 'replace',
+#                         'mode' => 0,
+#                         'opcode' => '00080348',
+#                         'param1' => 'slot',
+#                         'param2' => 'address',
+#                         'size' => 12,
+#                         'terse' => 1
+#                       },
           'ret' => {
                      'instr' => 928,
                      'mnem' => 'ret',

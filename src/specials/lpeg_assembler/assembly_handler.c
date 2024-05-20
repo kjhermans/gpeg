@@ -431,72 +431,6 @@ int handle_ENDINSTR
 
 IGNOREPOSTHANDLER(ENDINSTR)
 
-int handle_ENDISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-
-  fprintf(stderr, "Warning: endisolate instruction not emitted.\n");
-
-  return 0;
-}
-
-int handle_post_ENDISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
-int handle_ENDREPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-
-  fprintf(stderr, "Warning: endreplace instruction not emitted.\n");
-
-  return 0;
-}
-
-int handle_post_ENDREPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-  return 0;
-}
-
 int handle_FAILINSTR
   (
     gpeg_capture_t* parent,
@@ -591,26 +525,6 @@ IGNOREPOSTHANDLER(INTRPCAPTUREINSTR)
 
 IGNOREHANDLER(INTRPCAPTURETYPES)
 IGNOREHANDLER(INTRPCAPTURETYPES_0)
-
-int handle_ISOLATEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-
-  fprintf(stderr, "Warning: isolate instruction not emitted.\n");
-
-  return 0;
-}
-
-IGNOREPOSTHANDLER(ISOLATEINSTR)
 
 int handle_JUMPINSTR
   (
@@ -862,26 +776,6 @@ int handle_RANGEINSTR
 IGNOREPOSTHANDLER(RANGEINSTR)
 
 IGNOREHANDLER(REGISTER)
-
-int handle_REPLACEINSTR
-  (
-    gpeg_capture_t* parent,
-    unsigned index,
-    gpeg_capture_t* capture,
-    void* arg
-  )
-{
-  (void)parent;
-  (void)index;
-  (void)capture;
-  (void)arg;
-
-  fprintf(stderr, "Warning: replace instruction not emitted.\n");
-
-  return 0;
-}
-
-IGNOREPOSTHANDLER(REPLACEINSTR)
 
 int handle_RETINSTR
   (

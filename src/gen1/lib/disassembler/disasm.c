@@ -30,18 +30,12 @@ extern int gpegd_handle_instr_counter(gpeg_capture_t*,unsigned,gpeg_capture_t*,v
 extern int gpegd_handle_post_instr_counter(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_end(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_post_instr_end(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpegd_handle_instr_endisolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpegd_handle_post_instr_endisolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpegd_handle_instr_endreplace(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpegd_handle_post_instr_endreplace(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_fail(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_post_instr_fail(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_failtwice(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_post_instr_failtwice(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_intrpcapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_post_instr_intrpcapture(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpegd_handle_instr_isolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpegd_handle_post_instr_isolate(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_jump(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_post_instr_jump(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_noop(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -54,8 +48,6 @@ extern int gpegd_handle_instr_quad(gpeg_capture_t*,unsigned,gpeg_capture_t*,void
 extern int gpegd_handle_post_instr_quad(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_range(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_post_instr_range(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpegd_handle_instr_replace(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
-extern int gpegd_handle_post_instr_replace(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_ret(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_post_instr_ret(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
 extern int gpegd_handle_instr_set(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
@@ -93,7 +85,7 @@ int do_node
   (gpeg_capture_t* parent, unsigned index, gpeg_capture_t* capture, void* ptr)
 {
   int e;
-  unsigned indices[ 34 ] = { 0 };
+  unsigned indices[ 30 ] = { 0 };
 
   switch (capture->type) {
   case 0:
@@ -275,43 +267,11 @@ int do_node
   case 11:
     {
       ++(indices[ 11 ]);
-      if ((e = gpegd_handle_instr_endisolate(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 11 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = gpegd_handle_post_instr_endisolate(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 12:
-    {
-      ++(indices[ 12 ]);
-      if ((e = gpegd_handle_instr_endreplace(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 12 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = gpegd_handle_post_instr_endreplace(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 13:
-    {
-      ++(indices[ 13 ]);
       if ((e = gpegd_handle_instr_fail(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 13 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 11 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -320,14 +280,14 @@ int do_node
       }
     }
     break;
-  case 14:
+  case 12:
     {
-      ++(indices[ 14 ]);
+      ++(indices[ 12 ]);
       if ((e = gpegd_handle_instr_failtwice(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 14 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 12 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -336,14 +296,14 @@ int do_node
       }
     }
     break;
-  case 15:
+  case 13:
     {
-      ++(indices[ 15 ]);
+      ++(indices[ 13 ]);
       if ((e = gpegd_handle_instr_intrpcapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 15 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 13 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -352,30 +312,14 @@ int do_node
       }
     }
     break;
-  case 16:
+  case 14:
     {
-      ++(indices[ 16 ]);
-      if ((e = gpegd_handle_instr_isolate(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 16 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = gpegd_handle_post_instr_isolate(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 17:
-    {
-      ++(indices[ 17 ]);
+      ++(indices[ 14 ]);
       if ((e = gpegd_handle_instr_jump(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 17 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 14 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -384,14 +328,14 @@ int do_node
       }
     }
     break;
-  case 18:
+  case 15:
     {
-      ++(indices[ 18 ]);
+      ++(indices[ 15 ]);
       if ((e = gpegd_handle_instr_noop(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 18 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 15 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -400,14 +344,14 @@ int do_node
       }
     }
     break;
-  case 19:
+  case 16:
     {
-      ++(indices[ 19 ]);
+      ++(indices[ 16 ]);
       if ((e = gpegd_handle_instr_opencapture(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 19 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 16 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -416,14 +360,14 @@ int do_node
       }
     }
     break;
-  case 20:
+  case 17:
     {
-      ++(indices[ 20 ]);
+      ++(indices[ 17 ]);
       if ((e = gpegd_handle_instr_partialcommit(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 20 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 17 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -432,14 +376,14 @@ int do_node
       }
     }
     break;
-  case 21:
+  case 18:
     {
-      ++(indices[ 21 ]);
+      ++(indices[ 18 ]);
       if ((e = gpegd_handle_instr_quad(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 21 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 18 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -448,14 +392,14 @@ int do_node
       }
     }
     break;
-  case 22:
+  case 19:
     {
-      ++(indices[ 22 ]);
+      ++(indices[ 19 ]);
       if ((e = gpegd_handle_instr_range(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 22 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 19 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -464,30 +408,14 @@ int do_node
       }
     }
     break;
-  case 23:
+  case 20:
     {
-      ++(indices[ 23 ]);
-      if ((e = gpegd_handle_instr_replace(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-      for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 23 ], &(capture->children.list[ i ]), ptr)) != 0) {
-          return e;
-        }
-      }
-      if ((e = gpegd_handle_post_instr_replace(parent, index, capture, ptr)) != 0) {
-        return e;
-      }
-    }
-    break;
-  case 24:
-    {
-      ++(indices[ 24 ]);
+      ++(indices[ 20 ]);
       if ((e = gpegd_handle_instr_ret(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 24 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 20 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -496,14 +424,14 @@ int do_node
       }
     }
     break;
-  case 25:
+  case 21:
     {
-      ++(indices[ 25 ]);
+      ++(indices[ 21 ]);
       if ((e = gpegd_handle_instr_set(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 25 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 21 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -512,14 +440,14 @@ int do_node
       }
     }
     break;
-  case 26:
+  case 22:
     {
-      ++(indices[ 26 ]);
+      ++(indices[ 22 ]);
       if ((e = gpegd_handle_instr_skip(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 26 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 22 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -528,14 +456,14 @@ int do_node
       }
     }
     break;
-  case 27:
+  case 23:
     {
-      ++(indices[ 27 ]);
+      ++(indices[ 23 ]);
       if ((e = gpegd_handle_instr_span(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 27 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 23 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -544,14 +472,14 @@ int do_node
       }
     }
     break;
-  case 28:
+  case 24:
     {
-      ++(indices[ 28 ]);
+      ++(indices[ 24 ]);
       if ((e = gpegd_handle_instr_testany(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 28 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 24 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -560,14 +488,14 @@ int do_node
       }
     }
     break;
-  case 29:
+  case 25:
     {
-      ++(indices[ 29 ]);
+      ++(indices[ 25 ]);
       if ((e = gpegd_handle_instr_testchar(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 29 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 25 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -576,14 +504,14 @@ int do_node
       }
     }
     break;
-  case 30:
+  case 26:
     {
-      ++(indices[ 30 ]);
+      ++(indices[ 26 ]);
       if ((e = gpegd_handle_instr_testquad(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 30 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 26 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -592,14 +520,14 @@ int do_node
       }
     }
     break;
-  case 31:
+  case 27:
     {
-      ++(indices[ 31 ]);
+      ++(indices[ 27 ]);
       if ((e = gpegd_handle_instr_testset(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 31 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 27 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -608,14 +536,14 @@ int do_node
       }
     }
     break;
-  case 32:
+  case 28:
     {
-      ++(indices[ 32 ]);
+      ++(indices[ 28 ]);
       if ((e = gpegd_handle_instr_trap(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 32 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 28 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
@@ -624,14 +552,14 @@ int do_node
       }
     }
     break;
-  case 33:
+  case 29:
     {
-      ++(indices[ 33 ]);
+      ++(indices[ 29 ]);
       if ((e = gpegd_handle_instr_var(parent, index, capture, ptr)) != 0) {
         return e;
       }
       for (unsigned i=0; i < capture->children.count; i++) {
-        if ((e = do_node(capture, indices[ 33 ], &(capture->children.list[ i ]), ptr)) != 0) {
+        if ((e = do_node(capture, indices[ 29 ], &(capture->children.list[ i ]), ptr)) != 0) {
           return e;
         }
       }
