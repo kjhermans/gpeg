@@ -8,7 +8,7 @@
 
 #define COMBINE(a, b) a##b
 #define IGNOREHANDLER(ident)     \
-int COMBINE(handle_,ident)       \
+int COMBINE(gpega_handle_,ident)       \
   (                              \
     gpeg_capture_t* parent,      \
     unsigned index,              \
@@ -22,7 +22,7 @@ int COMBINE(handle_,ident)       \
   (void)arg;                     \
   return 0;                      \
 }                                \
-int COMBINE(handle_post_,ident)  \
+int COMBINE(gpega_handle_post_,ident)  \
   (                              \
     gpeg_capture_t* parent,      \
     unsigned index,              \
@@ -38,7 +38,7 @@ int COMBINE(handle_post_,ident)  \
 }
 
 #define IGNOREPOSTHANDLER(ident) \
-int COMBINE(handle_post_,ident)  \
+int COMBINE(gpega_handle_post_,ident)  \
   (                              \
     gpeg_capture_t* parent,      \
     unsigned index,              \
@@ -55,7 +55,7 @@ int COMBINE(handle_post_,ident)  \
 
 IGNOREHANDLER(AMPERSAND)
 
-int handle_ANYINSTR
+int gpega_handle_ANYINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -89,7 +89,7 @@ int handle_ANYINSTR
 
 IGNOREPOSTHANDLER(ANYINSTR)
 
-int handle_BACKCOMMITINSTR
+int gpega_handle_BACKCOMMITINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -137,7 +137,7 @@ int handle_BACKCOMMITINSTR
 
 IGNOREPOSTHANDLER(BACKCOMMITINSTR)
 
-int handle_CALLINSTR
+int gpega_handle_CALLINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -185,7 +185,7 @@ int handle_CALLINSTR
 
 IGNOREPOSTHANDLER(CALLINSTR)
 
-int handle_CATCHINSTR
+int gpega_handle_CATCHINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -233,7 +233,7 @@ int handle_CATCHINSTR
 
 IGNOREPOSTHANDLER(CATCHINSTR)
 
-int handle_CHARINSTR
+int gpega_handle_CHARINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -269,7 +269,7 @@ int handle_CHARINSTR
 
 IGNOREPOSTHANDLER(CHARINSTR)
 
-int handle_CLOSECAPTUREINSTR
+int gpega_handle_CLOSECAPTUREINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -307,7 +307,7 @@ IGNOREHANDLER(CODE)
 IGNOREHANDLER(COLON)
 IGNOREHANDLER(COMMENT)
 
-int handle_COMMITINSTR
+int gpega_handle_COMMITINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -355,7 +355,7 @@ int handle_COMMITINSTR
 
 IGNOREPOSTHANDLER(COMMITINSTR)
 
-int handle_CONDJUMPINSTR
+int gpega_handle_CONDJUMPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -375,7 +375,7 @@ int handle_CONDJUMPINSTR
 
 IGNOREPOSTHANDLER(CONDJUMPINSTR)
 
-int handle_COUNTERINSTR
+int gpega_handle_COUNTERINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -397,7 +397,7 @@ IGNOREPOSTHANDLER(COUNTERINSTR)
 
 IGNOREHANDLER(END)
 
-int handle_ENDINSTR
+int gpega_handle_ENDINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -431,7 +431,7 @@ int handle_ENDINSTR
 
 IGNOREPOSTHANDLER(ENDINSTR)
 
-int handle_FAILINSTR
+int gpega_handle_FAILINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -465,7 +465,7 @@ int handle_FAILINSTR
 
 IGNOREPOSTHANDLER(FAILINSTR)
 
-int handle_FAILTWICEINSTR
+int gpega_handle_FAILTWICEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -503,7 +503,7 @@ IGNOREHANDLER(HEXBYTE)
 IGNOREHANDLER(INSTRUCTION)
 IGNOREHANDLER(INSTRUCTIONS)
 
-int handle_INTRPCAPTUREINSTR
+int gpega_handle_INTRPCAPTUREINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -526,7 +526,7 @@ IGNOREPOSTHANDLER(INTRPCAPTUREINSTR)
 IGNOREHANDLER(INTRPCAPTURETYPES)
 IGNOREHANDLER(INTRPCAPTURETYPES_0)
 
-int handle_JUMPINSTR
+int gpega_handle_JUMPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -576,7 +576,7 @@ IGNOREPOSTHANDLER(JUMPINSTR)
 
 IGNOREHANDLER(LABEL)
 
-int handle_LABELDEF
+int gpega_handle_LABELDEF
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -601,7 +601,7 @@ int handle_LABELDEF
 
 IGNOREPOSTHANDLER(LABELDEF)
 
-int handle_BITMASKINSTR
+int gpega_handle_BITMASKINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -624,7 +624,7 @@ IGNOREPOSTHANDLER(BITMASKINSTR)
 IGNOREHANDLER(HEXQUAD)
 IGNOREHANDLER(MULTILINECOMMENT)
 
-int handle_NOOPINSTR
+int gpega_handle_NOOPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -646,7 +646,7 @@ IGNOREPOSTHANDLER(NOOPINSTR)
 
 IGNOREHANDLER(NUMBER)
 
-int handle_OPENCAPTUREINSTR
+int gpega_handle_OPENCAPTUREINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -680,7 +680,7 @@ int handle_OPENCAPTUREINSTR
 
 IGNOREPOSTHANDLER(OPENCAPTUREINSTR)
 
-int handle_PARTIALCOMMITINSTR
+int gpega_handle_PARTIALCOMMITINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -730,7 +730,7 @@ IGNOREPOSTHANDLER(PARTIALCOMMITINSTR)
 
 IGNOREHANDLER(QUAD)
 
-int handle_QUADINSTR
+int gpega_handle_QUADINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -758,7 +758,7 @@ int handle_QUADINSTR
 
 IGNOREPOSTHANDLER(QUADINSTR)
 
-int handle_RANGEINSTR
+int gpega_handle_RANGEINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -777,7 +777,7 @@ IGNOREPOSTHANDLER(RANGEINSTR)
 
 IGNOREHANDLER(REGISTER)
 
-int handle_RETINSTR
+int gpega_handle_RETINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -815,7 +815,7 @@ IGNOREHANDLER(RULEINSTR)
 IGNOREHANDLER(S)
 IGNOREHANDLER(SET)
 
-int handle_SETINSTR
+int gpega_handle_SETINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -854,7 +854,7 @@ int handle_SETINSTR
 
 IGNOREPOSTHANDLER(SETINSTR)
 
-int handle_SKIPINSTR
+int gpega_handle_SKIPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -871,7 +871,7 @@ int handle_SKIPINSTR
   unsigned n = strtoul(nstring, 0, 10);
 
   for (unsigned i=0; i < n; i++) {
-    handle_ANYINSTR(parent, index, capture, arg);
+    gpega_handle_ANYINSTR(parent, index, capture, arg);
   }
 
   return 0;
@@ -881,7 +881,7 @@ IGNOREPOSTHANDLER(SKIPINSTR)
 
 IGNOREHANDLER(SLOT)
 
-int handle_SPANINSTR
+int gpega_handle_SPANINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -918,7 +918,7 @@ int handle_SPANINSTR
   return 0;
 }
 
-int handle_post_SPANINSTR
+int gpega_handle_post_SPANINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -936,7 +936,7 @@ int handle_post_SPANINSTR
 IGNOREHANDLER(STRINGLITERAL)
 IGNOREHANDLER(STRINGLITERAL_0)
 
-int handle_TESTANYINSTR
+int gpega_handle_TESTANYINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -984,7 +984,7 @@ int handle_TESTANYINSTR
 
 IGNOREPOSTHANDLER(TESTANYINSTR)
 
-int handle_TESTCHARINSTR
+int gpega_handle_TESTCHARINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1034,7 +1034,7 @@ int handle_TESTCHARINSTR
 
 IGNOREPOSTHANDLER(TESTCHARINSTR)
 
-int handle_TESTQUADINSTR
+int gpega_handle_TESTQUADINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1049,7 +1049,7 @@ int handle_TESTQUADINSTR
   return 0;
 }
 
-int handle_post_TESTQUADINSTR
+int gpega_handle_post_TESTQUADINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1064,7 +1064,7 @@ int handle_post_TESTQUADINSTR
   return 0;
 }
 
-int handle_TESTSETINSTR
+int gpega_handle_TESTSETINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1079,7 +1079,7 @@ int handle_TESTSETINSTR
   return 0;
 }
 
-int handle_post_TESTSETINSTR
+int gpega_handle_post_TESTSETINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1096,7 +1096,7 @@ int handle_post_TESTSETINSTR
 
 IGNOREHANDLER(TOP)
 
-int handle_TRAPINSTR
+int gpega_handle_TRAPINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
@@ -1119,7 +1119,7 @@ IGNOREPOSTHANDLER(TRAPINSTR)
 IGNOREHANDLER(TYPE)
 IGNOREHANDLER(UNSIGNED)
 
-int handle_VARINSTR
+int gpega_handle_VARINSTR
   (
     gpeg_capture_t* parent,
     unsigned index,
