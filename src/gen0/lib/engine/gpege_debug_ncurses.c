@@ -47,6 +47,8 @@ static int ncurses_init = 0;
 
 static struct
 {
+  unsigned          width;
+  unsigned          height;
   unsigned          mode;
   unsigned          noinputlines;
   unsigned          rununtil;
@@ -59,6 +61,8 @@ static struct
 }
 gpege_dbgncrs_state =
 {
+  80,
+  25,
 #define MODE_RUNNER   0
 #define MODE_SETTINGS 1
   MODE_RUNNER,
@@ -503,7 +507,9 @@ int gpege_dbgncrs_recalculate
   if (h > 50) {
     h = 50;
   }
-  //.. if (w != COLS || h != LINES) { resizeterm(h, w); }
+  if (w != COLS || h != LINES) { resizeterm(h, w); }
+  gpege_dbgncrs_state.width = w;
+  gpege_dbgncrs_state.height = h;
   nsections =
     gpege_dbgncrs_state.exp_input +
     gpege_dbgncrs_state.exp_stack +
@@ -556,7 +562,7 @@ GPEG_ERR_T gpege_debug_ncurses
     gpege_dbgncrs_draw_input(ec);
     gpege_dbgncrs_draw_stack(gpege, ec);
 
-    move(24, 1);
+    move(gpege_dbgncrs_state.height-1, 1);
     addstr("<N>ext <Q>uit <R>unto <S>tepover <C>onfig");
     refresh();
   
@@ -570,14 +576,17 @@ GPEG_ERR_T gpege_debug_ncurses
     switch (c) {
     case ERR:
       return GPEG_ERR_EXIT;
+    case KEY_RESIZE:
+      gpege_dbgncrs_recalculate();
+      break;
     case 'q':
       return GPEG_ERR_EXIT;
     case 'n': case ' ':
       goto OUT;
     case 'r':
-      move(23, 1);
+      move(gpege_dbgncrs_state.height-2, 1);
       addstr("Run to instr#:");
-      char* instrstr = gpege_dbgncrs_input(23, 16, 10, "");
+      char* instrstr = gpege_dbgncrs_input(gpege_dbgncrs_state.height-2, 16, 10, "");
       if (instrstr) {
         unsigned instr = strtoul(instrstr, 0, 10);
         gpege_dbgncrs_state.rununtil = instr;
