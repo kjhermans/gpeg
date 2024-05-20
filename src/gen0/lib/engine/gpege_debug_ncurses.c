@@ -252,7 +252,8 @@ void gpege_dbgncrs_draw_header
       {
         unsigned char* quad = &(gpege->bytecode.data[ ec->bytecode_offset+4 ]);
         snprintf(myline, sizeof(myline),
-          "QUAD %.2x%.2x%.2x%.2x"
+          "QUAD %.2x%.2x%.2x%.2x -- '%c%c%c%c'"
+          , quad[ 0 ], quad[ 1 ], quad[ 2 ], quad[ 3 ]
           , quad[ 0 ], quad[ 1 ], quad[ 2 ], quad[ 3 ]
         );
       }
@@ -271,11 +272,13 @@ void gpege_dbgncrs_draw_header
       }
       break;
     case OPCODE_SET:
+    case OPCODE_SPAN:
       {
         unsigned char* param = &(gpege->bytecode.data[ ec->bytecode_offset+4 ]);
         snprintf(myline, sizeof(myline),
-          "SET %.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x"
+          "%s %.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x"
           "%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x"
+          , opcodestring
           , param[0], param[1], param[2], param[3]
           , param[4], param[5], param[6], param[4]
           , param[8], param[9], param[10], param[11]
@@ -287,7 +290,6 @@ void gpege_dbgncrs_draw_header
         );
       }
       break;
-    case OPCODE_SPAN:
     case OPCODE_TESTQUAD:
     case OPCODE_TESTSET:
       myline[ 0 ] = 0;
