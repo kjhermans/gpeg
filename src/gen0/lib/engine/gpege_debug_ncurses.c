@@ -249,8 +249,44 @@ void gpege_dbgncrs_draw_header
       }
       break;
     case OPCODE_QUAD:
+      {
+        unsigned char* quad = &(gpege->bytecode.data[ ec->bytecode_offset+4 ]);
+        snprintf(myline, sizeof(myline),
+          "QUAD %.2x%.2x%.2x%.2x"
+          , quad[ 0 ], quad[ 1 ], quad[ 2 ], quad[ 3 ]
+        );
+      }
+      break;
     case OPCODE_BITMASK:
+      {
+        unsigned char* param = &(gpege->bytecode.data[ ec->bytecode_offset+4 ]);
+        unsigned nbits   = ntohl(*((uint32_t*)(param)));
+        unsigned bits    = ntohl(*((uint32_t*)(param + 4)));
+        unsigned andmask = ntohl(*((uint32_t*)(param + 8)));
+        unsigned ormask  = ntohl(*((uint32_t*)(param + 12)));
+        snprintf(myline, sizeof(myline),
+          "BITMASK %u %x %x %x"
+          , nbits, bits, andmask, ormask
+        );
+      }
+      break;
     case OPCODE_SET:
+      {
+        unsigned char* param = &(gpege->bytecode.data[ ec->bytecode_offset+4 ]);
+        snprintf(myline, sizeof(myline),
+          "SET %.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x"
+          "%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x"
+          , param[0], param[1], param[2], param[3]
+          , param[4], param[5], param[6], param[4]
+          , param[8], param[9], param[10], param[11]
+          , param[12], param[13], param[14], param[15]
+          , param[16], param[17], param[18], param[19]
+          , param[20], param[21], param[22], param[23]
+          , param[24], param[25], param[26], param[27]
+          , param[28], param[29], param[30], param[31]
+        );
+      }
+      break;
     case OPCODE_SPAN:
     case OPCODE_TESTQUAD:
     case OPCODE_TESTSET:
@@ -489,6 +525,7 @@ int gpege_dbgncrs_recalculate
   } else {
 //..
   }
+  return 0;
 }
 
 GPEG_ERR_T gpege_debug_ncurses
