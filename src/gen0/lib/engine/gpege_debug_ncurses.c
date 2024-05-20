@@ -280,7 +280,7 @@ void gpege_dbgncrs_draw_input
     for (unsigned i = ec->input_offset; i < ec->input->size; i++) {
       if (ec->input->data[ i ] == '\n') {
         x = 0; y++;
-        if (y > 4 + gpege_dbgncrs_state.noinputlines) {
+        if (y > 3 + gpege_dbgncrs_state.noinputlines) {
           break;
         }
         move(y, x);
@@ -290,7 +290,7 @@ void gpege_dbgncrs_draw_input
         if (x > 80) {
           x = 0;
           y++;
-          if (y > 4 + gpege_dbgncrs_state.noinputlines) {
+          if (y > 3 + gpege_dbgncrs_state.noinputlines) {
             break;
           }
           move(y, x);
@@ -300,7 +300,7 @@ void gpege_dbgncrs_draw_input
         snprintf(myesc, sizeof(myesc), "\\x%.2x", ec->input->data[ i ]);
         if (x < 76) {
           x = 0; y++;
-          if (y > 4 + gpege_dbgncrs_state.noinputlines) {
+          if (y > 3 + gpege_dbgncrs_state.noinputlines) {
             break;
           }
           move(y, x);
@@ -322,7 +322,7 @@ void gpege_dbgncrs_draw_stack
   char line[ 80 ];
   char* label;
 
-  move(5 + gpege_dbgncrs_state.noinputlines, 0);
+  move(4 + gpege_dbgncrs_state.noinputlines, 0);
     addstr(
 "===================================================================== Stack =="
   );
@@ -330,7 +330,7 @@ void gpege_dbgncrs_draw_stack
     start = ec->stack.count - gpege_dbgncrs_state.nostacklines;
   }
   for (unsigned i=start; i < ec->stack.count; i++) {
-    move(6 + gpege_dbgncrs_state.noinputlines + i - start, 0);
+    move(5 + gpege_dbgncrs_state.noinputlines + i - start, 0);
     if (ec->stack.list[ i ].type == GPEGE_STACK_CATCH) {
       label = str2int_map_reverse_lookup(
                 &(gpege->labelmap), ec->stack.list[ i ].address
@@ -402,6 +402,25 @@ void gpege_dbgncrs_draw_settings
   move(4,3); addstr("Expand Stack");
   move(5,3); addstr("Expand Captures");
 
+  move(3, 24);
+  if (gpege_dbgncrs_state.exp_input) {
+    addstr("Enabled");
+  } else {
+    addstr("Disabled");
+  }
+  move(4, 24);
+  if (gpege_dbgncrs_state.exp_stack) {
+    addstr("Enabled");
+  } else {
+    addstr("Disabled");
+  }
+  move(5, 24);
+  if (gpege_dbgncrs_state.exp_captures) {
+    addstr("Enabled");
+  } else {
+    addstr("Disabled");
+  }
+
   move(10,3); addstr("<Q>uit Settings");
 
   while (1) {
@@ -430,6 +449,52 @@ void gpege_dbgncrs_draw_settings
   }
 }
 
+static
+int gpege_dbgncrs_recalculate
+  ()
+{
+  unsigned w = COLS, h = LINES;
+  unsigned nsections;
+  unsigned sectionheight = 1;
+
+  if (w < 40) {
+    return ~0;
+  }
+  if (h < 16) {
+    return ~0;
+  }
+  if (w > 128) {
+    w = 128;
+  }
+  if (h > 50) {
+    h = 50;
+  }
+  //.. if (w != COLS || h != LINES) { resizeterm(h, w); }
+  nsections =
+    gpege_dbgncrs_state.exp_input +
+    gpege_dbgncrs_state.exp_stack +
+    gpege_dbgncrs_state.exp_captures;
+  if (nsections) {
+    sectionheight = ((h-4) / nsections) - 2;
+  }
+  move(1,70); printw("ns: %u, sh: %u\n", nsections, sectionheight);
+  if (gpege_dbgncrs_state.exp_input) {
+    gpege_dbgncrs_state.noinputlines = sectionheight;
+  } else {
+    gpege_dbgncrs_state.noinputlines = 1;
+  }
+  if (gpege_dbgncrs_state.exp_stack) {
+    gpege_dbgncrs_state.nostacklines = sectionheight;
+  } else {
+    gpege_dbgncrs_state.nostacklines = 1;
+  }
+  if (gpege_dbgncrs_state.exp_captures) {
+//..
+  } else {
+//..
+  }
+}
+
 GPEG_ERR_T gpege_debug_ncurses
   (gpege_t* gpege, gpege_ec_t* ec, uint32_t opcode, void* arg)
 {
@@ -447,6 +512,7 @@ GPEG_ERR_T gpege_debug_ncurses
     if (gpege_dbgncrs_state.mode == MODE_SETTINGS) {
       gpege_dbgncrs_draw_settings();
       gpege_dbgncrs_state.mode = MODE_RUNNER;
+      gpege_dbgncrs_recalculate();
     }
 
     clear();
