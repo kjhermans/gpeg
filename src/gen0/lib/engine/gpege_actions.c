@@ -63,8 +63,7 @@ void gpege_actionlist_output
 {
   for (unsigned i=0; i < list->count; i++) {
     fprintf(stdout,
-      "%u, %d, %u, %u\n"
-      , i
+      "%d %u %u;\n"
       , list->list[ i ].type
       , list->list[ i ].slot
       , list->list[ i ].input_offset

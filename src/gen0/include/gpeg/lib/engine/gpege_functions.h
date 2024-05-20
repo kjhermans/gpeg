@@ -9,6 +9,17 @@
 #ifndef _GPEGE_GEN0_FUNCTIONS_FUNCTIONS_H_
 #define _GPEGE_GEN0_FUNCTIONS_FUNCTIONS_H_
 
+/* declared in ./caplist.c */
+#define gen0_caplist_grammar_process_node caplist_grammar_process_node
+
+extern
+int caplist_grammar_process_node
+  (
+    gpeg_capture_t* capture,
+    void* ptr
+  )
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./gpege_actions.c */
 #define gen0_gpege_actionlist_debug gpege_actionlist_debug
 

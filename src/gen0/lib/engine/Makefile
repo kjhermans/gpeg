@@ -10,7 +10,7 @@ ADDITIONALOBJECTS=\
 
 all: maplogic functionsheader $(LIB)
 
-maplogic: simap.h
+maplogic: simap.h caplist.h
 
 simap.c: simap.asm
 
@@ -23,6 +23,18 @@ simap.byc: simap.asm
 simap.asm: simap.gpeg
 	$(CURGEN)/bin/gpegc -C -i simap.gpeg -o simap.asm \
 	  -G simap.c simap -M simap.slotmap.h
+
+caplist.c: caplist.asm
+
+caplist.h: caplist.byc
+	xxd -c 8 -p caplist.byc | sed 's/\(..\)/0x\1, /g' > caplist.h
+
+caplist.byc: caplist.asm
+	$(CURGEN)/bin/gpega -i caplist.asm -o caplist.byc
+
+caplist.asm: caplist.gpeg
+	$(CURGEN)/bin/gpegc -C -i caplist.gpeg -o caplist.asm \
+	  -G caplist.c caplist -M caplist.slotmap.h
 
 functionsheader: ../../include/gpeg/lib/engine/gpege_functions.h \
 	gpege_functions.h
@@ -45,3 +57,4 @@ superclean: clean
 	rm -f gpege_functions.h \
 	  ../../include/gpeg/lib/engine/gpege_functions.h
 	rm -f simap.h simap.byc simap.asm simap.slotmap.h simap.c
+	rm -f caplist.h caplist.byc caplist.asm caplist.slotmap.h caplist.c

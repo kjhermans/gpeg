@@ -1,0 +1,17 @@
+MAP                <- DEFINITION+ END
+
+S                  <- %s+
+
+MULTILINECOMMENT   <- '--[[' ( !']]' .)* ']]'
+
+COMMENT            <- '--' [^\n]* '\n'
+
+__prefix           <- ( MULTILINECOMMENT / COMMENT / S )*
+
+END                <- !.
+
+DEFINITION         <- UNSIGNED UNSIGNED UNSIGNED SEMICOLON
+
+SEMICOLON          <- ';'
+
+UNSIGNED           <- [0-9]+
