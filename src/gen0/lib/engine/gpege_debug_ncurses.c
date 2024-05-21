@@ -505,7 +505,7 @@ void gpege_dbgncrs_toggle
 
 static
 void gpege_dbgncrs_draw_settings
-  ()
+  (gpege_t* gpege)
 {
   unsigned field = 0;
   int k;
@@ -515,9 +515,10 @@ void gpege_dbgncrs_draw_settings
   addstr(
 "============================================ GPEG Ncurses Debugger Settings =="
   );
-  move(3,3); addstr("Expand Input");
-  move(4,3); addstr("Expand Stack");
-  move(5,3); addstr("Expand Captures");
+  move(3, 3); addstr("Expand Input:");
+  move(4, 3); addstr("Expand Stack:");
+  move(5, 3); addstr("Expand Captures:");
+  move(6, 3); printw("Labels loaded:       %u", gpege->labelmap.count);
 
   move(3, 24);
   if (gpege_dbgncrs_state.exp_input) {
@@ -631,7 +632,7 @@ GPEG_ERR_T gpege_debug_ncurses
   while (1) {
 
     if (gpege_dbgncrs_state.mode == MODE_SETTINGS) {
-      gpege_dbgncrs_draw_settings();
+      gpege_dbgncrs_draw_settings(gpege);
       gpege_dbgncrs_state.mode = MODE_RUNNER;
       gpege_dbgncrs_recalculate();
     }
