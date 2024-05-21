@@ -617,6 +617,7 @@ int gpege_dbgncrs_recalculate
 GPEG_ERR_T gpege_debug_ncurses
   (gpege_t* gpege, gpege_ec_t* ec, uint32_t opcode, void* arg)
 {
+  int lastinstruction = 0;
   (void)arg;
 
   if (!ncurses_init) {
@@ -645,12 +646,19 @@ GPEG_ERR_T gpege_debug_ncurses
     addstr("<N>ext <Q>uit <R>unto <S>tepover <C>onfig");
     refresh();
   
-    if (gpege_dbgncrs_state.stepover) {
-      goto OUT;
+    if ((ec->failed && ec->stack.count == 0) || (opcode == OPCODE_END)) {
+      move(gpege_dbgncrs_state.height-1, 56);
+      addstr("LAST INSTRUCTION");
+      lastinstruction = 1;
+    } else {
+      if (gpege_dbgncrs_state.stepover) {
+        goto OUT;
+      }
+      if (ec->ninstructions < gpege_dbgncrs_state.rununtil) {
+        goto OUT;
+      }
     }
-    if (ec->ninstructions < gpege_dbgncrs_state.rununtil) {
-      goto OUT;
-    }
+
     int c = getch();
     switch (c) {
     case ERR:
@@ -661,7 +669,10 @@ GPEG_ERR_T gpege_debug_ncurses
     case 'q':
       return GPEG_ERR_EXIT;
     case 'n': case ' ':
-      goto OUT;
+      if (!lastinstruction) {
+        goto OUT;
+      }
+      break;
     case 'r':
       move(gpege_dbgncrs_state.height-2, 1);
       addstr("Run to instr#:");
@@ -673,9 +684,11 @@ GPEG_ERR_T gpege_debug_ncurses
       }
       break;
     case 's':
-      gpege_dbgncrs_state.stepover = 1;
-      gpege_dbgncrs_state.stacksize = ec->stack.count;
-      goto OUT;
+      if (!lastinstruction) {
+        gpege_dbgncrs_state.stepover = 1;
+        gpege_dbgncrs_state.stacksize = ec->stack.count;
+        goto OUT;
+      }
       break;
     case 'c':
       gpege_dbgncrs_state.mode = MODE_SETTINGS;
