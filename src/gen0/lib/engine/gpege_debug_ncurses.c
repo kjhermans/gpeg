@@ -73,9 +73,9 @@ gpege_dbgncrs_state =
   8,
   0,
   8,
+  0,
   1,
-  1,
-  0
+  1
 };
 
 void gpege_debug_ncurses_exit
