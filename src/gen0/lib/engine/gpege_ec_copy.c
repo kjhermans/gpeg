@@ -1,7 +1,7 @@
 /**
  * This file is part of GPEG, a parsing environment
 
-Copyright (c) 2023, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
+Copyright (c) 2024, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -31,53 +31,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GEN0_GPEG_ENGINE_TYPES_H_
-#define _GEN0_GPEG_ENGINE_TYPES_H_
+#include "gpege_private.h"
 
-#include <stdint.h>
-
-#include <gpeg/private/util/vec_t.h>
-#include <gpeg/private/util/str2int_map.h>
-
-#include <gpeg/lib/gpeg/gpeg_defines.h>
-
-#include <gpeg/lib/engine/gpege_stack.h>
-#include <gpeg/lib/engine/gpege_actions.h>
-#include <gpeg/lib/engine/gpege_register.h>
-
-#include "gpege_actions.h"
-
-typedef struct gpege gpege_t;
-typedef struct gpege_ec gpege_ec_t;
-
-struct gpege
+/**
+ * Copies the highly dynamic elements of an engine state to a copy.
+ * Note: This is a deep-copy, but not of all malloced elements of the struct.
+ */
+GPEG_ERR_T gpege_ec_copy
+  (gpege_ec_t* dst, gpege_ec_t* src)
 {
-  vec_t                         bytecode;
-  GPEG_ERR_T                  (*debugger)(gpege_t*,gpege_ec_t*,uint32_t,void*);
-  void*                         debugarg;
-  unsigned                      maxinstructions;
-  str2int_map_t                 slotmap;
-  str2int_map_t                 labelmap;
-};
+  *dst = *src;
 
-struct gpege_ec
-{
-  vec_t*                        input;
-  vec_t*                        errorstr;
-  unsigned                      input_offset;
-  unsigned                      input_offset_max;
-  unsigned                      bytecode_offset;
-  unsigned                      ninstructions;
-  int                           failed;
-  int                           endcode;
-  unsigned                      stack_max;
-  unsigned                      reg_ilen;
-  int                           reg_ilen_set;
-  unsigned                      callcounter;
-  unsigned                      currentcall;
-  gpege_stack_t                 stack;
-  gpege_actionlist_t            actions;
-  gpege_register_t              reg;
-};
+  dst->stack.list = malloc(sizeof(gpege_stackelt_t) * src->stack.allocated);
+  memcpy(
+    dst->stack.list,
+    src->stack.list,
+    sizeof(gpege_stackelt_t) * src->stack.allocated
+  );
 
-#endif
+  dst->actions.list = malloc(sizeof(gpege_action_t) * src->actions.allocated);
+  memcpy(
+    dst->actions.list,
+    src->actions.list,
+    sizeof(gpege_action_t) * src->actions.allocated
+  );
+
+  dst->reg.list = malloc(sizeof(gpege_regelt_t) * src->reg.allocated);
+  memcpy(
+    dst->reg.list,
+    src->reg.list,
+    sizeof(gpege_regelt_t) * src->reg.allocated
+  );
+
+  return GPEG_OK;
+}

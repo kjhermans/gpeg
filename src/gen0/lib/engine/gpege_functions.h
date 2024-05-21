@@ -65,6 +65,14 @@ GPEG_ERR_T gpege_debug_verbose
   (gpege_t* gpege, gpege_ec_t* ec, uint32_t opcode, void* arg)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./gpege_ec_copy.c */
+#define gpege_ec_copy gen0_gpege_ec_copy
+
+extern
+GPEG_ERR_T gpege_ec_copy
+  (gpege_ec_t* dst, gpege_ec_t* src)
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./gpege_ec_free.c */
 #define gpege_ec_free gen0_gpege_ec_free
 
