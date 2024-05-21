@@ -55,6 +55,7 @@ static struct
   int               stepover;
   unsigned          nostacklines;
   unsigned          stacksize;
+  unsigned          nocapturelines;
   int               exp_input;
   int               exp_stack;
   int               exp_captures;
@@ -71,6 +72,7 @@ gpege_dbgncrs_state =
   0,
   8,
   0,
+  8,
   1,
   1,
   0
@@ -205,6 +207,7 @@ void gpege_dbgncrs_draw_header
       {
         gpege_dbgncrs_state.stepover = 0;
       }
+      __attribute__ ((fallthrough));
     case OPCODE_ANY:
     case OPCODE_FAIL:
     case OPCODE_FAILTWICE:
@@ -399,6 +402,82 @@ void gpege_dbgncrs_draw_stack
 }
 
 static
+void gpege_dbgncrs_draw_captures
+  (gpege_t* gpege, gpege_ec_t* ec)
+{
+  char lines[ gpege_dbgncrs_state.nocapturelines ][ 80 ];
+  unsigned curline = gpege_dbgncrs_state.nocapturelines - 1;
+  (void)gpege;
+
+  memset(lines, 0, sizeof(lines));
+  move(
+    5 + gpege_dbgncrs_state.noinputlines + gpege_dbgncrs_state.nostacklines,
+    0
+  );
+    addstr(
+"================================================================== Captures =="
+  );
+  for (unsigned i=ec->actions.count; i > 0; i--) {
+    gpege_action_t* a1 = &(ec->actions.list[ i-1 ]);
+    if (a1->type == GPEGE_ACTION_CLOSECAPTURE) {
+      unsigned level = 1;
+      for (unsigned j=i-1; j > 0; j--) {
+        gpege_action_t* a0 = &(ec->actions.list[ j-1 ]);
+        if (a0->type == GPEGE_ACTION_OPENCAPTURE
+            && a0->slot == a1->slot)
+        {
+          --level;
+          if (level == 0) {
+            unsigned ll;
+            snprintf(lines[ curline ], 80,
+              "Slot %u, off %u, len %u :"
+              , a0->slot
+              , a0->input_offset
+              , a1->input_offset - a0->input_offset
+            );
+            ll = strlen(lines[ curline ]);
+            for (unsigned k=a0->input_offset; k < a1->input_offset; k++) {
+              if (k - a0->input_offset > 40) {
+                lines[ curline ][ ll++ ] = '.';
+                lines[ curline ][ ll++ ] = '.';
+                lines[ curline ][ ll++ ] = '.';
+                lines[ curline ][ ll ] = 0;
+                break;
+              } else {
+                char c = ec->input->data[ k ];
+                if (c >= 32 && c < 127) {
+                  lines[ curline ][ ll++ ] = c;
+                } else {
+                  lines[ curline ][ ll++ ] = '?';
+                }
+                lines[ curline ][ ll ] = 0;
+              }
+            }
+            break;
+          }
+        } else if (a0->type == GPEGE_ACTION_CLOSECAPTURE) {
+          ++level;
+        }
+      }
+      if (lines[ curline ][ 0 ]) {
+        if (curline) {
+          --curline;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+  for (unsigned i=0; i < gpege_dbgncrs_state.nocapturelines - curline; i++) {
+    move(
+      i + 6+gpege_dbgncrs_state.noinputlines+gpege_dbgncrs_state.nostacklines,
+      0
+    );
+    addstr(lines[ curline + i ]);
+  }
+}
+
+static
 void gpege_dbgncrs_toggle
   (
     unsigned y,
@@ -507,7 +586,6 @@ int gpege_dbgncrs_recalculate
   if (h > 50) {
     h = 50;
   }
-  if (w != COLS || h != LINES) { resizeterm(h, w); }
   gpege_dbgncrs_state.width = w;
   gpege_dbgncrs_state.height = h;
   nsections =
@@ -529,9 +607,9 @@ int gpege_dbgncrs_recalculate
     gpege_dbgncrs_state.nostacklines = 1;
   }
   if (gpege_dbgncrs_state.exp_captures) {
-//..
+    gpege_dbgncrs_state.nocapturelines = sectionheight;
   } else {
-//..
+    gpege_dbgncrs_state.nocapturelines = 1;
   }
   return 0;
 }
@@ -561,6 +639,7 @@ GPEG_ERR_T gpege_debug_ncurses
     gpege_dbgncrs_draw_header(gpege, ec, opcode);
     gpege_dbgncrs_draw_input(ec);
     gpege_dbgncrs_draw_stack(gpege, ec);
+    gpege_dbgncrs_draw_captures(gpege, ec);
 
     move(gpege_dbgncrs_state.height-1, 1);
     addstr("<N>ext <Q>uit <R>unto <S>tepover <C>onfig");
@@ -586,7 +665,8 @@ GPEG_ERR_T gpege_debug_ncurses
     case 'r':
       move(gpege_dbgncrs_state.height-2, 1);
       addstr("Run to instr#:");
-      char* instrstr = gpege_dbgncrs_input(gpege_dbgncrs_state.height-2, 16, 10, "");
+      char* instrstr =
+        gpege_dbgncrs_input(gpege_dbgncrs_state.height-2, 16, 10, "");
       if (instrstr) {
         unsigned instr = strtoul(instrstr, 0, 10);
         gpege_dbgncrs_state.rununtil = instr;

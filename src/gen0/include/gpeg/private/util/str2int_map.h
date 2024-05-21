@@ -38,4 +38,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 MAKE_MAP_HEADER(char*, unsigned, str2int_map_)
 
+extern
+char* str2int_map_reverse_lookup
+  (str2int_map_t* map, unsigned n);
+
 #endif // defined _GPEGA_GEN4_STR2INT_MAP_H_ ?
