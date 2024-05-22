@@ -43,6 +43,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "gpege_private.h"
 #include <gpeg/lib/gpeg/gpeg_instructions.h>
 
+#include <gpeg/private/util/map.h>
+MAKE_MAP_HEADER(char*, gpege_ec_t, gpege_dbgncrs_bookmark_)
+MAKE_MAP_CODE(char*, gpege_ec_t, gpege_dbgncrs_bookmark_)
+static gpege_dbgncrs_bookmark_t bookmarks = { 0 };
+
 static int ncurses_init = 0;
 
 static struct
@@ -643,23 +648,29 @@ GPEG_ERR_T gpege_debug_ncurses
     gpege_dbgncrs_draw_stack(gpege, ec);
     gpege_dbgncrs_draw_captures(gpege, ec);
 
-    move(gpege_dbgncrs_state.height-1, 1);
-    addstr("<N>ext <Q>uit <R>unto <S>tepover <C>onfig");
-    refresh();
-  
     if ((ec->failed && ec->stack.count == 0) || (opcode == OPCODE_END)) {
       move(gpege_dbgncrs_state.height-1, 56);
       addstr("LAST INSTRUCTION");
       lastinstruction = 1;
     } else {
       if (gpege_dbgncrs_state.stepover) {
+        refresh();
         goto OUT;
       }
       if (ec->ninstructions < gpege_dbgncrs_state.rununtil) {
+        refresh();
         goto OUT;
       }
     }
 
+    move(gpege_dbgncrs_state.height-1, 1);
+    if (lastinstruction) {
+      addstr("<Q>uit <R>unto <C>onfig");
+    } else {
+      addstr("<N>ext <Q>uit <R>unto <S>tepover <C>onfig <B>ookmark");
+    }
+    refresh();
+  
     int c = getch();
     switch (c) {
     case ERR:
@@ -690,6 +701,15 @@ GPEG_ERR_T gpege_debug_ncurses
         gpege_dbgncrs_state.stacksize = ec->stack.count;
         goto OUT;
       }
+      break;
+    case 'b':
+      move(gpege_dbgncrs_state.height-2, 1);
+      addstr("Name:");
+      char* bookmarkname =
+        gpege_dbgncrs_input(gpege_dbgncrs_state.height-2, 16, 10, "");
+      gpege_ec_t state = { 0 };
+      GPEG_CHECK(gpege_ec_copy(&state, ec), PROPAGATE);
+      gpege_dbgncrs_bookmark_put(&bookmarks, strdup(bookmarkname), state);
       break;
     case 'c':
       gpege_dbgncrs_state.mode = MODE_SETTINGS;
