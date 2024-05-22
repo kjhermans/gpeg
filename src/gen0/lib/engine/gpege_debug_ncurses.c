@@ -317,7 +317,7 @@ void gpege_dbgncrs_draw_input
 {
   move(3, 0);
   addstr(
-"===================================================================== Input =="
+"==================================================================<1> Input =="
   );
 
   {
@@ -370,7 +370,7 @@ void gpege_dbgncrs_draw_stack
 
   move(4 + gpege_dbgncrs_state.noinputlines, 0);
     addstr(
-"===================================================================== Stack =="
+"==================================================================<2> Stack =="
   );
   if (ec->stack.count > gpege_dbgncrs_state.nostacklines) {
     start = ec->stack.count - gpege_dbgncrs_state.nostacklines;
@@ -420,7 +420,7 @@ void gpege_dbgncrs_draw_captures
     0
   );
     addstr(
-"================================================================== Captures =="
+"===============================================================<3> Captures =="
   );
   for (unsigned i=ec->actions.count; i > 0; i--) {
     gpege_action_t* a1 = &(ec->actions.list[ i-1 ]);
@@ -544,7 +544,7 @@ void gpege_dbgncrs_draw_settings
     addstr("Disabled");
   }
 
-  move(10,3); addstr("<Q>uit Settings");
+  move(10, 3); addstr("<Q>uit Settings");
 
   while (1) {
     switch (field) {
@@ -678,6 +678,18 @@ GPEG_ERR_T gpege_debug_ncurses
     case KEY_RESIZE:
       gpege_dbgncrs_recalculate();
       break;
+    case '1':
+      gpege_dbgncrs_state.exp_input = !(gpege_dbgncrs_state.exp_input);
+      gpege_dbgncrs_recalculate();
+      break;
+    case '2':
+      gpege_dbgncrs_state.exp_stack = !(gpege_dbgncrs_state.exp_stack);
+      gpege_dbgncrs_recalculate();
+      break;
+    case '3':
+      gpege_dbgncrs_state.exp_captures = !(gpege_dbgncrs_state.exp_captures);
+      gpege_dbgncrs_recalculate();
+      break;
     case 'q':
       return GPEG_ERR_EXIT;
     case 'n': case ' ':
@@ -706,7 +718,7 @@ GPEG_ERR_T gpege_debug_ncurses
       move(gpege_dbgncrs_state.height-2, 1);
       addstr("Name:");
       char* bookmarkname =
-        gpege_dbgncrs_input(gpege_dbgncrs_state.height-2, 16, 10, "");
+        gpege_dbgncrs_input(gpege_dbgncrs_state.height-2, 7, 10, "");
       gpege_ec_t state = { 0 };
       GPEG_CHECK(gpege_ec_copy(&state, ec), PROPAGATE);
       gpege_dbgncrs_bookmark_put(&bookmarks, strdup(bookmarkname), state);
