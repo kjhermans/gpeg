@@ -72,12 +72,24 @@ void gpege_dbgncrs_draw_captures
           --level;
           if (level == 0) {
             unsigned ll;
-            snprintf(lines[ curline ], 80,
-              "Slot %u, off %u, len %u :"
-              , a0->slot
-              , a0->input_offset
-              , a1->input_offset - a0->input_offset
-            );
+            if (gpege->slotmap.count) {
+              char* slotname =
+                str2int_map_reverse_lookup(&(gpege->slotmap), a0->slot);
+              snprintf(lines[ curline ], 80,
+                "Slot %u (%s), off %u, len %u :"
+                , a0->slot
+                , slotname ? slotname : "unknown"
+                , a0->input_offset
+                , a1->input_offset - a0->input_offset
+              );
+            } else {
+              snprintf(lines[ curline ], 80,
+                "Slot %u, off %u, len %u :"
+                , a0->slot
+                , a0->input_offset
+                , a1->input_offset - a0->input_offset
+              );
+            }
             ll = strlen(lines[ curline ]);
             for (unsigned k=a0->input_offset; k < a1->input_offset; k++) {
               if (k - a0->input_offset > 40) {
