@@ -60,6 +60,7 @@ void gpege_dbgncrs_draw_settings
   move(4, 3); addstr("Expand Stack:");
   move(5, 3); addstr("Expand Captures:");
   move(6, 3); printw("Labels loaded:       %u", gpege->labelmap.count);
+  move(7, 3); printw("Slot names loaded:   %u", gpege->slotmap.count);
 
   move(3, 24);
   if (gpege_dbgncrs_exp_input) {
