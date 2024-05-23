@@ -40,56 +40,53 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef _HAS_NCURSES_
 
-#include "gpege_dbgncrs_private.h"
+#include "gpege_private.h"
 
 /**
  *
  */
-void gpege_dbgncrs_draw_input
-  (gpege_ec_t* ec)
+void gpege_dbgncrs_draw_stack
+  (gpege_t* gpege, gpege_ec_t* ec)
 {
-  move(3, 0);
-  addstr(
-"==================================================================<1> Input =="
-  );
+  unsigned start = 0;
+  char line[ 80 ];
+  char* label;
 
-  {
-    unsigned x = 0, y = 4;
-    move(y, x);
-    for (unsigned i = ec->input_offset; i < ec->input->size; i++) {
-      if (ec->input->data[ i ] == '\n') {
-        x = 0; y++;
-        if (y > 3 + gpege_dbgncrs_noinputlines) {
-          break;
-        }
-        move(y, x);
-      } else if (ec->input->data[ i ] > 31 && ec->input->data[ i ] < 127) {
-        addch(ec->input->data[ i ]);
-        x++;
-        if (x > 80) {
-          x = 0;
-          y++;
-          if (y > 3 + gpege_dbgncrs_noinputlines) {
-            break;
-          }
-          move(y, x);
-        }
-      } else {
-        char myesc[ 8 ];
-        snprintf(myesc, sizeof(myesc), "\\x%.2x", ec->input->data[ i ]);
-        if (x < 76) {
-          x = 0; y++;
-          if (y > 3 + gpege_dbgncrs_noinputlines) {
-            break;
-          }
-          move(y, x);
-          addstr(myesc);
-        } else {
-          addstr(myesc);
-        }
-        x += 4;
-      }
+  move(4 + gpege_dbgncrs_noinputlines, 0);
+    addstr(
+"==================================================================<2> Stack =="
+  );
+  if (ec->stack.count > gpege_dbgncrs_nostacklines) {
+    start = ec->stack.count - gpege_dbgncrs_nostacklines;
+  }
+  for (unsigned i=start; i < ec->stack.count; i++) {
+    move(5 + gpege_dbgncrs_noinputlines + i - start, 0);
+    if (ec->stack.list[ i ].type == GPEGE_STACK_CATCH) {
+      label = str2int_map_reverse_lookup(
+                &(gpege->labelmap), ec->stack.list[ i ].address
+              );
+      snprintf(line, sizeof(line),
+               "%.5u CATCH %u (%s)"
+               , i
+               , ec->stack.list[ i ].address
+               , label ? label : "Not found"
+      );
+    } else if (ec->stack.list[ i ].type == GPEGE_STACK_CALL) {
+      uint32_t address = htonl(
+        *((int32_t*)
+          (&(gpege->bytecode.data[ ec->stack.list[ i ].address - 4 ])))
+      );
+      label = str2int_map_reverse_lookup(
+                &(gpege->labelmap), address
+              );
+      snprintf(line, sizeof(line),
+               "%.5u CALL  %u (%s)"
+               , i
+               , ec->stack.list[ i ].address
+               , label ? label : "Not found"
+      );
     }
+    addstr(line);
   }
 }
 

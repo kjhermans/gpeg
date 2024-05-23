@@ -40,54 +40,71 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef _HAS_NCURSES_
 
-#include "gpege_dbgncrs_private.h"
+#include "gpege_private.h"
 
 /**
  *
  */
-void gpege_dbgncrs_recalculate
-  ()
+void gpege_dbgncrs_draw_settings
+  (gpege_t* gpege)
 {
-  unsigned w = COLS, h = LINES;
-  unsigned nsections;
-  unsigned sectionheight = 1;
+  unsigned field = 0;
+  int k;
 
-  if (w < 40) {
-    return;
-  }
-  if (h < 12) {
-    return;
-  }
-  if (w > 128) {
-    w = 128;
-  }
-  if (h > 50) {
-    h = 50;
-  }
-  gpege_dbgncrs_width = w;
-  gpege_dbgncrs_height = h;
-  nsections =
-    gpege_dbgncrs_exp_input +
-    gpege_dbgncrs_exp_stack +
-    gpege_dbgncrs_exp_captures;
-  if (nsections) {
-    sectionheight = ((h - 8) / nsections);
-  }
-  move(1,70); printw("ns: %u, sh: %u\n", nsections, sectionheight);
+  clear();
+  move(0, 0);
+  addstr(
+"============================================ GPEG Ncurses Debugger Settings =="
+  );
+  move(3, 3); addstr("Expand Input:");
+  move(4, 3); addstr("Expand Stack:");
+  move(5, 3); addstr("Expand Captures:");
+  move(6, 3); printw("Labels loaded:       %u", gpege->labelmap.count);
+
+  move(3, 24);
   if (gpege_dbgncrs_exp_input) {
-    gpege_dbgncrs_noinputlines = sectionheight;
+    addstr("Enabled");
   } else {
-    gpege_dbgncrs_noinputlines = 1;
+    addstr("Disabled");
   }
+  move(4, 24);
   if (gpege_dbgncrs_exp_stack) {
-    gpege_dbgncrs_nostacklines = sectionheight;
+    addstr("Enabled");
   } else {
-    gpege_dbgncrs_nostacklines = 1;
+    addstr("Disabled");
   }
+  move(5, 24);
   if (gpege_dbgncrs_exp_captures) {
-    gpege_dbgncrs_nocapturelines = sectionheight;
+    addstr("Enabled");
   } else {
-    gpege_dbgncrs_nocapturelines = 1;
+    addstr("Disabled");
+  }
+
+  move(10, 3); addstr("<Q>uit Settings");
+
+  while (1) {
+    switch (field) {
+    case 0:
+      k = ncurses_widget_toggle(
+        3, 24, &(gpege_dbgncrs_exp_input)
+      );
+      break;
+    case 1:
+      k = ncurses_widget_toggle(
+        4, 24, &(gpege_dbgncrs_exp_stack)
+      );
+      break;
+    case 2:
+      k = ncurses_widget_toggle(
+        5, 24, &(gpege_dbgncrs_exp_captures)
+      );
+      break;
+    }
+    switch (k) {
+    case 'q': return;
+    case KEY_UP: field--; field %= 3; break;
+    case KEY_DOWN: field++; field %= 3; break;
+    }
   }
 }
 

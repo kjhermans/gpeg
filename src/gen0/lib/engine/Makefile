@@ -8,10 +8,7 @@ ADDITIONALOBJECTS=\
   ../gpeg/gpeg_capturelist.o \
   ../gpeg/gpeg_opcode2string.o \
 
-all: maplogic functionsheader $(LIB) subdirs
-
-subdirs:
-	cd gpege_debug_ncurses/ && make
+all: maplogic functionsheader $(LIB)
 
 maplogic: simap.h caplist.h
 

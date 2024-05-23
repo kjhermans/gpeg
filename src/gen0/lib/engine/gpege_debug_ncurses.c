@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef _HAS_NCURSES_
 
-#include "gpege_dbgncrs_private.h"
+#include "gpege_private.h"
 
 #include <gpeg/private/util/map.h>
 MAKE_MAP_HEADER(char*, gpege_ec_t, gpege_dbgncrs_bookmark_)
@@ -53,7 +53,7 @@ static int ncurses_init = 0;
 
 unsigned gpege_dbgncrs_width            = 80;
 unsigned gpege_dbgncrs_height           = 25;
-unsigned gpege_dbgncrs_mode             = MODE_RUNNER;
+unsigned gpege_dbgncrs_mode             = MODE_RUNNING;
 unsigned gpege_dbgncrs_noinputlines     = 0;
 unsigned gpege_dbgncrs_rununtil         = 0;
 int      gpege_dbgncrs_stepover         = 0;
@@ -89,7 +89,7 @@ GPEG_ERR_T gpege_debug_ncurses
 
     if (gpege_dbgncrs_mode == MODE_SETTINGS) {
       gpege_dbgncrs_draw_settings(gpege);
-      gpege_dbgncrs_mode = MODE_RUNNER;
+      gpege_dbgncrs_mode = MODE_RUNNING;
       gpege_dbgncrs_recalculate();
     }
 

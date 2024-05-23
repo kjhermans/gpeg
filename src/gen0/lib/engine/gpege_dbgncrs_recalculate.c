@@ -40,53 +40,54 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef _HAS_NCURSES_
 
-#include "gpege_dbgncrs_private.h"
+#include "gpege_private.h"
 
 /**
  *
  */
-void gpege_dbgncrs_draw_stack
-  (gpege_t* gpege, gpege_ec_t* ec)
+void gpege_dbgncrs_recalculate
+  ()
 {
-  unsigned start = 0;
-  char line[ 80 ];
-  char* label;
+  unsigned w = COLS, h = LINES;
+  unsigned nsections;
+  unsigned sectionheight = 1;
 
-  move(4 + gpege_dbgncrs_noinputlines, 0);
-    addstr(
-"==================================================================<2> Stack =="
-  );
-  if (ec->stack.count > gpege_dbgncrs_nostacklines) {
-    start = ec->stack.count - gpege_dbgncrs_nostacklines;
+  if (w < 40) {
+    return;
   }
-  for (unsigned i=start; i < ec->stack.count; i++) {
-    move(5 + gpege_dbgncrs_noinputlines + i - start, 0);
-    if (ec->stack.list[ i ].type == GPEGE_STACK_CATCH) {
-      label = str2int_map_reverse_lookup(
-                &(gpege->labelmap), ec->stack.list[ i ].address
-              );
-      snprintf(line, sizeof(line),
-               "%.5u CATCH %u (%s)"
-               , i
-               , ec->stack.list[ i ].address
-               , label ? label : "Not found"
-      );
-    } else if (ec->stack.list[ i ].type == GPEGE_STACK_CALL) {
-      uint32_t address = htonl(
-        *((int32_t*)
-          (&(gpege->bytecode.data[ ec->stack.list[ i ].address - 4 ])))
-      );
-      label = str2int_map_reverse_lookup(
-                &(gpege->labelmap), address
-              );
-      snprintf(line, sizeof(line),
-               "%.5u CALL  %u (%s)"
-               , i
-               , ec->stack.list[ i ].address
-               , label ? label : "Not found"
-      );
-    }
-    addstr(line);
+  if (h < 12) {
+    return;
+  }
+  if (w > 128) {
+    w = 128;
+  }
+  if (h > 50) {
+    h = 50;
+  }
+  gpege_dbgncrs_width = w;
+  gpege_dbgncrs_height = h;
+  nsections =
+    gpege_dbgncrs_exp_input +
+    gpege_dbgncrs_exp_stack +
+    gpege_dbgncrs_exp_captures;
+  if (nsections) {
+    sectionheight = ((h - 8) / nsections);
+  }
+  move(1,70); printw("ns: %u, sh: %u\n", nsections, sectionheight);
+  if (gpege_dbgncrs_exp_input) {
+    gpege_dbgncrs_noinputlines = sectionheight;
+  } else {
+    gpege_dbgncrs_noinputlines = 1;
+  }
+  if (gpege_dbgncrs_exp_stack) {
+    gpege_dbgncrs_nostacklines = sectionheight;
+  } else {
+    gpege_dbgncrs_nostacklines = 1;
+  }
+  if (gpege_dbgncrs_exp_captures) {
+    gpege_dbgncrs_nocapturelines = sectionheight;
+  } else {
+    gpege_dbgncrs_nocapturelines = 1;
   }
 }
 

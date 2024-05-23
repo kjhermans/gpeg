@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef _HAS_NCURSES_
 
-#include "gpege_dbgncrs_private.h"
+#include "gpege_private.h"
 
 /**
  *

@@ -42,6 +42,48 @@ GPEG_ERR_T gpege_actions2captures
   (vec_t* input, gpege_actionlist_t* actions, gpeg_capturelist_t* captures)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./gpege_dbgncrs_draw_captures.c */
+#define gpege_dbgncrs_draw_captures gen0_gpege_dbgncrs_draw_captures
+
+extern
+void gpege_dbgncrs_draw_captures
+  (gpege_t* gpege, gpege_ec_t* ec);
+
+/* declared in ./gpege_dbgncrs_draw_header.c */
+#define gpege_dbgncrs_draw_header gen0_gpege_dbgncrs_draw_header
+
+extern
+void gpege_dbgncrs_draw_header
+  (gpege_t* gpege, gpege_ec_t* ec, uint32_t opcode);
+
+/* declared in ./gpege_dbgncrs_draw_input.c */
+#define gpege_dbgncrs_draw_input gen0_gpege_dbgncrs_draw_input
+
+extern
+void gpege_dbgncrs_draw_input
+  (gpege_ec_t* ec);
+
+/* declared in ./gpege_dbgncrs_draw_settings.c */
+#define gpege_dbgncrs_draw_settings gen0_gpege_dbgncrs_draw_settings
+
+extern
+void gpege_dbgncrs_draw_settings
+  (gpege_t* gpege);
+
+/* declared in ./gpege_dbgncrs_draw_stack.c */
+#define gpege_dbgncrs_draw_stack gen0_gpege_dbgncrs_draw_stack
+
+extern
+void gpege_dbgncrs_draw_stack
+  (gpege_t* gpege, gpege_ec_t* ec);
+
+/* declared in ./gpege_dbgncrs_recalculate.c */
+#define gpege_dbgncrs_recalculate gen0_gpege_dbgncrs_recalculate
+
+extern
+void gpege_dbgncrs_recalculate
+  ();
+
 /* declared in ./gpege_debug_ncurses.c */
 #define gpege_debug_ncurses_exit gen0_gpege_debug_ncurses_exit
 
@@ -120,6 +162,26 @@ GPEG_ERR_T gpege_variable
     uint32_t slot,
     unsigned char** value,
     unsigned* valuesize
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./ncurses_widget_input.c */
+#define ncurses_widget_input gen0_ncurses_widget_input
+
+extern
+int ncurses_widget_input
+  (unsigned y, unsigned x, unsigned w, char* value, unsigned valuesize)
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./ncurses_widget_toggle.c */
+#define ncurses_widget_toggle gen0_ncurses_widget_toggle
+
+extern
+int ncurses_widget_toggle
+  (
+    unsigned y,
+    unsigned x,
+    int* value
   )
   __attribute__ ((warn_unused_result));
 

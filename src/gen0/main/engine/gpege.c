@@ -44,6 +44,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #  if __has_include (<ncurses.h>)
 #    define _HAS_NCURSES_
 #    include <ncurses.h>
+
+extern
+GPEG_ERR_T gpege_debug_ncurses
+  (gpege_t* gpege, gpege_ec_t* ec, uint32_t opcode, void* arg);
+
+extern
+void gpege_debug_ncurses_exit
+  ();
+
 #  endif
 #endif
 

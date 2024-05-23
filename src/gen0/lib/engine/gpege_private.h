@@ -44,4 +44,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define GPEGE_DATA_IN_SET(set,chr) (set[chr/8]&(1<<(chr%8)))
 
+#define MODE_RUNNING            0
+#define MODE_SETTINGS           1
+extern unsigned gpege_dbgncrs_width;
+extern unsigned gpege_dbgncrs_height;
+extern unsigned gpege_dbgncrs_mode;
+extern unsigned gpege_dbgncrs_noinputlines;
+extern unsigned gpege_dbgncrs_rununtil;
+extern int      gpege_dbgncrs_stepover;
+extern unsigned gpege_dbgncrs_nostacklines;
+extern unsigned gpege_dbgncrs_stacksize;
+extern unsigned gpege_dbgncrs_nocapturelines;
+extern int      gpege_dbgncrs_exp_input;
+extern int      gpege_dbgncrs_exp_stack;
+extern int      gpege_dbgncrs_exp_captures;
+
 #endif

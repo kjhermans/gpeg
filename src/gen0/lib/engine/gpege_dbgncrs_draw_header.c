@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gpeg/lib/gpeg/gpeg_instructions.h>
 
-#include "gpege_dbgncrs_private.h"
+#include "gpege_private.h"
 
 /**
  *

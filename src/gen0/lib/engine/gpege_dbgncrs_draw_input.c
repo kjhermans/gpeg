@@ -40,70 +40,55 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef _HAS_NCURSES_
 
-#include "gpege_dbgncrs_private.h"
+#include "gpege_private.h"
 
 /**
  *
  */
-void gpege_dbgncrs_draw_settings
-  (gpege_t* gpege)
+void gpege_dbgncrs_draw_input
+  (gpege_ec_t* ec)
 {
-  unsigned field = 0;
-  int k;
-
-  clear();
-  move(0, 0);
+  move(3, 0);
   addstr(
-"============================================ GPEG Ncurses Debugger Settings =="
+"==================================================================<1> Input =="
   );
-  move(3, 3); addstr("Expand Input:");
-  move(4, 3); addstr("Expand Stack:");
-  move(5, 3); addstr("Expand Captures:");
-  move(6, 3); printw("Labels loaded:       %u", gpege->labelmap.count);
 
-  move(3, 24);
-  if (gpege_dbgncrs_exp_input) {
-    addstr("Enabled");
-  } else {
-    addstr("Disabled");
-  }
-  move(4, 24);
-  if (gpege_dbgncrs_exp_stack) {
-    addstr("Enabled");
-  } else {
-    addstr("Disabled");
-  }
-  move(5, 24);
-  if (gpege_dbgncrs_exp_captures) {
-    addstr("Enabled");
-  } else {
-    addstr("Disabled");
-  }
-
-  move(10, 3); addstr("<Q>uit Settings");
-
-  while (1) {
-    switch (field) {
-    case 0:
-      k = ncurses_widget_toggle(
-        3, 24, &(gpege_dbgncrs_exp_input)
-      );
-      break;
-    case 1:
-      k = ncurses_widget_toggle(
-        4, 24, &(gpege_dbgncrs_exp_stack)
-      );
-      break;
-    case 2:
-      k = ncurses_widget_toggle(
-        5, 24, &(gpege_dbgncrs_exp_captures)
-      );
-      break;
-    }
-    switch (k) {
-    case 'q': return;
-    case KEY_UP: field--; field %= 3; break;
-    case KEY_DOWN: field++; field %= 3; break;
+  {
+    unsigned x = 0, y = 4;
+    move(y, x);
+    for (unsigned i = ec->input_offset; i < ec->input->size; i++) {
+      if (ec->input->data[ i ] == '\n') {
+        x = 0; y++;
+        if (y > 3 + gpege_dbgncrs_noinputlines) {
+          break;
+        }
+        move(y, x);
+      } else if (ec->input->data[ i ] > 31 && ec->input->data[ i ] < 127) {
+        addch(ec->input->data[ i ]);
+        x++;
+        if (x > 80) {
+          x = 0;
+          y++;
+          if (y > 3 + gpege_dbgncrs_noinputlines) {
+            break;
+          }
+          move(y, x);
+        }
+      } else {
+        char myesc[ 8 ];
+        snprintf(myesc, sizeof(myesc), "\\x%.2x", ec->input->data[ i ]);
+        if (x < 76) {
+          x = 0; y++;
+          if (y > 3 + gpege_dbgncrs_noinputlines) {
+            break;
+          }
+          move(y, x);
+          addstr(myesc);
+        } else {
+          addstr(myesc);
+        }
+        x += 4;
+      }
     }
   }
 }
