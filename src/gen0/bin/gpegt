@@ -42,7 +42,6 @@ sub main
       die "Error in gpegc: $@";
     }
     my $slotmap = `cat /tmp/$$.slotmap`;
-#print STDERR $slotmap;
     `rm -f /tmp/$$.slotmap`;
     %slotmap = parse_slotmap($slotmap);
     $r = system("gpega -i $tmpfile.asm -o $tmpfile.byc");
@@ -54,24 +53,20 @@ sub main
       die "Error in gpege: $@";
     }
     my $capturelist = `cat /tmp/capture.$$`;
-#print STDERR $capturelist;
     `rm -f /tmp/capture.$$`;
     @captures = parse_captures($capturelist);
   }
 
   my @struct = parse($definition);
-#use Data::Dumper; print STDERR Dumper \@struct;
 
   foreach my $rule (@struct) {
     my $slot = $slotmap{$rule->{slot}{ident}};
     if (!defined($slot)) {
       die "Unknown slot '$rule->{slot}{ident}'";
     }
-#    print STDERR "Processing slot $rule->{slot}{ident} ($slot)\n";
     for (my $i=0; $i < scalar(@captures); $i++) {
       if ($captures[ $i ]->{action} == 1 && $captures[ $i ]->{slot} == $slot) {
         my $level = 1;
-#        print STDERR "Capture at $captures[ $i ]->{offset}\n";
         for (my $j=$i+1; $j < scalar(@captures); $j++) {
           if ($captures[ $j ]->{slot} == $slot) {
             if ($captures[ $j ]->{action} == 1) {

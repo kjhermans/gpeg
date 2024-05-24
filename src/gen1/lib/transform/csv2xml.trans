@@ -11,5 +11,5 @@ FIELD   <- { ( '\\' . / [^,\n] )* }
 
 FIELD   : '    <field>'  $_ '</field>\n'
 COMMA   : ''
-RECORD  : '  <record>\n' $_ '  </record>\n'
+RECORD  : '  <record>\n' $_ '  </record>'
 CSV     : '<db>\n'       $_ '</db>\n'
