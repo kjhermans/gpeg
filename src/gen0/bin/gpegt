@@ -2,7 +2,156 @@
 
 use strict;
 
+exit(main());
+
 ##---- functions ----##
+
+sub main
+{
+  my $definition;
+  my $inputfile;
+  my $input;
+  my $grammarfile;
+  my %slotmap;
+  my @captures;
+
+  while (scalar(@ARGV)) {
+    my $arg = shift @ARGV;
+    if ($arg eq '-d') {
+      my $deffile = shift @ARGV || die "-d needs <path> argument.";
+      $definition = `cat $deffile`;
+    } elsif ($arg eq '-i') {
+      $inputfile = shift @ARGV || die "-i needs <path> argument.";
+      $input = `cat $inputfile`;
+    } elsif ($arg eq '-g') {
+      $grammarfile = shift @ARGV || die "-g needs <path> argument.";
+    }
+  }
+
+  die "No definition file given." if (!defined($definition));
+  die "No input file given." if (!defined($inputfile));
+  die "No input." if (!defined($input));
+  die "No grammar file given." if (!defined($grammarfile));
+
+  {
+    my $tmpfile = "/tmp/transform_$$";
+    my $r;
+
+    $r = system("gpegc -i $grammarfile -o $tmpfile.asm -m /tmp/$$.slotmap");
+    if ($r) {
+      die "Error in gpegc: $@";
+    }
+    my $slotmap = `cat /tmp/$$.slotmap`;
+#print STDERR $slotmap;
+    `rm -f /tmp/$$.slotmap`;
+    %slotmap = parse_slotmap($slotmap);
+    $r = system("gpega -i $tmpfile.asm -o $tmpfile.byc");
+    if ($r) {
+      die "Error in gpega: $@";
+    }
+    $r = system("gpege -c $tmpfile.byc -i $inputfile -t > /tmp/capture.$$");
+    if ($r) {
+      die "Error in gpege: $@";
+    }
+    my $capturelist = `cat /tmp/capture.$$`;
+#print STDERR $capturelist;
+    `rm -f /tmp/capture.$$`;
+    @captures = parse_captures($capturelist);
+  }
+
+  my @struct = parse($definition);
+#use Data::Dumper; print STDERR Dumper \@struct;
+
+  foreach my $rule (@struct) {
+    my $slot = $slotmap{$rule->{slot}{ident}};
+    if (!defined($slot)) {
+      die "Unknown slot '$rule->{slot}{ident}'";
+    }
+#    print STDERR "Processing slot $rule->{slot}{ident} ($slot)\n";
+    for (my $i=0; $i < scalar(@captures); $i++) {
+      if ($captures[ $i ]->{action} == 1 && $captures[ $i ]->{slot} == $slot) {
+        my $level = 1;
+#        print STDERR "Capture at $captures[ $i ]->{offset}\n";
+        for (my $j=$i+1; $j < scalar(@captures); $j++) {
+          if ($captures[ $j ]->{slot} == $slot) {
+            if ($captures[ $j ]->{action} == 1) {
+              ++$level;
+            } elsif ($captures[ $j ]->{action} == 2) {
+              if (--$level == 0) {
+                $input = replace(
+                  $input,
+                  $captures[ $i ]->{offset},
+                  $captures[ $j ]->{offset},
+                  $rule->{expression},
+                  \@captures
+                );
+              }
+              last;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  print $input;
+
+  return 0;
+}
+
+sub replace
+{
+  my ($input, $start, $end, $expr, $capts) = @_;
+
+  my $capturestring = substr($input, $start, $end - $start);
+  my $replstring = interpret_replacement_string($capturestring, $expr);
+  my $diff = ($end - $start) - length($replstring);
+  my $copy = "$input";
+  my $result = substr($copy, 0, $start) . $replstring . substr($copy, $end);
+  foreach my $cap (@{$capts}) {
+    if ($cap->{offset} > $start) {
+      $cap->{offset} -= $diff;
+    }
+  }
+
+  return $result;
+}
+
+sub interpret_replacement_string
+{
+  my ($c, $expr) = @_;
+  my $result = '';
+
+  foreach my $elt (@{$expr}) {
+    if ($elt->{type} eq 'reference') {
+      if ($elt->{ident} eq '_') {
+        $result .= $c;
+      } else {
+        die "Unknown reference $elt->{ident} in expression.";
+      }
+    } elsif ($elt->{type} eq 'string') {
+      $result .= interpret_string($elt->{string});
+    }
+  }
+
+  return $result;
+}
+
+sub interpret_string
+{
+  my $lit = shift;
+  my $result = '';
+
+  while (length($lit)) {
+    if ($lit =~ s/^\\n//) {
+      $result .= "\n";
+    } elsif ($lit =~ s/^(.)//s) {
+      $result .= $1;
+    }
+  }
+
+  return $result;
+}
 
 sub parse
 {
@@ -23,15 +172,15 @@ sub tokenize
   while (length($definition)) {
     while (1) {
       last if ($definition !~ s/^\s+//
-            || $definition !~ s/^--\[\[.*?\]\]//s
-            || $definition !~ s/^--.*\n//);
+            && $definition !~ s/^--\[\[.*?\]\]//s
+            && $definition !~ s/^--.*\n//);
     }
     last if (!length($definition));
     if      ($definition =~ s/^($ident)\s*://) {
       push @tokens, { type => 'transformrule', ident => $1 };
     } elsif ($definition =~ s/^\$($ident)//) {
       push @tokens, { type => 'reference', ident => $1 };
-    } elsif ($definition =~ s/^'(\\.|[^'])*'//) {
+    } elsif ($definition =~ s/^'((\\.|[^'])*)'//) {
       push @tokens, { type => 'string', string => $1 };
     } elsif ($definition =~ s/^0x([a-fA-F0-9]{2})//) {
       push @tokens, { type => 'char', hex => $1 };
@@ -64,6 +213,34 @@ sub structure
   }
 
   return @result;
+}
+
+sub parse_captures
+{
+  my $capturelist = shift;
+  my @result;
+
+  while (length($capturelist)) {
+    last if ($capturelist !~ s/^\s*([12])\s+([0-9]+)\s+([0-9]+)\s*;\s*//);
+    my ($action, $slot, $offset) = ($1, $2, $3);
+    push @result, { action => $action, slot => $slot, offset => $offset };
+  }
+
+  return @result;
+}
+
+sub parse_slotmap
+{
+  my $slotmap = shift;
+  my %result;
+
+  while (length($slotmap)) {
+    last if ($slotmap !~ s/^\s*([a-zA-Z_][a-zA-Z0-9_]{0,63})\s+([0-9]+)\s*//);
+    my ($ident, $slot) = ($1, $2);
+    $result{$ident} = $slot;
+  }
+
+  return %result;
 }
 
 1;

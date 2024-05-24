@@ -3,11 +3,13 @@
 Based on the grammar:
 
 CSV     <- { RECORD+ }
-RECORD  <- { FIELD ( ',' FIELD )* } '\n'
+RECORD  <- { FIELD ( COMMA FIELD )* } '\n'
+COMMA   <- { ',' }
 FIELD   <- { ( '\\' . / [^,\n] )* }
 
 ]]
 
 FIELD   : '    <field>'  $_ '</field>\n'
-RECORD  : '  <record>\n' $_ '</record>\n'
+COMMA   : ''
+RECORD  : '  <record>\n' $_ '  </record>\n'
 CSV     : '<db>\n'       $_ '</db>\n'
