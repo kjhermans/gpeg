@@ -71,7 +71,7 @@ void gpege_dbgncrs_recalculate
     gpege_dbgncrs_exp_stack +
     gpege_dbgncrs_exp_captures;
   if (nsections) {
-    sectionheight = ((h - 8) / nsections);
+    sectionheight = ((h - 9) / nsections);
   }
   move(1,70); printw("ns: %u, sh: %u\n", nsections, sectionheight);
   if (gpege_dbgncrs_exp_input) {

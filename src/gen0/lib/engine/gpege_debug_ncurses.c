@@ -163,7 +163,6 @@ GPEG_ERR_T gpege_debug_ncurses
           gpege_ec_t ec_bkmk;
           if (gpege_dbgncrs_bookmark_get(&bookmarks, myline, &ec_bkmk) == 0) {
             *ec = ec_bkmk;
-            goto OUT;
           }
         }
       }
