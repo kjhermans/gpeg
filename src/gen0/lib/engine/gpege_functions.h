@@ -173,6 +173,21 @@ int ncurses_widget_input
   (unsigned y, unsigned x, unsigned w, char* value, unsigned valuesize)
   __attribute__ ((warn_unused_result));
 
+/* declared in ./ncurses_widget_list.c */
+#define ncurses_widget_list gen0_ncurses_widget_list
+
+extern
+int ncurses_widget_list
+  (
+    unsigned y,
+    unsigned x,
+    unsigned h,
+    unsigned w,
+    char*  (*iterator)(void*),
+    void*    arg
+  )
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./ncurses_widget_toggle.c */
 #define ncurses_widget_toggle gen0_ncurses_widget_toggle
 
