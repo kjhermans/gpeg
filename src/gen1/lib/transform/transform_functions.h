@@ -1,0 +1,35 @@
+#include <gpeg/lib/gpeg/gpeg_capturelist.h>
+#include <stdio.h>
+extern int gpegt_grammar_process_node(gpeg_capture_t*, void*);
+extern int gpegt_handle_CHAR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_CHAR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_COLON(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_COLON(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_COMMENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_COMMENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_DEFINITION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_DEFINITION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_DOLLAR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_DOLLAR(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_END(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_END(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_EXPRESSION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_EXPRESSION(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_IDENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_IDENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_MULTILINECOMMENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_MULTILINECOMMENT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_REFERENCE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_REFERENCE(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_S(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_S(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_SLOT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_SLOT(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_STRING(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_STRING(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_STRING_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_STRING_0(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_TERM(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_TERM(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_TRANSFORM(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
+extern int gpegt_handle_post_TRANSFORM(gpeg_capture_t*,unsigned,gpeg_capture_t*,void*);
