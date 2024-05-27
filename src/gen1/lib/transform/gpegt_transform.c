@@ -32,22 +32,53 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "gpegt_private.h"
+#include <gpeg/previous/lib/engine/gpege.h>
 
 static
 unsigned char bytecode[] = {
   #include "transform.h"
 };
 
+#define GENCALL(f) JOIN(PREVGEN, f)
+#define JOIN(a, b) JOIN_AGAIN(a, b)
+#define JOIN_AGAIN(a,b) a ## b
+
 /**
  * Main entry function to the transform library.
  * Takes a bytecode, an input, and a transformation
  * definition, and transforms the input based on the capture list
  * of the GPEG engine's run on the input.
+ *
+ * \param t Which must have the following members set:
+ *          - .in
+ *          - .out
+ *          - .err
+ *          - .grammar
+ *          - .rules
+ *          - .flags
+ *
+ * \returns GPEG_OK on success, or a GPEG_ERR_* value on error.
  */
 GPEG_ERR_T gpegt_transform
   (gpegt_transform_t* t)
 {
   DEBUGFUNCTION
 
+  gpege_t gpege = { 0 };
+  gpege_ec_t ec = { 0 };
+  gpeg_capturelist_t captures = { 0 };
+
+  gpege.bytecode.data = bytecode;
+  gpege.bytecode.size = sizeof(bytecode);
+
+  ec.input = &(t->rules);
+
+  GPEG_CHECK(
+    GENCALL(gpege_run)(&gpege, &ec),
+    PROPAGATE
+  );
+
+  vec_copy(&(t->out), &(t->in));
   
+  return GPEG_OK;
 }

@@ -34,9 +34,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _GPEG_GEN1_GPEG_TRANSFORM_GPEGT_TYPES_H_
 #define _GPEG_GEN1_GPEG_TRANSFORM_GPEGT_TYPES_H_
 
+#include <gpeg/private/util/vec_t.h>
+
 typedef struct
 {
-  int foo;
+  vec_t             in;
+  vec_t             out;
+  vec_t             err;
+  vec_t             grammar;
+  vec_t             rules;
+  unsigned          flags;
 }
 gpegt_transform_t;
 
