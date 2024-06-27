@@ -115,6 +115,7 @@ struct gpegc_matcher
 typedef struct
 {
   gpegc_compiler_t*     compiler;
+  unsigned              round;
   stringlist_t          namespace;
   struct {
     char*                 name;

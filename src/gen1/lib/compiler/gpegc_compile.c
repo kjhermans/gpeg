@@ -72,6 +72,8 @@ GPEG_ERR_T gpegc_compile
   gpege_t gpege = { 0 };
   gpege_ec_t ec = { 0 };
   gpeg_capturelist_t captures = { 0 };
+  int e;
+  GPEG_ERR_T ee;
 
   gpege.bytecode.data = bytecode;
   gpege.bytecode.size = sizeof(bytecode);
@@ -82,10 +84,18 @@ GPEG_ERR_T gpegc_compile
   gpege.debugger = gpege_debug_verbose;
 #endif
 
-  GPEG_CHECK(
-    GENCALL(gpege_run)(&gpege, &ec),
-    PROPAGATE
-  );
+  ee = GENCALL(gpege_run)(&gpege, &ec);
+  if (ee.code) {
+    unsigned yx0[ 2 ];
+    unsigned yx1[ 2 ];
+    strxypos((char*)(c->input.data), ec.input_offset, yx0);
+    strxypos((char*)(c->input.data), ec.input_offset_max, yx1);
+    vec_printf(&(c->error),
+      "Engine running error %d, at line %u, pos %u; max line %u, pos %u\n"
+      , ee.code, yx0[ 0 ], yx0[ 1 ], yx1[ 0 ], yx1[ 1 ]
+    );
+    return ee;
+  }
   GPEG_CHECK(
     gpege_actions2captures(
       ec.input,
@@ -102,11 +112,8 @@ GPEG_ERR_T gpegc_compile
   gpegc_t gpegc = { 0 };
   gpegc.compiler = c;
 
-  int e = gpegc_grammar_process_node(&(captures.list[ 0 ]), &gpegc);
-
-  if (gpegc.startrule) {
-    vec_printf_insert(&(c->output), 0, "  call %s\n  end 0\n\n", gpegc.startrule);
-  }
+  gpegc.round = 0;
+  e = gpegc_grammar_process_node(&(captures.list[ 0 ]), &gpegc);
 
   if (e) {
     unsigned yx0[ 2 ];
@@ -118,6 +125,27 @@ GPEG_ERR_T gpegc_compile
       , e, yx0[ 0 ], yx0[ 1 ], yx1[ 0 ], yx1[ 1 ]
     );
     return (GPEG_ERR_T){ .code = e };
+  }
+
+  gpegc.round = 1;
+  e = gpegc_grammar_process_node(&(captures.list[ 0 ]), &gpegc);
+
+  if (e) {
+    unsigned yx0[ 2 ];
+    unsigned yx1[ 2 ];
+    strxypos((char*)(c->input.data), ec.input_offset, yx0);
+    strxypos((char*)(c->input.data), ec.input_offset_max, yx1);
+    vec_printf(&(c->error),
+      "Engine running error %d, at line %u, pos %u; max line %u, pos %u\n"
+      , e, yx0[ 0 ], yx0[ 1 ], yx1[ 0 ], yx1[ 1 ]
+    );
+    return (GPEG_ERR_T){ .code = e };
+  }
+
+  if (gpegc.startrule) {
+    vec_printf_insert(&(c->output),
+      0, "  call %s\n  end 0\n\n", gpegc.startrule
+    );
   }
 
   if (c->slotmap) {
@@ -151,7 +179,10 @@ GPEG_ERR_T gpegc_compile
   }
 
   if (c->parserc) {
-    GPEG_CHECK(gpegc_generate_cfile(&gpegc, c->parserc, c->parserc_ident), PROPAGATE);
+    GPEG_CHECK(
+      gpegc_generate_cfile(&gpegc, c->parserc, c->parserc_ident)
+      , PROPAGATE
+    );
   }
 
   gpege_ec_free(&ec);

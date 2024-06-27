@@ -70,9 +70,9 @@ int str2int_map_absorb
   gpeg_capturelist_remove(&captures, SLOT_MULTILINECOMMENT);
   gpeg_capturelist_remove(&captures, SLOT_COMMENT);
 
-  simap_grammar_process_node(&(captures.list[ 0 ]), map);
+  int ee = simap_grammar_process_node(&(captures.list[ 0 ]), map);
 
-  return 0;
+  return ee;
 }
 
 /**

@@ -157,7 +157,7 @@ GPEG_ERR_T gpegc_matcher_
         vec_printf(&(gpegc->compiler->output), "  var %u\n", slot);
       } else {
         vec_printf(&(gpegc->compiler->error),
-          "Could not resolve reference '%s'\n"
+          "Could not resolve variable reference '%s'\n"
           , matcher->value.string.value
         );
         return GPEG_ERR_REFERENCE;

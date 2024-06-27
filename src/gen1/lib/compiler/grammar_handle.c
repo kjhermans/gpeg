@@ -65,6 +65,7 @@ int gpegc_handle_AND
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
   gpegc->currentmatcher->modifier = GPEGC_MODI_AND;
 
   return 0;
@@ -86,6 +87,8 @@ int gpegc_handle_ANY
   (void)arg;
 
   gpegc_t* gpegc = arg;
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentmatcher->type = GPEGC_MATCH_ANY;
 
   return 0;
@@ -118,6 +121,8 @@ int gpegc_handle_BITMASK
   uint32_t bits = 0;
   uint32_t andmask = 0;
   uint32_t ormask = 0;
+
+  if (gpegc->round == 0) { return 0; }
 
   for (unsigned i=0; i < nbits; i++) {
     uint32_t bit = (1<<(nbits-(i+1)));
@@ -164,6 +169,8 @@ int gpegc_handle_CAPTURE
   gpegc_t* gpegc = arg;
   char slotname[ 128 ];
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentmatcher->type = GPEGC_MATCH_CAPTURE;
   gpegc->currentmatcher->value.capture.slot = (gpegc->cslot)++;
   if (str2int_map_has(&(gpegc->slotmap), gpegc->currentrule.name)) {
@@ -203,6 +210,8 @@ int gpegc_handle_post_CAPTURE
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcherlist = capture->attachment.value_ptr;
 
@@ -319,6 +328,8 @@ int gpegc_handle_ENDFORCE
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentmatcher->type = GPEGC_MATCH_ENDFORCE;
   gpegc->currentmatcher->value.number = atoi(
     (char*)(capture->children.list[ 0 ].data.data)
@@ -357,6 +368,8 @@ int gpegc_handle_EXPRESSION
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   capture->attachment.value_ptr = gpegc->currentmatcherlist;
 
   return 0;
@@ -376,6 +389,8 @@ int gpegc_handle_post_EXPRESSION
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcherlist = capture->attachment.value_ptr;
 
@@ -397,6 +412,8 @@ int gpegc_handle_EXPRESSION_0
 
   gpegc_t* gpegc = arg;
   gpegc_matcher_t m = { 0 }, *_m;
+
+  if (gpegc->round == 0) { return 0; }
 
   m.type = GPEGC_MATCH_CHOICE;
   for (unsigned i=0; i < gpegc->currentmatcherlist->count; i++) {
@@ -425,6 +442,8 @@ int gpegc_handle_post_EXPRESSION_0
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcherlist = capture->attachment.value_ptr;
 
@@ -476,6 +495,8 @@ int gpegc_handle_GROUP
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentmatcher->type = GPEGC_MATCH_GROUP;
   capture->attachment.value_ptr = gpegc->currentmatcherlist;
   gpegc->currentmatcherlist = &(gpegc->currentmatcher->group);
@@ -497,6 +518,8 @@ int gpegc_handle_post_GROUP
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcherlist = capture->attachment.value_ptr;
 
@@ -548,6 +571,8 @@ int gpegc_handle_HEXLITERAL
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcher->type = GPEGC_MATCH_CHAR;
   gpegc->currentmatcher->value.chr =
@@ -604,6 +629,8 @@ int gpegc_handle_IMPORTDECL
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->importdecl = 1;
 
   return 0;
@@ -623,6 +650,8 @@ int gpegc_handle_post_IMPORTDECL
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->importdecl = 0;
 
@@ -797,6 +826,12 @@ int gpegc_handle_LIMITEDCALL
   char* slot = (char*)(capture->children.list[ 2 ].data.data);
   char* rule = (char*)(capture->children.list[ 4 ].data.data);
 
+  if (gpegc->round == 0) { return 0; }
+  if (!(stringlist_has(&(gpegc->namespace), rule))) {
+    vec_printf(&(gpegc->compiler->error), "Rule '%s' not found.\n", rule);
+    return GPEG_ERR_NOTFOUND.code;
+  }
+
   gpegc->currentmatcher->type = GPEGC_MATCH_LIMITEDCALL;
   gpegc->currentmatcher->value.limitedcall.type = type;
   gpegc->currentmatcher->value.limitedcall.slot = slot;
@@ -849,8 +884,9 @@ int gpegc_handle_MACRO
   (void)capture;
   (void)arg;
 
-
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcher->type = GPEGC_MATCH_SET;
   if (0 == strcmp((char*)(capture->data.data), "%s")) {
@@ -937,6 +973,8 @@ int gpegc_handle_NOT
   (void)capture;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcher->modifier = GPEGC_MODI_NOT;
 
@@ -1063,6 +1101,8 @@ int gpegc_handle_QUANTIFIEDMATCHER
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   if (capture->children.count == 2) { // ie there *is* a quantifier
     capture->attachment.value_ptr = gpegc->currentmatcher;
   }
@@ -1084,6 +1124,8 @@ int gpegc_handle_post_QUANTIFIEDMATCHER
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   if (capture->children.count == 2) { // ie there *is* a quantifier
     gpegc_matcher_t* matcher = capture->attachment.value_ptr;
@@ -1144,6 +1186,8 @@ int gpegc_handle_Q_FROM
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentquantifier[ 0 ] =
     atoi((char*)(capture->children.list[ 0 ].data.data));
   gpegc->currentquantifier[ 1 ] = -1;
@@ -1180,6 +1224,8 @@ int gpegc_handle_Q_FROMTO
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentquantifier[ 0 ] =
     atoi((char*)(capture->children.list[ 0 ].data.data));
@@ -1309,6 +1355,8 @@ int gpegc_handle_Q_ONEORMORE
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentquantifier[ 0 ] = 1;
   gpegc->currentquantifier[ 1 ] = -1;
 
@@ -1344,6 +1392,8 @@ int gpegc_handle_Q_SPECIFIC
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentquantifier[ 0 ] =
     atoi((char*)(capture->children.list[0].data.data));
@@ -1412,6 +1462,8 @@ int gpegc_handle_Q_UNTIL
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentquantifier[ 0 ] = 0;
   gpegc->currentquantifier[ 1 ] =
@@ -1510,6 +1562,8 @@ int gpegc_handle_Q_ZEROORMORE
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentquantifier[ 0 ] = 0;
   gpegc->currentquantifier[ 1 ] = -1;
 
@@ -1546,6 +1600,8 @@ int gpegc_handle_Q_ZEROORONE
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentquantifier[ 0 ] = 0;
   gpegc->currentquantifier[ 1 ] = 1;
 
@@ -1579,9 +1635,16 @@ int gpegc_handle_REFERENCE
   (void)index;
 
   gpegc_t* gpegc = arg;
+  char* name = (char*)(capture->data.data);
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcher->type = GPEGC_MATCH_REFERENCE;
-  gpegc->currentmatcher->value.string.value = (char*)(capture->data.data);
+  gpegc->currentmatcher->value.string.value = name;
+  if (!(stringlist_has(&(gpegc->namespace), name))) {
+    vec_printf(&(gpegc->compiler->error), "Rule '%s' not found.\n", name);
+    return GPEG_ERR_NOTFOUND.code;
+  }
 
   return 0;
 }
@@ -1614,6 +1677,12 @@ int gpegc_handle_RULE
   (void)capture;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) {
+    char* name = (char*)(capture->children.list[ 0 ].data.data);
+    stringlist_push(&(gpegc->namespace), name);
+    return 0;
+  }
 
   gpegc->currentrule.name = (char*)(capture->children.list[ 0 ].data.data);
   gpegc->currentrule.slotcount = 0;
@@ -1658,6 +1727,8 @@ int gpegc_handle_post_RULE
 
   gpegc_t* gpegc = arg;
   GPEG_ERR_T e;
+
+  if (gpegc->round == 0) { return 0; }
 
   e = gpegc_matcherlist(gpegc, &(gpegc->currentrule.matchers));
   if ((gpegc->compiler->flags & GPEGC_FLAG_GENCAPTURES)
@@ -1751,6 +1822,8 @@ int gpegc_handle_post_SET
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentmatcher->type = GPEGC_MATCH_SET;
 
   return 0;
@@ -1770,6 +1843,8 @@ int gpegc_handle_SET_0
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   if (capture->data.data[ 0 ] == '^') {
     gpegc->currentmatcher->value.set.inverted = 1;
@@ -1822,6 +1897,8 @@ int gpegc_handle_SET_3
   gpegc_t* gpegc = arg;
   unsigned bit = get_bit((char*)(capture->data.data));
 
+  if (gpegc->round == 0) { return 0; }
+
   set_bit(gpegc->currentmatcher->value.set.bitmask, bit);
 
   return 0;
@@ -1857,6 +1934,8 @@ int gpegc_handle_SET_1
 
   gpegc_t* gpegc = arg;
   unsigned bit = get_bit((char*)(capture->data.data));
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcher->value.set.from = bit;
 
@@ -1894,6 +1973,8 @@ int gpegc_handle_SET_2
   gpegc_t* gpegc = arg;
   unsigned bit = get_bit((char*)(capture->data.data));
 
+  if (gpegc->round == 0) { return 0; }
+
   for (unsigned i=gpegc->currentmatcher->value.set.from; i <= bit; i++) {
     set_bit(gpegc->currentmatcher->value.set.bitmask, i);
   }
@@ -1930,6 +2011,8 @@ int gpegc_handle_STRING
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   if (capture->data.data[ capture->data.size-1 ] == 'i') {
     gpegc->currentmatcher->caseinsensitive = 1;
@@ -1998,6 +2081,8 @@ int gpegc_handle_STRINGLITERAL_0
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   if (gpegc->importdecl) {
     DEBUGMSG("Importing %s\n", (char*)(capture->data.data));
     GPEG_ERR_T e = gpegc_import(gpegc, (char*)(capture->data.data));
@@ -2042,6 +2127,8 @@ int gpegc_handle_TERM
 
   gpegc_t* gpegc = arg;
   gpegc_matcher_t matcher = { 0 };
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc_matcherlist_push(gpegc->currentmatcherlist, matcher);
   gpegc->currentmatcher = gpegc_matcherlist_peekptr(gpegc->currentmatcherlist);
@@ -2140,6 +2227,8 @@ int gpegc_handle_VARCAPTURE
   gpegc_t* gpegc = arg;
   char slotname[ 128 ];
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentmatcher->type = GPEGC_MATCH_CAPTURE;
   gpegc->currentmatcher->value.capture.slot = (gpegc->cslot)++;
   snprintf(slotname, sizeof(slotname),
@@ -2172,6 +2261,8 @@ int gpegc_handle_post_VARCAPTURE
 
   gpegc_t* gpegc = arg;
 
+  if (gpegc->round == 0) { return 0; }
+
   gpegc->currentmatcherlist = capture->attachment.value_ptr;
 
   return 0;
@@ -2191,6 +2282,8 @@ int gpegc_handle_VARREFERENCE
   (void)arg;
 
   gpegc_t* gpegc = arg;
+
+  if (gpegc->round == 0) { return 0; }
 
   gpegc->currentmatcher->type = GPEGC_MATCH_VARIABLE;
   gpegc->currentmatcher->value.string.value = (char*)(capture->data.data);
