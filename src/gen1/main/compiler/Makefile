@@ -9,6 +9,7 @@ LIBS=\
   ../../lib/compiler/libgpegc.a \
   ../../lib/gpeg/libgpeg.a \
   ../../lib/util/libutil.a \
+  ../../lib/assembler/libgpega.a \
   $(PREVGEN)/lib/engine/libgpege.a \
 
 all: $(TARGET)

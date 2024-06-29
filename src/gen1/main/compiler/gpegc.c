@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gpeg/lib/gpeg/gpeg.h>
 #include <gpeg/lib/compiler/gpegc.h>
+#include <gpeg/lib/assembler/gpega.h>
 
 #include <gpeg/private/util/queryargs.h>
 #include <gpeg/private/util/absorb_file.h>
@@ -51,6 +52,8 @@ int main
 {
   char* inputfile = "-";
   char* outputfile = "-";
+  char* assembly = 0;
+  char* labelmap = 0;
   gpegc_compiler_t compiler = { 0 };
   FILE* out;
   GPEG_ERR_T e;
@@ -64,10 +67,12 @@ int main
 "-b         Incorporate the assembler and emit bytecode at -o <path>.\n"
 "-I <path>  Add a directory path for inclusion when using imports.\n"
 "    -- optional artefacts --\n"
-"-a <path>  Emit bytecode at -o <path>, assembly at -a <path> (implies -b).\n"
+"-a <path>  Emit bytecode at -o <path>, assembly at -a <path> (implies -b)\n"
+"           (this is the equivalent of doing everything at once).\n"
 "-G <path> <ident> Generate C code for the parse tree.\n"
 "-m <path>  Output slotmap file.\n"
 "-M <path>  Output slotmap.h file.\n"
+"-l <path>  (When using -a) specify labelmap path from assembler.\n"
 "    -- tuning --\n"
 "-C         Generate default captures for each rule.\n"
 "-T         Generate traps around rules.\n"
@@ -85,9 +90,13 @@ int main
   queryargs(argc, argv, 'o', "output", 0, 1, 0, &outputfile);
   queryargs(argc, argv, 'm', "slotmap", 0, 1, 0, &(compiler.slotmap));
   queryargs(argc, argv, 'M', "slotmaph", 0, 1, 0, &(compiler.slotmaph));
+  queryargs(argc, argv, 'a', "assembly", 0, 1, 0, &assembly);
+  queryargs(argc, argv, 'l', "labelmap", 0, 1, 0, &labelmap);
   if (queryargs(argc, argv, 'G', "parserc", 0, 1, 0, &(compiler.parserc)) == 0)
   {
-    if ((compiler.parserc_ident = nextarg(argc, argv, compiler.parserc)) == NULL) {
+    if ((compiler.parserc_ident = nextarg(argc, argv, compiler.parserc))
+         == NULL)
+    {
       fprintf(stderr, "-G expect two arguments, <path> and <ident>\n");
       return -1;
     }
@@ -141,7 +150,16 @@ int main
     return e.code;
   }
 
-  if (0 == strcmp(outputfile, "-")) {
+  if (assembly) {
+    if (0 == strcmp(assembly, "-")) {
+      out = stdout;
+    } else {
+      if ((out = fopen(assembly, "w+")) == NULL) {
+        fprintf(stderr, "Could not open assembly output file '%s'\n", assembly);
+        return -1;
+      }
+    }
+  } else if (0 == strcmp(outputfile, "-")) {
     out = stdout;
   } else {
     if ((out = fopen(outputfile, "w+")) == NULL) {
@@ -150,6 +168,32 @@ int main
     }
   }
   fprintf(out, "%s", (char*)(compiler.output.data));
+
+  if (assembly) {
+    vec_t bytecode = { 0 };
+    GPEG_ERR_T e =
+      gpega_assemble(
+        &(compiler.output),
+        &bytecode,
+        &(compiler.error),
+        labelmap,
+        0
+      );
+    if (e.code) {
+      fprintf(stderr, "Assembler error: %s\n", (char*)(compiler.error.data));
+      return -1;
+    }
+    if (0 == strcmp(outputfile, "-")) {
+      out = stdout;
+    } else {
+      if ((out = fopen(outputfile, "w+")) == NULL) {
+        fprintf(stderr, "Could not open output file '%s'\n", outputfile);
+        return -1;
+      }
+    }
+    fwrite(bytecode.data, 1, bytecode.size, out);
+    fclose(out);
+  }
 
   if (compiler.error.data) {
     free(compiler.error.data);
