@@ -12,7 +12,7 @@
 
 \begin{myquote}
 \begin{verbatim}
-CATCHINSTR <- 'catch' S LABEL
+CATCHINSTR <- ( 'catch' / 'choice' ) S LABEL
 S <- %s+
 LABEL <- [a-zA-Z0-9_]^1-64
 \end{verbatim}
