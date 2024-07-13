@@ -534,19 +534,9 @@ GPEG_ERR_T gpege_run
       ec->input_offset_max = ec->input_offset;
     }
     switch (opcode) {
-    case OPCODE_NOOP:            { HANDLE_NOOP }            break;
     case OPCODE_END:             { HANDLE_END }             break;
     case OPCODE_ANY:             { HANDLE_ANY }             break;
-    case OPCODE_SKIP:            { HANDLE_SKIP }            break;
-    case OPCODE_CHAR:            { HANDLE_CHAR }            break;
     case OPCODE_RANGE:           { HANDLE_RANGE }           break;
-    case OPCODE_BITMASK:         { HANDLE_BITMASK }         break;
-    case OPCODE_QUAD:            { HANDLE_QUAD }            break;
-    case OPCODE_SET:             { HANDLE_SET }             break;
-    case OPCODE_TESTANY:         { HANDLE_TESTANY }         break;
-    case OPCODE_TESTCHAR:        { HANDLE_TESTCHAR }        break;
-    case OPCODE_TESTSET:         { HANDLE_TESTSET }         break;
-    case OPCODE_VAR:             { HANDLE_VAR }             break;
     case OPCODE_CALL:            { HANDLE_CALL }            break;
     case OPCODE_RET:             { HANDLE_RET }             break;
     case OPCODE_CATCH:           { HANDLE_CATCH }           break;
@@ -555,12 +545,31 @@ GPEG_ERR_T gpege_run
     case OPCODE_PARTIALCOMMIT:   { HANDLE_PARTIALCOMMIT }   break;
     case OPCODE_FAIL:            { HANDLE_FAIL }            break;
     case OPCODE_FAILTWICE:       { HANDLE_FAILTWICE }       break;
+#ifdef _GPEG_INSTRSET_EXTENDED_
+    case OPCODE_VAR:             { HANDLE_VAR }             break;
     case OPCODE_OPENCAPTURE:     { HANDLE_OPENCAPTURE }     break;
     case OPCODE_CLOSECAPTURE:    { HANDLE_CLOSECAPTURE }    break;
     case OPCODE_COUNTER:         { HANDLE_COUNTER }         break;
     case OPCODE_CONDJUMP:        { HANDLE_CONDJUMP }        break;
-    case OPCODE_INTRPCAPTURE:    { HANDLE_INTRPCAPTURE }    break;
+#endif
+#ifdef _GPEG_INSTRSET_OPTIMIZED_
+    case OPCODE_SKIP:            { HANDLE_SKIP }            break;
+    case OPCODE_NOOP:            { HANDLE_NOOP }            break;
     case OPCODE_TRAP:            { HANDLE_TRAP }            break;
+    case OPCODE_QUAD:            { HANDLE_QUAD }            break;
+    case OPCODE_CHAR:            { HANDLE_CHAR }            break;
+    case OPCODE_SET:             { HANDLE_SET }             break;
+    case OPCODE_TESTANY:         { HANDLE_TESTANY }         break;
+    case OPCODE_TESTCHAR:        { HANDLE_TESTCHAR }        break;
+    case OPCODE_TESTSET:         { HANDLE_TESTSET }         break;
+#endif
+#ifdef _GPEG_INSTRSET_BINARY_
+    case OPCODE_BITMASK:         { HANDLE_BITMASK }         break;
+    case OPCODE_INTRPCAPTURE:    { HANDLE_INTRPCAPTURE }    break;
+    case OPCODE_PUSHLENGTH:      { HANDLE_PUSHLENGTH }      break;
+    case OPCODE_POPLENGTH:       { HANDLE_POPLENGTH }       break;
+    case OPCODE_MOVETO           { HANDLE_MOVETO }          break;
+#endif
     default: RETURNERR(GPEG_ERR_BYTECODE);
     }
     if (ec->failed) {
