@@ -6,7 +6,7 @@ LIB=libgpega.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
 INCLUDE=-I$(CURGEN)/include
-CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen0_ $(INCLUDE)
+CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen0_ $(INCLUDE) $(GPEG_COMPOSITION)
 
 all: assemblyh instructionsh functionsh lib
 

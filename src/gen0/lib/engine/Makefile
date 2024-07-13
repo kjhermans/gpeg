@@ -3,7 +3,7 @@ LIB=libgpege.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
 CURGEN?=../..
-CFLAGS=-g -Wall -Wextra $(DEBUG) -I$(CURGEN)/include
+CFLAGS=-g -Wall -Wextra $(DEBUG) -I$(CURGEN)/include $(GPEG_COMPOSITION)
 ADDITIONALOBJECTS=\
   ../gpeg/gpeg_capturelist.o \
   ../gpeg/gpeg_opcode2string.o \

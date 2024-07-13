@@ -6,7 +6,7 @@ LIB=libgpegc.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
 INCLUDE=$(CURGEN)/include
-CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen1_ -I$(INCLUDE)
+CFLAGS=-g -Wall -Wextra $(DEBUG) -DPREVGEN=gen1_ -I$(INCLUDE) $(GPEG_COMPOSITION)
 
 all: grammarh functionsh lib
 
