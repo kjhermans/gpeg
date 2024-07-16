@@ -545,14 +545,12 @@ GPEG_ERR_T gpege_run
     case OPCODE_PARTIALCOMMIT:   { HANDLE_PARTIALCOMMIT }   break;
     case OPCODE_FAIL:            { HANDLE_FAIL }            break;
     case OPCODE_FAILTWICE:       { HANDLE_FAILTWICE }       break;
-#ifdef _GPEG_INSTRSET_EXTENDED_
     case OPCODE_VAR:             { HANDLE_VAR }             break;
     case OPCODE_OPENCAPTURE:     { HANDLE_OPENCAPTURE }     break;
     case OPCODE_CLOSECAPTURE:    { HANDLE_CLOSECAPTURE }    break;
+#ifdef _GPEG_INSTRSET_OPTIMIZED_
     case OPCODE_COUNTER:         { HANDLE_COUNTER }         break;
     case OPCODE_CONDJUMP:        { HANDLE_CONDJUMP }        break;
-#endif
-#ifdef _GPEG_INSTRSET_OPTIMIZED_
     case OPCODE_SKIP:            { HANDLE_SKIP }            break;
     case OPCODE_NOOP:            { HANDLE_NOOP }            break;
     case OPCODE_TRAP:            { HANDLE_TRAP }            break;
@@ -569,6 +567,13 @@ GPEG_ERR_T gpege_run
     case OPCODE_PUSHLENGTH:      { HANDLE_PUSHLENGTH }      break;
     case OPCODE_POPLENGTH:       { HANDLE_POPLENGTH }       break;
     case OPCODE_MOVETO           { HANDLE_MOVETO }          break;
+    case OPCODE_RMOVETO          { HANDLE_RMOVETO }         break;
+    case OPCODE_IRMOVETO         { HANDLE_IRMOVETO }        break;
+    case OPCODE_EQ               { HANDLE_EQ }              break;
+    case OPCODE_LT               { HANDLE_LT }              break;
+    case OPCODE_GT               { HANDLE_GT }              break;
+    case OPCODE_LTEQ             { HANDLE_LTEQ }            break;
+    case OPCODE_GTEQ             { HANDLE_GTEQ }            break;
 #endif
     default: RETURNERR(GPEG_ERR_BYTECODE);
     }
