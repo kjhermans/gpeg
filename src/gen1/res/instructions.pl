@@ -15,6 +15,18 @@ $VAR1 = {
                             'size' => 8,
                             'terse' => 1
                           },
+          'bitmask' => {
+                         'instr' => 1049445,
+                         'mnem' => 'bitmask',
+                         'mode' => 0,
+                         'opcode' => '00100365',
+                         'param1' => 'nbits',
+                         'param2' => 'bits',
+                         'param3' => 'andmask',
+                         'param4' => 'ormask',
+                         'size' => 20,
+                         'terse' => 1
+                       },
           'call' => {
                       'instr' => 263042,
                       'mnem' => 'call',
@@ -85,22 +97,12 @@ $VAR1 = {
                      'size' => 8,
                      'terse' => 1
                    },
-#          'endisolate' => {
-#                            'instr' => 12293,
-#                            'mnem' => 'endisolate',
-#                            'mode' => 0,
-#                            'opcode' => '00003005',
-#                            'size' => 4,
-#                            'terse' => 0
-#                          },
-#          'endreplace' => {
-#                            'instr' => 921,
-#                            'mnem' => 'endreplace',
-#                            'mode' => 0,
-#                            'opcode' => '00000399',
-#                            'size' => 4,
-#                            'terse' => 1
-#                          },
+          'eq' => {
+                    'instr' => 262147,
+                    'mnem' => 'eq',
+                    'opcode' => '00040003',
+                    'size' => 8
+                  },
           'fail' => {
                       'instr' => 843,
                       'mnem' => 'fail',
@@ -116,21 +118,36 @@ $VAR1 = {
                            'opcode' => '00000390',
                            'size' => 4
                          },
+          'gt' => {
+                    'instr' => 262149,
+                    'mnem' => 'gt',
+                    'opcode' => '00040005',
+                    'size' => 8
+                  },
+          'gteq' => {
+                      'instr' => 262150,
+                      'mnem' => 'gteq',
+                      'opcode' => '00040006',
+                      'size' => 8
+                    },
+          'imoveto' => {
+                         'instr' => 9,
+                         'mnem' => 'imoveto',
+                         'opcode' => '00000009',
+                         'size' => 4
+                       },
           'intrpcapture' => {
                               'instr' => 524303,
                               'mnem' => 'intrpcapture',
                               'opcode' => '0008000f',
                               'size' => 12
                             },
-#          'isolate' => {
-#                         'instr' => 274435,
-#                         'mnem' => 'isolate',
-#                         'mode' => 0,
-#                         'opcode' => '00043003',
-#                         'param1' => 'slot',
-#                         'size' => 8,
-#                         'terse' => 0
-#                       },
+          'irmoveto' => {
+                          'instr' => 10,
+                          'mnem' => 'irmoveto',
+                          'opcode' => '0000000a',
+                          'size' => 4
+                        },
           'jump' => {
                       'instr' => 262963,
                       'mnem' => 'jump',
@@ -140,28 +157,30 @@ $VAR1 = {
                       'size' => 8,
                       'terse' => 1
                     },
-#          'maskedchar' => {
-#                            'instr' => 525157,
-#                            'mnem' => 'maskedchar',
-#                            'mode' => 0,
-#                            'opcode' => '00080365',
-#                            'param1' => 'char',
-#                            'param2' => 'mask',
-#                            'size' => 12,
-#                            'terse' => 1
-#                          },
-          'bitmask' => {
-                            'instr' => 1049445,
-                            'mnem' => 'bitmask',
-                            'mode' => 0,
-                            'opcode' => '00100365',
-                            'param1' => 'nbits',
-                            'param2' => 'bits',
-                            'param3' => 'andmask',
-                            'param4' => 'ormask',
-                            'size' => 20,
-                            'terse' => 1
-                          },
+          'lt' => {
+                    'instr' => 262156,
+                    'mnem' => 'lt',
+                    'opcode' => '0004000c',
+                    'size' => 8
+                  },
+          'lteq' => {
+                      'instr' => 262161,
+                      'mnem' => 'lteq',
+                      'opcode' => '00040011',
+                      'size' => 8
+                    },
+          'moveto' => {
+                        'instr' => 262162,
+                        'mnem' => 'moveto',
+                        'opcode' => '00040012',
+                        'size' => 8
+                      },
+          'neq' => {
+                     'instr' => 262164,
+                     'mnem' => 'neq',
+                     'opcode' => '00040014',
+                     'size' => 8
+                   },
           'noop' => {
                       'instr' => 0,
                       'mnem' => 'noop',
@@ -204,16 +223,6 @@ $VAR1 = {
                        'size' => 12,
                        'terse' => 1
                      },
-#          'replace' => {
-#                         'instr' => 525128,
-#                         'mnem' => 'replace',
-#                         'mode' => 0,
-#                         'opcode' => '00080348',
-#                         'param1' => 'slot',
-#                         'param2' => 'address',
-#                         'size' => 12,
-#                         'terse' => 1
-#                       },
           'ret' => {
                      'instr' => 928,
                      'mnem' => 'ret',
@@ -222,6 +231,12 @@ $VAR1 = {
                      'size' => 4,
                      'terse' => 1
                    },
+          'rmoveto' => {
+                         'instr' => 262168,
+                         'mnem' => 'rmoveto',
+                         'opcode' => '00040018',
+                         'size' => 8
+                       },
           'set' => {
                      'instr' => 2098122,
                      'mnem' => 'set',

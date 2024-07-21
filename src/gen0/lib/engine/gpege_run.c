@@ -36,6 +36,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "gpege_private.h"
 #include <gpeg/lib/gpeg/gpeg_instructions.h>
 
+/* Binary */
+
+#define HANDLE_MOVETO { \
+}
+
+#define HANDLE_RMOVETO { \
+}
+
+#define HANDLE_IRMOVETO { \
+}
+
+#define HANDLE_EQ { \
+}
+
+#define HANDLE_NEQ { \
+}
+
+#define HANDLE_LT { \
+}
+
+#define HANDLE_GT { \
+}
+
+#define HANDLE_LTEQ { \
+}
+
+#define HANDLE_GTEQ { \
+}
+
+/* Other */
+
 #define HANDLE_NOOP { \
   ec->bytecode_offset += instruction_size; \
 }
@@ -564,16 +595,15 @@ GPEG_ERR_T gpege_run
 #ifdef _GPEG_INSTRSET_BINARY_
     case OPCODE_BITMASK:         { HANDLE_BITMASK }         break;
     case OPCODE_INTRPCAPTURE:    { HANDLE_INTRPCAPTURE }    break;
-    case OPCODE_PUSHLENGTH:      { HANDLE_PUSHLENGTH }      break;
-    case OPCODE_POPLENGTH:       { HANDLE_POPLENGTH }       break;
-    case OPCODE_MOVETO           { HANDLE_MOVETO }          break;
-    case OPCODE_RMOVETO          { HANDLE_RMOVETO }         break;
-    case OPCODE_IRMOVETO         { HANDLE_IRMOVETO }        break;
-    case OPCODE_EQ               { HANDLE_EQ }              break;
-    case OPCODE_LT               { HANDLE_LT }              break;
-    case OPCODE_GT               { HANDLE_GT }              break;
-    case OPCODE_LTEQ             { HANDLE_LTEQ }            break;
-    case OPCODE_GTEQ             { HANDLE_GTEQ }            break;
+    case OPCODE_MOVETO:          { HANDLE_MOVETO }          break;
+    case OPCODE_RMOVETO:         { HANDLE_RMOVETO }         break;
+    case OPCODE_IRMOVETO:        { HANDLE_IRMOVETO }        break;
+    case OPCODE_NEQ:             { HANDLE_NEQ }             break;
+    case OPCODE_EQ:              { HANDLE_EQ }              break;
+    case OPCODE_LT:              { HANDLE_LT }              break;
+    case OPCODE_GT:              { HANDLE_GT }              break;
+    case OPCODE_LTEQ:            { HANDLE_LTEQ }            break;
+    case OPCODE_GTEQ:            { HANDLE_GTEQ }            break;
 #endif
     default: RETURNERR(GPEG_ERR_BYTECODE);
     }

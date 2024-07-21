@@ -797,3 +797,195 @@ int gpegd_handle_instr_var
 }
 
 IGNOREPOSTHANDLER(instr_var)
+
+IGNOREPOSTHANDLER(instr_eq)
+IGNOREPOSTHANDLER(instr_neq)
+IGNOREPOSTHANDLER(instr_lt)
+IGNOREPOSTHANDLER(instr_gt)
+IGNOREPOSTHANDLER(instr_lteq)
+IGNOREPOSTHANDLER(instr_gteq)
+IGNOREPOSTHANDLER(instr_moveto)
+IGNOREPOSTHANDLER(instr_imoveto)
+IGNOREPOSTHANDLER(instr_rmoveto)
+IGNOREPOSTHANDLER(instr_irmoveto)
+
+int gpegd_handle_instr_eq
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_neq
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_lt
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_gt
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_lteq
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_gteq
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_moveto
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_imoveto
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_rmoveto
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+
+int gpegd_handle_instr_irmoveto
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+{
+  (void)parent;
+  (void)index;
+  (void)capture;
+  (void)arg;
+
+  gpegd_t* gpegd = arg;
+
+  return 0;
+}
+

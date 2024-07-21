@@ -28,15 +28,15 @@ my @hamming = (
   0xf0, 0xf3, 0xf5, 0xf6, 0xf9, 0xfa, 0xfc, 0xff,
 );
 
-print "#ifndef _INSTRUCTIONS_H_
-#define _INSTRUCTIONS_H_
-";
 
-my $dsec = '';
-my $csec = "#define INSTRCASES \\\n";
+
+
+
+die "No valid instruction hash given (got '$instrfile')"
+  if (!defined($instrhash) || !scalar(keys(%{$instrhash})));
 
 foreach my $instr (sort(keys(%{$instrhash}))) {
-
+  print STDERR "Processing instruction $instr..\n";
   if (!defined($instrhash->{$instr}{opcode})) {
     generate_opcode($instrhash->{$instr}, $instr);
     $changed = 1;
@@ -49,16 +49,12 @@ foreach my $instr (sort(keys(%{$instrhash}))) {
   if ($len + 4 != $instrhash->{$instr}{size}) {
     print STDERR "WARNING: Instruction $instr length doesn't match size.\n";
   }
-
-  $dsec .= "#define OPCODE_" . uc($instr) .
-           " 0x" . $instrhash->{$instr}{opcode} . "\n";
-  $csec .= "  case OPCODE_" . uc($instr) . ": return \"".uc($instr)."\";\\\n";
 }
-$csec .= "  default: return \"Unknown opcode\";\n";
 
-print "\n" . $dsec . "\n" . $csec . "\n";
 
-print "#endif\n";
+
+
+
 
 if ($changed) {
   print STDERR "File has changed. Write Y/n ? ";
@@ -72,6 +68,38 @@ if ($changed) {
   }
 }
 
+
+
+
+
+print "#ifndef _GPEG_INSTR_H_
+#define _GPEG_INSTR_H_
+
+";
+
+foreach my $key (sort(keys(%{$instrhash}))) {
+  print "#define OPCODE_" . uc($key) . " " . $instrhash->{$key}{instr} . "\n";
+}
+
+print "\n\n#define OPCODE_STRINGS_DEF static char* opcode_strings[] = { \\\n";
+foreach my $key (sort(keys(%{$instrhash}))) {
+  print '  "' . uc($key) . '", \\' . "\n";
+}
+print "};\n";
+
+print "\n\n#define OPCODE_STRINGS_SWITCH switch (opcode) { \\\n";
+my $n = 0;
+foreach my $key (sort(keys(%{$instrhash}))) {
+  print '  case OPCODE_' . uc($key) . ": return opcode_strings[ $n ]; \\\n";
+  ++$n;
+}
+print "}
+
+#endif
+";
+
+
+
 exit 0;
 
 ##---- functions ----------------------------------------------------------##
@@ -80,6 +108,7 @@ sub generate_opcode
 {
   my $node = shift;
   my $instr = shift;
+  die "Node size isn't defined for $instr\n" if (!$node->{size});
   for (my $i=0; $i < scalar(@hamming); $i++) {
 NEXTCODON:
     for (my $j=0; $j < scalar(@hamming); $j++) {

@@ -392,6 +392,116 @@ int gpegd_handle_instr_var
   )
   __attribute__ ((warn_unused_result));
 
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_eq
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_neq
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_lt
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_gt
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_lteq
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_gteq
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_moveto
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_imoveto
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_rmoveto
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./disasm_handler.c */
+extern
+int gpegd_handle_instr_irmoveto
+  (
+    gpeg_capture_t* parent,
+    unsigned index,
+    gpeg_capture_t* capture,
+    void* arg
+  )
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./gpegd_disassemble.c */
 extern
 GPEG_ERR_T gpegd_disassemble
