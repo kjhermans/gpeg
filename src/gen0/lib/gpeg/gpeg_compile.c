@@ -32,8 +32,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <gpeg/lib/gpeg/gpeg_capturelist.h>
+#include <gpeg/lib/compiler/gpegc.h>
+#include <gpeg/lib/assembler/gpega.h>
 #include <gpeg/lib/engine/gpege.h>
 #include <gpeg/lib/gpeg/gpeg.h>
+
+static
+vec_t error = { 0 };
 
 /**
  *
@@ -41,4 +46,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int gpeg_compile
   (char* grammar, gpege_t* engine)
 {
+  gpegc_compiler_t compiler = {
+    .input = (vec_t){
+                       .data = (unsigned char*)grammar,
+                       .size = strlen(grammar)
+                    }
+    };
+  GPEG_ERR_T e = gpegc_compile(&compiler);
+
+  if (e.code) {
+    
+    return ~0;
+  }
+  e = gpega_assemble(&(compiler.output), &(engine->bytecode), &error, NULL, 0);
+  if (e.code) {
+    //..
+    return ~0;
+  }
+  return 0;
 }

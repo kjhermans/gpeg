@@ -39,6 +39,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 int gpeg_run
-  (gpege_t* engine, int* resultcode, gpeg_resobj_t* result)
+  (gpege_t* engine, vec_t* input, int* resultcode, gpeg_capturelist_t* result)
 {
+  gpege_ec_t ec = { .input = input };
+  GPEG_ERR_T e = gpege_run(engine, &ec);
+
+  if (e.code) {
+    return ~0;
+  } else {
+    *resultcode = ec.endcode;
+    e = gpege_actions2captures(ec.input, &(ec.actions), result); (void)e;
+  }
+  return 0;
 }

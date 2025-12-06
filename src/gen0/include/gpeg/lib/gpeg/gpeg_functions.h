@@ -39,7 +39,7 @@ char* gpeg_opcode2string
 /* declared in ./gpeg_run.c */
 extern
 int gpeg_run
-  (gpege_t* engine, int* resultcode, gpeg_resobj_t* result)
+  (gpege_t* engine, vec_t* input, int* resultcode, gpeg_capturelist_t* result)
   __attribute__ ((warn_unused_result));
 
 

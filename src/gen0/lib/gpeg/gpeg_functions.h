@@ -51,7 +51,7 @@ char* gpeg_opcode2string
 
 extern
 int gpeg_run
-  (gpege_t* engine, int* resultcode, gpeg_resobj_t* result)
+  (gpege_t* engine, vec_t* input, int* resultcode, gpeg_capturelist_t* result)
   __attribute__ ((warn_unused_result));
 
 
