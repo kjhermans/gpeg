@@ -39,30 +39,116 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Binary */
 
 #define HANDLE_MOVETO { \
+  int32_t param = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 8 \
+  ); \
+  if (param <= (int32_t)(ec->input->size)) { \
+    ec->input_offset = param; \
+    ec->bytecode_offset += instruction_size; \
+  } else { \
+    ec->failed = 1; \
+  } \
 }
 
 #define HANDLE_RMOVETO { \
+  int32_t param = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 8 \
+  ); \
+  if (param < 0) { \
+    if (-param > (int)(ec->input_offset)) { \
+      ec->failed = 1; \
+    } else { \
+      ec->input_offset += param; \
+      ec->bytecode_offset += instruction_size; \
+    } \
+  } else { \
+    if (ec->input_offset <= ec->input->size - param) { \
+      ec->input_offset += param; \
+      ec->bytecode_offset += instruction_size; \
+    } else { \
+      ec->failed = 1; \
+    } \
+  } \
+}
+
+#define HANDLE_IMOVETO { \
 }
 
 #define HANDLE_IRMOVETO { \
 }
 
 #define HANDLE_EQ { \
+  int32_t param = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 8 \
+  ); \
+  if (param == (int32_t)(ec->regu32)) { \
+    ec->bytecode_offset += instruction_size; \
+  } else { \
+    ec->failed = 1; \
+  } \
 }
 
 #define HANDLE_NEQ { \
+  uint32_t param = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 8 \
+  ); \
+  if (param == ec->regu32) { \
+    ec->failed = 1; \
+  } else { \
+    ec->bytecode_offset += instruction_size; \
+  } \
 }
 
 #define HANDLE_LT { \
+  int32_t param = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 8 \
+  ); \
+  if ((int32_t)(ec->regu32) < param) { \
+    ec->bytecode_offset += instruction_size; \
+  } else { \
+    ec->failed = 1; \
+  } \
 }
 
 #define HANDLE_GT { \
+  int32_t param = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 8 \
+  ); \
+  if ((int32_t)(ec->regu32) > param) { \
+    ec->bytecode_offset += instruction_size; \
+  } else { \
+    ec->failed = 1; \
+  } \
 }
 
 #define HANDLE_LTEQ { \
+  int32_t param = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 8 \
+  ); \
+  if ((int32_t)(ec->regu32) <= param) { \
+    ec->bytecode_offset += instruction_size; \
+  } else { \
+    ec->failed = 1; \
+  } \
 }
 
 #define HANDLE_GTEQ { \
+  int32_t param = GET_32BIT_VALUE( \
+    gpege->bytecode.data, \
+    ec->bytecode_offset + 8 \
+  ); \
+  if ((int32_t)(ec->regu32) >= param) { \
+    ec->bytecode_offset += instruction_size; \
+  } else { \
+    ec->failed = 1; \
+  } \
 }
 
 /* Other */
@@ -596,6 +682,7 @@ GPEG_ERR_T gpege_run
     case OPCODE_BITMASK:         { HANDLE_BITMASK }         break;
     case OPCODE_INTRPCAPTURE:    { HANDLE_INTRPCAPTURE }    break;
     case OPCODE_MOVETO:          { HANDLE_MOVETO }          break;
+    case OPCODE_IMOVETO:         { HANDLE_IMOVETO }         break;
     case OPCODE_RMOVETO:         { HANDLE_RMOVETO }         break;
     case OPCODE_IRMOVETO:        { HANDLE_IRMOVETO }        break;
     case OPCODE_NEQ:             { HANDLE_NEQ }             break;

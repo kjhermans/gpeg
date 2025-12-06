@@ -64,7 +64,7 @@ int gpegd_handle_instr_any
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   vec_printf(gpegd->output, "%u: any\n", gpegd->offset);
   gpegd->offset += INSTR_LENGTH_ANY;
@@ -87,7 +87,7 @@ int gpegd_handle_instr_backcommit
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: backcommit %u\n", gpegd->offset, offset);
@@ -111,7 +111,7 @@ int gpegd_handle_instr_call
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: call %u\n", gpegd->offset, offset);
@@ -135,7 +135,7 @@ int gpegd_handle_instr_catch
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: catch %u\n", gpegd->offset, offset);
@@ -159,7 +159,7 @@ int gpegd_handle_instr_char
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned chr = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: char %.2x\n", gpegd->offset, chr);
@@ -183,7 +183,7 @@ int gpegd_handle_instr_closecapture
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned slot = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: closecapture %u\n", gpegd->offset, slot);
@@ -207,7 +207,7 @@ int gpegd_handle_instr_commit
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: commit %u\n", gpegd->offset, offset);
@@ -231,7 +231,7 @@ int gpegd_handle_instr_condjump
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned p1 = ntohl(*((uint32_t*)(capture->data.data)));
   unsigned p2 = ntohl(*((uint32_t*)(capture->data.data + 4)));
 
@@ -256,7 +256,7 @@ int gpegd_handle_instr_counter
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned p1 = ntohl(*((uint32_t*)(capture->data.data)));
   unsigned p2 = ntohl(*((uint32_t*)(capture->data.data + 4)));
 
@@ -281,7 +281,7 @@ int gpegd_handle_instr_end
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned code = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: end %u\n", gpegd->offset, code);
@@ -339,7 +339,7 @@ int gpegd_handle_instr_fail
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   vec_printf(gpegd->output, "%u: fail\n", gpegd->offset);
   gpegd->offset += INSTR_LENGTH_FAIL;
@@ -362,7 +362,7 @@ int gpegd_handle_instr_failtwice
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   vec_printf(gpegd->output, "%u: failtwice\n", gpegd->offset);
   gpegd->offset += INSTR_LENGTH_FAILTWICE;
@@ -419,7 +419,7 @@ int gpegd_handle_instr_jump
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: jump %u\n", gpegd->offset, offset);
@@ -472,7 +472,7 @@ int gpegd_handle_instr_noop
   (void)capture;
   (void)arg;
   
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   
   vec_printf(gpegd->output, "%u: noop\n", gpegd->offset);
   gpegd->offset += INSTR_LENGTH_NOOP;
@@ -495,7 +495,7 @@ int gpegd_handle_instr_opencapture
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned slot = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: opencapture %u\n", gpegd->offset, slot);
@@ -519,7 +519,7 @@ int gpegd_handle_instr_partialcommit
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned offset = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: partialcommit %u\n", gpegd->offset, offset);
@@ -543,7 +543,7 @@ int gpegd_handle_instr_quad
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned char* quad = capture->data.data;
 
   vec_printf(gpegd->output,
@@ -605,7 +605,7 @@ int gpegd_handle_instr_ret
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   vec_printf(gpegd->output, "%u: ret\n", gpegd->offset);
   gpegd->offset += INSTR_LENGTH_RET;
@@ -628,7 +628,7 @@ int gpegd_handle_instr_set
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned char* set = capture->data.data;
 
   vec_printf(gpegd->output, "%u: set ", gpegd->offset);
@@ -655,7 +655,7 @@ int gpegd_handle_instr_skip
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned length = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: skip %u\n", gpegd->offset, length);
@@ -764,7 +764,7 @@ int gpegd_handle_instr_trap
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   vec_printf(gpegd->output, "%u: trap\n", gpegd->offset);
   gpegd->offset += INSTR_LENGTH_TRAP;
@@ -787,7 +787,7 @@ int gpegd_handle_instr_var
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
   unsigned varno = ntohl(*((uint32_t*)(capture->data.data)));
 
   vec_printf(gpegd->output, "%u: var %u\n", gpegd->offset, varno);
@@ -822,7 +822,7 @@ int gpegd_handle_instr_eq
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -840,7 +840,7 @@ int gpegd_handle_instr_neq
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -858,7 +858,7 @@ int gpegd_handle_instr_lt
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -876,7 +876,7 @@ int gpegd_handle_instr_gt
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -894,7 +894,7 @@ int gpegd_handle_instr_lteq
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -912,7 +912,7 @@ int gpegd_handle_instr_gteq
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -930,7 +930,7 @@ int gpegd_handle_instr_moveto
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -948,7 +948,7 @@ int gpegd_handle_instr_imoveto
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -966,7 +966,7 @@ int gpegd_handle_instr_rmoveto
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }
@@ -984,7 +984,7 @@ int gpegd_handle_instr_irmoveto
   (void)capture;
   (void)arg;
 
-  gpegd_t* gpegd = arg;
+  gpegd_t* gpegd = arg; (void)gpegd;
 
   return 0;
 }

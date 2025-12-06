@@ -9,17 +9,6 @@
 #ifndef _GPEGE_GEN0_PR_FUNCTIONS_FUNCTIONS_H_
 #define _GPEGE_GEN0_PR_FUNCTIONS_FUNCTIONS_H_
 
-/* declared in ./caplist.c */
-#define caplist_grammar_process_node gen0_caplist_grammar_process_node
-
-extern
-int caplist_grammar_process_node
-  (
-    gpeg_capture_t* capture,
-    void* ptr
-  )
-  __attribute__ ((warn_unused_result));
-
 /* declared in ./gpege_actions.c */
 #define gpege_actionlist_debug gen0_gpege_actionlist_debug
 
@@ -197,17 +186,6 @@ int ncurses_widget_toggle
     unsigned y,
     unsigned x,
     int* value
-  )
-  __attribute__ ((warn_unused_result));
-
-/* declared in ./simap.c */
-#define simap_grammar_process_node gen0_simap_grammar_process_node
-
-extern
-int simap_grammar_process_node
-  (
-    gpeg_capture_t* capture,
-    void* ptr
   )
   __attribute__ ((warn_unused_result));
 

@@ -78,6 +78,7 @@ struct gpege_ec
   gpege_stack_t                 stack;
   gpege_actionlist_t            actions;
   gpege_register_t              reg;
+  uint32_t                      regu32;
 };
 
 #endif

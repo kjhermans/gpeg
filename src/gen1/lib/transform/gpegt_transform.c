@@ -66,7 +66,7 @@ GPEG_ERR_T gpegt_transform
 
   gpege_t gpege = { 0 };
   gpege_ec_t ec = { 0 };
-  gpeg_capturelist_t captures = { 0 };
+  gpeg_capturelist_t captures = { 0 }; (void)captures;
 
   gpege.bytecode.data = bytecode;
   gpege.bytecode.size = sizeof(bytecode);

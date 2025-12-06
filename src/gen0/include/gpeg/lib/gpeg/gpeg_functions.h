@@ -24,10 +24,22 @@ extern
 void gpeg_capturelist_remove
   (gpeg_capturelist_t* list, unsigned type);
 
+/* declared in ./gpeg_compile.c */
+extern
+int gpeg_compile
+  (char* grammar, gpege_t* engine)
+  __attribute__ ((warn_unused_result));
+
 /* declared in ./gpeg_opcode2string.c */
 extern
 char* gpeg_opcode2string
   (unsigned opcode)
+  __attribute__ ((warn_unused_result));
+
+/* declared in ./gpeg_run.c */
+extern
+int gpeg_run
+  (gpege_t* engine, int* resultcode, gpeg_resobj_t* result)
   __attribute__ ((warn_unused_result));
 
 

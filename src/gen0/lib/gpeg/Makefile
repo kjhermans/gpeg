@@ -5,7 +5,7 @@ AR=$(ARCH)ar
 CURGEN?=../..
 CFLAGS=-g -Wall -Wextra $(DEBUG) -I$(CURGEN)/include
 
-all: maph instructionsh functionsh $(LIB)
+all: maph instructionsh functionsh efunctionsh $(LIB)
 
 maph: map.h
 
@@ -33,6 +33,9 @@ functionsh: ../../include/gpeg/lib/gpeg/gpeg_functions.h gpeg_functions.h
 gpeg_functions.h: *.c
 	$(CURGEN)/bin/genfnchdr -t GPEG_ERR_T -i GPEG_PR_FUNCTIONS -g 0 . > \
 	  gpeg_functions.h
+
+efunctionsh:
+	cd ../engine && make functionsheader
 
 $(LIB): $(OBJECTS)
 	$(AR) -rcs $(LIB) $(OBJECTS)

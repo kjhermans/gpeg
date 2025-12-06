@@ -33,6 +33,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
 
+#include <gpeg/lib/engine/gpege_types.h>
+
 #include <gpeg/lib/gpeg/gpeg.h>
 #include <gpeg/lib/compiler/gpegc.h>
 #include <gpeg/lib/assembler/gpega.h>

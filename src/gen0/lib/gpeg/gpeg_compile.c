@@ -1,7 +1,7 @@
 /**
  * This file is part of GPEG, a parsing environment
 
-Copyright (c) 2024, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
+Copyright (c) 2025, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -31,11 +31,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEG_GEN1_GPEGC_PRIVATE_H_
-#define _GPEG_GEN1_GPEGC_PRIVATE_H_
+#include <gpeg/lib/gpeg/gpeg_capturelist.h>
+#include <gpeg/lib/engine/gpege.h>
+#include <gpeg/lib/gpeg/gpeg.h>
 
-#include <gpeg/lib/engine/gpege_types.h>
-#include <gpeg/private/compiler/lib.h>
-#include "gpegc_functions.h"
-
-#endif
+/**
+ *
+ */
+int gpeg_compile
+  (char* grammar, gpege_t* engine)
+{
+}

@@ -34,6 +34,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _GEN0_GPEGE_PRIVATE_H_
 #define _GEN0_GPEGE_PRIVATE_H_
 
+#include <gpeg/lib/engine/gpege_types.h>
+
 #include <gpeg/private/engine/lib.h>
 #include <gpeg/private/util/util.h>
 
