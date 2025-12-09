@@ -34,6 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _GEN0_GPEG_GPEG_GPEG_H_
 #define _GEN0_GPEG_GPEG_GPEG_H_
 
+#include <gpeg/lib/engine/gpege_types.h>
 #include <gpeg/lib/gpeg/gpeg_defines.h>
 #include <gpeg/lib/gpeg/gpeg_types.h>
 #include <gpeg/lib/gpeg/gpeg_functions.h>
