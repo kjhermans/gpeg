@@ -18,7 +18,12 @@ mkdir -p /usr/local/lib/gpeg
 cp ./src/gen2/lib/compiler/libgpegc.a   /usr/local/lib/gpeg/
 cp ./src/gen2/lib/assembler/libgpega.a  /usr/local/lib/gpeg/
 cp ./src/gen2/lib/engine/libgpege.a     /usr/local/lib/gpeg/
-cp ./src/gen2/lib/gpeg/libgpeg.a        /usr/local/lib/gpeg/
+
+./bin/arjoin /usr/local/lib/gpeg/libgpeg.a \
+  ./src/gen2/lib/gpeg/libgpeg.a \
+  ./src/gen2/lib/compiler/libgpegc.a \
+  ./src/gen2/lib/assembler/libgpega.a \
+  ./src/gen2/lib/engine/libgpege.a 
 
 ln -sf /usr/local/lib/gpeg/libgpegc.a   /usr/local/lib/libgpegc.a
 ln -sf /usr/local/lib/gpeg/libgpega.a   /usr/local/lib/libgpega.a
