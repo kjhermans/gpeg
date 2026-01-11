@@ -42,10 +42,10 @@ typedef struct
 vec_t;
 
 void vec_printf
-  (vec_t* out, char* fmt, ...);
+  (vec_t* out, const char* fmt, ...);
 
 void vec_printf_insert
-  (vec_t* out, int offset, char* fmt, ...);
+  (vec_t* out, int offset, const char* fmt, ...);
 
 void vec_append
   (vec_t* out, void* mem, unsigned size);
@@ -70,5 +70,48 @@ void vec_copy
 
 void vec_shift
   (vec_t* out, unsigned offset, unsigned whereto, int size);
+
+void vec_delete
+  (vec_t* out, unsigned offset, int size);
+
+void vec_appendc
+  (vec_t* out, unsigned char c, unsigned size);
+
+int vec_find
+  (vec_t* vec, const void* mem, unsigned size);
+
+int vec_find_at
+  (vec_t* vec, unsigned offset, const void* mem, unsigned size);
+
+void vec_reduce
+  (vec_t* vec, unsigned size);
+
+int vec_compare
+  (vec_t* v1, vec_t* v2);
+
+int vec_endswith
+  (vec_t* vec, char* str);
+
+/** Relatively standard encoders / decoders, in place **/
+
+int vec_hex_decode
+  (vec_t* vec);
+
+void vec_hex_encode
+  (vec_t* vec);
+
+int vec_base64_decode
+  (vec_t* vec);
+
+void vec_base64_encode
+  (vec_t* vec, int spaced);
+
+/** Error correction codes **/
+
+void vec_ca_encode
+  (vec_t* vec);
+
+int vec_ca_decode
+  (vec_t* vec);
 
 #endif

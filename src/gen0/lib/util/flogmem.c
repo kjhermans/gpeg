@@ -38,17 +38,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Writes the contents of a piece of memory to a file, hexdump-style.
  * If the given file is NULL, stderr will be used.
  */
-void flogmem
-  (FILE* file, void* _mem, unsigned int size)
+void flogmem_colwidth
+  (FILE* file, unsigned colwidth, const void* _mem, unsigned size)
 {
-  char* mem = _mem;
-  char print[16];
+  const char* mem = _mem;
+  char print[colwidth];
   unsigned int c = 0;
   *print = 0;
   if (file == 0) {
     file = stderr;
   }
-  fprintf(file, "Debugging memory at %p size %u\n", _mem, size);
   if (size == 0) {
     return;
   }
@@ -56,17 +55,29 @@ void flogmem
   while (size--) {
     unsigned char byte = *mem++;
     fprintf(file, "%.2x ", byte);
-    print[c % 16] = (isprint(byte) ? byte : '.');
-    if ((++c % 16) == 0) {
-      fprintf(file, "     %-.*s\n%.8x  ", 16, print, c);
+    print[c % colwidth] = (isprint(byte) ? byte : '.');
+    if ((++c % colwidth) == 0) {
+      fprintf(file, "     %-.*s\n%.8x  ", colwidth, print, c);
       *print = 0;
     }
   }
-  while (c % 16) {
-    print[c % 16] = ' ';
+  while (c % colwidth) {
+    print[c % colwidth] = ' ';
     c++;
     fprintf(file, "   ");
   }
-  fprintf(file, "     %-.*s\n", 16, print);
+  fprintf(file, "     %-.*s\n", colwidth, print);
   fflush(file);
+}
+
+void flogmem
+  (FILE* file, const void* mem, unsigned size)
+{
+  flogmem_colwidth(file, 16, mem, size);
+}
+
+void logmem
+  (const void* mem, unsigned size)
+{
+  flogmem(stderr, mem, size);
 }

@@ -33,29 +33,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <string.h>
 
-char* nextarg
-  (unsigned argc, char* argv[], char* arg)
-{
-  for (unsigned i=0; i < argc-1; i++) {
-    if (argv[ i ] == arg) {
-      return argv[ i + 1 ];
-    }
-  }
-  return NULL;
-}
-
 /**
  * Queries the argument list.
  * If option and longoption are both zero (ie longoption == NULL)
  * then you're querying the nth occurence of a non-optioned argument.
  *
- * \param argc        As given to main()
- * \param argv        As given to main()
- * \param option      The '-' switch
- * \param longoption  The longform alternative to the '-' switch
- * \param index       The nth (off by zero) occurence of the option.
- * \param expectvalue Boolean. Whether or not the option is to have a value.
- * \param value       When found, will contain a pointer to the sought value.
+ * \param argc         As given to main()
+ * \param argv         As given to main()
+ * \param option       The '-' switch
+ * \param longoption   The longform alternative to the '-' switch ('--').
+ * \param index        The nth (off by zero) occurence of the option.
+ * \param expectvalue  Boolean. Whether or not the option is to have a value.
+ * \param remainder    Pointer to the next argument, after the found one.
+ * \param value        When found, will contain a pointer to the sought value.
  *
  * \returns           Zero when found, non-zero when not found.
  */
@@ -92,10 +82,10 @@ int queryargs
             if (index == 0) {
               if (i + j - (expectvalue ? 0 : 1) < argc) {
                 if (remainder) {
-	          *remainder = &(argv[ i ][ j ]);
+	          *remainder = argv[ i + j + 1 ];
                 }
                 if (value) {
-                  *value = argv[ i + 1 ];
+                  *value = argv[ i + j ];
                 }
                 return 0;
               } else {
@@ -121,4 +111,57 @@ int queryargs
     }
   }
   return ~0;
+}
+
+void queryargs_
+  (
+    unsigned argc,
+    char* argv[],
+    char option,
+    char* longoption,
+    unsigned index,
+    int expectvalue,
+    char** remainder,
+    char** value
+  )
+{
+  int e = queryargs(
+    argc, argv, option, longoption, index, expectvalue, remainder, value
+  );
+  (void)e;
+}
+
+#include <stdlib.h>
+
+int queryargs_as_int
+  (
+    unsigned argc,
+    char* argv[],
+    char option,
+    char* longoption,
+    unsigned index,
+    char** remainder,
+    char** value
+  )
+{
+  char* _v = 0;
+  if (queryargs(argc, argv, option, longoption, index, 1, remainder, &_v) == 0)
+  {
+    if (value) {
+      *value = _v;
+    }
+    return strtol(_v, 0, 10);
+  }
+  return 0;
+}
+
+char* nextarg
+  (unsigned argc, char* argv[], char* arg)
+{
+  for (unsigned i=0; i < argc-1; i++) {
+    if (argv[ i ] == arg) {
+      return argv[ i + 1 ];
+    }
+  }
+  return NULL;
 }

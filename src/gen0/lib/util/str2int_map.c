@@ -31,10 +31,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
+#undef MAP_EQUALS
 #define MAP_EQUALS(a,b) (0==strcmp(a,b))
-
-#include <str2int_map.h>
-
+#include <util/str2int_map.h>
 MAKE_MAP_CODE(char*, unsigned, str2int_map_)
 
 char* str2int_map_reverse_lookup

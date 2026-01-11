@@ -31,35 +31,5 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GEN0_GPEGE_PRIVATE_H_
-#define _GEN0_GPEGE_PRIVATE_H_
-
-#include <gpeg/lib/engine/gpege_types.h>
-
-#include <gpeg/private/engine/lib.h>
-#include <gpeg/private/util/util.h>
-#include <gpeg/private/util/bin.h>
-
-#define OPCODE_FAILURE          0xffffff
-
-#define GPEGE_STACK_CATCH       6
-#define GPEGE_STACK_CALL        9
-
-#define GPEGE_DATA_IN_SET(set,chr) (set[chr/8]&(1<<(chr%8)))
-
-#define MODE_RUNNING            0
-#define MODE_SETTINGS           1
-extern unsigned gpege_dbgncrs_width;
-extern unsigned gpege_dbgncrs_height;
-extern unsigned gpege_dbgncrs_mode;
-extern unsigned gpege_dbgncrs_noinputlines;
-extern unsigned gpege_dbgncrs_rununtil;
-extern int      gpege_dbgncrs_stepover;
-extern unsigned gpege_dbgncrs_nostacklines;
-extern unsigned gpege_dbgncrs_stacksize;
-extern unsigned gpege_dbgncrs_nocapturelines;
-extern int      gpege_dbgncrs_exp_input;
-extern int      gpege_dbgncrs_exp_stack;
-extern int      gpege_dbgncrs_exp_captures;
-
-#endif
+#include <util/uint64list.h>
+MAKE_ARRAY_CODE(uint64_t, uint64list_)

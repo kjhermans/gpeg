@@ -31,8 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
+#undef ARRAY_EQUALS
 #define ARRAY_EQUALS(a,b) (0 == strcmp(a,b))
-
-#include <stringlist.h>
-
+#include <util/stringlist.h>
 MAKE_ARRAY_CODE(char*, stringlist_)

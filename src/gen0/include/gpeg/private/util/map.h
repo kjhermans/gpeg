@@ -12,7 +12,15 @@
 #define MAP_EQUALS(a,b) (a == b)
 #endif
 
-// if you define MAP_COPY_KEY(a,b) or MAP_COPY_VALUE(a,b)
+#ifndef MAP_FREE_KEY
+#define MAP_FREE_KEY(it)
+#endif
+
+#ifndef MAP_FREE_VALUE
+#define MAP_FREE_VALUE(it)
+#endif
+
+/* if you define MAP_COPY_KEY(a,b) or MAP_COPY_VALUE(a,b) */
 
 #define COMBINE(a, b) a##b
 
@@ -37,10 +45,13 @@
   int COMBINE(prefix, put)(COMBINE(prefix, t)* map, Tk key, Tv val);        \
                                                                             \
   extern                                                                    \
-  int COMBINE(prefix, get)(COMBINE(prefix, t)* map, Tk key, Tv* val);       \
+  int COMBINE(prefix, get)(const COMBINE(prefix, t)* map, Tk key, Tv* val); \
                                                                             \
   extern                                                                    \
-  int COMBINE(prefix, has)(COMBINE(prefix, t)* map, Tk key);                \
+  Tv* COMBINE(prefix, getptr)(const COMBINE(prefix, t)* map, Tk key);       \
+                                                                            \
+  extern                                                                    \
+  int COMBINE(prefix, has)(const COMBINE(prefix, t)* map, Tk key);          \
                                                                             \
   extern                                                                    \
   int COMBINE(prefix, del)(COMBINE(prefix, t)* map, Tk key, Tv* val);       \
@@ -66,7 +77,13 @@
   }                                                                         \
                                                                             \
   void COMBINE(prefix, free)(COMBINE(prefix, t)* map) {                     \
+    for (unsigned i=0; i < map->count; i++) {                               \
+      MAP_FREE_KEY(map->keys[i]);                                           \
+    }                                                                       \
     if (map->keys) { free(map->keys); }                                     \
+    for (unsigned i=0; i < map->count; i++) {                               \
+      MAP_FREE_VALUE(map->values[i]);                                       \
+    }                                                                       \
     if (map->values) { free(map->values); }                                 \
     memset(map, 0, sizeof(*map));                                           \
   }                                                                         \
@@ -100,7 +117,7 @@
     return 0;                                                               \
   }                                                                         \
                                                                             \
-  int COMBINE(prefix, get)(COMBINE(prefix, t)* map, Tk key, Tv* val) {      \
+  int COMBINE(prefix, get)(const COMBINE(prefix, t)* map, Tk key, Tv* val) { \
     for (unsigned i=0; i < map->count; i++) {                               \
       if (MAP_EQUALS(map->keys[ i ], key)) {                                \
         if (val) { *val = map->values[ i ]; }                               \
@@ -110,7 +127,16 @@
     return ~0;                                                              \
   }                                                                         \
                                                                             \
-  int COMBINE(prefix, has)(COMBINE(prefix, t)* map, Tk key) {               \
+  Tv* COMBINE(prefix, getptr)(const COMBINE(prefix, t)* map, Tk key) {      \
+    for (unsigned i=0; i < map->count; i++) {                               \
+      if (MAP_EQUALS(map->keys[ i ], key)) {                                \
+        return &(map->values[ i ]);                                         \
+      }                                                                     \
+    }                                                                       \
+    return NULL;                                                            \
+  }                                                                         \
+                                                                            \
+  int COMBINE(prefix, has)(const COMBINE(prefix, t)* map, Tk key) {         \
     for (unsigned i=0; i < map->count; i++) {                               \
       if (MAP_EQUALS(map->keys[ i ], key)) {                                \
         return 1;                                                           \
@@ -134,8 +160,11 @@
   int COMBINE(prefix, del)(COMBINE(prefix, t)* map, Tk key, Tv* val) {      \
     for (unsigned i=0; i < map->count; i++) {                               \
       if (MAP_EQUALS(map->keys[ i ], key)) {                                \
+        MAP_FREE_KEY(map->keys[ i ]);                                       \
         if (val) {                                                          \
           *val = map->values[ i ];                                          \
+        } else {                                                            \
+          MAP_FREE_VALUE(map->values[ i ]);                                 \
         }                                                                   \
         memmove(                                                            \
           &(map->keys[ i ]),                                                \

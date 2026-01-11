@@ -1,7 +1,7 @@
 /**
- * This file is part of GPEG, a parsing environment
+ * This file is part of the JREAP project.
 
-Copyright (c) 2023, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
+Copyright (c) 2024, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -18,7 +18,7 @@ modification, are permitted provided that the following conditions are met:
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL the copyright holder BE LIABLE FOR ANY
+DISCLAIMED. IN NO EVENT SHALL Kees-Jan Hermans BE LIABLE FOR ANY
 DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -31,35 +31,41 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GEN0_GPEGE_PRIVATE_H_
-#define _GEN0_GPEGE_PRIVATE_H_
+#include <unistd.h>
+#include <sys/file.h>
 
-#include <gpeg/lib/engine/gpege_types.h>
+int write_insistent
+  (int fd, void* ptr, unsigned size, int lock)
+{
+  unsigned char* mem = ptr;
+  unsigned bs = 1024;
+  ssize_t w;
 
-#include <gpeg/private/engine/lib.h>
-#include <gpeg/private/util/util.h>
-#include <gpeg/private/util/bin.h>
+  if (lock) {
+    if (flock(fd, LOCK_EX)) {
+      return ~0;
+    }
+  }
 
-#define OPCODE_FAILURE          0xffffff
+  while (size) {
+    bs = 1024;
+    if (bs > size) {
+      bs = size;
+    }
+    w = write(fd, mem, bs);
+    if (w == -1) {
+      if (lock) {
+        flock(fd, LOCK_UN);
+      }
+      return -1;
+    }
+    mem += w;
+    size -= w;
+  }
 
-#define GPEGE_STACK_CATCH       6
-#define GPEGE_STACK_CALL        9
+  if (lock) {
+    flock(fd, LOCK_UN);
+  }
 
-#define GPEGE_DATA_IN_SET(set,chr) (set[chr/8]&(1<<(chr%8)))
-
-#define MODE_RUNNING            0
-#define MODE_SETTINGS           1
-extern unsigned gpege_dbgncrs_width;
-extern unsigned gpege_dbgncrs_height;
-extern unsigned gpege_dbgncrs_mode;
-extern unsigned gpege_dbgncrs_noinputlines;
-extern unsigned gpege_dbgncrs_rununtil;
-extern int      gpege_dbgncrs_stepover;
-extern unsigned gpege_dbgncrs_nostacklines;
-extern unsigned gpege_dbgncrs_stacksize;
-extern unsigned gpege_dbgncrs_nocapturelines;
-extern int      gpege_dbgncrs_exp_input;
-extern int      gpege_dbgncrs_exp_stack;
-extern int      gpege_dbgncrs_exp_captures;
-
-#endif
+  return 0;
+}

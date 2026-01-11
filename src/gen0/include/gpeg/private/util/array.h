@@ -67,6 +67,11 @@
 #define ARRAY_FREE_ITEM(itm)
 #endif
 
+/* redefine to non-zero to get arrays with only unique entries */
+#ifndef ARRAY_UNIQUE
+#define ARRAY_UNIQUE 0
+#endif
+
 #define MAKE_ARRAY_HEADER(T, prefix)                                \
   typedef struct {                                                  \
     T*        list;                                                 \
@@ -78,7 +83,7 @@
   void COMBINE(prefix, init)(COMBINE(prefix, t)* list);             \
                                                                     \
   extern                                                            \
-  COMBINE(prefix, t) COMBINE(prefix, INIT)();                       \
+  COMBINE(prefix, t) COMBINE(prefix, INIT)(void);                   \
                                                                     \
   extern                                                            \
   T* COMBINE(prefix, push)(COMBINE(prefix, t)* list, T elt);        \
@@ -102,7 +107,7 @@
   T* COMBINE(prefix, getptr)(COMBINE(prefix, t)* list, unsigned index);\
                                                                     \
   extern                                                            \
-  int COMBINE(prefix, has)(COMBINE(prefix, t)* list, T elt);        \
+  T* COMBINE(prefix, has)(COMBINE(prefix, t)* list, T elt);         \
                                                                     \
   extern                                                            \
   int COMBINE(prefix, indexof)(COMBINE(prefix, t)* list, T elt);    \
@@ -121,6 +126,9 @@
                                                                     \
   extern                                                            \
   void COMBINE(prefix, free)(COMBINE(prefix, t)* list);             \
+                                                                    \
+  extern                                                            \
+  void COMBINE(prefix, clear)(COMBINE(prefix, t)* list);            \
                                                                     \
   extern                                                            \
   void COMBINE(prefix, print)(COMBINE(prefix, t)* list);            \
@@ -144,7 +152,7 @@
     memset(list, 0, sizeof(*list));                                 \
   }                                                                 \
                                                                     \
-  COMBINE(prefix, t) COMBINE(prefix, INIT)() {                      \
+  COMBINE(prefix, t) COMBINE(prefix, INIT)(void) {                  \
     COMBINE(prefix, t) result = { 0, 0, 0 };                        \
     return result;                                                  \
   }                                                                 \
@@ -157,7 +165,16 @@
     memset(list, 0, sizeof(*list));                                 \
   }                                                                 \
                                                                     \
+  void COMBINE(prefix, clear)(COMBINE(prefix, t)* list) {           \
+    if (list->list) { free(list->list); }                           \
+    memset(list, 0, sizeof(*list));                                 \
+  }                                                                 \
+                                                                    \
   T* COMBINE(prefix, push)(COMBINE(prefix, t)* list, T elt) {       \
+    T* found;                                                       \
+    if (ARRAY_UNIQUE && (found = COMBINE(prefix, has)(list, elt)) != NULL) { \
+      return found;                                                 \
+    }                                                               \
     if (list->count >= list->allocated) {                           \
       list->allocated = list->count + 16;                           \
       list->list = realloc(                                         \
@@ -193,7 +210,8 @@
                                                                     \
   int COMBINE(prefix, pop)(COMBINE(prefix, t)* list, T* elt) {      \
     if (list->count) {                                              \
-      if (elt) { *elt = list->list[ --(list->count) ]; }            \
+      --(list->count);                                              \
+      if (elt) { *elt = list->list[ list->count ]; }                \
       if (ARRAY_REDUCE) {                                           \
         if (list->count == 0) {                                     \
           free(list->list);                                         \
@@ -231,13 +249,13 @@
     }                                                               \
   }                                                                 \
                                                                     \
-  int COMBINE(prefix, has)(COMBINE(prefix, t)* list, T elt) {       \
+  T* COMBINE(prefix, has)(COMBINE(prefix, t)* list, T elt) {        \
     for (unsigned i=0; i < list->count; i++) {                      \
       if (ARRAY_EQUALS(list->list[ i ], elt)) {                     \
-        return 1;                                                   \
+        return &(list->list[ i ]);                                  \
       }                                                             \
     }                                                               \
-    return 0;                                                       \
+    return NULL;                                                    \
   }                                                                 \
                                                                     \
   int COMBINE(prefix, indexof)(COMBINE(prefix, t)* list, T elt) {   \
@@ -261,6 +279,7 @@
   int COMBINE(prefix, rem)(COMBINE(prefix, t)* list, unsigned index, T* elt) {\
     if (index < list->count) {                                      \
       if (elt) { *elt = list->list[ index ]; }                      \
+      else { ARRAY_FREE_ITEM(list->list[ index ]); }                \
       memmove(                                                      \
         &(list->list[ index ]),                                     \
         &(list->list[ index + 1]),                                  \
