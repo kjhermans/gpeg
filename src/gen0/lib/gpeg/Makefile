@@ -3,7 +3,7 @@ LIB=libgpeg.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
 CURGEN?=../..
-CFLAGS=-g -Wall -Wextra $(DEBUG) -I$(CURGEN)/include
+CFLAGS=-g -Wall -Wextra $(DEBUG) -fPIC -I$(CURGEN)/include
 
 all: maph instructionsh functionsh efunctionsh $(LIB)
 
