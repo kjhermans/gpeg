@@ -55,7 +55,6 @@ int gpeg_compile
   GPEG_ERR_T e = gpegc_compile(&compiler);
 
   if (e.code) {
-    
     return ~0;
   }
   e = gpega_assemble(&(compiler.output), &(engine->bytecode), &error, NULL, 0);
