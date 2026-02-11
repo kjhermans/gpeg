@@ -1,3 +1,5 @@
+#include <arpa/inet.h>
+
 #include "gpega_private.h"
 #include "gpega_instructions.h"
 #include "assembly.slotmap.h"

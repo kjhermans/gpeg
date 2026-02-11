@@ -31,6 +31,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
+#include <arpa/inet.h>
+
 #include "gpegd_private.h"
 #include "gpegd_instructions.h"
 
