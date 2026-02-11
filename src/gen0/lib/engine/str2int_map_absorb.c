@@ -34,6 +34,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "gpege_private.h"
 #include "simap.slotmap.h"
 
+extern int simap_grammar_process_node(gpeg_capture_t*, void*);
+
 static
 unsigned char bytecode[] = {
   #include "simap.h"
