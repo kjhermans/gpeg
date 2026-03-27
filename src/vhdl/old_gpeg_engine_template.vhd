@@ -72,18 +72,18 @@ architecture rtl of gpeg_engine is
   constant OP_FAIL            : unsigned(31 downto 0) := x"0000034B";
   constant OP_FAILTWICE       : unsigned(31 downto 0) := x"00000390";
   constant OP_RET             : unsigned(31 downto 0) := x"000003A0";
-  constant OP_END             : unsigned(31 downto 0) := x"000400D8";
-  constant OP_CALL            : unsigned(31 downto 0) := x"00040382";
-  constant OP_CATCH           : unsigned(31 downto 0) := x"00040393";
-  constant OP_COMMIT          : unsigned(31 downto 0) := x"00040336";
-  constant OP_BACKCOMMIT      : unsigned(31 downto 0) := x"000403C0";
-  constant OP_PARTIALCOMMIT   : unsigned(31 downto 0) := x"000403B4";
-  constant OP_CHAR            : unsigned(31 downto 0) := x"000403D7";
-  constant OP_SKIP            : unsigned(31 downto 0) := x"00040330";
-  constant OP_RANGE           : unsigned(31 downto 0) := x"000803BD";
-  constant OP_SET             : unsigned(31 downto 0) := x"002003CA";
-  constant OP_OPENCAPTURE     : unsigned(31 downto 0) := x"0004039C";
-  constant OP_CLOSECAPTURE    : unsigned(31 downto 0) := x"00040300";
+  constant OP_END             : unsigned(31 downto 0) := to_unsigned(262360, 32);
+  constant OP_CALL            : unsigned(31 downto 0) := to_unsigned(263042, 32);
+  constant OP_CATCH           : unsigned(31 downto 0) := to_unsigned(263059, 32);
+  constant OP_COMMIT          : unsigned(31 downto 0) := to_unsigned(262966, 32);
+  constant OP_BACKCOMMIT      : unsigned(31 downto 0) := to_unsigned(263104, 32);
+  constant OP_PARTIALCOMMIT   : unsigned(31 downto 0) := to_unsigned(263092, 32);
+  constant OP_CHAR            : unsigned(31 downto 0) := to_unsigned(263127, 32);
+  constant OP_SKIP            : unsigned(31 downto 0) := to_unsigned(262960, 32);
+  constant OP_RANGE           : unsigned(31 downto 0) := to_unsigned(525245, 32);
+  constant OP_SET             : unsigned(31 downto 0) := to_unsigned(2098122, 32);
+  constant OP_OPENCAPTURE     : unsigned(31 downto 0) := to_unsigned(263068, 32);
+  constant OP_CLOSECAPTURE    : unsigned(31 downto 0) := to_unsigned(262912, 32);
   constant OP_COUNTER         : unsigned(31 downto 0) := x"00080356";
   constant OP_CONDJUMP        : unsigned(31 downto 0) := x"00080321";
 
@@ -272,6 +272,7 @@ begin
           elsif opcode = OP_RET or opcode = OP_FAILTWICE then
             need_pop <= '1'; state <= S_POP;
           else
+report "Bytecode error.";
             err_code <= ERR_BYTECODE; state <= S_ERROR;
           end if;
 
@@ -355,10 +356,12 @@ begin
             bc_offset <= bc_offset + resize(instr_size, 32);
 
           elsif opcode = OP_END then
+report "OP_END";
             end_code <= std_logic_vector(param1);
             busy <= '0'; done <= '1'; state <= S_DONE; v_redirected := true;
 
           elsif opcode = OP_ANY then
+report "OP_ANY";
             if inp_offset < inp_size_reg then
               inp_offset <= inp_offset + 1;
               bc_offset <= bc_offset + resize(instr_size, 32);
@@ -367,6 +370,7 @@ begin
             end if;
 
           elsif opcode = OP_CHAR then
+report "OP_CHAR";
             if failed = '0' then
               if inp_byte = resize(param1(7 downto 0), 8) then
                 inp_offset <= inp_offset + 1;
@@ -377,6 +381,7 @@ begin
             end if;
 
           elsif opcode = OP_SKIP then
+report "OP_SKIP";
             if inp_offset + param1 <= inp_size_reg then
               inp_offset <= inp_offset + param1;
               bc_offset <= bc_offset + resize(instr_size, 32);
@@ -385,6 +390,7 @@ begin
             end if;
 
           elsif opcode = OP_RANGE then
+report "OP_RANGE";
             if failed = '0' then
               if inp_byte >= param1(7 downto 0) and
                  inp_byte <= param2(7 downto 0) then
@@ -396,6 +402,7 @@ begin
             end if;
 
           elsif opcode = OP_SET then
+report "OP_SET";
             if failed = '0' then
               if set_word(to_integer(inp_byte(4 downto 0))) = '1' then
                 inp_offset <= inp_offset + 1;
@@ -406,6 +413,7 @@ begin
             end if;
 
           elsif opcode = OP_CALL then
+report "OP_CALL";
             if need_push = '0' then
               call_counter <= call_counter + 1;
               push_elt <= (STYPE_CALL,
@@ -420,15 +428,18 @@ begin
             end if;
 
           elsif opcode = OP_RET then
+report "OP_RET";
             if popped.stype = STYPE_CALL then
               bc_offset <= popped.address;
               inp_size_reg <= popped.input_length;
               current_call <= popped.call_context;
+report "RETURN TO BC OFFSET " & integer'image(to_integer(unsigned(popped.address)));
             else
               err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
             end if;
 
           elsif opcode = OP_CATCH then
+report "OP_CATCH";
             if need_push = '0' then
               push_elt <= (STYPE_CATCH, param1,
                 inp_offset, inp_size_reg,
@@ -440,6 +451,7 @@ begin
             end if;
 
           elsif opcode = OP_COMMIT then
+report "OP_COMMIT";
             if popped.stype = STYPE_CATCH then
               bc_offset <= param1;
             else
@@ -447,6 +459,7 @@ begin
             end if;
 
           elsif opcode = OP_BACKCOMMIT then
+report "OP_BACKCOMMIT";
             if popped.stype = STYPE_CATCH then
               bc_offset <= param1;
               inp_offset <= popped.input_offset;
@@ -456,6 +469,7 @@ begin
             end if;
 
           elsif opcode = OP_PARTIALCOMMIT then
+report "OP_PARTIALCOMMIT";
             if popped.stype = STYPE_CATCH then
               if need_push = '0' then
                 push_elt <= (STYPE_CATCH, popped.address,
@@ -471,9 +485,11 @@ begin
             end if;
 
           elsif opcode = OP_COUNTER then
+report "OP_COUNTER";
             state <= S_REG_PUSH; v_redirected := true;
 
           elsif opcode = OP_CONDJUMP then
+report "OP_CONDJUMP";
             if reg_sp = 0 then
               err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
             else
@@ -482,15 +498,17 @@ begin
             end if;
 
           elsif opcode = OP_FAIL then
-            state <= S_FAIL_UNWIND; v_redirected := true;
+report "OP_FAIL";
+            failed <= '1';
 
           elsif opcode = OP_FAILTWICE then
+report "OP_FAILTWICE";
             if popped.stype /= STYPE_CATCH then
               err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
             elsif sp = 0 then
               err_code <= ERR_NOMATCH; state <= S_ERROR; v_redirected := true;
             else
-              state <= S_FAIL_UNWIND; v_redirected := true;
+              failed <= '1';
             end if;
 
           elsif opcode = OP_OPENCAPTURE then
@@ -513,7 +531,7 @@ begin
           if not v_redirected then
             n_instr <= n_instr + 1;
             -- synthesis translate_off
-            report "EXEC done: opcode=0x" & to_hstring(opcode)
+            report "EXEC opcode=0x" & to_hstring(opcode)
                  & " bc_off=" & integer'image(to_integer(bc_offset))
                  & " inp_off=" & integer'image(to_integer(inp_offset))
                  & " failed=" & std_logic'image(failed)

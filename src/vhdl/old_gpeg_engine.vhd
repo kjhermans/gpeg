@@ -72,18 +72,18 @@ architecture rtl of gpeg_engine is
   constant OP_FAIL            : unsigned(31 downto 0) := x"0000034B";
   constant OP_FAILTWICE       : unsigned(31 downto 0) := x"00000390";
   constant OP_RET             : unsigned(31 downto 0) := x"000003A0";
-  constant OP_END             : unsigned(31 downto 0) := x"000400D8";
-  constant OP_CALL            : unsigned(31 downto 0) := x"00040382";
-  constant OP_CATCH           : unsigned(31 downto 0) := x"00040393";
-  constant OP_COMMIT          : unsigned(31 downto 0) := x"00040336";
-  constant OP_BACKCOMMIT      : unsigned(31 downto 0) := x"000403C0";
-  constant OP_PARTIALCOMMIT   : unsigned(31 downto 0) := x"000403B4";
-  constant OP_CHAR            : unsigned(31 downto 0) := x"000403D7";
-  constant OP_SKIP            : unsigned(31 downto 0) := x"00040330";
-  constant OP_RANGE           : unsigned(31 downto 0) := x"000803BD";
-  constant OP_SET             : unsigned(31 downto 0) := x"002003CA";
-  constant OP_OPENCAPTURE     : unsigned(31 downto 0) := x"0004039C";
-  constant OP_CLOSECAPTURE    : unsigned(31 downto 0) := x"00040300";
+  constant OP_END             : unsigned(31 downto 0) := to_unsigned(262360, 32);
+  constant OP_CALL            : unsigned(31 downto 0) := to_unsigned(263042, 32);
+  constant OP_CATCH           : unsigned(31 downto 0) := to_unsigned(263059, 32);
+  constant OP_COMMIT          : unsigned(31 downto 0) := to_unsigned(262966, 32);
+  constant OP_BACKCOMMIT      : unsigned(31 downto 0) := to_unsigned(263104, 32);
+  constant OP_PARTIALCOMMIT   : unsigned(31 downto 0) := to_unsigned(263092, 32);
+  constant OP_CHAR            : unsigned(31 downto 0) := to_unsigned(263127, 32);
+  constant OP_SKIP            : unsigned(31 downto 0) := to_unsigned(262960, 32);
+  constant OP_RANGE           : unsigned(31 downto 0) := to_unsigned(525245, 32);
+  constant OP_SET             : unsigned(31 downto 0) := to_unsigned(2098122, 32);
+  constant OP_OPENCAPTURE     : unsigned(31 downto 0) := to_unsigned(263068, 32);
+  constant OP_CLOSECAPTURE    : unsigned(31 downto 0) := to_unsigned(262912, 32);
   constant OP_COUNTER         : unsigned(31 downto 0) := x"00080356";
   constant OP_CONDJUMP        : unsigned(31 downto 0) := x"00080321";
 
@@ -482,7 +482,7 @@ begin
             end if;
 
           elsif opcode = OP_FAIL then
-            state <= S_FAIL_UNWIND; v_redirected := true;
+            failed <= '1';
 
           elsif opcode = OP_FAILTWICE then
             if popped.stype /= STYPE_CATCH then
@@ -490,7 +490,7 @@ begin
             elsif sp = 0 then
               err_code <= ERR_NOMATCH; state <= S_ERROR; v_redirected := true;
             else
-              state <= S_FAIL_UNWIND; v_redirected := true;
+              failed <= '1';
             end if;
 
           elsif opcode = OP_OPENCAPTURE then

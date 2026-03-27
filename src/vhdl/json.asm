@@ -284,10 +284,16 @@ BOOL:
   call __prefix
   opencapture 9
   catch __L58
-  quad 74727565
+  char 74
+  char 72
+  char 75
+  char 65
   commit __L59
 __L58:
-  quad 66616c73
+  char 66
+  char 61
+  char 6c
+  char 73
   char 65
 __L59:
   closecapture 9
@@ -296,7 +302,10 @@ __L59:
 NULL:
   call __prefix
   opencapture 10
-  quad 6e756c6c
+  char 6e
+  char 75
+  char 6c
+  char 6c
   closecapture 10
   ret
 

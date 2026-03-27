@@ -1,6 +1,6 @@
 #!/bin/sh
 
-gpegc -i json.gpeg -o json.asm
+gpegc -N -i json.gpeg -o json.asm
 gpega -i json.asm -o json.byc
 gpege -c json.byc -i test.json -v > test.log 2>&1
 
@@ -18,4 +18,4 @@ perl ../../bin/precompiler.pl -D_DEBUG testdir/gpeg_engine.vhd
 
 cp test.sh testdir/
 
-cd testdir && ./test.sh
+cd testdir && ./test.sh > ../vhdl.test.log
