@@ -40,7 +40,7 @@ superclean: clean
 archive: clean
 	RELEASE=$$(cat release); \
 	echo "  [TAR] gpeg-src-$$RELEASE.tar.gz"; \
-	tar czf ~/work/archive/gpeg-src-$$RELEASE.tar.gz \
+	tar czf ../archive/gpeg-src-$$RELEASE.tar.gz \
 	  --transform "s,^,gpeg/,S" \
 	  --exclude=\.git \
 	  .
