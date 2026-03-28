@@ -6,9 +6,7 @@ TOP:
   ret
 
 UTF8CHAR:
-  opencapture 0
   any
-  closecapture 0
   ret
 
 SPACE:
@@ -82,11 +80,9 @@ JSON:
 
 HASH:
   call __prefix
-  opencapture 1
   call CBOPEN
   call OPTHASHELTS
   call CBCLOSE
-  closecapture 1
   ret
 
 OPTHASHELTS:
@@ -110,20 +106,16 @@ __L18:
 
 HASHELT:
   call __prefix
-  opencapture 2
   call STRING
   call COLON
   call VALUE
-  closecapture 2
   ret
 
 ARRAY:
   call __prefix
-  opencapture 3
   call ABOPEN
   call OPTARRAYELTS
   call ABCLOSE
-  closecapture 3
   ret
 
 OPTARRAYELTS:
@@ -190,7 +182,6 @@ BIGSTRING:
   char 22
   char 22
   char 22
-  opencapture 4
   catch __L37
 __L38:
   catch __L39
@@ -202,7 +193,6 @@ __L39:
   call UTF8CHAR
   partialcommit __L38
 __L37:
-  closecapture 4
   char 22
   char 22
   char 22
@@ -211,11 +201,9 @@ __L37:
 STRING:
   call __prefix
   char 22
-  opencapture 5
   catch __L41
 __L42:
   catch __L43
-  opencapture 6
   char 5c
   catch __L45
   set 0000000004000000000000104440140000000000000000000000000000000000
@@ -227,7 +215,6 @@ __L47:
   set 000000000000ff037e0000007e00000000000000000000000000000000000000
   condjump 1 __L47
 __L46:
-  closecapture 6
   commit __L44
 __L43:
   catch __L48
@@ -238,13 +225,11 @@ __L48:
 __L44:
   partialcommit __L42
 __L41:
-  closecapture 5
   char 22
   ret
 
 INT:
   call __prefix
-  opencapture 7
   catch __L50
   char 2d
   commit __NEXT__
@@ -255,12 +240,10 @@ __L52:
   set 000000000000ff03000000000000000000000000000000000000000000000000
   partialcommit __L52
 __L51:
-  closecapture 7
   ret
 
 FLOAT:
   call __prefix
-  opencapture 8
   catch __L53
   char 2d
   commit __NEXT__
@@ -277,12 +260,10 @@ __L57:
   set 000000000000ff03000000000000000000000000000000000000000000000000
   partialcommit __L57
 __L56:
-  closecapture 8
   ret
 
 BOOL:
   call __prefix
-  opencapture 9
   catch __L58
   char 74
   char 72
@@ -296,17 +277,14 @@ __L58:
   char 73
   char 65
 __L59:
-  closecapture 9
   ret
 
 NULL:
   call __prefix
-  opencapture 10
   char 6e
   char 75
   char 6c
   char 6c
-  closecapture 10
   ret
 
 CBOPEN:

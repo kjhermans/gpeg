@@ -188,6 +188,7 @@ begin
   process(clk)
     variable vis : unsigned(7 downto 0);
     variable v_redirected : boolean;
+    variable v_failed : boolean;
   begin
     if rising_edge(clk) then
       bcode_rd  <= '0';
@@ -350,6 +351,8 @@ begin
         -- === Execute ===
         when S_EXECUTE =>
           v_redirected := false;
+          v_failed := (failed = '1');  -- capture signal into variable
+          failed <= '0';               -- clear for next use
 
           if opcode = OP_NOOP then
             bc_offset <= bc_offset + resize(instr_size, 32);
@@ -363,16 +366,16 @@ begin
               inp_offset <= inp_offset + 1;
               bc_offset <= bc_offset + resize(instr_size, 32);
             else
-              failed <= '1';
+              v_failed := true;
             end if;
 
           elsif opcode = OP_CHAR then
-            if failed = '0' then
+            if not v_failed then
               if inp_byte = resize(param1(7 downto 0), 8) then
                 inp_offset <= inp_offset + 1;
                 bc_offset <= bc_offset + resize(instr_size, 32);
               else
-                failed <= '1';
+                v_failed := true;
               end if;
             end if;
 
@@ -381,27 +384,29 @@ begin
               inp_offset <= inp_offset + param1;
               bc_offset <= bc_offset + resize(instr_size, 32);
             else
-              failed <= '1';
+              v_failed := true;
             end if;
 
           elsif opcode = OP_RANGE then
-            if failed = '0' then
+            if not v_failed then
               if inp_byte >= param1(7 downto 0) and
                  inp_byte <= param2(7 downto 0) then
                 inp_offset <= inp_offset + 1;
                 bc_offset <= bc_offset + resize(instr_size, 32);
               else
-                failed <= '1';
+                v_failed := true;
               end if;
             end if;
 
           elsif opcode = OP_SET then
-            if failed = '0' then
-              if set_word(to_integer(inp_byte(4 downto 0))) = '1' then
+            if not v_failed then
+              if set_word(to_integer(
+                (not inp_byte(4 downto 3)) & inp_byte(2 downto 0)
+              )) = '1' then
                 inp_offset <= inp_offset + 1;
                 bc_offset <= bc_offset + resize(instr_size, 32);
               else
-                failed <= '1';
+                v_failed := true;
               end if;
             end if;
 
@@ -482,7 +487,7 @@ begin
             end if;
 
           elsif opcode = OP_FAIL then
-            state <= S_FAIL_UNWIND; v_redirected := true;
+            v_failed := true;
 
           elsif opcode = OP_FAILTWICE then
             if popped.stype /= STYPE_CATCH then
@@ -490,7 +495,7 @@ begin
             elsif sp = 0 then
               err_code <= ERR_NOMATCH; state <= S_ERROR; v_redirected := true;
             else
-              state <= S_FAIL_UNWIND; v_redirected := true;
+              v_failed := true;
             end if;
 
           elsif opcode = OP_OPENCAPTURE then
@@ -516,11 +521,11 @@ begin
             report "EXEC done: opcode=0x" & to_hstring(opcode)
                  & " bc_off=" & integer'image(to_integer(bc_offset))
                  & " inp_off=" & integer'image(to_integer(inp_offset))
-                 & " failed=" & std_logic'image(failed)
+                 & " v_failed=" & boolean'image(v_failed)
                  & " sp=" & integer'image(to_integer(sp));
             -- synthesis translate_on
-            if failed = '1' then
-              failed <= '0'; state <= S_FAIL_UNWIND;
+            if v_failed then
+              state <= S_FAIL_UNWIND;
             else
               state <= S_FETCH_OP;
             end if;
