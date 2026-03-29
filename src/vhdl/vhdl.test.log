@@ -6,384 +6,1988 @@ gpeg_engine.vhd:238:11:@175ns:(report note): LOAD_OP: bc_offset=16 opcode=0x0004
 gpeg_engine.vhd:420:1:@225ns:(report note): CALL
 gpeg_engine.vhd:420:1:@245ns:(report note): CALL
 gpeg_engine.vhd:539:13:@245ns:(report note): EXEC done: opcode=0x00040382 bc_off=16 inp_off=0 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@275ns:(report note): LOAD_OP: bc_offset=128 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@325ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@345ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@345ns:(report note): EXEC done: opcode=0x00040393 bc_off=128 inp_off=0 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@375ns:(report note): LOAD_OP: bc_offset=136 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@455ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@455ns:(report note): EXEC done: opcode=0x000403D7 bc_off=136 inp_off=0 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@485ns:(report note): LOAD_OP: bc_offset=144 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@565ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@565ns:(report note): EXEC done: opcode=0x000403D7 bc_off=144 inp_off=1 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@595ns:(report note): LOAD_OP: bc_offset=152 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@675ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@675ns:(report note): EXEC done: opcode=0x000403D7 bc_off=152 inp_off=2 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@705ns:(report note): LOAD_OP: bc_offset=160 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@785ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@785ns:(report note): EXEC done: opcode=0x000403D7 bc_off=160 inp_off=3 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@815ns:(report note): LOAD_OP: bc_offset=168 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@895ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@895ns:(report note): EXEC done: opcode=0x000403D7 bc_off=168 inp_off=4 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@925ns:(report note): LOAD_OP: bc_offset=176 opcode=0x000403C0 isize=8
-gpeg_engine.vhd:465:1:@985ns:(report note): BACKCOMMIT
-gpeg_engine.vhd:539:13:@985ns:(report note): EXEC done: opcode=0x000403C0 bc_off=176 inp_off=5 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1015ns:(report note): LOAD_OP: bc_offset=188 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@1095ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@1095ns:(report note): EXEC done: opcode=0x000403D7 bc_off=188 inp_off=0 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1125ns:(report note): LOAD_OP: bc_offset=196 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@1205ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@1205ns:(report note): EXEC done: opcode=0x000403D7 bc_off=196 inp_off=1 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1235ns:(report note): LOAD_OP: bc_offset=204 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@1315ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@1315ns:(report note): EXEC done: opcode=0x000403D7 bc_off=204 inp_off=2 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1345ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@1425ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@1425ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=3 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1455ns:(report note): LOAD_OP: bc_offset=220 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@1535ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@1535ns:(report note): EXEC done: opcode=0x000403D7 bc_off=220 inp_off=4 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1565ns:(report note): LOAD_OP: bc_offset=228 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@1595ns:(report note): RET
-gpeg_engine.vhd:539:13:@1595ns:(report note): EXEC done: opcode=0x000003A0 bc_off=228 inp_off=5 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@1625ns:(report note): LOAD_OP: bc_offset=24 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@1675ns:(report note): CALL
-gpeg_engine.vhd:420:1:@1695ns:(report note): CALL
-gpeg_engine.vhd:539:13:@1695ns:(report note): EXEC done: opcode=0x00040382 bc_off=24 inp_off=5 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1725ns:(report note): LOAD_OP: bc_offset=116 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@1805ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@1805ns:(report note): EXEC done: opcode=0x000403D7 bc_off=116 inp_off=5 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1835ns:(report note): LOAD_OP: bc_offset=124 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@1865ns:(report note): RET
-gpeg_engine.vhd:539:13:@1865ns:(report note): EXEC done: opcode=0x000003A0 bc_off=124 inp_off=6 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@1895ns:(report note): LOAD_OP: bc_offset=32 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@1945ns:(report note): CALL
-gpeg_engine.vhd:420:1:@1965ns:(report note): CALL
-gpeg_engine.vhd:539:13:@1965ns:(report note): EXEC done: opcode=0x00040382 bc_off=32 inp_off=6 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@1995ns:(report note): LOAD_OP: bc_offset=232 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@2045ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@2065ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@2065ns:(report note): EXEC done: opcode=0x00040393 bc_off=232 inp_off=6 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@2095ns:(report note): LOAD_OP: bc_offset=240 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@2145ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@2165ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@2165ns:(report note): EXEC done: opcode=0x00040393 bc_off=240 inp_off=6 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@2195ns:(report note): LOAD_OP: bc_offset=248 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@2275ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@2275ns:(report note): EXEC done: opcode=0x000403D7 bc_off=248 inp_off=6 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@2305ns:(report note): LOAD_OP: bc_offset=256 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@2385ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@2385ns:(report note): EXEC done: opcode=0x000403D7 bc_off=256 inp_off=7 v_failed=true sp=4
-gpeg_engine.vhd:238:11:@2445ns:(report note): LOAD_OP: bc_offset=296 opcode=0x0000034B isize=4
-gpeg_engine.vhd:504:1:@2465ns:(report note): FAIL
-gpeg_engine.vhd:539:13:@2465ns:(report note): EXEC done: opcode=0x0000034B bc_off=296 inp_off=6 v_failed=true sp=3
-gpeg_engine.vhd:238:11:@2525ns:(report note): LOAD_OP: bc_offset=308 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@2605ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@2605ns:(report note): EXEC done: opcode=0x000403D7 bc_off=308 inp_off=6 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@2635ns:(report note): LOAD_OP: bc_offset=316 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@2715ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@2715ns:(report note): EXEC done: opcode=0x000403D7 bc_off=316 inp_off=7 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@2745ns:(report note): LOAD_OP: bc_offset=324 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@2825ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@2825ns:(report note): EXEC done: opcode=0x000403D7 bc_off=324 inp_off=8 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@2855ns:(report note): LOAD_OP: bc_offset=332 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@2935ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@2935ns:(report note): EXEC done: opcode=0x000403D7 bc_off=332 inp_off=9 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@2965ns:(report note): LOAD_OP: bc_offset=340 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@3045ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@3045ns:(report note): EXEC done: opcode=0x000403D7 bc_off=340 inp_off=10 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@3075ns:(report note): LOAD_OP: bc_offset=348 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@3155ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@3155ns:(report note): EXEC done: opcode=0x000403D7 bc_off=348 inp_off=11 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@3185ns:(report note): LOAD_OP: bc_offset=356 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@3265ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@3265ns:(report note): EXEC done: opcode=0x000403D7 bc_off=356 inp_off=12 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@3295ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@3325ns:(report note): RET
-gpeg_engine.vhd:539:13:@3325ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=13 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@3355ns:(report note): LOAD_OP: bc_offset=40 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@3405ns:(report note): CALL
-gpeg_engine.vhd:420:1:@3425ns:(report note): CALL
-gpeg_engine.vhd:539:13:@3425ns:(report note): EXEC done: opcode=0x00040382 bc_off=40 inp_off=13 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@3455ns:(report note): LOAD_OP: bc_offset=116 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@3535ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@3535ns:(report note): EXEC done: opcode=0x000403D7 bc_off=116 inp_off=13 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@3565ns:(report note): LOAD_OP: bc_offset=124 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@3595ns:(report note): RET
-gpeg_engine.vhd:539:13:@3595ns:(report note): EXEC done: opcode=0x000003A0 bc_off=124 inp_off=14 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@3625ns:(report note): LOAD_OP: bc_offset=48 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@3675ns:(report note): CALL
-gpeg_engine.vhd:420:1:@3695ns:(report note): CALL
-gpeg_engine.vhd:539:13:@3695ns:(report note): EXEC done: opcode=0x00040382 bc_off=48 inp_off=14 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@3725ns:(report note): LOAD_OP: bc_offset=368 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@3805ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@3805ns:(report note): EXEC done: opcode=0x000403D7 bc_off=368 inp_off=14 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@3835ns:(report note): LOAD_OP: bc_offset=376 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@3885ns:(report note): CATCH
+gpeg_engine.vhd:238:11:@275ns:(report note): LOAD_OP: bc_offset=396 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@325ns:(report note): CALL
+gpeg_engine.vhd:420:1:@345ns:(report note): CALL
+gpeg_engine.vhd:539:13:@345ns:(report note): EXEC done: opcode=0x00040382 bc_off=396 inp_off=0 v_failed=false sp=3
+gpeg_engine.vhd:238:11:@375ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@425ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@445ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@445ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=4
+gpeg_engine.vhd:238:11:@475ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@525ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@545ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@545ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@575ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@625ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@645ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@645ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@675ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@725ns:(report note): CALL
+gpeg_engine.vhd:420:1:@745ns:(report note): CALL
+gpeg_engine.vhd:539:13:@745ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@775ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@855ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@855ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=7
+gpeg_engine.vhd:238:11:@935ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@985ns:(report note): CALL
+gpeg_engine.vhd:420:1:@1005ns:(report note): CALL
+gpeg_engine.vhd:539:13:@1005ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@1035ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@1115ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@1115ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=6
+gpeg_engine.vhd:238:11:@1195ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@1245ns:(report note): CALL
+gpeg_engine.vhd:420:1:@1265ns:(report note): CALL
+gpeg_engine.vhd:539:13:@1265ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@1295ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@1375ns:(report note): SET
+gpeg_engine.vhd:539:13:@1375ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=5
+gpeg_engine.vhd:238:11:@1455ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@1485ns:(report note): RET
+gpeg_engine.vhd:539:13:@1485ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=2
+gpeg_engine.vhd:238:11:@1515ns:(report note): LOAD_OP: bc_offset=404 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@1565ns:(report note): CALL
+gpeg_engine.vhd:420:1:@1585ns:(report note): CALL
+gpeg_engine.vhd:539:13:@1585ns:(report note): EXEC done: opcode=0x00040382 bc_off=404 inp_off=0 v_failed=false sp=3
+gpeg_engine.vhd:238:11:@1615ns:(report note): LOAD_OP: bc_offset=708 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@1665ns:(report note): CALL
+gpeg_engine.vhd:420:1:@1685ns:(report note): CALL
+gpeg_engine.vhd:539:13:@1685ns:(report note): EXEC done: opcode=0x00040382 bc_off=708 inp_off=0 v_failed=false sp=4
+gpeg_engine.vhd:238:11:@1715ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@1765ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@1785ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@1785ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@1815ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@1865ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@1885ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@1885ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@1915ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@1965ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@1985ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@1985ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@2015ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@2065ns:(report note): CALL
+gpeg_engine.vhd:420:1:@2085ns:(report note): CALL
+gpeg_engine.vhd:539:13:@2085ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@2115ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@2195ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@2195ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=8
+gpeg_engine.vhd:238:11:@2275ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@2325ns:(report note): CALL
+gpeg_engine.vhd:420:1:@2345ns:(report note): CALL
+gpeg_engine.vhd:539:13:@2345ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@2375ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@2455ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@2455ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=7
+gpeg_engine.vhd:238:11:@2535ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@2585ns:(report note): CALL
+gpeg_engine.vhd:420:1:@2605ns:(report note): CALL
+gpeg_engine.vhd:539:13:@2605ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@2635ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@2715ns:(report note): SET
+gpeg_engine.vhd:539:13:@2715ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=6
+gpeg_engine.vhd:238:11:@2795ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@2825ns:(report note): RET
+gpeg_engine.vhd:539:13:@2825ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=3
+gpeg_engine.vhd:238:11:@2855ns:(report note): LOAD_OP: bc_offset=716 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@2905ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@2925ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@2925ns:(report note): EXEC done: opcode=0x00040393 bc_off=716 inp_off=0 v_failed=false sp=4
+gpeg_engine.vhd:238:11:@2955ns:(report note): LOAD_OP: bc_offset=724 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@3005ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@3025ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@3025ns:(report note): EXEC done: opcode=0x00040393 bc_off=724 inp_off=0 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@3055ns:(report note): LOAD_OP: bc_offset=732 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@3105ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@3125ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@3125ns:(report note): EXEC done: opcode=0x00040393 bc_off=732 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@3155ns:(report note): LOAD_OP: bc_offset=740 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@3205ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@3225ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@3225ns:(report note): EXEC done: opcode=0x00040393 bc_off=740 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@3255ns:(report note): LOAD_OP: bc_offset=748 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@3305ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@3325ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@3325ns:(report note): EXEC done: opcode=0x00040393 bc_off=748 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@3355ns:(report note): LOAD_OP: bc_offset=756 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@3405ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@3425ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@3425ns:(report note): EXEC done: opcode=0x00040393 bc_off=756 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@3455ns:(report note): LOAD_OP: bc_offset=764 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@3505ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@3525ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@3525ns:(report note): EXEC done: opcode=0x00040393 bc_off=764 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@3555ns:(report note): LOAD_OP: bc_offset=772 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@3605ns:(report note): CALL
+gpeg_engine.vhd:420:1:@3625ns:(report note): CALL
+gpeg_engine.vhd:539:13:@3625ns:(report note): EXEC done: opcode=0x00040382 bc_off=772 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@3655ns:(report note): LOAD_OP: bc_offset=896 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@3705ns:(report note): CALL
+gpeg_engine.vhd:420:1:@3725ns:(report note): CALL
+gpeg_engine.vhd:539:13:@3725ns:(report note): EXEC done: opcode=0x00040382 bc_off=896 inp_off=0 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@3755ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@3805ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@3825ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@3825ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@3855ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
 gpeg_engine.vhd:445:1:@3905ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@3905ns:(report note): EXEC done: opcode=0x00040393 bc_off=376 inp_off=15 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@3935ns:(report note): LOAD_OP: bc_offset=384 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@3985ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@3925ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@3925ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@3955ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
 gpeg_engine.vhd:445:1:@4005ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@4005ns:(report note): EXEC done: opcode=0x00040393 bc_off=384 inp_off=15 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@4035ns:(report note): LOAD_OP: bc_offset=392 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@4115ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@4115ns:(report note): EXEC done: opcode=0x000403D7 bc_off=392 inp_off=15 v_failed=true sp=4
-gpeg_engine.vhd:238:11:@4175ns:(report note): LOAD_OP: bc_offset=404 opcode=0x000003E4 isize=4
-gpeg_engine.vhd:366:1:@4195ns:(report note): ANY
-gpeg_engine.vhd:539:13:@4195ns:(report note): EXEC done: opcode=0x000003E4 bc_off=404 inp_off=15 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@4225ns:(report note): LOAD_OP: bc_offset=408 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@4285ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@4305ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@4305ns:(report note): EXEC done: opcode=0x000403B4 bc_off=408 inp_off=16 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@4335ns:(report note): LOAD_OP: bc_offset=384 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@4385ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@4405ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@4405ns:(report note): EXEC done: opcode=0x00040393 bc_off=384 inp_off=16 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@4435ns:(report note): LOAD_OP: bc_offset=392 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@4515ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@4515ns:(report note): EXEC done: opcode=0x000403D7 bc_off=392 inp_off=16 v_failed=true sp=4
-gpeg_engine.vhd:238:11:@4575ns:(report note): LOAD_OP: bc_offset=404 opcode=0x000003E4 isize=4
-gpeg_engine.vhd:366:1:@4595ns:(report note): ANY
-gpeg_engine.vhd:539:13:@4595ns:(report note): EXEC done: opcode=0x000003E4 bc_off=404 inp_off=16 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@4625ns:(report note): LOAD_OP: bc_offset=408 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@4685ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@4705ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@4705ns:(report note): EXEC done: opcode=0x000403B4 bc_off=408 inp_off=17 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@4735ns:(report note): LOAD_OP: bc_offset=384 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@4785ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@4805ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@4805ns:(report note): EXEC done: opcode=0x00040393 bc_off=384 inp_off=17 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@4835ns:(report note): LOAD_OP: bc_offset=392 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@4915ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@4915ns:(report note): EXEC done: opcode=0x000403D7 bc_off=392 inp_off=17 v_failed=true sp=4
-gpeg_engine.vhd:238:11:@4975ns:(report note): LOAD_OP: bc_offset=404 opcode=0x000003E4 isize=4
-gpeg_engine.vhd:366:1:@4995ns:(report note): ANY
-gpeg_engine.vhd:539:13:@4995ns:(report note): EXEC done: opcode=0x000003E4 bc_off=404 inp_off=17 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@5025ns:(report note): LOAD_OP: bc_offset=408 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@5085ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@5105ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@5105ns:(report note): EXEC done: opcode=0x000403B4 bc_off=408 inp_off=18 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@5135ns:(report note): LOAD_OP: bc_offset=384 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@5185ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@5205ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@5205ns:(report note): EXEC done: opcode=0x00040393 bc_off=384 inp_off=18 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@5235ns:(report note): LOAD_OP: bc_offset=392 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@5315ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@5315ns:(report note): EXEC done: opcode=0x000403D7 bc_off=392 inp_off=18 v_failed=true sp=4
-gpeg_engine.vhd:238:11:@5375ns:(report note): LOAD_OP: bc_offset=404 opcode=0x000003E4 isize=4
-gpeg_engine.vhd:366:1:@5395ns:(report note): ANY
-gpeg_engine.vhd:539:13:@5395ns:(report note): EXEC done: opcode=0x000003E4 bc_off=404 inp_off=18 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@5425ns:(report note): LOAD_OP: bc_offset=408 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@5485ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@5505ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@5505ns:(report note): EXEC done: opcode=0x000403B4 bc_off=408 inp_off=19 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@5535ns:(report note): LOAD_OP: bc_offset=384 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@5585ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@5605ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@5605ns:(report note): EXEC done: opcode=0x00040393 bc_off=384 inp_off=19 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@5635ns:(report note): LOAD_OP: bc_offset=392 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@5715ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@5715ns:(report note): EXEC done: opcode=0x000403D7 bc_off=392 inp_off=19 v_failed=true sp=4
-gpeg_engine.vhd:238:11:@5775ns:(report note): LOAD_OP: bc_offset=404 opcode=0x000003E4 isize=4
-gpeg_engine.vhd:366:1:@5795ns:(report note): ANY
-gpeg_engine.vhd:539:13:@5795ns:(report note): EXEC done: opcode=0x000003E4 bc_off=404 inp_off=19 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@5825ns:(report note): LOAD_OP: bc_offset=408 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@5885ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@5905ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@5905ns:(report note): EXEC done: opcode=0x000403B4 bc_off=408 inp_off=20 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@5935ns:(report note): LOAD_OP: bc_offset=384 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@5985ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@6005ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@6005ns:(report note): EXEC done: opcode=0x00040393 bc_off=384 inp_off=20 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@6035ns:(report note): LOAD_OP: bc_offset=392 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@6115ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@6115ns:(report note): EXEC done: opcode=0x000403D7 bc_off=392 inp_off=20 v_failed=false sp=4
-gpeg_engine.vhd:238:11:@6145ns:(report note): LOAD_OP: bc_offset=400 opcode=0x00000390 isize=4
-gpeg_engine.vhd:508:1:@6175ns:(report note): FAILTWICE
-gpeg_engine.vhd:539:13:@6175ns:(report note): EXEC done: opcode=0x00000390 bc_off=400 inp_off=21 v_failed=true sp=3
-gpeg_engine.vhd:238:11:@6235ns:(report note): LOAD_OP: bc_offset=416 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@6315ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@6315ns:(report note): EXEC done: opcode=0x000403D7 bc_off=416 inp_off=20 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@6345ns:(report note): LOAD_OP: bc_offset=424 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@6375ns:(report note): RET
-gpeg_engine.vhd:539:13:@6375ns:(report note): EXEC done: opcode=0x000003A0 bc_off=424 inp_off=21 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@6405ns:(report note): LOAD_OP: bc_offset=56 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@6455ns:(report note): CALL
-gpeg_engine.vhd:420:1:@6475ns:(report note): CALL
-gpeg_engine.vhd:539:13:@6475ns:(report note): EXEC done: opcode=0x00040382 bc_off=56 inp_off=21 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@6505ns:(report note): LOAD_OP: bc_offset=116 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@6585ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@6585ns:(report note): EXEC done: opcode=0x000403D7 bc_off=116 inp_off=21 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@6615ns:(report note): LOAD_OP: bc_offset=124 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@6645ns:(report note): RET
-gpeg_engine.vhd:539:13:@6645ns:(report note): EXEC done: opcode=0x000003A0 bc_off=124 inp_off=22 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@6675ns:(report note): LOAD_OP: bc_offset=64 opcode=0x00040382 isize=8
+gpeg_engine.vhd:445:1:@4025ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@4025ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@4055ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@4105ns:(report note): CALL
+gpeg_engine.vhd:420:1:@4125ns:(report note): CALL
+gpeg_engine.vhd:539:13:@4125ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@4155ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@4235ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@4235ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=16
+gpeg_engine.vhd:238:11:@4315ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@4365ns:(report note): CALL
+gpeg_engine.vhd:420:1:@4385ns:(report note): CALL
+gpeg_engine.vhd:539:13:@4385ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@4415ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@4495ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@4495ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@4575ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@4625ns:(report note): CALL
+gpeg_engine.vhd:420:1:@4645ns:(report note): CALL
+gpeg_engine.vhd:539:13:@4645ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@4675ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@4755ns:(report note): SET
+gpeg_engine.vhd:539:13:@4755ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@4835ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@4865ns:(report note): RET
+gpeg_engine.vhd:539:13:@4865ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@4895ns:(report note): LOAD_OP: bc_offset=904 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@4975ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@4975ns:(report note): EXEC done: opcode=0x000403D7 bc_off=904 inp_off=0 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@5055ns:(report note): LOAD_OP: bc_offset=788 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@5105ns:(report note): CALL
+gpeg_engine.vhd:420:1:@5125ns:(report note): CALL
+gpeg_engine.vhd:539:13:@5125ns:(report note): EXEC done: opcode=0x00040382 bc_off=788 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@5155ns:(report note): LOAD_OP: bc_offset=1016 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@5205ns:(report note): CALL
+gpeg_engine.vhd:420:1:@5225ns:(report note): CALL
+gpeg_engine.vhd:539:13:@5225ns:(report note): EXEC done: opcode=0x00040382 bc_off=1016 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@5255ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@5305ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@5325ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@5325ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@5355ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@5405ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@5425ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@5425ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@5455ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@5505ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@5525ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@5525ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@5555ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@5605ns:(report note): CALL
+gpeg_engine.vhd:420:1:@5625ns:(report note): CALL
+gpeg_engine.vhd:539:13:@5625ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@5655ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@5735ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@5735ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@5815ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@5865ns:(report note): CALL
+gpeg_engine.vhd:420:1:@5885ns:(report note): CALL
+gpeg_engine.vhd:539:13:@5885ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@5915ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@5995ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@5995ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@6075ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@6125ns:(report note): CALL
+gpeg_engine.vhd:420:1:@6145ns:(report note): CALL
+gpeg_engine.vhd:539:13:@6145ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@6175ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@6255ns:(report note): SET
+gpeg_engine.vhd:539:13:@6255ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@6335ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@6365ns:(report note): RET
+gpeg_engine.vhd:539:13:@6365ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@6395ns:(report note): LOAD_OP: bc_offset=1024 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@6475ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@6475ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1024 inp_off=0 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@6555ns:(report note): LOAD_OP: bc_offset=804 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@6605ns:(report note): CALL
+gpeg_engine.vhd:420:1:@6625ns:(report note): CALL
+gpeg_engine.vhd:539:13:@6625ns:(report note): EXEC done: opcode=0x00040382 bc_off=804 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@6655ns:(report note): LOAD_OP: bc_offset=1356 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@6705ns:(report note): CALL
 gpeg_engine.vhd:420:1:@6725ns:(report note): CALL
-gpeg_engine.vhd:420:1:@6745ns:(report note): CALL
-gpeg_engine.vhd:539:13:@6745ns:(report note): EXEC done: opcode=0x00040382 bc_off=64 inp_off=22 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@6775ns:(report note): LOAD_OP: bc_offset=428 opcode=0x00040393 isize=8
+gpeg_engine.vhd:539:13:@6725ns:(report note): EXEC done: opcode=0x00040382 bc_off=1356 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@6755ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@6805ns:(report note): CATCH
 gpeg_engine.vhd:445:1:@6825ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@6845ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@6845ns:(report note): EXEC done: opcode=0x00040393 bc_off=428 inp_off=22 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@6875ns:(report note): LOAD_OP: bc_offset=436 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@6955ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@6955ns:(report note): EXEC done: opcode=0x000403D7 bc_off=436 inp_off=22 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@6985ns:(report note): LOAD_OP: bc_offset=444 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@7065ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@7065ns:(report note): EXEC done: opcode=0x000403D7 bc_off=444 inp_off=23 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@7095ns:(report note): LOAD_OP: bc_offset=452 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@7175ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@7175ns:(report note): EXEC done: opcode=0x000403D7 bc_off=452 inp_off=24 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@7205ns:(report note): LOAD_OP: bc_offset=460 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@7285ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@7285ns:(report note): EXEC done: opcode=0x000403D7 bc_off=460 inp_off=25 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@7315ns:(report note): LOAD_OP: bc_offset=468 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@7395ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@7395ns:(report note): EXEC done: opcode=0x000403D7 bc_off=468 inp_off=26 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@7425ns:(report note): LOAD_OP: bc_offset=476 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@7505ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@7505ns:(report note): EXEC done: opcode=0x000403D7 bc_off=476 inp_off=27 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@7535ns:(report note): LOAD_OP: bc_offset=484 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@7615ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@7615ns:(report note): EXEC done: opcode=0x000403D7 bc_off=484 inp_off=28 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@7645ns:(report note): LOAD_OP: bc_offset=492 opcode=0x00040336 isize=8
-gpeg_engine.vhd:457:1:@7705ns:(report note): COMMIT
-gpeg_engine.vhd:539:13:@7705ns:(report note): EXEC done: opcode=0x00040336 bc_off=492 inp_off=29 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@7735ns:(report note): LOAD_OP: bc_offset=540 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@7765ns:(report note): RET
-gpeg_engine.vhd:539:13:@7765ns:(report note): EXEC done: opcode=0x000003A0 bc_off=540 inp_off=29 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@7795ns:(report note): LOAD_OP: bc_offset=72 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@7845ns:(report note): CALL
-gpeg_engine.vhd:420:1:@7865ns:(report note): CALL
-gpeg_engine.vhd:539:13:@7865ns:(report note): EXEC done: opcode=0x00040382 bc_off=72 inp_off=29 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@7895ns:(report note): LOAD_OP: bc_offset=116 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@7975ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@7975ns:(report note): EXEC done: opcode=0x000403D7 bc_off=116 inp_off=29 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@8005ns:(report note): LOAD_OP: bc_offset=124 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@8035ns:(report note): RET
-gpeg_engine.vhd:539:13:@8035ns:(report note): EXEC done: opcode=0x000003A0 bc_off=124 inp_off=30 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@8065ns:(report note): LOAD_OP: bc_offset=80 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@8115ns:(report note): CALL
-gpeg_engine.vhd:420:1:@8135ns:(report note): CALL
-gpeg_engine.vhd:539:13:@8135ns:(report note): EXEC done: opcode=0x00040382 bc_off=80 inp_off=30 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@8165ns:(report note): LOAD_OP: bc_offset=544 opcode=0x00080356 isize=12
-gpeg_engine.vhd:491:1:@8245ns:(report note): COUNTER
-gpeg_engine.vhd:238:11:@8285ns:(report note): LOAD_OP: bc_offset=556 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@8365ns:(report note): SET
-gpeg_engine.vhd:539:13:@8365ns:(report note): EXEC done: opcode=0x002003CA bc_off=556 inp_off=30 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@8395ns:(report note): LOAD_OP: bc_offset=592 opcode=0x00080321 isize=12
-gpeg_engine.vhd:495:1:@8475ns:(report note): CONDJUMP
-gpeg_engine.vhd:238:11:@8525ns:(report note): LOAD_OP: bc_offset=556 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@8605ns:(report note): SET
-gpeg_engine.vhd:539:13:@8605ns:(report note): EXEC done: opcode=0x002003CA bc_off=556 inp_off=31 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@8635ns:(report note): LOAD_OP: bc_offset=592 opcode=0x00080321 isize=12
-gpeg_engine.vhd:495:1:@8715ns:(report note): CONDJUMP
-gpeg_engine.vhd:238:11:@8765ns:(report note): LOAD_OP: bc_offset=556 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@8845ns:(report note): SET
-gpeg_engine.vhd:539:13:@8845ns:(report note): EXEC done: opcode=0x002003CA bc_off=556 inp_off=32 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@8875ns:(report note): LOAD_OP: bc_offset=592 opcode=0x00080321 isize=12
-gpeg_engine.vhd:495:1:@8955ns:(report note): CONDJUMP
-gpeg_engine.vhd:238:11:@9005ns:(report note): LOAD_OP: bc_offset=556 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@9085ns:(report note): SET
-gpeg_engine.vhd:539:13:@9085ns:(report note): EXEC done: opcode=0x002003CA bc_off=556 inp_off=33 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@9115ns:(report note): LOAD_OP: bc_offset=592 opcode=0x00080321 isize=12
-gpeg_engine.vhd:495:1:@9195ns:(report note): CONDJUMP
-gpeg_engine.vhd:238:11:@9245ns:(report note): LOAD_OP: bc_offset=556 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@9325ns:(report note): SET
-gpeg_engine.vhd:539:13:@9325ns:(report note): EXEC done: opcode=0x002003CA bc_off=556 inp_off=34 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@9355ns:(report note): LOAD_OP: bc_offset=592 opcode=0x00080321 isize=12
-gpeg_engine.vhd:495:1:@9435ns:(report note): CONDJUMP
-gpeg_engine.vhd:238:11:@9495ns:(report note): LOAD_OP: bc_offset=604 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@9525ns:(report note): RET
-gpeg_engine.vhd:539:13:@9525ns:(report note): EXEC done: opcode=0x000003A0 bc_off=604 inp_off=35 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@9555ns:(report note): LOAD_OP: bc_offset=88 opcode=0x00040382 isize=8
+gpeg_engine.vhd:539:13:@6825ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@6855ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@6905ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@6925ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@6925ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@6955ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@7005ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@7025ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@7025ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@7055ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@7105ns:(report note): CALL
+gpeg_engine.vhd:420:1:@7125ns:(report note): CALL
+gpeg_engine.vhd:539:13:@7125ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@7155ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@7235ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@7235ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@7315ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@7365ns:(report note): CALL
+gpeg_engine.vhd:420:1:@7385ns:(report note): CALL
+gpeg_engine.vhd:539:13:@7385ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@7415ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@7495ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@7495ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@7575ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@7625ns:(report note): CALL
+gpeg_engine.vhd:420:1:@7645ns:(report note): CALL
+gpeg_engine.vhd:539:13:@7645ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@7675ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@7755ns:(report note): SET
+gpeg_engine.vhd:539:13:@7755ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@7835ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@7865ns:(report note): RET
+gpeg_engine.vhd:539:13:@7865ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@7895ns:(report note): LOAD_OP: bc_offset=1364 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@7945ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@7965ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@7965ns:(report note): EXEC done: opcode=0x00040393 bc_off=1364 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@7995ns:(report note): LOAD_OP: bc_offset=1372 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@8075ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@8075ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1372 inp_off=0 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@8135ns:(report note): LOAD_OP: bc_offset=1388 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@8185ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@8205ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@8205ns:(report note): EXEC done: opcode=0x00040393 bc_off=1388 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@8235ns:(report note): LOAD_OP: bc_offset=1396 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@8315ns:(report note): SET
+gpeg_engine.vhd:539:13:@8315ns:(report note): EXEC done: opcode=0x002003CA bc_off=1396 inp_off=0 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@8375ns:(report note): LOAD_OP: bc_offset=1440 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@8455ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@8455ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1440 inp_off=0 v_failed=true sp=9
+gpeg_engine.vhd:238:11:@8535ns:(report note): LOAD_OP: bc_offset=820 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@8585ns:(report note): CALL
+gpeg_engine.vhd:420:1:@8605ns:(report note): CALL
+gpeg_engine.vhd:539:13:@8605ns:(report note): EXEC done: opcode=0x00040382 bc_off=820 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@8635ns:(report note): LOAD_OP: bc_offset=1232 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@8685ns:(report note): CALL
+gpeg_engine.vhd:420:1:@8705ns:(report note): CALL
+gpeg_engine.vhd:539:13:@8705ns:(report note): EXEC done: opcode=0x00040382 bc_off=1232 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@8735ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@8785ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@8805ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@8805ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@8835ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@8885ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@8905ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@8905ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@8935ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@8985ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@9005ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@9005ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@9035ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@9085ns:(report note): CALL
+gpeg_engine.vhd:420:1:@9105ns:(report note): CALL
+gpeg_engine.vhd:539:13:@9105ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@9135ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@9215ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@9215ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@9295ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@9345ns:(report note): CALL
+gpeg_engine.vhd:420:1:@9365ns:(report note): CALL
+gpeg_engine.vhd:539:13:@9365ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@9395ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@9475ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@9475ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@9555ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
 gpeg_engine.vhd:420:1:@9605ns:(report note): CALL
 gpeg_engine.vhd:420:1:@9625ns:(report note): CALL
-gpeg_engine.vhd:539:13:@9625ns:(report note): EXEC done: opcode=0x00040382 bc_off=88 inp_off=35 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@9655ns:(report note): LOAD_OP: bc_offset=116 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@9735ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@9735ns:(report note): EXEC done: opcode=0x000403D7 bc_off=116 inp_off=35 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@9765ns:(report note): LOAD_OP: bc_offset=124 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@9795ns:(report note): RET
-gpeg_engine.vhd:539:13:@9795ns:(report note): EXEC done: opcode=0x000003A0 bc_off=124 inp_off=36 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@9825ns:(report note): LOAD_OP: bc_offset=96 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@9875ns:(report note): CALL
-gpeg_engine.vhd:420:1:@9895ns:(report note): CALL
-gpeg_engine.vhd:539:13:@9895ns:(report note): EXEC done: opcode=0x00040382 bc_off=96 inp_off=36 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@9925ns:(report note): LOAD_OP: bc_offset=608 opcode=0x0004039C isize=8
-gpeg_engine.vhd:518:1:@9975ns:(report note): OPENCAPTURE
-gpeg_engine.vhd:539:13:@9975ns:(report note): EXEC done: opcode=0x0004039C bc_off=608 inp_off=36 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@10005ns:(report note): LOAD_OP: bc_offset=616 opcode=0x00040393 isize=8
-gpeg_engine.vhd:445:1:@10055ns:(report note): CATCH
-gpeg_engine.vhd:445:1:@10075ns:(report note): CATCH
-gpeg_engine.vhd:539:13:@10075ns:(report note): EXEC done: opcode=0x00040393 bc_off=616 inp_off=36 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10105ns:(report note): LOAD_OP: bc_offset=624 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@10185ns:(report note): SET
-gpeg_engine.vhd:539:13:@10185ns:(report note): EXEC done: opcode=0x002003CA bc_off=624 inp_off=36 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10215ns:(report note): LOAD_OP: bc_offset=660 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@10275ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@10295ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@10295ns:(report note): EXEC done: opcode=0x000403B4 bc_off=660 inp_off=37 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10325ns:(report note): LOAD_OP: bc_offset=624 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@10405ns:(report note): SET
-gpeg_engine.vhd:539:13:@10405ns:(report note): EXEC done: opcode=0x002003CA bc_off=624 inp_off=37 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10435ns:(report note): LOAD_OP: bc_offset=660 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@10495ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@10515ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@10515ns:(report note): EXEC done: opcode=0x000403B4 bc_off=660 inp_off=38 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10545ns:(report note): LOAD_OP: bc_offset=624 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@10625ns:(report note): SET
-gpeg_engine.vhd:539:13:@10625ns:(report note): EXEC done: opcode=0x002003CA bc_off=624 inp_off=38 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10655ns:(report note): LOAD_OP: bc_offset=660 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@10715ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@10735ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@10735ns:(report note): EXEC done: opcode=0x000403B4 bc_off=660 inp_off=39 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10765ns:(report note): LOAD_OP: bc_offset=624 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@10845ns:(report note): SET
-gpeg_engine.vhd:539:13:@10845ns:(report note): EXEC done: opcode=0x002003CA bc_off=624 inp_off=39 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10875ns:(report note): LOAD_OP: bc_offset=660 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@10935ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@10955ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@10955ns:(report note): EXEC done: opcode=0x000403B4 bc_off=660 inp_off=40 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@10985ns:(report note): LOAD_OP: bc_offset=624 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@11065ns:(report note): SET
-gpeg_engine.vhd:539:13:@11065ns:(report note): EXEC done: opcode=0x002003CA bc_off=624 inp_off=40 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@11095ns:(report note): LOAD_OP: bc_offset=660 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@11155ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@11175ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@11175ns:(report note): EXEC done: opcode=0x000403B4 bc_off=660 inp_off=41 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@11205ns:(report note): LOAD_OP: bc_offset=624 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@11285ns:(report note): SET
-gpeg_engine.vhd:539:13:@11285ns:(report note): EXEC done: opcode=0x002003CA bc_off=624 inp_off=41 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@11315ns:(report note): LOAD_OP: bc_offset=660 opcode=0x000403B4 isize=8
-gpeg_engine.vhd:475:1:@11375ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:475:1:@11395ns:(report note): PARTIALCOMMIT
-gpeg_engine.vhd:539:13:@11395ns:(report note): EXEC done: opcode=0x000403B4 bc_off=660 inp_off=42 v_failed=false sp=3
-gpeg_engine.vhd:238:11:@11425ns:(report note): LOAD_OP: bc_offset=624 opcode=0x002003CA isize=36
-gpeg_engine.vhd:407:1:@11505ns:(report note): SET
-gpeg_engine.vhd:539:13:@11505ns:(report note): EXEC done: opcode=0x002003CA bc_off=624 inp_off=42 v_failed=true sp=3
-gpeg_engine.vhd:238:11:@11565ns:(report note): LOAD_OP: bc_offset=668 opcode=0x00040300 isize=8
-gpeg_engine.vhd:526:1:@11615ns:(report note): CLOSECAPTURE
-gpeg_engine.vhd:539:13:@11615ns:(report note): EXEC done: opcode=0x00040300 bc_off=668 inp_off=42 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@11645ns:(report note): LOAD_OP: bc_offset=676 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@11675ns:(report note): RET
-gpeg_engine.vhd:539:13:@11675ns:(report note): EXEC done: opcode=0x000003A0 bc_off=676 inp_off=42 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@11705ns:(report note): LOAD_OP: bc_offset=104 opcode=0x00040382 isize=8
-gpeg_engine.vhd:420:1:@11755ns:(report note): CALL
-gpeg_engine.vhd:420:1:@11775ns:(report note): CALL
-gpeg_engine.vhd:539:13:@11775ns:(report note): EXEC done: opcode=0x00040382 bc_off=104 inp_off=42 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@11805ns:(report note): LOAD_OP: bc_offset=116 opcode=0x000403D7 isize=8
-gpeg_engine.vhd:375:1:@11885ns:(report note): CHAR
-gpeg_engine.vhd:539:13:@11885ns:(report note): EXEC done: opcode=0x000403D7 bc_off=116 inp_off=42 v_failed=false sp=2
-gpeg_engine.vhd:238:11:@11915ns:(report note): LOAD_OP: bc_offset=124 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@11945ns:(report note): RET
-gpeg_engine.vhd:539:13:@11945ns:(report note): EXEC done: opcode=0x000003A0 bc_off=124 inp_off=43 v_failed=false sp=1
-gpeg_engine.vhd:238:11:@11975ns:(report note): LOAD_OP: bc_offset=112 opcode=0x000003A0 isize=4
-gpeg_engine.vhd:435:1:@12005ns:(report note): RET
-gpeg_engine.vhd:539:13:@12005ns:(report note): EXEC done: opcode=0x000003A0 bc_off=112 inp_off=43 v_failed=false sp=0
-gpeg_engine.vhd:238:11:@12035ns:(report note): LOAD_OP: bc_offset=8 opcode=0x000400D8 isize=8
-gpeg_engine.vhd:361:1:@12085ns:(report note): END
-gpeg_engine_tb.vhd:345:7:@12085ns:(report note): TEST1 PASSED
-gpeg_engine_tb.vhd:352:5:@12195ns:(report note): ALL TESTS COMPLETE
-simulation stopped @12195ns
+gpeg_engine.vhd:539:13:@9625ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@9655ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@9735ns:(report note): SET
+gpeg_engine.vhd:539:13:@9735ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@9815ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@9845ns:(report note): RET
+gpeg_engine.vhd:539:13:@9845ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@9875ns:(report note): LOAD_OP: bc_offset=1240 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@9925ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@9945ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@9945ns:(report note): EXEC done: opcode=0x00040393 bc_off=1240 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@9975ns:(report note): LOAD_OP: bc_offset=1248 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@10055ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@10055ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1248 inp_off=0 v_failed=true sp=9
+gpeg_engine.vhd:238:11:@10115ns:(report note): LOAD_OP: bc_offset=1264 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@10195ns:(report note): SET
+gpeg_engine.vhd:539:13:@10195ns:(report note): EXEC done: opcode=0x002003CA bc_off=1264 inp_off=0 v_failed=true sp=8
+gpeg_engine.vhd:238:11:@10275ns:(report note): LOAD_OP: bc_offset=836 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@10325ns:(report note): CALL
+gpeg_engine.vhd:420:1:@10345ns:(report note): CALL
+gpeg_engine.vhd:539:13:@10345ns:(report note): EXEC done: opcode=0x00040382 bc_off=836 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@10375ns:(report note): LOAD_OP: bc_offset=1540 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@10425ns:(report note): CALL
+gpeg_engine.vhd:420:1:@10445ns:(report note): CALL
+gpeg_engine.vhd:539:13:@10445ns:(report note): EXEC done: opcode=0x00040382 bc_off=1540 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@10475ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@10525ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@10545ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@10545ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@10575ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@10625ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@10645ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@10645ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@10675ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@10725ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@10745ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@10745ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@10775ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@10825ns:(report note): CALL
+gpeg_engine.vhd:420:1:@10845ns:(report note): CALL
+gpeg_engine.vhd:539:13:@10845ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@10875ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@10955ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@10955ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@11035ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@11085ns:(report note): CALL
+gpeg_engine.vhd:420:1:@11105ns:(report note): CALL
+gpeg_engine.vhd:539:13:@11105ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@11135ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@11215ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@11215ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@11295ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@11345ns:(report note): CALL
+gpeg_engine.vhd:420:1:@11365ns:(report note): CALL
+gpeg_engine.vhd:539:13:@11365ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@11395ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@11475ns:(report note): SET
+gpeg_engine.vhd:539:13:@11475ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@11555ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@11585ns:(report note): RET
+gpeg_engine.vhd:539:13:@11585ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@11615ns:(report note): LOAD_OP: bc_offset=1548 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@11665ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@11685ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@11685ns:(report note): EXEC done: opcode=0x00040393 bc_off=1548 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@11715ns:(report note): LOAD_OP: bc_offset=1556 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@11795ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@11795ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1556 inp_off=0 v_failed=true sp=8
+gpeg_engine.vhd:238:11:@11855ns:(report note): LOAD_OP: bc_offset=1596 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@11935ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@11935ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1596 inp_off=0 v_failed=true sp=7
+gpeg_engine.vhd:238:11:@12015ns:(report note): LOAD_OP: bc_offset=852 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@12065ns:(report note): CALL
+gpeg_engine.vhd:420:1:@12085ns:(report note): CALL
+gpeg_engine.vhd:539:13:@12085ns:(report note): EXEC done: opcode=0x00040382 bc_off=852 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@12115ns:(report note): LOAD_OP: bc_offset=1640 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@12165ns:(report note): CALL
+gpeg_engine.vhd:420:1:@12185ns:(report note): CALL
+gpeg_engine.vhd:539:13:@12185ns:(report note): EXEC done: opcode=0x00040382 bc_off=1640 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@12215ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@12265ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@12285ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@12285ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@12315ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@12365ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@12385ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@12385ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@12415ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@12465ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@12485ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@12485ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@12515ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@12565ns:(report note): CALL
+gpeg_engine.vhd:420:1:@12585ns:(report note): CALL
+gpeg_engine.vhd:539:13:@12585ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@12615ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@12695ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@12695ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@12775ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@12825ns:(report note): CALL
+gpeg_engine.vhd:420:1:@12845ns:(report note): CALL
+gpeg_engine.vhd:539:13:@12845ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@12875ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@12955ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@12955ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@13035ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@13085ns:(report note): CALL
+gpeg_engine.vhd:420:1:@13105ns:(report note): CALL
+gpeg_engine.vhd:539:13:@13105ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@13135ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@13215ns:(report note): SET
+gpeg_engine.vhd:539:13:@13215ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=9
+gpeg_engine.vhd:238:11:@13295ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@13325ns:(report note): RET
+gpeg_engine.vhd:539:13:@13325ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@13355ns:(report note): LOAD_OP: bc_offset=1648 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@13435ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@13435ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1648 inp_off=0 v_failed=true sp=6
+gpeg_engine.vhd:238:11:@13515ns:(report note): LOAD_OP: bc_offset=868 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@13565ns:(report note): CALL
+gpeg_engine.vhd:420:1:@13585ns:(report note): CALL
+gpeg_engine.vhd:539:13:@13585ns:(report note): EXEC done: opcode=0x00040382 bc_off=868 inp_off=0 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@13615ns:(report note): LOAD_OP: bc_offset=424 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@13665ns:(report note): CALL
+gpeg_engine.vhd:420:1:@13685ns:(report note): CALL
+gpeg_engine.vhd:539:13:@13685ns:(report note): EXEC done: opcode=0x00040382 bc_off=424 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@13715ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@13765ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@13785ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@13785ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@13815ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@13865ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@13885ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@13885ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@13915ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@13965ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@13985ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@13985ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@14015ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@14065ns:(report note): CALL
+gpeg_engine.vhd:420:1:@14085ns:(report note): CALL
+gpeg_engine.vhd:539:13:@14085ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@14115ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@14195ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@14195ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@14275ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@14325ns:(report note): CALL
+gpeg_engine.vhd:420:1:@14345ns:(report note): CALL
+gpeg_engine.vhd:539:13:@14345ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@14375ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@14455ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@14455ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=9
+gpeg_engine.vhd:238:11:@14535ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@14585ns:(report note): CALL
+gpeg_engine.vhd:420:1:@14605ns:(report note): CALL
+gpeg_engine.vhd:539:13:@14605ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@14635ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@14715ns:(report note): SET
+gpeg_engine.vhd:539:13:@14715ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=8
+gpeg_engine.vhd:238:11:@14795ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@14825ns:(report note): RET
+gpeg_engine.vhd:539:13:@14825ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@14855ns:(report note): LOAD_OP: bc_offset=432 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@14905ns:(report note): CALL
+gpeg_engine.vhd:420:1:@14925ns:(report note): CALL
+gpeg_engine.vhd:539:13:@14925ns:(report note): EXEC done: opcode=0x00040382 bc_off=432 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@14955ns:(report note): LOAD_OP: bc_offset=1684 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@15005ns:(report note): CALL
+gpeg_engine.vhd:420:1:@15025ns:(report note): CALL
+gpeg_engine.vhd:539:13:@15025ns:(report note): EXEC done: opcode=0x00040382 bc_off=1684 inp_off=0 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@15055ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@15105ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@15125ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@15125ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=0 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@15155ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@15205ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@15225ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@15225ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@15255ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@15305ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@15325ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@15325ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@15355ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@15405ns:(report note): CALL
+gpeg_engine.vhd:420:1:@15425ns:(report note): CALL
+gpeg_engine.vhd:539:13:@15425ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=0 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@15455ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@15535ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@15535ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=0 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@15615ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@15665ns:(report note): CALL
+gpeg_engine.vhd:420:1:@15685ns:(report note): CALL
+gpeg_engine.vhd:539:13:@15685ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=0 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@15715ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@15795ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@15795ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=0 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@15875ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@15925ns:(report note): CALL
+gpeg_engine.vhd:420:1:@15945ns:(report note): CALL
+gpeg_engine.vhd:539:13:@15945ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=0 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@15975ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@16055ns:(report note): SET
+gpeg_engine.vhd:539:13:@16055ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=0 v_failed=true sp=9
+gpeg_engine.vhd:238:11:@16135ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@16165ns:(report note): RET
+gpeg_engine.vhd:539:13:@16165ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@16195ns:(report note): LOAD_OP: bc_offset=1692 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@16275ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@16275ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1692 inp_off=0 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@16305ns:(report note): LOAD_OP: bc_offset=1700 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@16335ns:(report note): RET
+gpeg_engine.vhd:539:13:@16335ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1700 inp_off=1 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@16365ns:(report note): LOAD_OP: bc_offset=440 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@16415ns:(report note): CALL
+gpeg_engine.vhd:420:1:@16435ns:(report note): CALL
+gpeg_engine.vhd:539:13:@16435ns:(report note): EXEC done: opcode=0x00040382 bc_off=440 inp_off=1 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@16465ns:(report note): LOAD_OP: bc_offset=460 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@16515ns:(report note): CALL
+gpeg_engine.vhd:420:1:@16535ns:(report note): CALL
+gpeg_engine.vhd:539:13:@16535ns:(report note): EXEC done: opcode=0x00040382 bc_off=460 inp_off=1 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@16565ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@16615ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@16635ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@16635ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=1 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@16665ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@16715ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@16735ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@16735ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=1 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@16765ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@16815ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@16835ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@16835ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=1 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@16865ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@16915ns:(report note): CALL
+gpeg_engine.vhd:420:1:@16935ns:(report note): CALL
+gpeg_engine.vhd:539:13:@16935ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=1 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@16965ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@17045ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@17045ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=1 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@17125ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@17175ns:(report note): CALL
+gpeg_engine.vhd:420:1:@17195ns:(report note): CALL
+gpeg_engine.vhd:539:13:@17195ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=1 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@17225ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@17305ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@17305ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=1 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@17385ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@17435ns:(report note): CALL
+gpeg_engine.vhd:420:1:@17455ns:(report note): CALL
+gpeg_engine.vhd:539:13:@17455ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=1 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@17485ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@17565ns:(report note): SET
+gpeg_engine.vhd:539:13:@17565ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=1 v_failed=true sp=9
+gpeg_engine.vhd:238:11:@17645ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@17675ns:(report note): RET
+gpeg_engine.vhd:539:13:@17675ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=1 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@17705ns:(report note): LOAD_OP: bc_offset=468 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@17755ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@17775ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@17775ns:(report note): EXEC done: opcode=0x00040393 bc_off=468 inp_off=1 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@17805ns:(report note): LOAD_OP: bc_offset=476 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@17855ns:(report note): CALL
+gpeg_engine.vhd:420:1:@17875ns:(report note): CALL
+gpeg_engine.vhd:539:13:@17875ns:(report note): EXEC done: opcode=0x00040382 bc_off=476 inp_off=1 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@17905ns:(report note): LOAD_OP: bc_offset=496 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@17955ns:(report note): CALL
+gpeg_engine.vhd:420:1:@17975ns:(report note): CALL
+gpeg_engine.vhd:539:13:@17975ns:(report note): EXEC done: opcode=0x00040382 bc_off=496 inp_off=1 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@18005ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@18055ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@18075ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@18075ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=1 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@18105ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@18155ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@18175ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@18175ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=1 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@18205ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@18255ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@18275ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@18275ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=1 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@18305ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@18355ns:(report note): CALL
+gpeg_engine.vhd:420:1:@18375ns:(report note): CALL
+gpeg_engine.vhd:539:13:@18375ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=1 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@18405ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@18485ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@18485ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=1 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@18565ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@18615ns:(report note): CALL
+gpeg_engine.vhd:420:1:@18635ns:(report note): CALL
+gpeg_engine.vhd:539:13:@18635ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=1 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@18665ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@18745ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@18745ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=1 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@18825ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@18875ns:(report note): CALL
+gpeg_engine.vhd:420:1:@18895ns:(report note): CALL
+gpeg_engine.vhd:539:13:@18895ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=1 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@18925ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@19005ns:(report note): SET
+gpeg_engine.vhd:539:13:@19005ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=1 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@19085ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@19115ns:(report note): RET
+gpeg_engine.vhd:539:13:@19115ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=1 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@19145ns:(report note): LOAD_OP: bc_offset=504 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@19195ns:(report note): CALL
+gpeg_engine.vhd:420:1:@19215ns:(report note): CALL
+gpeg_engine.vhd:539:13:@19215ns:(report note): EXEC done: opcode=0x00040382 bc_off=504 inp_off=1 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@19245ns:(report note): LOAD_OP: bc_offset=548 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@19295ns:(report note): CALL
+gpeg_engine.vhd:420:1:@19315ns:(report note): CALL
+gpeg_engine.vhd:539:13:@19315ns:(report note): EXEC done: opcode=0x00040382 bc_off=548 inp_off=1 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@19345ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@19395ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@19415ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@19415ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=1 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@19445ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@19495ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@19515ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@19515ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=1 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@19545ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@19595ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@19615ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@19615ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=1 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@19645ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@19695ns:(report note): CALL
+gpeg_engine.vhd:420:1:@19715ns:(report note): CALL
+gpeg_engine.vhd:539:13:@19715ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=1 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@19745ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@19825ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@19825ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=1 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@19905ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@19955ns:(report note): CALL
+gpeg_engine.vhd:420:1:@19975ns:(report note): CALL
+gpeg_engine.vhd:539:13:@19975ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=1 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@20005ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@20085ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@20085ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=1 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@20165ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@20215ns:(report note): CALL
+gpeg_engine.vhd:420:1:@20235ns:(report note): CALL
+gpeg_engine.vhd:539:13:@20235ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=1 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@20265ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@20345ns:(report note): SET
+gpeg_engine.vhd:539:13:@20345ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=1 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@20425ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@20455ns:(report note): RET
+gpeg_engine.vhd:539:13:@20455ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=1 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@20485ns:(report note): LOAD_OP: bc_offset=556 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@20535ns:(report note): CALL
+gpeg_engine.vhd:420:1:@20555ns:(report note): CALL
+gpeg_engine.vhd:539:13:@20555ns:(report note): EXEC done: opcode=0x00040382 bc_off=556 inp_off=1 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@20585ns:(report note): LOAD_OP: bc_offset=1016 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@20635ns:(report note): CALL
+gpeg_engine.vhd:420:1:@20655ns:(report note): CALL
+gpeg_engine.vhd:539:13:@20655ns:(report note): EXEC done: opcode=0x00040382 bc_off=1016 inp_off=1 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@20685ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@20735ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@20755ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@20755ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=1 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@20785ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@20835ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@20855ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@20855ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=1 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@20885ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@20935ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@20955ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@20955ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=1 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@20985ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@21035ns:(report note): CALL
+gpeg_engine.vhd:420:1:@21055ns:(report note): CALL
+gpeg_engine.vhd:539:13:@21055ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=1 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@21085ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@21165ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@21165ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=1 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@21245ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@21295ns:(report note): CALL
+gpeg_engine.vhd:420:1:@21315ns:(report note): CALL
+gpeg_engine.vhd:539:13:@21315ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=1 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@21345ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@21425ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@21425ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=1 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@21505ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@21555ns:(report note): CALL
+gpeg_engine.vhd:420:1:@21575ns:(report note): CALL
+gpeg_engine.vhd:539:13:@21575ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=1 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@21605ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@21685ns:(report note): SET
+gpeg_engine.vhd:539:13:@21685ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=1 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@21765ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@21795ns:(report note): RET
+gpeg_engine.vhd:539:13:@21795ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=1 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@21825ns:(report note): LOAD_OP: bc_offset=1024 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@21905ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@21905ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1024 inp_off=1 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@21935ns:(report note): LOAD_OP: bc_offset=1032 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@21985ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@22005ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@22005ns:(report note): EXEC done: opcode=0x00040393 bc_off=1032 inp_off=2 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@22035ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@22085ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@22105ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@22105ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=2 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@22135ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@22215ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@22215ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=2 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@22275ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@22325ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@22345ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@22345ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=2 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@22375ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@22455ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@22455ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=2 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@22515ns:(report note): LOAD_OP: bc_offset=1204 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@22565ns:(report note): CALL
+gpeg_engine.vhd:420:1:@22585ns:(report note): CALL
+gpeg_engine.vhd:539:13:@22585ns:(report note): EXEC done: opcode=0x00040382 bc_off=1204 inp_off=2 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@22615ns:(report note): LOAD_OP: bc_offset=28 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@22635ns:(report note): ANY
+gpeg_engine.vhd:539:13:@22635ns:(report note): EXEC done: opcode=0x000003E4 bc_off=28 inp_off=2 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@22665ns:(report note): LOAD_OP: bc_offset=32 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@22695ns:(report note): RET
+gpeg_engine.vhd:539:13:@22695ns:(report note): EXEC done: opcode=0x000003A0 bc_off=32 inp_off=3 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@22725ns:(report note): LOAD_OP: bc_offset=1212 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@22785ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@22805ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@22805ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1212 inp_off=3 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@22835ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@22885ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@22905ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@22905ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=3 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@22935ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@23015ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@23015ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=3 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@23075ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@23125ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@23145ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@23145ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=3 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@23175ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@23255ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@23255ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=3 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@23315ns:(report note): LOAD_OP: bc_offset=1204 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@23365ns:(report note): CALL
+gpeg_engine.vhd:420:1:@23385ns:(report note): CALL
+gpeg_engine.vhd:539:13:@23385ns:(report note): EXEC done: opcode=0x00040382 bc_off=1204 inp_off=3 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@23415ns:(report note): LOAD_OP: bc_offset=28 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@23435ns:(report note): ANY
+gpeg_engine.vhd:539:13:@23435ns:(report note): EXEC done: opcode=0x000003E4 bc_off=28 inp_off=3 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@23465ns:(report note): LOAD_OP: bc_offset=32 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@23495ns:(report note): RET
+gpeg_engine.vhd:539:13:@23495ns:(report note): EXEC done: opcode=0x000003A0 bc_off=32 inp_off=4 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@23525ns:(report note): LOAD_OP: bc_offset=1212 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@23585ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@23605ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@23605ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1212 inp_off=4 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@23635ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@23685ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@23705ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@23705ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=4 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@23735ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@23815ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@23815ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=4 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@23875ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@23925ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@23945ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@23945ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=4 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@23975ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@24055ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@24055ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=4 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@24115ns:(report note): LOAD_OP: bc_offset=1204 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@24165ns:(report note): CALL
+gpeg_engine.vhd:420:1:@24185ns:(report note): CALL
+gpeg_engine.vhd:539:13:@24185ns:(report note): EXEC done: opcode=0x00040382 bc_off=1204 inp_off=4 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@24215ns:(report note): LOAD_OP: bc_offset=28 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@24235ns:(report note): ANY
+gpeg_engine.vhd:539:13:@24235ns:(report note): EXEC done: opcode=0x000003E4 bc_off=28 inp_off=4 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@24265ns:(report note): LOAD_OP: bc_offset=32 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@24295ns:(report note): RET
+gpeg_engine.vhd:539:13:@24295ns:(report note): EXEC done: opcode=0x000003A0 bc_off=32 inp_off=5 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@24325ns:(report note): LOAD_OP: bc_offset=1212 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@24385ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@24405ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@24405ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1212 inp_off=5 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@24435ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@24485ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@24505ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@24505ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=5 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@24535ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@24615ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@24615ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=5 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@24675ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@24725ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@24745ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@24745ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=5 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@24775ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@24855ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@24855ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=5 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@24885ns:(report note): LOAD_OP: bc_offset=1200 opcode=0x00000390 isize=4
+gpeg_engine.vhd:508:1:@24915ns:(report note): FAILTWICE
+gpeg_engine.vhd:539:13:@24915ns:(report note): EXEC done: opcode=0x00000390 bc_off=1200 inp_off=6 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@24975ns:(report note): LOAD_OP: bc_offset=1220 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@25055ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@25055ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1220 inp_off=5 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@25085ns:(report note): LOAD_OP: bc_offset=1228 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@25115ns:(report note): RET
+gpeg_engine.vhd:539:13:@25115ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1228 inp_off=6 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@25145ns:(report note): LOAD_OP: bc_offset=564 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@25195ns:(report note): CALL
+gpeg_engine.vhd:420:1:@25215ns:(report note): CALL
+gpeg_engine.vhd:539:13:@25215ns:(report note): EXEC done: opcode=0x00040382 bc_off=564 inp_off=6 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@25245ns:(report note): LOAD_OP: bc_offset=1784 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@25295ns:(report note): CALL
+gpeg_engine.vhd:420:1:@25315ns:(report note): CALL
+gpeg_engine.vhd:539:13:@25315ns:(report note): EXEC done: opcode=0x00040382 bc_off=1784 inp_off=6 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@25345ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@25395ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@25415ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@25415ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=6 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@25445ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@25495ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@25515ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@25515ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=6 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@25545ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@25595ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@25615ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@25615ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=6 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@25645ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@25695ns:(report note): CALL
+gpeg_engine.vhd:420:1:@25715ns:(report note): CALL
+gpeg_engine.vhd:539:13:@25715ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=6 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@25745ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@25825ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@25825ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=6 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@25905ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@25955ns:(report note): CALL
+gpeg_engine.vhd:420:1:@25975ns:(report note): CALL
+gpeg_engine.vhd:539:13:@25975ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=6 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@26005ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@26085ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@26085ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=6 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@26165ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@26215ns:(report note): CALL
+gpeg_engine.vhd:420:1:@26235ns:(report note): CALL
+gpeg_engine.vhd:539:13:@26235ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=6 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@26265ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@26345ns:(report note): SET
+gpeg_engine.vhd:539:13:@26345ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=6 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@26425ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@26455ns:(report note): RET
+gpeg_engine.vhd:539:13:@26455ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=6 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@26485ns:(report note): LOAD_OP: bc_offset=1792 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@26565ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@26565ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1792 inp_off=6 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@26595ns:(report note): LOAD_OP: bc_offset=1800 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@26625ns:(report note): RET
+gpeg_engine.vhd:539:13:@26625ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1800 inp_off=7 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@26655ns:(report note): LOAD_OP: bc_offset=572 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@26705ns:(report note): CALL
+gpeg_engine.vhd:420:1:@26725ns:(report note): CALL
+gpeg_engine.vhd:539:13:@26725ns:(report note): EXEC done: opcode=0x00040382 bc_off=572 inp_off=7 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@26755ns:(report note): LOAD_OP: bc_offset=708 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@26805ns:(report note): CALL
+gpeg_engine.vhd:420:1:@26825ns:(report note): CALL
+gpeg_engine.vhd:539:13:@26825ns:(report note): EXEC done: opcode=0x00040382 bc_off=708 inp_off=7 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@26855ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@26905ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@26925ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@26925ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=7 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@26955ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@27005ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@27025ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@27025ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=7 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@27055ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@27105ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@27125ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@27125ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=7 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@27155ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@27205ns:(report note): CALL
+gpeg_engine.vhd:420:1:@27225ns:(report note): CALL
+gpeg_engine.vhd:539:13:@27225ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=7 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@27255ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@27335ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@27335ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=7 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@27415ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@27465ns:(report note): CALL
+gpeg_engine.vhd:420:1:@27485ns:(report note): CALL
+gpeg_engine.vhd:539:13:@27485ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=7 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@27515ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@27595ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@27595ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=7 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@27675ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@27725ns:(report note): CALL
+gpeg_engine.vhd:420:1:@27745ns:(report note): CALL
+gpeg_engine.vhd:539:13:@27745ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=7 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@27775ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@27855ns:(report note): SET
+gpeg_engine.vhd:539:13:@27855ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=7 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@27935ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@27965ns:(report note): RET
+gpeg_engine.vhd:539:13:@27965ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=7 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@27995ns:(report note): LOAD_OP: bc_offset=716 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@28045ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@28065ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@28065ns:(report note): EXEC done: opcode=0x00040393 bc_off=716 inp_off=7 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@28095ns:(report note): LOAD_OP: bc_offset=724 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@28145ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@28165ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@28165ns:(report note): EXEC done: opcode=0x00040393 bc_off=724 inp_off=7 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@28195ns:(report note): LOAD_OP: bc_offset=732 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@28245ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@28265ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@28265ns:(report note): EXEC done: opcode=0x00040393 bc_off=732 inp_off=7 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@28295ns:(report note): LOAD_OP: bc_offset=740 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@28345ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@28365ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@28365ns:(report note): EXEC done: opcode=0x00040393 bc_off=740 inp_off=7 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@28395ns:(report note): LOAD_OP: bc_offset=748 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@28445ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@28465ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@28465ns:(report note): EXEC done: opcode=0x00040393 bc_off=748 inp_off=7 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@28495ns:(report note): LOAD_OP: bc_offset=756 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@28545ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@28565ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@28565ns:(report note): EXEC done: opcode=0x00040393 bc_off=756 inp_off=7 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@28595ns:(report note): LOAD_OP: bc_offset=764 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@28645ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@28665ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@28665ns:(report note): EXEC done: opcode=0x00040393 bc_off=764 inp_off=7 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@28695ns:(report note): LOAD_OP: bc_offset=772 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@28745ns:(report note): CALL
+gpeg_engine.vhd:420:1:@28765ns:(report note): CALL
+gpeg_engine.vhd:539:13:@28765ns:(report note): EXEC done: opcode=0x00040382 bc_off=772 inp_off=7 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@28795ns:(report note): LOAD_OP: bc_offset=896 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@28845ns:(report note): CALL
+gpeg_engine.vhd:420:1:@28865ns:(report note): CALL
+gpeg_engine.vhd:539:13:@28865ns:(report note): EXEC done: opcode=0x00040382 bc_off=896 inp_off=7 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@28895ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@28945ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@28965ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@28965ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=7 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@28995ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@29045ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@29065ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@29065ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=7 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@29095ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@29145ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@29165ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@29165ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=7 v_failed=false sp=22
+gpeg_engine.vhd:238:11:@29195ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@29245ns:(report note): CALL
+gpeg_engine.vhd:420:1:@29265ns:(report note): CALL
+gpeg_engine.vhd:539:13:@29265ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=7 v_failed=false sp=23
+gpeg_engine.vhd:238:11:@29295ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@29375ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@29375ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=7 v_failed=true sp=23
+gpeg_engine.vhd:238:11:@29455ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@29505ns:(report note): CALL
+gpeg_engine.vhd:420:1:@29525ns:(report note): CALL
+gpeg_engine.vhd:539:13:@29525ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=7 v_failed=false sp=22
+gpeg_engine.vhd:238:11:@29555ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@29635ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@29635ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=7 v_failed=true sp=22
+gpeg_engine.vhd:238:11:@29715ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@29765ns:(report note): CALL
+gpeg_engine.vhd:420:1:@29785ns:(report note): CALL
+gpeg_engine.vhd:539:13:@29785ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=7 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@29815ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@29895ns:(report note): SET
+gpeg_engine.vhd:539:13:@29895ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=7 v_failed=true sp=21
+gpeg_engine.vhd:238:11:@29975ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@30005ns:(report note): RET
+gpeg_engine.vhd:539:13:@30005ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=7 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@30035ns:(report note): LOAD_OP: bc_offset=904 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@30115ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@30115ns:(report note): EXEC done: opcode=0x000403D7 bc_off=904 inp_off=7 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@30145ns:(report note): LOAD_OP: bc_offset=912 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@30225ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@30225ns:(report note): EXEC done: opcode=0x000403D7 bc_off=912 inp_off=8 v_failed=true sp=18
+gpeg_engine.vhd:238:11:@30305ns:(report note): LOAD_OP: bc_offset=788 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@30355ns:(report note): CALL
+gpeg_engine.vhd:420:1:@30375ns:(report note): CALL
+gpeg_engine.vhd:539:13:@30375ns:(report note): EXEC done: opcode=0x00040382 bc_off=788 inp_off=7 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@30405ns:(report note): LOAD_OP: bc_offset=1016 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@30455ns:(report note): CALL
+gpeg_engine.vhd:420:1:@30475ns:(report note): CALL
+gpeg_engine.vhd:539:13:@30475ns:(report note): EXEC done: opcode=0x00040382 bc_off=1016 inp_off=7 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@30505ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@30555ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@30575ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@30575ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=7 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@30605ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@30655ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@30675ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@30675ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=7 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@30705ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@30755ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@30775ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@30775ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=7 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@30805ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@30855ns:(report note): CALL
+gpeg_engine.vhd:420:1:@30875ns:(report note): CALL
+gpeg_engine.vhd:539:13:@30875ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=7 v_failed=false sp=22
+gpeg_engine.vhd:238:11:@30905ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@30985ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@30985ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=7 v_failed=true sp=22
+gpeg_engine.vhd:238:11:@31065ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@31115ns:(report note): CALL
+gpeg_engine.vhd:420:1:@31135ns:(report note): CALL
+gpeg_engine.vhd:539:13:@31135ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=7 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@31165ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@31245ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@31245ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=7 v_failed=true sp=21
+gpeg_engine.vhd:238:11:@31325ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@31375ns:(report note): CALL
+gpeg_engine.vhd:420:1:@31395ns:(report note): CALL
+gpeg_engine.vhd:539:13:@31395ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=7 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@31425ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@31505ns:(report note): SET
+gpeg_engine.vhd:539:13:@31505ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=7 v_failed=true sp=20
+gpeg_engine.vhd:238:11:@31585ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@31615ns:(report note): RET
+gpeg_engine.vhd:539:13:@31615ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=7 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@31645ns:(report note): LOAD_OP: bc_offset=1024 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@31725ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@31725ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1024 inp_off=7 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@31755ns:(report note): LOAD_OP: bc_offset=1032 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@31805ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@31825ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@31825ns:(report note): EXEC done: opcode=0x00040393 bc_off=1032 inp_off=8 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@31855ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@31905ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@31925ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@31925ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=8 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@31955ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@32035ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@32035ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=8 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@32095ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@32145ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@32165ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@32165ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=8 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@32195ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@32275ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@32275ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=8 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@32335ns:(report note): LOAD_OP: bc_offset=1204 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@32385ns:(report note): CALL
+gpeg_engine.vhd:420:1:@32405ns:(report note): CALL
+gpeg_engine.vhd:539:13:@32405ns:(report note): EXEC done: opcode=0x00040382 bc_off=1204 inp_off=8 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@32435ns:(report note): LOAD_OP: bc_offset=28 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@32455ns:(report note): ANY
+gpeg_engine.vhd:539:13:@32455ns:(report note): EXEC done: opcode=0x000003E4 bc_off=28 inp_off=8 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@32485ns:(report note): LOAD_OP: bc_offset=32 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@32515ns:(report note): RET
+gpeg_engine.vhd:539:13:@32515ns:(report note): EXEC done: opcode=0x000003A0 bc_off=32 inp_off=9 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@32545ns:(report note): LOAD_OP: bc_offset=1212 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@32605ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@32625ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@32625ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1212 inp_off=9 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@32655ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@32705ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@32725ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@32725ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=9 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@32755ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@32835ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@32835ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=9 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@32895ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@32945ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@32965ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@32965ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=9 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@32995ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@33075ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@33075ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=9 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@33135ns:(report note): LOAD_OP: bc_offset=1204 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@33185ns:(report note): CALL
+gpeg_engine.vhd:420:1:@33205ns:(report note): CALL
+gpeg_engine.vhd:539:13:@33205ns:(report note): EXEC done: opcode=0x00040382 bc_off=1204 inp_off=9 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@33235ns:(report note): LOAD_OP: bc_offset=28 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@33255ns:(report note): ANY
+gpeg_engine.vhd:539:13:@33255ns:(report note): EXEC done: opcode=0x000003E4 bc_off=28 inp_off=9 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@33285ns:(report note): LOAD_OP: bc_offset=32 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@33315ns:(report note): RET
+gpeg_engine.vhd:539:13:@33315ns:(report note): EXEC done: opcode=0x000003A0 bc_off=32 inp_off=10 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@33345ns:(report note): LOAD_OP: bc_offset=1212 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@33405ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@33425ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@33425ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1212 inp_off=10 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@33455ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@33505ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@33525ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@33525ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=10 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@33555ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@33635ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@33635ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=10 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@33695ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@33745ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@33765ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@33765ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=10 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@33795ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@33875ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@33875ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=10 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@33935ns:(report note): LOAD_OP: bc_offset=1204 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@33985ns:(report note): CALL
+gpeg_engine.vhd:420:1:@34005ns:(report note): CALL
+gpeg_engine.vhd:539:13:@34005ns:(report note): EXEC done: opcode=0x00040382 bc_off=1204 inp_off=10 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@34035ns:(report note): LOAD_OP: bc_offset=28 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@34055ns:(report note): ANY
+gpeg_engine.vhd:539:13:@34055ns:(report note): EXEC done: opcode=0x000003E4 bc_off=28 inp_off=10 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@34085ns:(report note): LOAD_OP: bc_offset=32 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@34115ns:(report note): RET
+gpeg_engine.vhd:539:13:@34115ns:(report note): EXEC done: opcode=0x000003A0 bc_off=32 inp_off=11 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@34145ns:(report note): LOAD_OP: bc_offset=1212 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@34205ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@34225ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@34225ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1212 inp_off=11 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@34255ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@34305ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@34325ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@34325ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=11 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@34355ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@34435ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@34435ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=11 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@34495ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@34545ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@34565ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@34565ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=11 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@34595ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@34675ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@34675ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=11 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@34705ns:(report note): LOAD_OP: bc_offset=1200 opcode=0x00000390 isize=4
+gpeg_engine.vhd:508:1:@34735ns:(report note): FAILTWICE
+gpeg_engine.vhd:539:13:@34735ns:(report note): EXEC done: opcode=0x00000390 bc_off=1200 inp_off=12 v_failed=true sp=18
+gpeg_engine.vhd:238:11:@34795ns:(report note): LOAD_OP: bc_offset=1220 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@34875ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@34875ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1220 inp_off=11 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@34905ns:(report note): LOAD_OP: bc_offset=1228 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@34935ns:(report note): RET
+gpeg_engine.vhd:539:13:@34935ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1228 inp_off=12 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@34965ns:(report note): LOAD_OP: bc_offset=796 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@35025ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@35025ns:(report note): EXEC done: opcode=0x00040336 bc_off=796 inp_off=12 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@35055ns:(report note): LOAD_OP: bc_offset=812 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@35115ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@35115ns:(report note): EXEC done: opcode=0x00040336 bc_off=812 inp_off=12 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@35145ns:(report note): LOAD_OP: bc_offset=828 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@35205ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@35205ns:(report note): EXEC done: opcode=0x00040336 bc_off=828 inp_off=12 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@35235ns:(report note): LOAD_OP: bc_offset=844 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@35295ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@35295ns:(report note): EXEC done: opcode=0x00040336 bc_off=844 inp_off=12 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@35325ns:(report note): LOAD_OP: bc_offset=860 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@35385ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@35385ns:(report note): EXEC done: opcode=0x00040336 bc_off=860 inp_off=12 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@35415ns:(report note): LOAD_OP: bc_offset=876 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@35475ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@35475ns:(report note): EXEC done: opcode=0x00040336 bc_off=876 inp_off=12 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@35505ns:(report note): LOAD_OP: bc_offset=892 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@35535ns:(report note): RET
+gpeg_engine.vhd:539:13:@35535ns:(report note): EXEC done: opcode=0x000003A0 bc_off=892 inp_off=12 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@35565ns:(report note): LOAD_OP: bc_offset=580 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@35595ns:(report note): RET
+gpeg_engine.vhd:539:13:@35595ns:(report note): EXEC done: opcode=0x000003A0 bc_off=580 inp_off=12 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@35625ns:(report note): LOAD_OP: bc_offset=512 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@35675ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@35695ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@35695ns:(report note): EXEC done: opcode=0x00040393 bc_off=512 inp_off=12 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@35725ns:(report note): LOAD_OP: bc_offset=520 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@35775ns:(report note): CALL
+gpeg_engine.vhd:420:1:@35795ns:(report note): CALL
+gpeg_engine.vhd:539:13:@35795ns:(report note): EXEC done: opcode=0x00040382 bc_off=520 inp_off=12 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@35825ns:(report note): LOAD_OP: bc_offset=1764 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@35875ns:(report note): CALL
+gpeg_engine.vhd:420:1:@35895ns:(report note): CALL
+gpeg_engine.vhd:539:13:@35895ns:(report note): EXEC done: opcode=0x00040382 bc_off=1764 inp_off=12 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@35925ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@35975ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@35995ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@35995ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=12 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@36025ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@36075ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@36095ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@36095ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=12 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@36125ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@36175ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@36195ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@36195ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=12 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@36225ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@36275ns:(report note): CALL
+gpeg_engine.vhd:420:1:@36295ns:(report note): CALL
+gpeg_engine.vhd:539:13:@36295ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=12 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@36325ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@36405ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@36405ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=12 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@36485ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@36535ns:(report note): CALL
+gpeg_engine.vhd:420:1:@36555ns:(report note): CALL
+gpeg_engine.vhd:539:13:@36555ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=12 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@36585ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@36665ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@36665ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=12 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@36745ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@36795ns:(report note): CALL
+gpeg_engine.vhd:420:1:@36815ns:(report note): CALL
+gpeg_engine.vhd:539:13:@36815ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=12 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@36845ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@36925ns:(report note): SET
+gpeg_engine.vhd:539:13:@36925ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=12 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@37005ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@37035ns:(report note): RET
+gpeg_engine.vhd:539:13:@37035ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=12 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@37065ns:(report note): LOAD_OP: bc_offset=1772 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@37145ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@37145ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1772 inp_off=12 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@37175ns:(report note): LOAD_OP: bc_offset=1780 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@37205ns:(report note): RET
+gpeg_engine.vhd:539:13:@37205ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1780 inp_off=13 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@37235ns:(report note): LOAD_OP: bc_offset=528 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@37285ns:(report note): CALL
+gpeg_engine.vhd:420:1:@37305ns:(report note): CALL
+gpeg_engine.vhd:539:13:@37305ns:(report note): EXEC done: opcode=0x00040382 bc_off=528 inp_off=13 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@37335ns:(report note): LOAD_OP: bc_offset=548 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@37385ns:(report note): CALL
+gpeg_engine.vhd:420:1:@37405ns:(report note): CALL
+gpeg_engine.vhd:539:13:@37405ns:(report note): EXEC done: opcode=0x00040382 bc_off=548 inp_off=13 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@37435ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@37485ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@37505ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@37505ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=13 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@37535ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@37585ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@37605ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@37605ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=13 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@37635ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@37685ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@37705ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@37705ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=13 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@37735ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@37785ns:(report note): CALL
+gpeg_engine.vhd:420:1:@37805ns:(report note): CALL
+gpeg_engine.vhd:539:13:@37805ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=13 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@37835ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@37915ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@37915ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=13 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@37995ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@38045ns:(report note): CALL
+gpeg_engine.vhd:420:1:@38065ns:(report note): CALL
+gpeg_engine.vhd:539:13:@38065ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=13 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@38095ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@38175ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@38175ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=13 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@38255ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@38305ns:(report note): CALL
+gpeg_engine.vhd:420:1:@38325ns:(report note): CALL
+gpeg_engine.vhd:539:13:@38325ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=13 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@38355ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@38435ns:(report note): SET
+gpeg_engine.vhd:539:13:@38435ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=13 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@38515ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@38545ns:(report note): RET
+gpeg_engine.vhd:539:13:@38545ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=13 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@38575ns:(report note): LOAD_OP: bc_offset=556 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@38625ns:(report note): CALL
+gpeg_engine.vhd:420:1:@38645ns:(report note): CALL
+gpeg_engine.vhd:539:13:@38645ns:(report note): EXEC done: opcode=0x00040382 bc_off=556 inp_off=13 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@38675ns:(report note): LOAD_OP: bc_offset=1016 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@38725ns:(report note): CALL
+gpeg_engine.vhd:420:1:@38745ns:(report note): CALL
+gpeg_engine.vhd:539:13:@38745ns:(report note): EXEC done: opcode=0x00040382 bc_off=1016 inp_off=13 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@38775ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@38825ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@38845ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@38845ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=13 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@38875ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@38925ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@38945ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@38945ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=13 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@38975ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@39025ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@39045ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@39045ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=13 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@39075ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@39125ns:(report note): CALL
+gpeg_engine.vhd:420:1:@39145ns:(report note): CALL
+gpeg_engine.vhd:539:13:@39145ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=13 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@39175ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@39255ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@39255ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=13 v_failed=true sp=16
+gpeg_engine.vhd:238:11:@39335ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@39385ns:(report note): CALL
+gpeg_engine.vhd:420:1:@39405ns:(report note): CALL
+gpeg_engine.vhd:539:13:@39405ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=13 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@39435ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@39515ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@39515ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=13 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@39595ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@39645ns:(report note): CALL
+gpeg_engine.vhd:420:1:@39665ns:(report note): CALL
+gpeg_engine.vhd:539:13:@39665ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=13 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@39695ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@39775ns:(report note): SET
+gpeg_engine.vhd:539:13:@39775ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=13 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@39855ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@39885ns:(report note): RET
+gpeg_engine.vhd:539:13:@39885ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=13 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@39915ns:(report note): LOAD_OP: bc_offset=1024 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@39995ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@39995ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1024 inp_off=13 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@40025ns:(report note): LOAD_OP: bc_offset=1032 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@40075ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@40095ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@40095ns:(report note): EXEC done: opcode=0x00040393 bc_off=1032 inp_off=14 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@40125ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@40175ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@40195ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@40195ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=14 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@40225ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@40305ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@40305ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=14 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@40365ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@40415ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@40435ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@40435ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=14 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@40465ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@40545ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@40545ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=14 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@40605ns:(report note): LOAD_OP: bc_offset=1204 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@40655ns:(report note): CALL
+gpeg_engine.vhd:420:1:@40675ns:(report note): CALL
+gpeg_engine.vhd:539:13:@40675ns:(report note): EXEC done: opcode=0x00040382 bc_off=1204 inp_off=14 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@40705ns:(report note): LOAD_OP: bc_offset=28 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@40725ns:(report note): ANY
+gpeg_engine.vhd:539:13:@40725ns:(report note): EXEC done: opcode=0x000003E4 bc_off=28 inp_off=14 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@40755ns:(report note): LOAD_OP: bc_offset=32 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@40785ns:(report note): RET
+gpeg_engine.vhd:539:13:@40785ns:(report note): EXEC done: opcode=0x000003A0 bc_off=32 inp_off=15 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@40815ns:(report note): LOAD_OP: bc_offset=1212 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@40875ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@40895ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@40895ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1212 inp_off=15 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@40925ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@40975ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@40995ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@40995ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=15 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@41025ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@41105ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@41105ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=15 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@41165ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@41215ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@41235ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@41235ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=15 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@41265ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@41345ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@41345ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=15 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@41405ns:(report note): LOAD_OP: bc_offset=1204 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@41455ns:(report note): CALL
+gpeg_engine.vhd:420:1:@41475ns:(report note): CALL
+gpeg_engine.vhd:539:13:@41475ns:(report note): EXEC done: opcode=0x00040382 bc_off=1204 inp_off=15 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@41505ns:(report note): LOAD_OP: bc_offset=28 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@41525ns:(report note): ANY
+gpeg_engine.vhd:539:13:@41525ns:(report note): EXEC done: opcode=0x000003E4 bc_off=28 inp_off=15 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@41555ns:(report note): LOAD_OP: bc_offset=32 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@41585ns:(report note): RET
+gpeg_engine.vhd:539:13:@41585ns:(report note): EXEC done: opcode=0x000003A0 bc_off=32 inp_off=16 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@41615ns:(report note): LOAD_OP: bc_offset=1212 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@41675ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@41695ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@41695ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1212 inp_off=16 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@41725ns:(report note): LOAD_OP: bc_offset=1040 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@41775ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@41795ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@41795ns:(report note): EXEC done: opcode=0x00040393 bc_off=1040 inp_off=16 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@41825ns:(report note): LOAD_OP: bc_offset=1048 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@41905ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@41905ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1048 inp_off=16 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@41965ns:(report note): LOAD_OP: bc_offset=1184 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@42015ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@42035ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@42035ns:(report note): EXEC done: opcode=0x00040393 bc_off=1184 inp_off=16 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@42065ns:(report note): LOAD_OP: bc_offset=1192 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@42145ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@42145ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1192 inp_off=16 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@42175ns:(report note): LOAD_OP: bc_offset=1200 opcode=0x00000390 isize=4
+gpeg_engine.vhd:508:1:@42205ns:(report note): FAILTWICE
+gpeg_engine.vhd:539:13:@42205ns:(report note): EXEC done: opcode=0x00000390 bc_off=1200 inp_off=17 v_failed=true sp=12
+gpeg_engine.vhd:238:11:@42265ns:(report note): LOAD_OP: bc_offset=1220 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@42345ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@42345ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1220 inp_off=16 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@42375ns:(report note): LOAD_OP: bc_offset=1228 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@42405ns:(report note): RET
+gpeg_engine.vhd:539:13:@42405ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1228 inp_off=17 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@42435ns:(report note): LOAD_OP: bc_offset=564 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@42485ns:(report note): CALL
+gpeg_engine.vhd:420:1:@42505ns:(report note): CALL
+gpeg_engine.vhd:539:13:@42505ns:(report note): EXEC done: opcode=0x00040382 bc_off=564 inp_off=17 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@42535ns:(report note): LOAD_OP: bc_offset=1784 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@42585ns:(report note): CALL
+gpeg_engine.vhd:420:1:@42605ns:(report note): CALL
+gpeg_engine.vhd:539:13:@42605ns:(report note): EXEC done: opcode=0x00040382 bc_off=1784 inp_off=17 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@42635ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@42685ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@42705ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@42705ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=17 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@42735ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@42785ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@42805ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@42805ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=17 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@42835ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@42885ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@42905ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@42905ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=17 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@42935ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@42985ns:(report note): CALL
+gpeg_engine.vhd:420:1:@43005ns:(report note): CALL
+gpeg_engine.vhd:539:13:@43005ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=17 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@43035ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@43115ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@43115ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=17 v_failed=true sp=16
+gpeg_engine.vhd:238:11:@43195ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@43245ns:(report note): CALL
+gpeg_engine.vhd:420:1:@43265ns:(report note): CALL
+gpeg_engine.vhd:539:13:@43265ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=17 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@43295ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@43375ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@43375ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=17 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@43455ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@43505ns:(report note): CALL
+gpeg_engine.vhd:420:1:@43525ns:(report note): CALL
+gpeg_engine.vhd:539:13:@43525ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=17 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@43555ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@43635ns:(report note): SET
+gpeg_engine.vhd:539:13:@43635ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=17 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@43715ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@43745ns:(report note): RET
+gpeg_engine.vhd:539:13:@43745ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=17 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@43775ns:(report note): LOAD_OP: bc_offset=1792 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@43855ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@43855ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1792 inp_off=17 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@43885ns:(report note): LOAD_OP: bc_offset=1800 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@43915ns:(report note): RET
+gpeg_engine.vhd:539:13:@43915ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1800 inp_off=18 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@43945ns:(report note): LOAD_OP: bc_offset=572 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@43995ns:(report note): CALL
+gpeg_engine.vhd:420:1:@44015ns:(report note): CALL
+gpeg_engine.vhd:539:13:@44015ns:(report note): EXEC done: opcode=0x00040382 bc_off=572 inp_off=18 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@44045ns:(report note): LOAD_OP: bc_offset=708 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@44095ns:(report note): CALL
+gpeg_engine.vhd:420:1:@44115ns:(report note): CALL
+gpeg_engine.vhd:539:13:@44115ns:(report note): EXEC done: opcode=0x00040382 bc_off=708 inp_off=18 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@44145ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@44195ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@44215ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@44215ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=18 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@44245ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@44295ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@44315ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@44315ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=18 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@44345ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@44395ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@44415ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@44415ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=18 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@44445ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@44495ns:(report note): CALL
+gpeg_engine.vhd:420:1:@44515ns:(report note): CALL
+gpeg_engine.vhd:539:13:@44515ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=18 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@44545ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@44625ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@44625ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=18 v_failed=true sp=16
+gpeg_engine.vhd:238:11:@44705ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@44755ns:(report note): CALL
+gpeg_engine.vhd:420:1:@44775ns:(report note): CALL
+gpeg_engine.vhd:539:13:@44775ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=18 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@44805ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@44885ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@44885ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=18 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@44965ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@45015ns:(report note): CALL
+gpeg_engine.vhd:420:1:@45035ns:(report note): CALL
+gpeg_engine.vhd:539:13:@45035ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=18 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@45065ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@45145ns:(report note): SET
+gpeg_engine.vhd:539:13:@45145ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=18 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@45225ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@45255ns:(report note): RET
+gpeg_engine.vhd:539:13:@45255ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=18 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@45285ns:(report note): LOAD_OP: bc_offset=716 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@45335ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@45355ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@45355ns:(report note): EXEC done: opcode=0x00040393 bc_off=716 inp_off=18 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@45385ns:(report note): LOAD_OP: bc_offset=724 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@45435ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@45455ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@45455ns:(report note): EXEC done: opcode=0x00040393 bc_off=724 inp_off=18 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@45485ns:(report note): LOAD_OP: bc_offset=732 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@45535ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@45555ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@45555ns:(report note): EXEC done: opcode=0x00040393 bc_off=732 inp_off=18 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@45585ns:(report note): LOAD_OP: bc_offset=740 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@45635ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@45655ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@45655ns:(report note): EXEC done: opcode=0x00040393 bc_off=740 inp_off=18 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@45685ns:(report note): LOAD_OP: bc_offset=748 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@45735ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@45755ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@45755ns:(report note): EXEC done: opcode=0x00040393 bc_off=748 inp_off=18 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@45785ns:(report note): LOAD_OP: bc_offset=756 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@45835ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@45855ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@45855ns:(report note): EXEC done: opcode=0x00040393 bc_off=756 inp_off=18 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@45885ns:(report note): LOAD_OP: bc_offset=764 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@45935ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@45955ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@45955ns:(report note): EXEC done: opcode=0x00040393 bc_off=764 inp_off=18 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@45985ns:(report note): LOAD_OP: bc_offset=772 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@46035ns:(report note): CALL
+gpeg_engine.vhd:420:1:@46055ns:(report note): CALL
+gpeg_engine.vhd:539:13:@46055ns:(report note): EXEC done: opcode=0x00040382 bc_off=772 inp_off=18 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@46085ns:(report note): LOAD_OP: bc_offset=896 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@46135ns:(report note): CALL
+gpeg_engine.vhd:420:1:@46155ns:(report note): CALL
+gpeg_engine.vhd:539:13:@46155ns:(report note): EXEC done: opcode=0x00040382 bc_off=896 inp_off=18 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@46185ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@46235ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@46255ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@46255ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=18 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@46285ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@46335ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@46355ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@46355ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=18 v_failed=false sp=22
+gpeg_engine.vhd:238:11:@46385ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@46435ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@46455ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@46455ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=18 v_failed=false sp=23
+gpeg_engine.vhd:238:11:@46485ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@46535ns:(report note): CALL
+gpeg_engine.vhd:420:1:@46555ns:(report note): CALL
+gpeg_engine.vhd:539:13:@46555ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=18 v_failed=false sp=24
+gpeg_engine.vhd:238:11:@46585ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@46665ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@46665ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=18 v_failed=true sp=24
+gpeg_engine.vhd:238:11:@46745ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@46795ns:(report note): CALL
+gpeg_engine.vhd:420:1:@46815ns:(report note): CALL
+gpeg_engine.vhd:539:13:@46815ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=18 v_failed=false sp=23
+gpeg_engine.vhd:238:11:@46845ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@46925ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@46925ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=18 v_failed=true sp=23
+gpeg_engine.vhd:238:11:@47005ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@47055ns:(report note): CALL
+gpeg_engine.vhd:420:1:@47075ns:(report note): CALL
+gpeg_engine.vhd:539:13:@47075ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=18 v_failed=false sp=22
+gpeg_engine.vhd:238:11:@47105ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@47185ns:(report note): SET
+gpeg_engine.vhd:539:13:@47185ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=18 v_failed=true sp=22
+gpeg_engine.vhd:238:11:@47265ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@47295ns:(report note): RET
+gpeg_engine.vhd:539:13:@47295ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=18 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@47325ns:(report note): LOAD_OP: bc_offset=904 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@47405ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@47405ns:(report note): EXEC done: opcode=0x000403D7 bc_off=904 inp_off=18 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@47485ns:(report note): LOAD_OP: bc_offset=788 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@47535ns:(report note): CALL
+gpeg_engine.vhd:420:1:@47555ns:(report note): CALL
+gpeg_engine.vhd:539:13:@47555ns:(report note): EXEC done: opcode=0x00040382 bc_off=788 inp_off=18 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@47585ns:(report note): LOAD_OP: bc_offset=1016 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@47635ns:(report note): CALL
+gpeg_engine.vhd:420:1:@47655ns:(report note): CALL
+gpeg_engine.vhd:539:13:@47655ns:(report note): EXEC done: opcode=0x00040382 bc_off=1016 inp_off=18 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@47685ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@47735ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@47755ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@47755ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=18 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@47785ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@47835ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@47855ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@47855ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=18 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@47885ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@47935ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@47955ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@47955ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=18 v_failed=false sp=22
+gpeg_engine.vhd:238:11:@47985ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@48035ns:(report note): CALL
+gpeg_engine.vhd:420:1:@48055ns:(report note): CALL
+gpeg_engine.vhd:539:13:@48055ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=18 v_failed=false sp=23
+gpeg_engine.vhd:238:11:@48085ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@48165ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@48165ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=18 v_failed=true sp=23
+gpeg_engine.vhd:238:11:@48245ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@48295ns:(report note): CALL
+gpeg_engine.vhd:420:1:@48315ns:(report note): CALL
+gpeg_engine.vhd:539:13:@48315ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=18 v_failed=false sp=22
+gpeg_engine.vhd:238:11:@48345ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@48425ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@48425ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=18 v_failed=true sp=22
+gpeg_engine.vhd:238:11:@48505ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@48555ns:(report note): CALL
+gpeg_engine.vhd:420:1:@48575ns:(report note): CALL
+gpeg_engine.vhd:539:13:@48575ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=18 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@48605ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@48685ns:(report note): SET
+gpeg_engine.vhd:539:13:@48685ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=18 v_failed=true sp=21
+gpeg_engine.vhd:238:11:@48765ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@48795ns:(report note): RET
+gpeg_engine.vhd:539:13:@48795ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=18 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@48825ns:(report note): LOAD_OP: bc_offset=1024 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@48905ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@48905ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1024 inp_off=18 v_failed=true sp=18
+gpeg_engine.vhd:238:11:@48985ns:(report note): LOAD_OP: bc_offset=804 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@49035ns:(report note): CALL
+gpeg_engine.vhd:420:1:@49055ns:(report note): CALL
+gpeg_engine.vhd:539:13:@49055ns:(report note): EXEC done: opcode=0x00040382 bc_off=804 inp_off=18 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@49085ns:(report note): LOAD_OP: bc_offset=1356 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@49135ns:(report note): CALL
+gpeg_engine.vhd:420:1:@49155ns:(report note): CALL
+gpeg_engine.vhd:539:13:@49155ns:(report note): EXEC done: opcode=0x00040382 bc_off=1356 inp_off=18 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@49185ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@49235ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@49255ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@49255ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=18 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@49285ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@49335ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@49355ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@49355ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=18 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@49385ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@49435ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@49455ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@49455ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=18 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@49485ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@49535ns:(report note): CALL
+gpeg_engine.vhd:420:1:@49555ns:(report note): CALL
+gpeg_engine.vhd:539:13:@49555ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=18 v_failed=false sp=22
+gpeg_engine.vhd:238:11:@49585ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@49665ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@49665ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=18 v_failed=true sp=22
+gpeg_engine.vhd:238:11:@49745ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@49795ns:(report note): CALL
+gpeg_engine.vhd:420:1:@49815ns:(report note): CALL
+gpeg_engine.vhd:539:13:@49815ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=18 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@49845ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@49925ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@49925ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=18 v_failed=true sp=21
+gpeg_engine.vhd:238:11:@50005ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@50055ns:(report note): CALL
+gpeg_engine.vhd:420:1:@50075ns:(report note): CALL
+gpeg_engine.vhd:539:13:@50075ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=18 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@50105ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@50185ns:(report note): SET
+gpeg_engine.vhd:539:13:@50185ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=18 v_failed=true sp=20
+gpeg_engine.vhd:238:11:@50265ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@50295ns:(report note): RET
+gpeg_engine.vhd:539:13:@50295ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=18 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@50325ns:(report note): LOAD_OP: bc_offset=1364 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@50375ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@50395ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@50395ns:(report note): EXEC done: opcode=0x00040393 bc_off=1364 inp_off=18 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@50425ns:(report note): LOAD_OP: bc_offset=1372 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@50505ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@50505ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1372 inp_off=18 v_failed=true sp=18
+gpeg_engine.vhd:238:11:@50565ns:(report note): LOAD_OP: bc_offset=1388 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@50615ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@50635ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@50635ns:(report note): EXEC done: opcode=0x00040393 bc_off=1388 inp_off=18 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@50665ns:(report note): LOAD_OP: bc_offset=1396 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@50745ns:(report note): SET
+gpeg_engine.vhd:539:13:@50745ns:(report note): EXEC done: opcode=0x002003CA bc_off=1396 inp_off=18 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@50775ns:(report note): LOAD_OP: bc_offset=1432 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@50835ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@50855ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@50855ns:(report note): EXEC done: opcode=0x000403B4 bc_off=1432 inp_off=19 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@50885ns:(report note): LOAD_OP: bc_offset=1396 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@50965ns:(report note): SET
+gpeg_engine.vhd:539:13:@50965ns:(report note): EXEC done: opcode=0x002003CA bc_off=1396 inp_off=19 v_failed=true sp=18
+gpeg_engine.vhd:238:11:@51025ns:(report note): LOAD_OP: bc_offset=1440 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@51105ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@51105ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1440 inp_off=19 v_failed=true sp=17
+gpeg_engine.vhd:238:11:@51185ns:(report note): LOAD_OP: bc_offset=820 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@51235ns:(report note): CALL
+gpeg_engine.vhd:420:1:@51255ns:(report note): CALL
+gpeg_engine.vhd:539:13:@51255ns:(report note): EXEC done: opcode=0x00040382 bc_off=820 inp_off=18 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@51285ns:(report note): LOAD_OP: bc_offset=1232 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@51335ns:(report note): CALL
+gpeg_engine.vhd:420:1:@51355ns:(report note): CALL
+gpeg_engine.vhd:539:13:@51355ns:(report note): EXEC done: opcode=0x00040382 bc_off=1232 inp_off=18 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@51385ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@51435ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@51455ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@51455ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=18 v_failed=false sp=18
+gpeg_engine.vhd:238:11:@51485ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@51535ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@51555ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@51555ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=18 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@51585ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@51635ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@51655ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@51655ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=18 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@51685ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@51735ns:(report note): CALL
+gpeg_engine.vhd:420:1:@51755ns:(report note): CALL
+gpeg_engine.vhd:539:13:@51755ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=18 v_failed=false sp=21
+gpeg_engine.vhd:238:11:@51785ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@51865ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@51865ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=18 v_failed=true sp=21
+gpeg_engine.vhd:238:11:@51945ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@51995ns:(report note): CALL
+gpeg_engine.vhd:420:1:@52015ns:(report note): CALL
+gpeg_engine.vhd:539:13:@52015ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=18 v_failed=false sp=20
+gpeg_engine.vhd:238:11:@52045ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@52125ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@52125ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=18 v_failed=true sp=20
+gpeg_engine.vhd:238:11:@52205ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@52255ns:(report note): CALL
+gpeg_engine.vhd:420:1:@52275ns:(report note): CALL
+gpeg_engine.vhd:539:13:@52275ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=18 v_failed=false sp=19
+gpeg_engine.vhd:238:11:@52305ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@52385ns:(report note): SET
+gpeg_engine.vhd:539:13:@52385ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=18 v_failed=true sp=19
+gpeg_engine.vhd:238:11:@52465ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@52495ns:(report note): RET
+gpeg_engine.vhd:539:13:@52495ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=18 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@52525ns:(report note): LOAD_OP: bc_offset=1240 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@52575ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@52595ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@52595ns:(report note): EXEC done: opcode=0x00040393 bc_off=1240 inp_off=18 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@52625ns:(report note): LOAD_OP: bc_offset=1248 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@52705ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@52705ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1248 inp_off=18 v_failed=true sp=17
+gpeg_engine.vhd:238:11:@52765ns:(report note): LOAD_OP: bc_offset=1264 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@52845ns:(report note): SET
+gpeg_engine.vhd:539:13:@52845ns:(report note): EXEC done: opcode=0x002003CA bc_off=1264 inp_off=18 v_failed=false sp=16
+gpeg_engine.vhd:238:11:@52875ns:(report note): LOAD_OP: bc_offset=1300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@52925ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@52945ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@52945ns:(report note): EXEC done: opcode=0x00040393 bc_off=1300 inp_off=19 v_failed=false sp=17
+gpeg_engine.vhd:238:11:@52975ns:(report note): LOAD_OP: bc_offset=1308 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@53055ns:(report note): SET
+gpeg_engine.vhd:539:13:@53055ns:(report note): EXEC done: opcode=0x002003CA bc_off=1308 inp_off=19 v_failed=true sp=17
+gpeg_engine.vhd:238:11:@53115ns:(report note): LOAD_OP: bc_offset=1352 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@53145ns:(report note): RET
+gpeg_engine.vhd:539:13:@53145ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1352 inp_off=19 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@53175ns:(report note): LOAD_OP: bc_offset=828 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@53235ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@53235ns:(report note): EXEC done: opcode=0x00040336 bc_off=828 inp_off=19 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@53265ns:(report note): LOAD_OP: bc_offset=844 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@53325ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@53325ns:(report note): EXEC done: opcode=0x00040336 bc_off=844 inp_off=19 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@53355ns:(report note): LOAD_OP: bc_offset=860 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@53415ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@53415ns:(report note): EXEC done: opcode=0x00040336 bc_off=860 inp_off=19 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@53445ns:(report note): LOAD_OP: bc_offset=876 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@53505ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@53505ns:(report note): EXEC done: opcode=0x00040336 bc_off=876 inp_off=19 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@53535ns:(report note): LOAD_OP: bc_offset=892 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@53565ns:(report note): RET
+gpeg_engine.vhd:539:13:@53565ns:(report note): EXEC done: opcode=0x000003A0 bc_off=892 inp_off=19 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@53595ns:(report note): LOAD_OP: bc_offset=580 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@53625ns:(report note): RET
+gpeg_engine.vhd:539:13:@53625ns:(report note): EXEC done: opcode=0x000003A0 bc_off=580 inp_off=19 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@53655ns:(report note): LOAD_OP: bc_offset=536 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@53715ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@53735ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@53735ns:(report note): EXEC done: opcode=0x000403B4 bc_off=536 inp_off=19 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@53765ns:(report note): LOAD_OP: bc_offset=520 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@53815ns:(report note): CALL
+gpeg_engine.vhd:420:1:@53835ns:(report note): CALL
+gpeg_engine.vhd:539:13:@53835ns:(report note): EXEC done: opcode=0x00040382 bc_off=520 inp_off=19 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@53865ns:(report note): LOAD_OP: bc_offset=1764 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@53915ns:(report note): CALL
+gpeg_engine.vhd:420:1:@53935ns:(report note): CALL
+gpeg_engine.vhd:539:13:@53935ns:(report note): EXEC done: opcode=0x00040382 bc_off=1764 inp_off=19 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@53965ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@54015ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@54035ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@54035ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=19 v_failed=false sp=12
+gpeg_engine.vhd:238:11:@54065ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@54115ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@54135ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@54135ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=19 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@54165ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@54215ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@54235ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@54235ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=19 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@54265ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@54315ns:(report note): CALL
+gpeg_engine.vhd:420:1:@54335ns:(report note): CALL
+gpeg_engine.vhd:539:13:@54335ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=19 v_failed=false sp=15
+gpeg_engine.vhd:238:11:@54365ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@54445ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@54445ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=19 v_failed=true sp=15
+gpeg_engine.vhd:238:11:@54525ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@54575ns:(report note): CALL
+gpeg_engine.vhd:420:1:@54595ns:(report note): CALL
+gpeg_engine.vhd:539:13:@54595ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=19 v_failed=false sp=14
+gpeg_engine.vhd:238:11:@54625ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@54705ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@54705ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=19 v_failed=true sp=14
+gpeg_engine.vhd:238:11:@54785ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@54835ns:(report note): CALL
+gpeg_engine.vhd:420:1:@54855ns:(report note): CALL
+gpeg_engine.vhd:539:13:@54855ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=19 v_failed=false sp=13
+gpeg_engine.vhd:238:11:@54885ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@54965ns:(report note): SET
+gpeg_engine.vhd:539:13:@54965ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=19 v_failed=true sp=13
+gpeg_engine.vhd:238:11:@55045ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@55075ns:(report note): RET
+gpeg_engine.vhd:539:13:@55075ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=19 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@55105ns:(report note): LOAD_OP: bc_offset=1772 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@55185ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@55185ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1772 inp_off=19 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@55265ns:(report note): LOAD_OP: bc_offset=544 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@55295ns:(report note): RET
+gpeg_engine.vhd:539:13:@55295ns:(report note): EXEC done: opcode=0x000003A0 bc_off=544 inp_off=19 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@55325ns:(report note): LOAD_OP: bc_offset=484 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@55385ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@55385ns:(report note): EXEC done: opcode=0x00040336 bc_off=484 inp_off=19 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@55415ns:(report note): LOAD_OP: bc_offset=492 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@55445ns:(report note): RET
+gpeg_engine.vhd:539:13:@55445ns:(report note): EXEC done: opcode=0x000003A0 bc_off=492 inp_off=19 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@55475ns:(report note): LOAD_OP: bc_offset=448 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@55525ns:(report note): CALL
+gpeg_engine.vhd:420:1:@55545ns:(report note): CALL
+gpeg_engine.vhd:539:13:@55545ns:(report note): EXEC done: opcode=0x00040382 bc_off=448 inp_off=19 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@55575ns:(report note): LOAD_OP: bc_offset=1704 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@55625ns:(report note): CALL
+gpeg_engine.vhd:420:1:@55645ns:(report note): CALL
+gpeg_engine.vhd:539:13:@55645ns:(report note): EXEC done: opcode=0x00040382 bc_off=1704 inp_off=19 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@55675ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@55725ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@55745ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@55745ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=19 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@55775ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@55825ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@55845ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@55845ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=19 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@55875ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@55925ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@55945ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@55945ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=19 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@55975ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@56025ns:(report note): CALL
+gpeg_engine.vhd:420:1:@56045ns:(report note): CALL
+gpeg_engine.vhd:539:13:@56045ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=19 v_failed=false sp=11
+gpeg_engine.vhd:238:11:@56075ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@56155ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@56155ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=19 v_failed=true sp=11
+gpeg_engine.vhd:238:11:@56235ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@56285ns:(report note): CALL
+gpeg_engine.vhd:420:1:@56305ns:(report note): CALL
+gpeg_engine.vhd:539:13:@56305ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=19 v_failed=false sp=10
+gpeg_engine.vhd:238:11:@56335ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@56415ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@56415ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=19 v_failed=true sp=10
+gpeg_engine.vhd:238:11:@56495ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@56545ns:(report note): CALL
+gpeg_engine.vhd:420:1:@56565ns:(report note): CALL
+gpeg_engine.vhd:539:13:@56565ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=19 v_failed=false sp=9
+gpeg_engine.vhd:238:11:@56595ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@56675ns:(report note): SET
+gpeg_engine.vhd:539:13:@56675ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=19 v_failed=true sp=9
+gpeg_engine.vhd:238:11:@56755ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@56785ns:(report note): RET
+gpeg_engine.vhd:539:13:@56785ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=19 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@56815ns:(report note): LOAD_OP: bc_offset=1712 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@56895ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@56895ns:(report note): EXEC done: opcode=0x000403D7 bc_off=1712 inp_off=19 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@56925ns:(report note): LOAD_OP: bc_offset=1720 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@56955ns:(report note): RET
+gpeg_engine.vhd:539:13:@56955ns:(report note): EXEC done: opcode=0x000003A0 bc_off=1720 inp_off=20 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@56985ns:(report note): LOAD_OP: bc_offset=456 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@57015ns:(report note): RET
+gpeg_engine.vhd:539:13:@57015ns:(report note): EXEC done: opcode=0x000003A0 bc_off=456 inp_off=20 v_failed=false sp=4
+gpeg_engine.vhd:238:11:@57045ns:(report note): LOAD_OP: bc_offset=876 opcode=0x00040336 isize=8
+gpeg_engine.vhd:457:1:@57105ns:(report note): COMMIT
+gpeg_engine.vhd:539:13:@57105ns:(report note): EXEC done: opcode=0x00040336 bc_off=876 inp_off=20 v_failed=false sp=3
+gpeg_engine.vhd:238:11:@57135ns:(report note): LOAD_OP: bc_offset=892 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@57165ns:(report note): RET
+gpeg_engine.vhd:539:13:@57165ns:(report note): EXEC done: opcode=0x000003A0 bc_off=892 inp_off=20 v_failed=false sp=2
+gpeg_engine.vhd:238:11:@57195ns:(report note): LOAD_OP: bc_offset=412 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@57245ns:(report note): CALL
+gpeg_engine.vhd:420:1:@57265ns:(report note): CALL
+gpeg_engine.vhd:539:13:@57265ns:(report note): EXEC done: opcode=0x00040382 bc_off=412 inp_off=20 v_failed=false sp=3
+gpeg_engine.vhd:238:11:@57295ns:(report note): LOAD_OP: bc_offset=368 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@57345ns:(report note): CALL
+gpeg_engine.vhd:420:1:@57365ns:(report note): CALL
+gpeg_engine.vhd:539:13:@57365ns:(report note): EXEC done: opcode=0x00040382 bc_off=368 inp_off=20 v_failed=false sp=4
+gpeg_engine.vhd:238:11:@57395ns:(report note): LOAD_OP: bc_offset=292 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@57445ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@57465ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@57465ns:(report note): EXEC done: opcode=0x00040393 bc_off=292 inp_off=20 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@57495ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@57545ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@57565ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@57565ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=20 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@57595ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@57645ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@57665ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@57665ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=20 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@57695ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@57745ns:(report note): CALL
+gpeg_engine.vhd:420:1:@57765ns:(report note): CALL
+gpeg_engine.vhd:539:13:@57765ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=20 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@57795ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@57875ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@57875ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=20 v_failed=true sp=8
+gpeg_engine.vhd:238:11:@57955ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@58005ns:(report note): CALL
+gpeg_engine.vhd:420:1:@58025ns:(report note): CALL
+gpeg_engine.vhd:539:13:@58025ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=20 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@58055ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@58135ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@58135ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=20 v_failed=true sp=7
+gpeg_engine.vhd:238:11:@58215ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@58265ns:(report note): CALL
+gpeg_engine.vhd:420:1:@58285ns:(report note): CALL
+gpeg_engine.vhd:539:13:@58285ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=20 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@58315ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@58395ns:(report note): SET
+gpeg_engine.vhd:539:13:@58395ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=20 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@58425ns:(report note): LOAD_OP: bc_offset=72 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@58475ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@58495ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@58495ns:(report note): EXEC done: opcode=0x00040393 bc_off=72 inp_off=21 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@58525ns:(report note): LOAD_OP: bc_offset=80 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@58555ns:(report note): SET
+gpeg_engine.vhd:539:13:@58555ns:(report note): EXEC done: opcode=0x002003CA bc_off=80 inp_off=21 v_failed=true sp=7
+gpeg_engine.vhd:238:11:@58615ns:(report note): LOAD_OP: bc_offset=124 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@58645ns:(report note): RET
+gpeg_engine.vhd:539:13:@58645ns:(report note): EXEC done: opcode=0x000003A0 bc_off=124 inp_off=21 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@58675ns:(report note): LOAD_OP: bc_offset=356 opcode=0x000403B4 isize=8
+gpeg_engine.vhd:475:1:@58735ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:475:1:@58755ns:(report note): PARTIALCOMMIT
+gpeg_engine.vhd:539:13:@58755ns:(report note): EXEC done: opcode=0x000403B4 bc_off=356 inp_off=21 v_failed=false sp=5
+gpeg_engine.vhd:238:11:@58785ns:(report note): LOAD_OP: bc_offset=300 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@58835ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@58855ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@58855ns:(report note): EXEC done: opcode=0x00040393 bc_off=300 inp_off=21 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@58885ns:(report note): LOAD_OP: bc_offset=308 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@58935ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@58955ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@58955ns:(report note): EXEC done: opcode=0x00040393 bc_off=308 inp_off=21 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@58985ns:(report note): LOAD_OP: bc_offset=316 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@59035ns:(report note): CALL
+gpeg_engine.vhd:420:1:@59055ns:(report note): CALL
+gpeg_engine.vhd:539:13:@59055ns:(report note): EXEC done: opcode=0x00040382 bc_off=316 inp_off=21 v_failed=false sp=8
+gpeg_engine.vhd:238:11:@59085ns:(report note): LOAD_OP: bc_offset=128 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@59145ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@59145ns:(report note): EXEC done: opcode=0x000403D7 bc_off=128 inp_off=21 v_failed=true sp=8
+gpeg_engine.vhd:238:11:@59225ns:(report note): LOAD_OP: bc_offset=332 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@59275ns:(report note): CALL
+gpeg_engine.vhd:420:1:@59295ns:(report note): CALL
+gpeg_engine.vhd:539:13:@59295ns:(report note): EXEC done: opcode=0x00040382 bc_off=332 inp_off=21 v_failed=false sp=7
+gpeg_engine.vhd:238:11:@59325ns:(report note): LOAD_OP: bc_offset=212 opcode=0x000403D7 isize=8
+gpeg_engine.vhd:375:1:@59385ns:(report note): CHAR
+gpeg_engine.vhd:539:13:@59385ns:(report note): EXEC done: opcode=0x000403D7 bc_off=212 inp_off=21 v_failed=true sp=7
+gpeg_engine.vhd:238:11:@59465ns:(report note): LOAD_OP: bc_offset=348 opcode=0x00040382 isize=8
+gpeg_engine.vhd:420:1:@59515ns:(report note): CALL
+gpeg_engine.vhd:420:1:@59535ns:(report note): CALL
+gpeg_engine.vhd:539:13:@59535ns:(report note): EXEC done: opcode=0x00040382 bc_off=348 inp_off=21 v_failed=false sp=6
+gpeg_engine.vhd:238:11:@59565ns:(report note): LOAD_OP: bc_offset=36 opcode=0x002003CA isize=36
+gpeg_engine.vhd:407:1:@59595ns:(report note): SET
+gpeg_engine.vhd:539:13:@59595ns:(report note): EXEC done: opcode=0x002003CA bc_off=36 inp_off=21 v_failed=true sp=6
+gpeg_engine.vhd:238:11:@59675ns:(report note): LOAD_OP: bc_offset=364 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@59705ns:(report note): RET
+gpeg_engine.vhd:539:13:@59705ns:(report note): EXEC done: opcode=0x000003A0 bc_off=364 inp_off=21 v_failed=false sp=3
+gpeg_engine.vhd:238:11:@59735ns:(report note): LOAD_OP: bc_offset=376 opcode=0x00040393 isize=8
+gpeg_engine.vhd:445:1:@59785ns:(report note): CATCH
+gpeg_engine.vhd:445:1:@59805ns:(report note): CATCH
+gpeg_engine.vhd:539:13:@59805ns:(report note): EXEC done: opcode=0x00040393 bc_off=376 inp_off=21 v_failed=false sp=4
+gpeg_engine.vhd:238:11:@59835ns:(report note): LOAD_OP: bc_offset=384 opcode=0x000003E4 isize=4
+gpeg_engine.vhd:366:1:@59855ns:(report note): ANY
+gpeg_engine.vhd:539:13:@59855ns:(report note): EXEC done: opcode=0x000003E4 bc_off=384 inp_off=21 v_failed=true sp=4
+gpeg_engine.vhd:238:11:@59915ns:(report note): LOAD_OP: bc_offset=392 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@59945ns:(report note): RET
+gpeg_engine.vhd:539:13:@59945ns:(report note): EXEC done: opcode=0x000003A0 bc_off=392 inp_off=21 v_failed=false sp=2
+gpeg_engine.vhd:238:11:@59975ns:(report note): LOAD_OP: bc_offset=420 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@60005ns:(report note): RET
+gpeg_engine.vhd:539:13:@60005ns:(report note): EXEC done: opcode=0x000003A0 bc_off=420 inp_off=21 v_failed=false sp=1
+gpeg_engine.vhd:238:11:@60035ns:(report note): LOAD_OP: bc_offset=24 opcode=0x000003A0 isize=4
+gpeg_engine.vhd:435:1:@60065ns:(report note): RET
+gpeg_engine.vhd:539:13:@60065ns:(report note): EXEC done: opcode=0x000003A0 bc_off=24 inp_off=21 v_failed=false sp=0
+gpeg_engine.vhd:238:11:@60095ns:(report note): LOAD_OP: bc_offset=8 opcode=0x000400D8 isize=8
+gpeg_engine.vhd:361:1:@60145ns:(report note): END
+gpeg_engine_tb.vhd:604:7:@60145ns:(report note): TEST1 PASSED
+gpeg_engine_tb.vhd:611:5:@60255ns:(report note): ALL TESTS COMPLETE
+simulation stopped @60255ns

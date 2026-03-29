@@ -2,7 +2,7 @@
 
 gpegc -N -i coverage.gpeg > coverage.asm
 gpega -i coverage.asm > coverage.byc
-gpege -c coverage.byc -i coverage.txt -v
+gpege -c coverage.byc -i coverage.txt -v > gpeg.test.log 2>&1
 
 cat coverage.byc | perl -e 'my $c=0; while (1) { my $buf=""; sysread(STDIN, $buf, 4); last if (length($buf) != 4); my $hex = join "", map { sprintf("%02X", ord($_)) } split(//, $buf); print "    bcode_mem($c) <= x\"$hex\";\n"; $c++; } print "    bytecode_size <= to_unsigned(".($c*4).", 32);\n";' > bytecode.vhdl
 
