@@ -1,7 +1,7 @@
 /**
  * This file is part of GPEG, a parsing environment
 
-Copyright (c) 2024, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
+Copyright (c) 2026, Kees-Jan Hermans <kees.jan.hermans@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
