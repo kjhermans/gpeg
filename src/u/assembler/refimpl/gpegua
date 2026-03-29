@@ -1,0 +1,177 @@
+#!/usr/bin/perl
+
+use strict;
+
+my $inputfile = '-';
+my $input = '';
+
+my $outputfile = '-';
+
+my %labeltokens = (
+  'call', 0x30,
+  'catch', 0x50,
+  'commit', 0x60,
+  'backcommit', 0x70,
+  'partialcommit', 0x80,
+);
+
+my %regtokens = (
+  'var', 0xb0,
+  'opencapture', 0xc0,
+  'closecapture', 0xd0,
+);
+
+while (scalar(@ARGV)) {
+  my $arg = shift @ARGV;
+  if ($arg =~ s/^-//) {
+    if ($arg eq 'i') {
+      $inputfile = shift @ARGV || die "No input file specified.";
+    }
+  }
+}
+
+if ($inputfile eq '-') {
+  $input = join('', <STDIN>);
+} else {
+  $input = `cat $inputfile` || die "Could not absorb input file '$inputfile'";
+}
+
+my @tokens;
+my %labels;
+my $output;
+
+tokenize();
+first_pass();
+second_pass();
+
+if ($outputfile eq '-') {
+  syswrite(STDOUT, $output);
+}
+
+exit 0;
+
+##---- functions ----##
+
+sub tokenize
+{
+  while (length($input)) {
+    while (1) {
+      last if (0 == ($input =~ s/^[ \t\r\n]+//) && 0 == ($input =~ s/^--(.*)?\n//));
+    }
+    if ($input =~ s/^([a-zA-Z0-9_]+)://) {
+      push @tokens, { type => 'label', label => $1 };
+    } elsif ($input =~ s/^end(\s+([0-9]+))?//) {
+      push @tokens, { type => 'end', code => $2 };
+    } elsif ($input =~ s/^char\s+([a-fA-F0-9]{2})//) {
+      push @tokens, { type => 'range', from => hex($1), until => hex($1) };
+    } elsif ($input =~ s/^(ret|failtwice|fail)//) {
+      push @tokens, { type => $1 };
+    } elsif ($input =~ s/^any//) {
+      push @tokens, { type => 'range', from => 0, until => 255 };
+    } elsif ($input =~ s/^range\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
+      push @tokens, { type => 'range', from => hex($1), until => hex($2) };
+    } elsif ($input =~ s/^bitmask\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
+      push @tokens, { type => 'range', bitmask => hex($1), from => hex($2), until => hex($2) };
+    } elsif ($input =~ s/^(open|close)capture\s+([0-9]+)//) {
+      push @tokens, { type => "$1capture", reg => $2 };
+    } elsif ($input =~ s/^counter\s+([0-9]+)\s+([0-9]+)//) {
+      push @tokens, { type => 'counter', reg => $1, value => $2 };
+    } elsif ($input =~ s/^condjump\s+([0-9]+)\s+([a-zA-Z0-9_]+)//) {
+      push @tokens, { type => 'condjump', reg => $1, label => $2 };
+    } elsif ($input =~ s/^(call|catch|(partial|back|)commit)\s+([a-zA-Z0-9_]+)//) {
+      push @tokens, { type => $1, label => $3 };
+    } elsif ($input =~ s/^set\s+([0-9a-fA-F]+)// ) {
+##..
+      die "set instruction not yet implemented.";
+    } elsif (length($input)) {
+      die "Unknown token at '$input'.";
+    }
+  }
+}
+
+sub first_pass
+{
+  for (my $i=0; $i < scalar(@tokens); $i++) {
+    my $token = $tokens[ $i ];
+    if ($token->{type} eq 'label') {
+      $labels{$token->{label}} = $i;
+    }
+  }
+}
+
+sub second_pass
+{
+  for (my $i=0; $i < scalar(@tokens); $i++) {
+    my $token = $tokens[ $i ];
+    if ($token->{type} eq 'label') {
+      ## ignore
+    } elsif ($token->{type} eq 'end') {
+      my $code = $token->{code} & 0x00ffffff;
+      $output .= pack(
+        'CCCC',
+        0x10,
+        (($code >> 16) & 0xff),
+        (($code >> 8) & 0xff),
+        ($code & 0xff)
+      );
+    } elsif ($token->{type} eq 'range') {
+      my $bitmask = (defined($token->{bitmask}) ? $token->{bitmask} : 0xff);
+      $output .= pack(
+        'CCCC',
+        0x20,
+        $bitmask,
+        $token->{from},
+        $token->{until}
+      );
+    } elsif ($token->{type} =~ /^(call|catch|commit|backcommit|partialcommit)$/) {
+      my $offset = $labels{$token->{label}} & 0x000fffff;
+      $output .= pack(
+        'CCCC',
+        $labeltokens{$token->{type}},
+        (($offset >> 16) & 0xff),
+        (($offset >> 8) & 0xff),
+        ($offset & 0xff)
+      );
+    } elsif ($token->{type} eq 'ret') {
+      $output .= pack('N', 0x40000000);
+    } elsif ($token->{type} eq 'fail') {
+      $output .= pack('N', 0x90000000);
+    } elsif ($token->{type} eq 'failtwice') {
+      $output .= pack('N', 0xa0000000);
+    } elsif ($token->{type} eq 'counter') {
+      my $reg = $token->{reg} & 0xff;
+      my $value = $token->{value} & 0x000fffff;
+      $output .= pack(
+        'CCCC',
+        (0xe0 | ($reg >> 4)),
+        ((($reg << 4) & 0xff) | ($value >> 16)),
+        (($value >> 8) & 0xff),
+        ($value & 0xff)
+      );
+    } elsif ($token->{type} eq 'condjump') {
+      my $reg = $token->{reg} & 0xff;
+      my $offset = $labels{$token->{label}} & 0x000fffff;
+      $output .= pack(
+        'CCCC',
+        (0xf | ($reg >> 4)),
+        ((($reg << 4) & 0xff) | ($offset >> 16)),
+        (($offset >> 8) & 0xff),
+        ($offset & 0xff)
+      );
+    } elsif ($token->{type} =~ /^(var|(open|close)capture)$/) {
+      my $opcode = $regtokens{$token->{type}};
+      my $reg = $token->{reg} & 0x0000ffff;
+      $output .= pack(
+        'CCCC',
+        $opcode,
+        0x00,
+        ($reg >> 8),
+        ($reg & 0xff)
+      );
+    } else {
+      die "Unknown token '$token->{type}'.";
+    }
+  }
+}
+
+1;
