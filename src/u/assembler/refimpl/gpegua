@@ -108,17 +108,18 @@ sub first_pass
   for (my $i=0; $i < scalar(@tokens); $i++) {
     my $token = $tokens[ $i ];
     if ($token->{type} eq 'label') {
-      $labels{$token->{label}} = $i;
+      $labels{$token->{label}} = $i * 4;
     }
   }
 }
 
 sub second_pass
 {
+  my $bc_offset = 0;
   for (my $i=0; $i < scalar(@tokens); $i++) {
     my $token = $tokens[ $i ];
     if ($token->{type} eq 'label') {
-      ## ignore
+      --$bc_offset;
     } elsif ($token->{type} eq 'end') {
       my $code = $token->{code} & 0x00ffffff;
       $output .= pack(
@@ -138,7 +139,14 @@ sub second_pass
         $token->{until} & 0xff
       );
     } elsif ($token->{type} =~ /^(call|catch|commit|backcommit|partialcommit)$/) {
-      my $offset = $labels{$token->{label}} & 0x000fffff;
+      my $offset;
+      if ($token->{label} eq '__NEXT__') {
+        $offset = (($bc_offset + 1) * 4);
+      } elsif (!defined($labels{$token->{label}})) {
+        die "Could not resolve label $token->{label}.";
+      } else {
+        $offset = $labels{$token->{label}} & 0x000fffff;
+      }
       $output .= pack(
         'CCCC',
         $labeltokens{$token->{type}},
@@ -185,6 +193,7 @@ sub second_pass
     } else {
       die "Unknown token '$token->{type}'.";
     }
+    ++$bc_offset;
   }
 }
 
@@ -228,8 +237,12 @@ sub recompile_set
     my $lab = "SET_" . (++$setlabel);
     for (my $i=0; $i < scalar(@ranges); $i++) {
       push @tokens,
-        { type => 'label', label => $lab . '_' . $i },
-        { type => 'catch', label => $lab . '_' . ($i+1) },
+        { type => 'label', label => $lab . '_' . $i };
+      if ($i < scalar(@ranges)-1) {
+        push @tokens,
+          { type => 'catch', label => $lab . '_' . ($i+1) };
+      }
+      push @tokens,
         { type => 'range', from => $ranges[$i]->[0], until => $ranges[$i]->[1] };
     }
   }

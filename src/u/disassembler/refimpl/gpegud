@@ -27,6 +27,9 @@ if ($inputfile eq '-') {
   $input = absorb_binary($inputfile);
 }
 
+my @jumpinstr = (
+  undef, undef, undef, 'call', undef, 'catch', 'commit', 'backcommit', 'partialcommit'
+);
 disassemble();
 
 if ($outputfile eq '-') {
@@ -46,16 +49,47 @@ sub disassemble
     my $opcode = $bytes[ 0 ] >> 4;
     $output .= ($label * 4) . ": ";
     if ($opcode == 1) {
-      $output .= "end";
-    } elsif ($opcode == 2) {
-      $output .= "range " . sprintf("%.2x", $bytes[2]) . " " . sprintf("%.2x", $bytes[3]);
-    } elsif ($opcode == 3) {
-use Data::Dumper; print STDERR Dumper \@bytes;
-      $output .= "call " . (
+      $output .= "end " . (
         ($bytes[1] << 16) |
         ($bytes[2] << 8) |
         $bytes[3]
       );
+    } elsif ($opcode == 2) {
+      $output .=
+        "range " . sprintf("%.2x", $bytes[2]) .
+        " " . sprintf("%.2x", $bytes[3]);
+      if ($bytes[1] != 0xff) {
+        $output .= ' ' . sprintf("%.2x", $bytes[1]);
+      }
+    } elsif ($opcode == 3 ||
+             $opcode == 5 ||
+             $opcode == 6 ||
+             $opcode == 7 ||
+             $opcode == 8)
+    {
+      $output .= $jumpinstr[$opcode] . ' '. (
+        ($bytes[1] << 16) |
+        ($bytes[2] << 8) |
+        $bytes[3]
+      );
+    } elsif ($opcode == 4) {
+      $output .= "ret";
+    } elsif ($opcode == 9) {
+      $output .= "fail";
+    } elsif ($opcode == 10) {
+      $output .= "failtwice";
+    } elsif ($opcode == 11) {
+      $output .= "var ";
+    } elsif ($opcode == 12) {
+      $output .= "opencapture ";
+    } elsif ($opcode == 13) {
+      $output .= "closecapture ";
+    } elsif ($opcode == 14) {
+      $output .= "counter ";
+    } elsif ($opcode == 15) {
+      $output .= "condjump ";
+    } else {
+      die "Unknown opcode $opcode.";
     }
     $output .= "\n";
     ++$label;
