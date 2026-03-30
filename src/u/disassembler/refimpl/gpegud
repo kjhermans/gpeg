@@ -1,0 +1,82 @@
+#!/usr/bin/perl
+
+use strict;
+
+my $inputfile = '-';
+my $input = '';
+
+my $outputfile = '-';
+my $output = '';
+
+while (scalar(@ARGV)) {
+  my $arg = shift @ARGV;
+  if ($arg =~ s/^-//) {
+    if ($arg eq 'i') {
+      $inputfile = shift @ARGV || die "No input file specified.";
+    } elsif ($arg eq 'o') {
+      $outputfile = shift @ARGV || die "No output file specified.";
+    } else {
+      die "Unrecognized option -$arg.";
+    }
+  }
+}
+
+if ($inputfile eq '-') {
+  $input = join('', <STDIN>);
+} else {
+  $input = absorb_binary($inputfile);
+}
+
+disassemble();
+
+if ($outputfile eq '-') {
+  print $output;
+}
+
+exit 0;
+
+##---- functions ----##
+
+sub disassemble
+{
+  my $label = 0;
+  while (length($input)) {
+    $input =~ s/^(.)(.)(.)(.)//s;
+    my @bytes = ( ord($1), ord($2), ord($3), ord($4) );
+    my $opcode = $bytes[ 0 ] >> 4;
+    $output .= ($label * 4) . ": ";
+    if ($opcode == 1) {
+      $output .= "end";
+    } elsif ($opcode == 2) {
+      $output .= "range " . sprintf("%.2x", $bytes[2]) . " " . sprintf("%.2x", $bytes[3]);
+    } elsif ($opcode == 3) {
+use Data::Dumper; print STDERR Dumper \@bytes;
+      $output .= "call " . (
+        ($bytes[1] << 16) |
+        ($bytes[2] << 8) |
+        $bytes[3]
+      );
+    }
+    $output .= "\n";
+    ++$label;
+  }
+}
+
+sub absorb_binary
+{
+  my $path = shift; die "$path not found" if (! -f $path);
+  my $result = '';
+  die "Error $@ opening $path" if (!open(FILE, '<', $path));
+  binmode FILE;
+  my $buf;
+  while (1) {
+    my $n = sysread(FILE, $buf, 1024);
+    if (!$n) {
+      close FILE;
+      return $result;
+    }
+    $result .= $buf;
+  }
+}
+
+1;
