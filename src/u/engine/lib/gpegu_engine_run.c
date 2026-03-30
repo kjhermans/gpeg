@@ -82,7 +82,10 @@ int gpegu_engine_run
       ended = 1;
       break;
     case OP_RANGE:
-      if (eof || *input8 < instr8[2] || *input8 > instr8[3]) {
+      if (eof ||
+          (*input8 & instr[1]) < instr8[2] ||
+          (*input8 & instr[1]) > instr8[3])
+      {
         failed = 1;
       } else {
         instrptr += 4;
