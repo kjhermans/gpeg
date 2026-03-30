@@ -78,7 +78,13 @@ sub tokenize
     } elsif ($input =~ s/^any//) {
       push @tokens, { type => 'range', from => 0, until => 255 };
     } elsif ($input =~ s/^range\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
-      push @tokens, { type => 'range', from => hex($1), until => hex($2) };
+      my $from = hex($1);
+      my $until = hex($2);
+      my $bitmask = 0xff;
+      if ($input =~ s/\s+([a-fA-F0-9]{2})//) {
+        $bitmask = hex($1);
+      }
+      push @tokens, { type => 'range', from => $from, until => $until, bitmask => $bitmask };
     } elsif ($input =~ s/^bitmask\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
       push @tokens, { type => 'range', bitmask => hex($1), from => hex($2), until => hex($2) };
     } elsif ($input =~ s/^(open|close)capture\s+([0-9]+)//) {
@@ -105,10 +111,13 @@ sub tokenize
 
 sub first_pass
 {
+  my $bc_offset = 0;
   for (my $i=0; $i < scalar(@tokens); $i++) {
     my $token = $tokens[ $i ];
     if ($token->{type} eq 'label') {
-      $labels{$token->{label}} = $i * 4;
+      $labels{$token->{label}} = $bc_offset * 4;
+    } else {
+      ++$bc_offset;
     }
   }
 }
@@ -235,17 +244,19 @@ sub recompile_set
   } elsif (scalar(@ranges) == 1) {
     push @tokens, { type => 'range', from => $ranges[0]->[0], until => $ranges[0]->[1] };
   } else {
-    my $lab = "SET_" . (++$setlabel);
-    for (my $i=0; $i < scalar(@ranges); $i++) {
+    my $lab = "SET_" . (++$setlabel) . '_';
+    for (my $i=0; $i < scalar(@ranges)-1; $i++) {
       push @tokens,
-        { type => 'label', label => $lab . '_' . $i };
-      if ($i < scalar(@ranges)-1) {
-        push @tokens,
-          { type => 'catch', label => $lab . '_' . ($i+1) };
-      }
-      push @tokens,
-        { type => 'range', from => $ranges[$i]->[0], until => $ranges[$i]->[1] };
+        { type => 'catch', label => "$lab$i" },
+        { type => 'range', from => $ranges[$i]->[0], until => $ranges[$i]->[1] },
+        { type => 'commit', label => $lab . scalar(@ranges) },
+        { type => 'label', label => "$lab$i" },
+      ;
     }
+    push @tokens,
+      { type => 'range', from => $ranges[-1]->[0], until => $ranges[-1]->[1] },
+      { type => 'label', label => $lab . scalar(@ranges) },
+    ;
   }
 }
 
