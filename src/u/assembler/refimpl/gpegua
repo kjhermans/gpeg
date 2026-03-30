@@ -26,6 +26,10 @@ while (scalar(@ARGV)) {
   if ($arg =~ s/^-//) {
     if ($arg eq 'i') {
       $inputfile = shift @ARGV || die "No input file specified.";
+    } elsif ($arg eq 'o') {
+      $outputfile = shift @ARGV || die "No output file specified.";
+    } else {
+      die "Unrecognized option -$arg.";
     }
   }
 }
@@ -36,6 +40,7 @@ if ($inputfile eq '-') {
   $input = `cat $inputfile` || die "Could not absorb input file '$inputfile'";
 }
 
+my $setlabel = 0;
 my @tokens;
 my %labels;
 my $output;
@@ -46,6 +51,10 @@ second_pass();
 
 if ($outputfile eq '-') {
   syswrite(STDOUT, $output);
+} else {
+  open FILE, "> $outputfile" || die "Could not open '$outputfile' for output.";
+  syswrite(FILE, $output);
+  close FILE;
 }
 
 exit 0;
@@ -80,9 +89,14 @@ sub tokenize
       push @tokens, { type => 'condjump', reg => $1, label => $2 };
     } elsif ($input =~ s/^(call|catch|(partial|back|)commit)\s+([a-zA-Z0-9_]+)//) {
       push @tokens, { type => $1, label => $3 };
-    } elsif ($input =~ s/^set\s+([0-9a-fA-F]+)// ) {
-##..
-      die "set instruction not yet implemented.";
+    } elsif ($input =~ s/^quad\s+([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})//) {
+      push @tokens,
+        { type => 'range', from => hex($1), until => hex($1) },
+        { type => 'range', from => hex($2), until => hex($2) },
+        { type => 'range', from => hex($3), until => hex($3) },
+        { type => 'range', from => hex($4), until => hex($4) };
+    } elsif ($input =~ s/^set\s+([0-9a-fA-F]{64})// ) {
+      recompile_set($1);
     } elsif (length($input)) {
       die "Unknown token at '$input'.";
     }
@@ -120,8 +134,8 @@ sub second_pass
         'CCCC',
         0x20,
         $bitmask,
-        $token->{from},
-        $token->{until}
+        $token->{from} & 0xff,
+        $token->{until} & 0xff
       );
     } elsif ($token->{type} =~ /^(call|catch|commit|backcommit|partialcommit)$/) {
       my $offset = $labels{$token->{label}} & 0x000fffff;
@@ -170,6 +184,53 @@ sub second_pass
       );
     } else {
       die "Unknown token '$token->{type}'.";
+    }
+  }
+}
+
+##
+# Sets are complicated beasts; not only are they a
+# large asm and bytecode instruction (256 bits); they
+# also must be recompiled to possibly a list of
+# alternatives of ranges. This function tries not to,
+# and shouldn't if you use the regular compiler,
+# but MAY upset your label namespace.
+##
+sub recompile_set
+{
+  my $hex = shift;
+  my @set;
+  my @ranges;
+  my $on = 0;
+  my $from;
+  for (my $i=0; $i < 64; $i += 2) {
+    push @set, hex(substr($hex, $i, 2));
+  }
+  for (my $i=0; $i < 256; $i++) {
+    my $bit = ($set[ int($i / 8) ] & (1 << ($i % 8)));
+    if ($bit && !$on) {
+      $from = $i;
+      $on = 1;
+    } elsif (!$bit && $on) {
+      push @ranges, [ $from, $i-1 ];
+      $on = 0;
+      undef $from;
+    }
+  }
+  if (defined($from)) {
+    push @ranges, [ $from, 255 ];
+  }
+  if (scalar(@ranges) == 0) {
+    push @tokens, { type => 'fail' };
+  } elsif (scalar(@ranges) == 1) {
+    push @tokens, { type => 'range', from => $ranges[0]->[0], until => $ranges[0]->[1] };
+  } else {
+    my $lab = "SET_" . (++$setlabel);
+    for (my $i=0; $i < scalar(@ranges); $i++) {
+      push @tokens,
+        { type => 'label', label => $lab . '_' . $i },
+        { type => 'catch', label => $lab . '_' . ($i+1) },
+        { type => 'range', from => $ranges[$i]->[0], until => $ranges[$i]->[1] };
     }
   }
 }
