@@ -59,9 +59,10 @@ sub disassemble
         $bytes[3]
       );
     } elsif ($opcode == 2) {
-      $output .=
-        "range " . sprintf("%.2x", $bytes[2]) .
-        " " . sprintf("%.2x", $bytes[3]);
+      $output .= "range " . sprintf("%.2x", $bytes[2]);
+      if ($bytes[2] != $bytes[3]) {
+        $output .= ' ' . sprintf("%.2x", $bytes[3]);
+      }
       if ($bytes[1] != 0xff) {
         $output .= ' ' . sprintf("%.2x", $bytes[1]);
       }

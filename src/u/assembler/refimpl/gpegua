@@ -77,12 +77,15 @@ sub tokenize
       push @tokens, { type => $1 };
     } elsif ($input =~ s/^any//) {
       push @tokens, { type => 'range', from => 0, until => 255 };
-    } elsif ($input =~ s/^range\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
+    } elsif ($input =~ s/^range\s+([a-fA-F0-9]{2})//) {
       my $from = hex($1);
-      my $until = hex($2);
+      my $until = $from;
       my $bitmask = 0xff;
       if ($input =~ s/\s+([a-fA-F0-9]{2})//) {
-        $bitmask = hex($1);
+        $until = hex($1);
+        if ($input =~ s/\s+([a-fA-F0-9]{2})//) {
+          $bitmask = hex($1);
+        }
       }
       push @tokens, { type => 'range', from => $from, until => $until, bitmask => $bitmask };
     } elsif ($input =~ s/^bitmask\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
