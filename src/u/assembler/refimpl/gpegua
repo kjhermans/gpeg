@@ -138,7 +138,7 @@ sub second_pass
         $token->{from} & 0xff,
         $token->{until} & 0xff
       );
-    } elsif ($token->{type} =~ /^(call|catch|commit|backcommit|partialcommit)$/) {
+    } elsif ($token->{type} =~ /^(call|catch|(back|partial|)commit)$/) {
       my $offset;
       if ($token->{label} eq '__NEXT__') {
         $offset = (($bc_offset + 1) * 4);
@@ -147,9 +147,10 @@ sub second_pass
       } else {
         $offset = $labels{$token->{label}} & 0x000fffff;
       }
+      my $opcode = $labeltokens{$token->{type}} || die "Instruction to opcode";
       $output .= pack(
         'CCCC',
-        $labeltokens{$token->{type}},
+        $opcode,
         (($offset >> 16) & 0xff),
         (($offset >> 8) & 0xff),
         ($offset & 0xff)
@@ -175,13 +176,13 @@ sub second_pass
       my $offset = $labels{$token->{label}} & 0x000fffff;
       $output .= pack(
         'CCCC',
-        (0xf | ($reg >> 4)),
+        (0xf0 | ($reg >> 4)),
         ((($reg << 4) & 0xff) | ($offset >> 16)),
         (($offset >> 8) & 0xff),
         ($offset & 0xff)
       );
     } elsif ($token->{type} =~ /^(var|(open|close)capture)$/) {
-      my $opcode = $regtokens{$token->{type}};
+      my $opcode = $regtokens{$token->{type}} || die "Instruction to opcode";
       my $reg = $token->{reg} & 0x0000ffff;
       $output .= pack(
         'CCCC',
