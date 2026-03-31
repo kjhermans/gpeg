@@ -81,9 +81,9 @@ sub tokenize
       my $from = hex($1);
       my $until = $from;
       my $bitmask = 0xff;
-      if ($input =~ s/\s+([a-fA-F0-9]{2})//) {
+      if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
         $until = hex($1);
-        if ($input =~ s/\s+([a-fA-F0-9]{2})//) {
+        if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
           $bitmask = hex($1);
         }
       }
