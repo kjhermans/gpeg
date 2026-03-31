@@ -51,7 +51,7 @@ sub disassemble
       push @bytes, ord($byte);
     }
     my $opcode = $bytes[ 0 ] >> 4;
-    $output .= ($label * 4) . ": ";
+    $output .= "L_" . sprintf("%.6d", ($label * 4)) . ": ";
     if ($opcode == 1) {
       $output .= "end " . (
         ($bytes[1] << 16) |
@@ -72,11 +72,12 @@ sub disassemble
              $opcode == 7 ||
              $opcode == 8)
     {
-      $output .= $jumpinstr[$opcode] . ' '. (
+      my $offset = (
         ($bytes[1] << 16) |
         ($bytes[2] << 8) |
         $bytes[3]
       );
+      $output .= $jumpinstr[$opcode] . ' L_' . sprintf("%.6d", $offset);
     } elsif ($opcode == 4) {
       $output .= "ret";
     } elsif ($opcode == 9) {
@@ -108,14 +109,15 @@ sub disassemble
         $bytes[3]
       );
     } elsif ($opcode == 15) {
-      $output .= "condjump " . (
-        (($bytes[0] & 0x0f) << 4) |
-        (($bytes[1] & 0xf0) >> 4)
-      ) . ' ' . (
+      my $offset = (
         (($bytes[1] & 0x0f) << 16) |
         ($bytes[2] << 8) |
         $bytes[3]
       );
+      $output .= "condjump " . (
+        (($bytes[0] & 0x0f) << 4) |
+        (($bytes[1] & 0xf0) >> 4)
+      ) . ' L_' . sprintf("%.6d", $offset);
     } else {
       die "Unknown opcode $opcode; $output.";
     }
