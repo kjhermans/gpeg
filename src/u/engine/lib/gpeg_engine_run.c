@@ -40,9 +40,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   (uint32_t)(((_ptr8[1]&0x0f)<<16)|(_ptr8[2]<<8)|_ptr8[3])
 
 /**
- *
+ * Runs the GPEG engine using \p bytecode on \p input.
+ * Returns zero on success (no fatal errors), or non-zero on fatal errors.
+ * A non-match is not a fatal error; therefore examining the \p result
+ * structure is probably wise.
  */
-int gpegu_engine_run
+int gpeg_engine_run
   (
     const vec_t* bytecode,
     const vec_t* input,
