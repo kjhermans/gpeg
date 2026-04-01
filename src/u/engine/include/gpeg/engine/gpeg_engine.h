@@ -37,13 +37,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
  * END
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * |0 0 0 1|  zero |             endcode                           |
+ * |0 0 0 0|  zero |             endcode                           |
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  *
  * RANGE
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * |0 0 1 0|  zero |    bitmask    |     from      |     until     |
+ * |0 0 0 1|  zero |    bitmask    |     from      |     until     |
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *
+ * LIMIT
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * |0 0 1 0|               |O|E| S |           register            |
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * O : 1 = set limit, 0, unset limit (pop limit stack).
+ * E : 1 = big endian interpretation, 0 = little endian.
+ * S : +1 = size of integer being interpreted (1,2,3,4).
  *
  * CALL
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -114,9 +122,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 typedef enum
 {
-  OP_NOOP = 0,
-  OP_END,
+  OP_END = 0,
   OP_RANGE,
+  OP_LIMIT,
   OP_CALL,
   OP_RET,
   OP_CATCH,
@@ -131,15 +139,17 @@ typedef enum
   OP_COUNTER,
   OP_CONDJUMP
 }
-gpegu_opcode_t;
+gpege_opcode_t;
 
 typedef struct
 {
   int success;
   uint32_t endcode;
 }
-gpegu_result_t;
+gpege_result_t;
 
-#define GPEGU_ERR_OVERFLOW      1
+#define GPEGE_ERR_OVERFLOW      1
+#define GPEGE_ERR_STACKEMPTY    2
+#define GPEGE_ERR_STACKELT      3
 
 #endif

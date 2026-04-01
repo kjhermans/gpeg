@@ -31,13 +31,72 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#include <gpegu/lib.h>
+#include <gpeg/engine/lib.h>
 
 #define STACK_CALL  1
 #define STACK_CATCH 2
 
 #define GPEGU_INSTR_OFFSET(_ptr8) \
   (uint32_t)(((_ptr8[1]&0x0f)<<16)|(_ptr8[2]<<8)|_ptr8[3])
+
+typedef struct
+{
+  uint8_t type;
+  uint32_t address;
+}
+gpege_stackelt_t;
+
+#undef ARRAY_EQUALS
+#define ARRAY_EQUALS(a,b) (&a == &b)
+MAKE_ARRAY_HEADER(gpege_stackelt_t, gpege_stack_);
+MAKE_ARRAY_CODE(gpege_stackelt_t, gpege_stack_);
+
+static
+inline void stack_push
+  (gpege_stack_t* stack, uint8_t type, uint32_t address)
+{
+  gpege_stackelt_t elt = {
+    .type = type,
+    .address = address,
+  };
+  gpege_stack_push(stack, elt);
+}
+
+static
+inline int stack_pop
+  (gpege_stack_t* stack, uint8_t type, uint32_t* address)
+{
+  gpege_stackelt_t elt = { 0 };
+  if (stack->count == 0) {
+    RETURN_ERR(GPEGE_ERR_STACKEMPTY);
+  }
+  if (gpege_stack_pop(stack, &elt) == 0) {
+    if (elt.type != type) {
+      RETURN_ERR(GPEGE_ERR_STACKELT);
+    }
+    *address = elt.address;
+  }
+  return 0;
+}
+
+static
+inline int stack_fail
+  (gpege_stack_t* stack, uint32_t* address)
+{
+  if (stack->count == 0) {
+    RETURN_ERR(GPEGE_ERR_STACKEMPTY);
+  }
+  while (stack->count) {
+    gpege_stackelt_t elt = { 0 };
+    if (gpege_stack_pop(stack, &elt) == 0) {
+      if (elt.type == STACK_CATCH) {
+        *address = elt.address;
+        return 0;
+      }
+    }
+  }
+  return 0;
+}
 
 /**
  * Runs the GPEG engine using \p bytecode on \p input.
@@ -49,7 +108,7 @@ int gpeg_engine_run
   (
     const vec_t* bytecode,
     const vec_t* input,
-    gpegu_result_t* result
+    gpege_result_t* result
   )
 {
   int ended = 0;
@@ -60,11 +119,12 @@ int gpeg_engine_run
   uint8_t* input8 = 0;
   uint8_t opcode = 0;
   int eof = 0;
+  gpege_stack_t stack = { 0 };
 
-  while (!ended && !(failed && stack_size() == 0)) {
+  while (!ended && !(failed && stack.count == 0)) {
     failed = 0;
     if (instrptr >= bytecode->size + 4) {
-      RETURN_ERR(GPEGU_ERR_OVERFLOW);
+      RETURN_ERR(GPEGE_ERR_OVERFLOW);
     }
     if (inputptr >= input->size) {
       eof = 1;
@@ -86,27 +146,30 @@ int gpeg_engine_run
       break;
     case OP_RANGE:
       if (eof ||
-          (*input8 & instr[1]) < instr8[2] ||
-          (*input8 & instr[1]) > instr8[3])
+          (*input8 & instr8[1]) < instr8[2] ||
+          (*input8 & instr8[1]) > instr8[3])
       {
         failed = 1;
       } else {
         instrptr += 4;
+        inputptr++;
       }
       break;
+    case OP_LIMIT:
+      break;
     case OP_CALL:
-      stack_push(STACK_CALL, instrptr + 4);
+      stack_push(&stack, STACK_CALL, instrptr + 4);
       instrptr = GPEGU_INSTR_OFFSET(instr8);
       break;
     case OP_RET:
-      stack_pop(STACK_CALL, &inputptr);
+      CHECK(stack_pop(&stack, STACK_CALL, &instrptr));
       break;
     case OP_CATCH:
-      stack_push(STACK_CATCH, GPEGU_INSTR_OFFSET(instr8));
+      stack_push(&stack, STACK_CATCH, GPEGU_INSTR_OFFSET(instr8));
       instrptr += 4;
       break;
     case OP_COMMIT:
-      stack_pop(STACK_CATCH, &inputptr);
+      CHECK(stack_pop(&stack, STACK_CATCH, &instrptr));
       break;
     case OP_BACKCOMMIT:
       break;
@@ -116,7 +179,7 @@ int gpeg_engine_run
       failed = 1;
       break;
     case OP_FAILTWICE:
-      stack_fail();
+      CHECK(stack_fail(&stack, &instrptr));
       failed = 1;
       break;
     case OP_VAR:
@@ -131,7 +194,7 @@ int gpeg_engine_run
       break;
     }
     if (failed) {
-      stack_fail();
+      CHECK(stack_fail(&stack, &instrptr));
     }
   }
   return 0;

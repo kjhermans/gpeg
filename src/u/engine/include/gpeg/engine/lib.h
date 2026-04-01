@@ -39,7 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <andy/vec_t.h>
 #include <andy/devmacroes.h>
+#include <andy/array.h>
 
-#include <gpegu/gpegu.h>
+#include <gpeg/engine/gpeg_engine.h>
 
 #endif
