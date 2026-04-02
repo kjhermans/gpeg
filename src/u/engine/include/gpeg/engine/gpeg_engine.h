@@ -168,6 +168,36 @@ gpege_result_t;
 
 #define GPEGE_FLG_COPYCAPTURES  (1<<0)
 
+/**
+ * Runs the GPEG engine on \p input, using \p bytecode, and fills \p result.
+ *
+ * Notice that a non-match returns zero, but leaves result->success zero.
+ * A match returns zero, and leaves result->success non-zero, fills
+ * result->endcode, and - if captures have been defined in the grammar -
+ * fills result->captures.
+ *
+ * Depending on whether \p flags have the GPEGE_FLG_COPYCAPTURES bit set,
+ * the vectors inside captures->list[ i ].vec will be malloc()'d or not,
+ * and it is up to the caller in that case to free() them.
+ * If any regions have been captured, then the caller must always free()
+ * the result->captures.list member variable.
+ *
+ * \param bytecode The bytecode, for example as produced by the GPEG assembler.
+ * \param input    The input to match the bytecode, or not.
+ * \param flags    Any of the GPEGE_FLG_* bits.
+ * \param result   On success (when zero is returned), contains relevant
+ *                 data to the caller. Note that a non-match is also considered
+ *                 a success.
+ * \returns        Zero on success, or non-zero on error.
+ *
+ * Errors are:
+ *
+ * - GPEGE_ERR_STACKEMPTY  When the stack shouldn't be empty, but is.
+ * - GPEGE_ERR_STACKELT    When the expected type isn't on top of the stack.
+ * - GPEGE_ERR_VARIABLE    Referenced variable cannot be found.
+ * - GPEGE_ERR_OVERFLOW    Instruction pointer outside of bytecode buffer.
+ * - GPEGE_ERR_CAPREG      Capture region not found.
+ */
 extern
 int gpeg_engine_run
   (
