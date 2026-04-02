@@ -8,3 +8,6 @@ all: $(LIB)
 
 $(LIB): $(OBJECTS)
 	$(AR) -rcs $(LIB) $(OBJECTS)
+
+clean:
+		rm -f $(LIB) $(OBJECTS)

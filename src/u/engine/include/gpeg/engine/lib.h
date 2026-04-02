@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <andy/vec_t.h>
 #include <andy/devmacroes.h>
 #include <andy/array.h>
+#include <andy/uint_map_t.h>
 
 #include <gpeg/engine/gpeg_engine.h>
 

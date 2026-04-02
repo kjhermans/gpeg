@@ -34,6 +34,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _GPEGU_ENGINE_H_
 #define _GPEGU_ENGINE_H_
 
+#include <andy/vec_list_t.h>
+
 /**
  * END
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -143,13 +145,27 @@ gpege_opcode_t;
 
 typedef struct
 {
-  int success;
-  uint32_t endcode;
+  int           success;
+  uint32_t      endcode;
+  vec_list_t    captures;
 }
 gpege_result_t;
 
 #define GPEGE_ERR_OVERFLOW      1
 #define GPEGE_ERR_STACKEMPTY    2
 #define GPEGE_ERR_STACKELT      3
+#define GPEGE_ERR_CAPREG        4
+
+#define GPEGE_FLG_COPYCAPTURES  (1<<0)
+
+extern
+int gpeg_engine_run
+  (
+    const vec_t* bytecode,
+    const vec_t* input,
+    unsigned flags,
+    gpege_result_t* result
+  )
+  __attribute__ ((warn_unused_result));
 
 #endif
