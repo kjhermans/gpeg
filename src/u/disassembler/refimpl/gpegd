@@ -52,13 +52,13 @@ sub disassemble
     }
     my $opcode = $bytes[ 0 ] >> 4;
     $output .= "L_" . sprintf("%.6d", ($label * 4)) . ": ";
-    if ($opcode == 1) {
+    if ($opcode == 0) {
       $output .= "end " . (
         ($bytes[1] << 16) |
         ($bytes[2] << 8) |
         $bytes[3]
       );
-    } elsif ($opcode == 2) {
+    } elsif ($opcode == 1) {
       $output .= "range " . sprintf("%.2x", $bytes[2]);
       if ($bytes[2] != $bytes[3]) {
         $output .= ' ' . sprintf("%.2x", $bytes[3]);
@@ -66,6 +66,8 @@ sub disassemble
       if ($bytes[1] != 0xff) {
         $output .= ' ' . sprintf("%.2x", $bytes[1]);
       }
+    } elsif ($opcode == 2) {
+      ##.. todo implement
     } elsif ($opcode == 3 ||
              $opcode == 5 ||
              $opcode == 6 ||

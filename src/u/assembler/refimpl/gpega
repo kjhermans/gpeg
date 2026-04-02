@@ -136,7 +136,7 @@ sub second_pass
       my $code = $token->{code} & 0x00ffffff;
       $output .= pack(
         'CCCC',
-        0x10,
+        0x00,
         (($code >> 16) & 0xff),
         (($code >> 8) & 0xff),
         ($code & 0xff)
@@ -145,7 +145,7 @@ sub second_pass
       my $bitmask = (defined($token->{bitmask}) ? $token->{bitmask} : 0xff);
       $output .= pack(
         'CCCC',
-        0x20,
+        0x10,
         $bitmask,
         $token->{from} & 0xff,
         $token->{until} & 0xff
