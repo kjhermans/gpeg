@@ -54,17 +54,6 @@ MAKE_ARRAY_HEADER(gpege_stackelt_t, gpege_stack_);
 MAKE_ARRAY_CODE(gpege_stackelt_t, gpege_stack_);
 
 static
-inline void stack_push
-  (gpege_stack_t* stack, uint8_t type, uint32_t address)
-{
-  gpege_stackelt_t elt = {
-    .type = type,
-    .address = address,
-  };
-  gpege_stack_push(stack, elt);
-}
-
-static
 inline int stack_pop
   (gpege_stack_t* stack, uint8_t type, uint32_t* address)
 {
@@ -85,16 +74,16 @@ inline int stack_pop
 
 static
 inline int stack_fail
-  (gpege_stack_t* stack, uint32_t* address)
+  (gpege_stack_t* stack, gpege_stackelt_t* ret)
 {
+  gpege_stackelt_t elt = { 0 };
   if (stack->count == 0) {
     RETURN_ERR(GPEGE_ERR_STACKEMPTY);
   }
   while (stack->count) {
-    gpege_stackelt_t elt = { 0 };
     if (gpege_stack_pop(stack, &elt) == 0) {
       if (elt.type == STACK_CATCH) {
-        *address = elt.address;
+        if (ret) { *ret = elt; }
         return 0;
       }
     }
@@ -202,6 +191,8 @@ inline int resolve_variable
 
 #define CLEANUP { r = __r; goto CLEAN_UP; }
 
+extern void logmem(unsigned char*,unsigned);//REMOVE
+
 /**
  * Runs the GPEG engine using \p bytecode on \p input.
  * Returns zero on success (no fatal errors), or non-zero on fatal errors.
@@ -228,11 +219,13 @@ int gpeg_engine_run
   uint_map_t capreg = { 0 };
   gpege_actionlist_t actions = { 0 };
   int r = 0;
+  unsigned instrctr = 0;
 
   while (!ended && !(failed && stack.count == 0)) {
+    ++instrctr;
     failed = 0;
     if (instrptr >= bytecode->size + 4) {
-      RETURN_ERR(GPEGE_ERR_OVERFLOW);
+      RETURN_ERR2(GPEGE_ERR_OVERFLOW, CLEANUP);
     }
     if (inputptr >= input->size) {
       eof = 1;
@@ -241,7 +234,11 @@ int gpeg_engine_run
       input8 = input->data + inputptr;
     }
     instr8 = bytecode->data + instrptr;
-    opcode = (*instr8) >> 4;
+    opcode = instr8[0] >> 4;
+#ifdef _DEBUG
+    fprintf(stderr, "%.8u: %.8u: %x: %.8u; \n"
+        , instrctr, instrptr, opcode, inputptr);
+#endif
     switch (opcode) {
     case OP_END:
       result->success = 1;
@@ -264,12 +261,14 @@ int gpeg_engine_run
       }
       break;
     case OP_LIMIT:
+abort(); //REMOVE
       break;
     case OP_CALL:
       {
         gpege_stackelt_t elt = {
           .type = STACK_CALL,
           .address = instrptr + 4,
+          .inputptr = inputptr,
           .actioncount = actions.count,
         };
         gpege_stack_push(&stack, elt);
@@ -284,6 +283,7 @@ int gpeg_engine_run
         gpege_stackelt_t elt = {
           .type = STACK_CATCH,
           .address = GPEGU_INSTR_OFFSET(instr8),
+          .inputptr = inputptr,
           .actioncount = actions.count,
         };
         gpege_stack_push(&stack, elt);
@@ -299,7 +299,7 @@ int gpeg_engine_run
         gpege_stackelt_t elt = { 0 };
         CHECK2(gpege_stack_pop(&stack, &elt), CLEANUP);
         inputptr = elt.inputptr;
-        actions.count = elt.actioncount; // TODO: If actions.count smaller
+        actions.count = elt.actioncount;
         instrptr = GPEGU_INSTR_OFFSET(instr8);
       }
       break;
@@ -316,7 +316,7 @@ int gpeg_engine_run
       failed = 1;
       break;
     case OP_FAILTWICE:
-      CHECK2(stack_fail(&stack, &instrptr), CLEANUP);
+      CHECK2(stack_fail(&stack, NULL), CLEANUP);
       failed = 1;
       break;
     case OP_VAR:
@@ -374,21 +374,29 @@ int gpeg_engine_run
       {
         uint8_t ctr = ((instr8[0] & 0x0f) << 4) | ((instr8[1] & 0xf0) >> 4);
         uint32_t offset = GPEGU_INSTR_OFFSET(instr8);
-        uint32_t value = 0;
-        if (uint_map_get(&capreg, ctr, &value) == 0) {
-          if (value == 1) {
+        unsigned* value = uint_map_getptr(&capreg, (unsigned)ctr);
+        if (value) {
+          --(*value);
+          if (*value == 0) {
             instrptr += 4;
           } else {
             instrptr = offset;
           }
         } else {
-          RETURN_ERR(GPEGE_ERR_CAPREG);
+          RETURN_ERR2(GPEGE_ERR_CAPREG, CLEANUP);
         }
       }
       break;
     }
     if (failed) {
-      CHECK2(stack_fail(&stack, &instrptr), CLEANUP);
+      gpege_stackelt_t elt = { 0 };
+#ifdef _DEBUG
+      fprintf(stderr, "FAIL\n");
+#endif
+      CHECK2(stack_fail(&stack, &elt), CLEANUP);
+      inputptr = elt.inputptr;
+      instrptr = elt.address;
+      actions.count = elt.actioncount;
     }
   }
   wrap_captures(input, flags, &actions, &(result->captures));
