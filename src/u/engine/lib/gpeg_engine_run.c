@@ -128,12 +128,15 @@ gpege_action_t;
 MAKE_ARRAY_HEADER(gpege_action_t, gpege_actionlist_);
 MAKE_ARRAY_CODE(gpege_action_t, gpege_actionlist_);
 
-void wrap_captures
+MAKE_ARRAY_CODE(gpege_capture_t, gpege_caplist_);
+
+static
+inline void wrap_captures
   (
     const vec_t* input,
     unsigned flags,
     gpege_actionlist_t* actions,
-    vec_list_t* captures
+    gpege_caplist_t* captures
   )
 {
   for (unsigned i=0; i < actions->count; i++) {
@@ -147,24 +150,57 @@ void wrap_captures
         } else if (action1->action == ACT_CLOSE) {
           --level;
           if (level == 0 && action1->reg == action0->reg) {
-            vec_t vec = { 0 };
+            gpege_capture_t capture = { .reg = action1->reg };
             if (flags & GPEGE_FLG_COPYCAPTURES) {
               vec_append(
-                &vec,
+                &(capture.vec),
                 input->data + action0->offset,
                 action1->offset - action0->offset
               );
             } else {
-              vec.data = input->data + action0->offset;
-              vec.size = action1->offset - action0->offset;
+              capture.vec.data = input->data + action0->offset;
+              capture.vec.size = action1->offset - action0->offset;
             }
-            vec_list_push(captures, vec);
+            gpege_caplist_push(captures, capture);
           }
         }
       }
     }
   }
 }
+
+static
+inline int resolve_variable
+  (
+    const vec_t* input,
+    gpege_actionlist_t* actions,
+    uint16_t reg,
+    vec_t* result
+  )
+{
+  for (unsigned i = actions->count; i > 0; i--) {
+    gpege_action_t* action0 = &(actions->list[ i-1 ]);
+    if (action0->action == ACT_CLOSE && action0->reg == reg) {
+      unsigned level = 1;
+      for (unsigned j = i-1; j > 0; j--) {
+        gpege_action_t* action1 = &(actions->list[ j-1 ]);
+        if (action1->action == ACT_OPEN) {
+          --level;
+          if (level == 0 && action1->reg == action0->reg) {
+            result->data = input->data + action1->offset;
+            result->size = action0->offset - action1->offset;
+            return 0;
+          }
+        } else if (action1->action == ACT_CLOSE) {
+          ++level;
+        }
+      }
+    }
+  }
+  RETURN_ERR(GPEGE_ERR_VARIABLE);
+}
+
+#define CLEANUP { r = __r; goto CLEAN_UP; }
 
 /**
  * Runs the GPEG engine using \p bytecode on \p input.
@@ -191,6 +227,7 @@ int gpeg_engine_run
   gpege_stack_t stack = { 0 };
   uint_map_t capreg = { 0 };
   gpege_actionlist_t actions = { 0 };
+  int r = 0;
 
   while (!ended && !(failed && stack.count == 0)) {
     failed = 0;
@@ -240,7 +277,7 @@ int gpeg_engine_run
       }
       break;
     case OP_RET:
-      CHECK(stack_pop(&stack, STACK_CALL, &instrptr));
+      CHECK2(stack_pop(&stack, STACK_CALL, &instrptr), CLEANUP);
       break;
     case OP_CATCH:
       {
@@ -254,13 +291,13 @@ int gpeg_engine_run
       }
       break;
     case OP_COMMIT:
-      CHECK(stack_pop(&stack, STACK_CATCH, NULL));
+      CHECK2(stack_pop(&stack, STACK_CATCH, NULL), CLEANUP);
       instrptr = GPEGU_INSTR_OFFSET(instr8);
       break;
     case OP_BACKCOMMIT:
       {
         gpege_stackelt_t elt = { 0 };
-        CHECK(gpege_stack_pop(&stack, &elt));
+        CHECK2(gpege_stack_pop(&stack, &elt), CLEANUP);
         inputptr = elt.inputptr;
         actions.count = elt.actioncount; // TODO: If actions.count smaller
         instrptr = GPEGU_INSTR_OFFSET(instr8);
@@ -269,7 +306,7 @@ int gpeg_engine_run
     case OP_PARTIALCOMMIT:
       {
         gpege_stackelt_t* eltptr = NULL;
-        CHECK(stack_peek(&stack, &eltptr));
+        CHECK2(stack_peek(&stack, &eltptr), CLEANUP);
         eltptr->inputptr = inputptr;
         eltptr->actioncount = actions.count;
         instrptr = GPEGU_INSTR_OFFSET(instr8);
@@ -279,10 +316,27 @@ int gpeg_engine_run
       failed = 1;
       break;
     case OP_FAILTWICE:
-      CHECK(stack_fail(&stack, &instrptr));
+      CHECK2(stack_fail(&stack, &instrptr), CLEANUP);
       failed = 1;
       break;
     case OP_VAR:
+      {
+        uint16_t reg = (instr8[2] << 8) | instr8[3];
+        vec_t value = { 0 };
+        CHECK2(resolve_variable(input, &actions, reg, &value), CLEANUP);
+        if (value.size == 0) {
+          failed = 1;
+        } else if (inputptr + value.size > input->size) {
+          failed = 1;
+        } else if (eof) {
+          failed = 1;
+        } else if (0 != memcmp(input8, value.data, value.size)) {
+          failed = 1;
+        } else {
+          inputptr += value.size;
+          instrptr += 4;
+        }
+      }
       break;
     case OP_OPENCAPTURE:
       {
@@ -334,9 +388,13 @@ int gpeg_engine_run
       break;
     }
     if (failed) {
-      CHECK(stack_fail(&stack, &instrptr));
+      CHECK2(stack_fail(&stack, &instrptr), CLEANUP);
     }
   }
   wrap_captures(input, flags, &actions, &(result->captures));
-  return 0;
+CLEAN_UP:
+  if (stack.list) { free(stack.list); }
+  if (capreg.keys) { free(capreg.keys); free(capreg.values); }
+  if (actions.list) { free(actions.list); }
+  return r;
 }

@@ -145,9 +145,18 @@ gpege_opcode_t;
 
 typedef struct
 {
-  int           success;
-  uint32_t      endcode;
-  vec_list_t    captures;
+  uint16_t          reg;
+  vec_t             vec;
+}
+gpege_capture_t;
+
+MAKE_ARRAY_HEADER(gpege_capture_t, gpege_caplist_)
+
+typedef struct
+{
+  int               success;
+  uint32_t          endcode;
+  gpege_caplist_t   captures;
 }
 gpege_result_t;
 
@@ -155,6 +164,7 @@ gpege_result_t;
 #define GPEGE_ERR_STACKEMPTY    2
 #define GPEGE_ERR_STACKELT      3
 #define GPEGE_ERR_CAPREG        4
+#define GPEGE_ERR_VARIABLE      5
 
 #define GPEGE_FLG_COPYCAPTURES  (1<<0)
 
