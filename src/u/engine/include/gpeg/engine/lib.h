@@ -34,6 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _GPEGU_LIB_H_
 #define _GPEGU_LIB_H_
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 
