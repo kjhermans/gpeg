@@ -170,6 +170,7 @@ gpege_result_t;
 
 /**
  * Runs the GPEG engine on \p input, using \p bytecode, and fills \p result.
+ * Returns zero on success, non zero on error.
  *
  * Notice that a non-match returns zero, but leaves result->success zero.
  * A match returns zero, and leaves result->success non-zero, fills
