@@ -1,0 +1,14 @@
+test <- test_backcommit enter
+        test_fail enter
+        test_failtwice enter
+        test_commit enter
+        test_set_counter enter
+        test_capture enter
+
+enter            <- 0x0a
+test_backcommit  <- & 'hello' 'hello'
+test_fail        <- & 'hello' / 'hithere'
+test_failtwice   <- '"' ( !'"' . )* '"'
+test_commit      <- 'hithere' / 'hello'
+test_set_counter <- [a-z]^5
+test_capture     <- { [a-z]* }
