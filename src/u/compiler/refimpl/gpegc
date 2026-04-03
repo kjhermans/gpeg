@@ -173,6 +173,10 @@ sub tokenize
       push @tokens, { type => 'cbopen' };
     } elsif ($grammar =~ s/^\}//) {
       push @tokens, { type => 'cbclose' };
+    } elsif ($grammar =~ s/^:([a-zA-Z0-9_]+)://) {
+      push @tokens, { type => 'vardecl', variable => $1 };
+    } elsif ($grammar =~ s/^\$([a-zA-Z0-9_]+)//) {
+      push @tokens, { type => 'varref', variable => $1 };
     } elsif ($grammar =~ s/^\[//) {
       my @range;
       my $invert;
@@ -185,6 +189,7 @@ sub tokenize
             || $grammar =~ s/^(\\.)//
             || $grammar =~ s/^(.)//)
         {
+print STDERR "UNESCAPE $1\n";
           $c1 = unescape($1);
         } else {
           die "Set open ended.";
@@ -247,7 +252,7 @@ sub tokenize
 sub unescape
 {
   my $str = shift;
-  if ($str =~ s/^\\0x([0-9a-fA-F]{2})//) {
+  if ($str =~ s/^\\x([0-9a-fA-F]{2})//) {
     return chr(hex($1));
   } elsif ($str =~ s/^\\(.)//) {
     my $chr = $1;
@@ -327,6 +332,13 @@ sub rearrange_groups
   my $rulename = shift;
   my $list = shift;
   for (my $i=0; $i < scalar(@{$list}); $i++) {
+    if ($list->[ $i ]{type} eq 'cbopen'
+        && $list->[ $i+1 ]{type} eq 'vardecl')
+    {
+      my $var = $list->[ $i+1 ]{variable};
+      splice(@{$list}, $i+1, 1);
+      $list->[ $i ]{variable} = $var;
+    }
     if ($list->[ $i ]{type} =~ /^(c?)bopen$/) {
       my $c = $1;
       my $level = 1;
@@ -485,9 +497,15 @@ sub compile_token
   } elsif ($token->{type} eq 'end') {
     return "  end $token->{code}\n";
   } elsif ($token->{type} eq 'limcall') {
-##..
-  } else {
-    
+    ##.. todo
+  } elsif ($token->{type} =~ /^(bclose|cbclose)$/) {
+    ##.. do nothing
+  } elsif ($token->{type} eq 'varref') {
+    my $ctr = $currentrule->{variables}{$token->{variable}}
+              || die "Could not resolve variable '$token->{variable}'";
+    return "  var $ctr\n";
+  } elsif ($token->{type}) {
+    die "Unknown token '$token->{type}'";
   }
   return '';
 }
@@ -516,6 +534,9 @@ sub compile_token_ident
 sub compile_token_capture
 {
   my $token = shift;
+  if ($token->{variable}) {
+    $currentrule->{variables}{$token->{variable}} = $token->{capturecounter};
+  }
   push @capturestack, $token->{capturecounter};
   my $subasm = sub
                {
@@ -655,6 +676,7 @@ sub compile_token_set
   }
   foreach my $elt (@{$token->{set}}) {
     if ($elt->{type} eq 'range') {
+print STDERR "SET RANGE $elt->{range}[0] $elt->{range}[1]\n";
       for (my $i=ord($elt->{range}[0]); $i <= ord($elt->{range}[1]); $i++) {
         if ($token->{invert}) {
           $bits[ $i ] = 0;
