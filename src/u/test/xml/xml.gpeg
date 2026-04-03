@@ -1,0 +1,34 @@
+CHECK       <- UTF8CHECK XMLCHECK
+  
+UTF8CHECK   <- & UTF8TEXT
+XMLCHECK    <- & XML
+
+UTF8TEXT    <- UTF8CHAR* !.
+UTF8CHAR    <- ASCII / DOUBLE / TRIPLE / QUADRUPLE
+ASCII       <- [\x00-\x7f]
+DOUBLE      <- [\xc0-\xdf] [\x80-\xbf]
+TRIPLE      <- [\xe0-\xef] [\x80-\xbf] [\x80-\xbf]
+QUADRUPLE   <- [\xf0-\xf7] [\x80-\xbf] [\x80-\xbf] [\x80-\xbf]
+
+__prefix    <- %s*
+
+XML         <- optheader complexitem END
+END         <- !.
+
+optheader   <- header?
+header      <- '<?xml' optattrs %s* '?>'
+
+item        <- complexitem / simpleitem
+simpleitem  <- '<' { XMLIDENT } optattrs %s* '/>'
+complexitem <- '<' {:tag: XMLIDENT } optattrs %s* '>'
+               complexbody %s*
+               '</' $tag '>'
+complexbody <- (item / cdata / { (!(%s* '<') .)+ })*
+cdata       <- '<![CDATA[' { ( !']]>' .)* } ']]>'
+optattrs    <- ( ( attrname1 / attrname2 ) EQUALS attrvalue )*
+attrname1   <- {:nbrace: ['"] } { XMLIDENT } $nbrace
+attrname2   <- { XMLIDENT }
+attrvalue   <- {:vbrace: ['"] } { ( ! $vbrace . )* } $vbrace
+EQUALS      <- '='
+XMLIDENT    <- [a-zA-Z][a-zA-Z0-9:]*
+
