@@ -165,6 +165,7 @@ gpege_result_t;
 #define GPEGE_ERR_STACKELT      3
 #define GPEGE_ERR_CAPREG        4
 #define GPEGE_ERR_VARIABLE      5
+#define GPEGE_ERR_MAXINSTR      6
 
 #define GPEGE_FLG_COPYCAPTURES  (1<<0)
 
@@ -198,6 +199,7 @@ gpege_result_t;
  * - GPEGE_ERR_VARIABLE    Referenced variable cannot be found.
  * - GPEGE_ERR_OVERFLOW    Instruction pointer outside of bytecode buffer.
  * - GPEGE_ERR_CAPREG      Capture region not found.
+ * - GPEGE_ERR_MAXINSTR    Too many instructions executed.
  */
 extern
 int gpeg_engine_run
@@ -208,5 +210,7 @@ int gpeg_engine_run
     gpege_result_t* result
   )
   __attribute__ ((warn_unused_result));
+
+#define GPEGE_MAX_INSTRUCTIONS    (1<<24)
 
 #endif
