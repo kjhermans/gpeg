@@ -36,6 +36,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define STACK_CALL  1
 #define STACK_CATCH 2
 
+static
+char* instrstr[] = {
+  "end",
+  "rng",
+  "lim",
+  "cll",
+  "ret",
+  "ctc",
+  "cmt",
+  "bcm",
+  "pcm",
+  "fai",
+  "fa2",
+  "var",
+  "ocp",
+  "ccp",
+  "cnt",
+  "cjp",
+};
+
 #define GPEGU_INSTR_OFFSET(_ptr8) \
   (uint32_t)(((_ptr8[1]&0x0f)<<16)|(_ptr8[2]<<8)|_ptr8[3])
 
@@ -80,14 +100,27 @@ inline int stack_fail
   if (stack->count == 0) {
     RETURN_ERR(GPEGE_ERR_STACKEMPTY);
   }
+#ifdef _DEBUG
+  fprintf(stderr, "FAIL: ");
+#endif
   while (stack->count) {
     if (gpege_stack_pop(stack, &elt) == 0) {
+#ifdef _DEBUG
+      fprintf(stderr, "[%s,%u]"
+          , (elt.type == STACK_CATCH ? "ctc" : "cll"), elt.address);
+#endif
       if (elt.type == STACK_CATCH) {
         if (ret) { *ret = elt; }
-        return 0;
+        break;
       }
+#ifdef _DEBUG
+      else { fprintf(stderr, ", "); }
+#endif
     }
   }
+#ifdef _DEBUG
+  fprintf(stderr, "\n");
+#endif
   return 0;
 }
 
@@ -191,7 +224,8 @@ inline int resolve_variable
 
 #define CLEANUP { r = __r; goto CLEAN_UP; }
 
-extern void logmem(unsigned char*,unsigned);//REMOVE
+static
+unsigned maxinstrctr = GPEGE_MAX_INSTRUCTIONS;
 
 /**
  * Runs the GPEG engine using \p bytecode on \p input.
@@ -222,7 +256,9 @@ int gpeg_engine_run
   unsigned instrctr = 0;
 
   while (!ended && !(failed && stack.count == 0)) {
-    ++instrctr;
+    if (++instrctr > maxinstrctr) {
+      RETURN_ERR2(GPEGE_ERR_MAXINSTR, CLEANUP);
+    }
     failed = 0;
     if (instrptr >= bytecode->size + 4) {
       RETURN_ERR2(GPEGE_ERR_OVERFLOW, CLEANUP);
@@ -236,8 +272,9 @@ int gpeg_engine_run
     instr8 = bytecode->data + instrptr;
     opcode = instr8[0] >> 4;
 #ifdef _DEBUG
-    fprintf(stderr, "%.8u: %.8u: %x: %.8u; \n"
-        , instrctr, instrptr, opcode, inputptr);
+    fprintf(stderr,
+      "%.8u: %.8u: %s: %.8u: #s=%u\n"
+      , instrctr, instrptr, instrstr[opcode], inputptr, stack.count);
 #endif
     switch (opcode) {
     case OP_END:
@@ -390,9 +427,6 @@ abort(); //REMOVE
     }
     if (failed) {
       gpege_stackelt_t elt = { 0 };
-#ifdef _DEBUG
-      fprintf(stderr, "FAIL\n");
-#endif
       CHECK2(stack_fail(&stack, &elt), CLEANUP);
       inputptr = elt.inputptr;
       instrptr = elt.address;
