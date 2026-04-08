@@ -1,5 +1,8 @@
 all:
+	cd build && make
 	cd engine && make
+	cd compiler && make
+	cd assembler && make
 
 .PHONY: test
 
