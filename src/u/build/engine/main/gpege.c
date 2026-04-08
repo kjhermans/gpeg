@@ -31,17 +31,65 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEGU_LIB_H_
-#define _GPEGU_LIB_H_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
+#include <gpeg/engine/lib.h>
+#include <andy/queryargs.h>
+#include <andy/absorb_file.h>
 #include <andy/vec_t.h>
-#include <andy/devmacroes.h>
-#include <andy/array.h>
 
-#include <gpeg/engine/gpeg_engine.h>
+static
+char* usage =
+  "Usage: %s [options]\n"
+  "Where options are:\n"
+  "-? or -h   Display this text and exit.\n"
+  "-i <path>  Specify input path.\n"
+  "-c <path>  Speficy bytecode path.\n"
+;
 
-#endif
+/**
+ *
+ */
+int main
+  (int argc, char* argv[])
+{
+  char defaultinput[] = "-";
+  char* inputfile = defaultinput;
+  char* bytecodefile = 0;
+  char* value = 0;
+  vec_t input = { 0 };
+  vec_t bytecode = { 0 };
+  gpege_result_t result = { 0 };
+
+  if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0
+      || queryargs(argc, argv, 'h', "help", 0, 0, 0, 0) == 0)
+  {
+    printf(usage, argv[ 0 ]);
+    exit(0);
+  }
+  if (queryargs(argc, argv, 'i', "input", 0, 1, 0, &value) == 0) {
+    inputfile = value;
+  }
+  if (absorb_file(inputfile, &(input.data), &(input.size))) {
+    fprintf(stderr, "Could not absorb file '%s'\n", inputfile);
+    return ~0;
+  }
+  if (queryargs(argc, argv, 'c', "bytecode", 0, 1, 0, &value) == 0) {
+    bytecodefile = value;
+  }
+  if (NULL == bytecodefile) {
+    fprintf(stderr, "No bytecode file specified.\n");
+    return ~0;
+  }
+  if (absorb_file(bytecodefile, &(bytecode.data), &(bytecode.size))) {
+    fprintf(stderr, "Could not absorb file '%s'\n", bytecodefile);
+    return ~0;
+  }
+  if (gpeg_engine_run(&bytecode, &input, 0, &result)) {
+    fprintf(stderr, "GPEG engine ended in error.\n");
+    return ~0;
+  } else if (0 == result.success) {
+    fprintf(stderr, "GPEG engine ended in no match.\n");
+    return ~0;
+  } else {
+    return 0;
+  }
+}

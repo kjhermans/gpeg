@@ -31,17 +31,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEGU_LIB_H_
-#define _GPEGU_LIB_H_
+#ifndef _GPEG_COMPILER_LIB_H_
+#define _GPEG_COMPILER_LIB_H_
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 #include <andy/vec_t.h>
 #include <andy/devmacroes.h>
-#include <andy/array.h>
 
-#include <gpeg/engine/gpeg_engine.h>
+#include <gpeg/compiler/gpeg_compiler.h>
+#include <gpeg/compiler/grammar_slotmap.h>
 
 #endif

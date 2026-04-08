@@ -31,17 +31,70 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEGU_LIB_H_
-#define _GPEGU_LIB_H_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-#include <andy/vec_t.h>
-#include <andy/devmacroes.h>
-#include <andy/array.h>
-
+#include <gpeg/compiler/lib.h>
 #include <gpeg/engine/gpeg_engine.h>
 
-#endif
+static
+#include <gpeg/compiler/grammar_bytecode.h>
+
+static
+int gpeg_compile_p1_rule
+  (
+    gpege_caplist_t* captures,
+    unsigned ci,
+    unsigned flags,
+    vec_t* assembly
+  )
+{
+  char rulename[ 128 ] = { 0 };
+
+  snprintf(rulename, sizeof(rulename),
+    "%-.*s", captures->list[ ci+1 ].vec.size, captures->list[ ci+1 ].vec.data
+  );
+  return 0;
+}
+
+static
+int gpeg_compile_p1_rules
+  (
+    gpege_caplist_t* captures,
+    unsigned flags,
+    vec_t* assembly
+  )
+{
+  for (unsigned i=0; i < captures->count; i++) {
+    gpege_capture_t* capture = &(captures->list[ i ]);
+    if (capture->reg == SLOT_RULE) {
+      CHECK(gpeg_compile_p1_rule(captures, i, flags, assembly));
+    }
+  }
+  return 0;
+}
+
+/**
+ *
+ */
+int gpeg_compile
+  (
+    const vec_t* grammar,
+    vec_t* assembly,
+    unsigned flags
+  )
+{
+  DEBUGFUNCTION
+  ASSERT(grammar)
+  ASSERT(assembly)
+
+  vec_t bytecode = { (unsigned char*)grammar_byc, grammar_byc_len };
+  gpege_result_t result = { 0 };
+
+  CHECK(gpeg_engine_run(&bytecode, grammar, 0, &result));
+  if (!(result.success)) {
+    fprintf(stderr, "Parser error at.\n");
+    RETURN_ERR(GPEGC_ERR_PARSER);
+  }
+  CHECK(gpeg_compile_p1_rules(&(result.captures), flags, assembly));
+  //.. free stuff
+
+  RETURN_OK;
+}

@@ -1,0 +1,294 @@
+#!/usr/bin/perl
+
+use strict;
+use Data::Dumper;
+  
+my $inputfile = '-';
+my $input;
+my $bytecodefile;
+my $bytecode;
+my $maxinstrcnt = 2 ** 24;
+my @opcodestr = (
+  'end', 'rng', 'lim', 'cll', 'ret', 'ctc', 'com', 'bcm',
+  'pcm', 'fai', 'fa2', 'var', 'ocp', 'ccp', 'ctr', 'cjp',
+);
+
+while (scalar(@ARGV)) {
+  my $arg = shift @ARGV;
+  if ($arg =~ s/^-//) {
+    if ($arg eq 'h' || $arg eq '?') {
+      print "Usage: $0 [options]
+Where options are:
+-i <path>  Specify assembly file input path (default '-' or stdin).
+-c <path>  Specify bytecode file output path.
+";
+      exit 0;
+    } elsif ($arg eq 'i') {
+      $inputfile = shift @ARGV || die "No input file specified.";
+    } elsif ($arg eq 'c') {
+      $bytecodefile = shift @ARGV || die "No output file specified.";
+    } else {
+      die "Unrecognized option -$arg.";
+    }
+  }
+}
+
+if ($inputfile eq '-') {
+  $input = join('', <STDIN>);
+} else {
+  $input = `cat $inputfile` || die "Could not absorb input file '$inputfile'";
+}
+
+die "Could not load bytecode" if (!defined($bytecodefile)
+    || !defined($bytecode = absorb_binary($bytecodefile)));
+
+run($bytecode, $input);
+
+exit 0;
+
+##---- functions ----##
+
+sub run
+{
+  my ($bytecode, $input) = @_;
+  my $stack = []; ## used by call and catch
+  my $actions = []; ## used by opencapture, closecapture and var
+  my $counters = []; ## used by counter and condjump
+  my $inputptr = 0;
+  my $instrptr = 0;
+  my $instrcnt = 0;
+  my $ended = 0;
+  my $failed = 0;
+  my $eof = 0;
+
+  while ($instrcnt < $maxinstrcnt
+         && !$ended
+         && (!($failed && scalar(@{$stack}) == 0)))
+  {
+    if ($instrptr >= length($bytecode)-4) {
+      die "Engine error: instruction offset outside bytecode.";
+    }
+    my $chr;
+    if ($inputptr >= length($input)) {
+      $eof = 1;
+    } else {
+      $eof = 0;
+      $chr = ord(substr($input, $inputptr, 1));
+    }
+    my $opcode = ord(substr($bytecode, $instrptr, 1)) >> 4;
+    print STDERR
+      sprintf(
+        "%.8d: %.8d: %s: %.8d: %s: #s=%d\n"
+        , $instrcnt
+        , $instrptr
+        , $opcodestr[$opcode]
+        , $inputptr
+        , input_fragment($input, $inputptr)
+        , scalar(@{$stack})
+      );
+    ++$instrcnt;
+    if ($opcode == 0) { ## END
+      my $endcode = (
+        (ord(substr($bytecode, $instrptr + 1, 1)) << 16) |
+        (ord(substr($bytecode, $instrptr + 2, 1)) << 8) |
+         ord(substr($bytecode, $instrptr + 3, 1))
+      );
+      $ended = 1;
+      return (1, $endcode);
+    } elsif ($opcode == 1) { ## RANGE
+      my ($mask, $from, $until) = (
+          ord(substr($bytecode, $instrptr+1, 1)),
+          ord(substr($bytecode, $instrptr+2, 1)),
+          ord(substr($bytecode, $instrptr+3, 1))
+      );
+      if ($eof ||(($mask & $chr) < $from) || (($mask & $chr) > $until)) {
+        $failed = 1;
+      } else {
+        $instrptr += 4;
+        $inputptr += 1;
+      }
+    } elsif ($opcode == 2) { ## LIMIT
+      die "No implementation of the limit instruction yet.";
+    } elsif ($opcode == 3) { ## CALL
+      push @{$stack}, {
+        type => 'CALL',
+        instrptr => $instrptr + 4,
+        inputptr => $inputptr,
+        actioncount => scalar(@{$actions}),
+        countercount => scalar(@{$counters}),
+      };
+      $instrptr = get_offset($bytecode, $instrptr);
+    } elsif ($opcode == 4) { ## RET
+      my $elt = pop_stack($stack, $actions, $counters);
+      die "Stack corrupt" if ($elt->{type} ne 'CALL');
+      $instrptr = $elt->{instrptr};
+    } elsif ($opcode == 5) { ## CATCH
+      push @{$stack}, {
+        type => 'CATCH',
+        instrptr => get_offset($bytecode, $instrptr),
+        inputptr => $inputptr,
+        actioncount => scalar(@{$actions}),
+        countercount => scalar(@{$counters}),
+      };
+      $instrptr += 4;
+    } elsif ($opcode == 6) { ## COMMIT
+      my $elt = pop_stack($stack, $actions, $counters);
+      die "Stack corrupt" if ($elt->{type} ne 'CATCH');
+      $instrptr = get_offset($bytecode, $instrptr);
+    } elsif ($opcode == 7) { ## BACKCOMMIT
+      my $elt = pop_stack($stack, $actions, $counters);
+      die "Stack corrupt" if ($elt->{type} ne 'CATCH');
+      $inputptr = $elt->{inputptr};
+      $instrptr = get_offset($bytecode, $instrptr);
+    } elsif ($opcode == 8) { ## PARTIALCOMMIT
+      die "Stack empty" if (!scalar(@{$stack}));
+      die "Stack corrupt" if ($stack->[-1]{type} ne 'CATCH');
+      $stack->[-1]{inputptr} = $inputptr;
+      $instrptr = get_offset($bytecode, $instrptr);
+    } elsif ($opcode == 9) { ## FAIL
+      $failed = 1;
+    } elsif ($opcode == 10) { ## FAILTWICE
+      fail_stack($stack, $actions, $counters);
+      $failed = 1;
+    } elsif ($opcode == 11) { ## VAR
+      my $reg = (
+        (ord(substr($bytecode, $instrptr + 2, 1)) << 8) |
+         ord(substr($bytecode, $instrptr + 3, 1))
+      );
+##..
+    } elsif ($opcode == 12) { ## OPENCAPTURE
+      my $reg = (
+        (ord(substr($bytecode, $instrptr + 2, 1)) << 8) |
+         ord(substr($bytecode, $instrptr + 3, 1))
+      );
+      push @{$actions}, { type => 'OPEN', reg => $reg, inputptr => $inputptr };
+      $instrptr += 4;
+    } elsif ($opcode == 13) { ## CLOSECAPTURE
+      my $reg = (
+        (ord(substr($bytecode, $instrptr + 2, 1)) << 8) |
+         ord(substr($bytecode, $instrptr + 3, 1))
+      );
+      push @{$actions}, { type => 'CLOSE', reg => $reg, inputptr => $inputptr };
+      $instrptr += 4;
+    } elsif ($opcode == 14) { ## COUNTER
+      my $ctr = (
+        ((ord(substr($bytecode, $instrptr, 1)) & 0xf) << 4) |
+         (ord(substr($bytecode, $instrptr + 1, 1) & 0xf0) >> 4)
+      );
+      my $value = get_offset($bytecode, $instrptr);
+      push @{$counters}, {
+        ctr => $ctr,
+        stacklen => scalar(@{$stack}),
+        value => $value
+      };
+      $instrptr += 4;
+    } elsif ($opcode == 15) { ## CONDJUMP
+      my $ctr = (
+        ((ord(substr($bytecode, $instrptr, 1)) & 0xf) << 4) |
+         (ord(substr($bytecode, $instrptr + 1, 1) & 0xf0) >> 4)
+      );
+      my $offset = get_offset($bytecode, $instrptr);
+      for (my $i=scalar(@{$counters}); $i > 0; $i--) {
+        my $counter = $counters->[$i-1];
+        if ($counter->{stacklen} == scalar(@{$stack})
+            && $counter->{ctr} == $ctr)
+        {
+          --($counter->{value});
+          if ($counter->{value} == 0) {
+            splice(@{$counters}, $i-1, 1);
+            $instrptr += 4;
+          } else {
+            $instrptr = $offset;
+          }
+          goto CTRFOUND;
+        }
+      }
+      die "Counter $ctr not found.";
+CTRFOUND: ;
+    }
+    if ($failed) {
+      ($instrptr, $inputptr) = fail_stack($stack, $actions, $counters);
+      $failed = !scalar(@{$stack});
+    }
+  }
+}
+
+sub pop_stack
+{
+  my ($stack, $actions, $counters) = @_;
+  die "Stack empty." if (!scalar(@{$stack}));
+  my $elt = pop(@{$stack});
+  if ($elt->{actioncount} < scalar(@{$actions})) {
+    splice(@{$actions}, $elt->{actioncount});
+  }
+  if ($elt->{countercount} < scalar(@{$counters})) {
+    splice(@{$counters}, $elt->{countercount});
+  }
+  return $elt;
+}
+
+sub fail_stack
+{
+  my ($stack, $actions, $counters) = @_;
+  print STDERR "-- FAIL: ";
+  while (scalar(@{$stack})) {
+    my $elt = pop_stack($stack, $actions, $counters);
+    print STDERR "$elt->{type} $elt->{instrptr}, ";
+    if ($elt->{type} eq 'CATCH') {
+      print STDERR "\n";
+      return ($elt->{instrptr}, $elt->{inputptr});
+    }
+  }
+  print STDERR "\n";
+  return undef;
+}
+
+sub get_offset
+{
+  my ($bytecode, $instrptr) = @_;
+  return (
+    ((ord(substr($bytecode, $instrptr+1)) & 0x0f) << 16) |
+     (ord(substr($bytecode, $instrptr+2)) << 8) |
+      ord(substr($bytecode, $instrptr+3))
+  );
+}
+
+sub input_fragment
+{
+  my ($input, $inputptr) = @_;
+  if ($inputptr >= length($input)) {
+    return 'EOF';
+  }
+  my $str = '';
+  my $n = 0;
+  while (length($str) < 8 && $inputptr + $n < length($input)) {
+    my $chr = ord(substr($input, $inputptr + $n, 1));
+    if ($chr > 32 && $chr < 127) {
+      $str .= chr($chr);
+    } else {
+      $str .= '.';
+    }
+    ++$n;
+  }
+  return $str;
+}
+
+sub absorb_binary
+{
+  my $path = shift; die "$path not found" if (! -f $path);
+  my $result = '';
+  die "Error $@ opening $path" if (!open(FILE, '<', $path));
+  binmode FILE;
+  my $buf;
+  while (1) {
+    my $n = sysread(FILE, $buf, 1024);
+    if (!$n) {
+      close FILE;
+      return $result;
+    }
+    $result .= $buf;
+  }
+  return $result;
+}
+
+1;

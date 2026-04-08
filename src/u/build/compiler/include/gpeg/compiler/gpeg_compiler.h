@@ -31,17 +31,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEGU_LIB_H_
-#define _GPEGU_LIB_H_
+#ifndef _GPEG_COMPILER_H_
+#define _GPEG_COMPILER_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
+#define GPEGC_ERR_PARSER      257
 
-#include <andy/vec_t.h>
-#include <andy/devmacroes.h>
-#include <andy/array.h>
-
-#include <gpeg/engine/gpeg_engine.h>
+extern
+int gpeg_compile
+  (
+    const vec_t* grammar,
+    vec_t* assembly,
+    unsigned flags
+  )
+  __attribute__ ((warn_unused_result));
 
 #endif

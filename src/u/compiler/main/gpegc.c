@@ -31,17 +31,65 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEGU_LIB_H_
-#define _GPEGU_LIB_H_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
+#include <gpeg/compiler/lib.h>
+#include <andy/queryargs.h>
+#include <andy/absorb_file.h>
 #include <andy/vec_t.h>
-#include <andy/devmacroes.h>
-#include <andy/array.h>
 
-#include <gpeg/engine/gpeg_engine.h>
+static
+char* usage =
+  "Usage: %s [options]\n"
+  "Where options are:\n"
+  "-? or -h   Display this text and exit.\n"
+  "-i <path>  Specify input path.\n"
+  "-o <path>  Speficy output path.\n"
+  "-C         Treat every rule as an automatic capture regio.\n"
+  "-M <path>  Specify slotmap header file.\n"
+;
 
-#endif
+/**
+ *
+ */
+int main
+  (int argc, char* argv[])
+{
+  char defaultinput[] = "-";
+  char defaultoutput[] = "-";
+  char* inputfile = defaultinput;
+  char* outputfile = defaultoutput;
+  char* value;
+  vec_t input = { 0 };
+  vec_t output = { 0 };
+  int fdout = 1;
+
+  if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0
+      || queryargs(argc, argv, 'h', "help", 0, 0, 0, 0) == 0)
+  {
+    printf(usage, argv[ 0 ]);
+    exit(0);
+  }
+  if (queryargs(argc, argv, 'i', "input", 0, 1, 0, &value) == 0) {
+    inputfile = value;
+  }
+  if (queryargs(argc, argv, 'o', "output", 0, 1, 0, &value) == 0) {
+    outputfile = value;
+  }
+  if (absorb_file(inputfile, &(input.data), &(input.size))) {
+    fprintf(stderr, "Could not absorb file '%s'\n", inputfile);
+    return ~0;
+  }
+
+  if (gpeg_compile(&input, &output, 0)) {
+    //..
+  }
+  if (0 != strcmp(outputfile, "-")) {
+    fdout = open(outputfile, O_WRONLY|O_CREAT|O_TRUNC, 0644);
+    if (fdout == -1) {
+      return ~0;
+    }
+  }
+  write(fdout, output.data, output.size);
+  close(fdout);
+
+  return 0;
+}
