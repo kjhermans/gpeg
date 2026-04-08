@@ -6,6 +6,10 @@ my $inputfile = '-';
 my $input = '';
 
 my $outputfile = '-';
+my $output;
+
+my $callmapfile = undef;
+my %callmap;
 
 my %labeltokens = (
   'call', 0x30,
@@ -24,10 +28,20 @@ my %regtokens = (
 while (scalar(@ARGV)) {
   my $arg = shift @ARGV;
   if ($arg =~ s/^-//) {
-    if ($arg eq 'i') {
+    if ($arg eq 'h' || $arg eq '?') {
+      print "Usage: $0 [options]
+Where options are:
+-i <path>  Specify assembly file input path (default '-' or stdin).
+-o <path>  Specify bytecode file output path (default '-' or stdout).
+-S <path>  Specify call symbol map file (by default not generated).
+";
+      exit 0;
+    } elsif ($arg eq 'i') {
       $inputfile = shift @ARGV || die "No input file specified.";
     } elsif ($arg eq 'o') {
       $outputfile = shift @ARGV || die "No output file specified.";
+    } elsif ($arg eq 'S') {
+      $callmapfile = shift @ARGV || die "No call map file specified.";
     } else {
       die "Unrecognized option -$arg.";
     }
@@ -43,7 +57,6 @@ if ($inputfile eq '-') {
 my $setlabel = 0;
 my @tokens;
 my %labels;
-my $output;
 
 tokenize();
 first_pass();
@@ -54,6 +67,15 @@ if ($outputfile eq '-') {
 } else {
   open FILE, "> $outputfile" || die "Could not open '$outputfile' for output.";
   syswrite(FILE, $output);
+  close FILE;
+}
+
+if ($callmapfile) {
+  open FILE, "> $callmapfile" || warn "Could not open '$callmapfile'.";
+  foreach my $key (sort keys(%callmap)) {
+    my $offset = $callmap{$key};
+    print FILE "$key: $offset\n";
+  }
   close FILE;
 }
 
@@ -169,6 +191,9 @@ sub second_pass
         (($offset >> 8) & 0xff),
         ($offset & 0xff)
       );
+      if ($token->{type} eq 'call') {
+        $callmap{$token->{label}} = $offset;
+      }
     } elsif ($token->{type} eq 'ret') {
       $output .= pack('N', 0x40000000);
     } elsif ($token->{type} eq 'fail') {
