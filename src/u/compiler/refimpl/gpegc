@@ -189,7 +189,6 @@ sub tokenize
             || $grammar =~ s/^(\\.)//
             || $grammar =~ s/^(.)//)
         {
-print STDERR "UNESCAPE $1\n";
           $c1 = unescape($1);
         } else {
           die "Set open ended.";
@@ -676,7 +675,6 @@ sub compile_token_set
   }
   foreach my $elt (@{$token->{set}}) {
     if ($elt->{type} eq 'range') {
-print STDERR "SET RANGE $elt->{range}[0] $elt->{range}[1]\n";
       for (my $i=ord($elt->{range}[0]); $i <= ord($elt->{range}[1]); $i++) {
         if ($token->{invert}) {
           $bits[ $i ] = 0;
