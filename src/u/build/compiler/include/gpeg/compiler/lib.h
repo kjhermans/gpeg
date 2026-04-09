@@ -38,11 +38,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
 
 #include <andy/vec_t.h>
 #include <andy/devmacroes.h>
+#include <andy/util_functions.h>
 
 #include <gpeg/compiler/gpeg_compiler.h>
 #include <gpeg/compiler/grammar_slotmap.h>

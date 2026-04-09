@@ -36,6 +36,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define GPEGC_ERR_PARSER      257
 
+#define GPEGC_FLG_AUTOCAPTURE (1<<0)
+
 extern
 int gpeg_compile
   (

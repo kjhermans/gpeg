@@ -61,6 +61,7 @@ int main
   vec_t input = { 0 };
   vec_t output = { 0 };
   int fdout = 1;
+  unsigned flags = 0;
 
   if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0
       || queryargs(argc, argv, 'h', "help", 0, 0, 0, 0) == 0)
@@ -74,12 +75,15 @@ int main
   if (queryargs(argc, argv, 'o', "output", 0, 1, 0, &value) == 0) {
     outputfile = value;
   }
+  if (queryargs(argc, argv, 'C', "autocapture", 0, 0, 0, 0) == 0) {
+    flags |= GPEGC_FLG_AUTOCAPTURE;
+  }
   if (absorb_file(inputfile, &(input.data), &(input.size))) {
     fprintf(stderr, "Could not absorb file '%s'\n", inputfile);
     return ~0;
   }
 
-  if (gpeg_compile(&input, &output, 0)) {
+  if (gpeg_compile(&input, &output, flags)) {
     //..
   }
   if (0 != strcmp(outputfile, "-")) {
@@ -88,7 +92,9 @@ int main
       return ~0;
     }
   }
-  write(fdout, output.data, output.size);
+  if (write_insistent(fdout, output.data, output.size, 0)) {
+    fprintf(stderr, "Assembly writing error: %d\n", errno);
+  }
   close(fdout);
 
   return 0;
