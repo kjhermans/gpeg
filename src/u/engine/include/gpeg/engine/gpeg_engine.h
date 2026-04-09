@@ -210,7 +210,7 @@ int gpeg_engine_run
   (
     const vec_t* bytecode,
     const vec_t* input,
-    unsigned flags,
+    const unsigned flags,
     gpege_result_t* result
   )
   __attribute__ ((warn_unused_result));
@@ -218,5 +218,61 @@ int gpeg_engine_run
 #define GPEGE_MAX_INSTRUCTIONS    (1<<24)
 #define GPEGE_MAX_STACKSIZE       (1<<16)
 #define GPEGE_MAX_COUNTERS        (1<<16)
+
+typedef struct gpege_node gpege_node_t;
+
+struct gpege_node
+{
+  vec_t            vec;
+  unsigned         offset;
+  unsigned         type;
+  gpege_node_t**   children;
+  unsigned         nchildren;
+  int            (*prefunc)(gpege_node_t*,vec_t*,void*);
+  void*            prearg;
+  int            (*postfunc)(gpege_node_t*,vec_t*,void*);
+  void*            postarg;
+};
+
+extern
+gpege_node_t* gpeg_result_to_tree
+  (
+    const gpege_result_t* result
+  )
+  __attribute__ ((warn_unused_result));
+
+extern
+void gpeg_result_debug
+  (const gpege_node_t* node);
+
+extern
+void gpeg_result_remove
+  (gpege_node_t* node, unsigned type, int recursive, int force);
+
+extern
+void gpeg_result_prefunc
+  (
+    gpege_node_t* node,
+    unsigned type,
+    int(*fn)(gpege_node_t*,vec_t*,void*),
+    void* arg
+  );
+
+extern
+void gpeg_result_postfunc
+  (
+    gpege_node_t* node,
+    unsigned type,
+    int(*fn)(gpege_node_t*,vec_t*,void*),
+    void* arg
+  );
+
+extern
+int gpeg_result_run
+  (gpege_node_t* node);
+
+extern
+void gpeg_result_free
+  (gpege_node_t* node);
 
 #endif
