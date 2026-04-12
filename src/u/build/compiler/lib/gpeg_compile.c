@@ -374,6 +374,24 @@ int gpeg_compile_notand
   }
   return 0;
 }
+
+static
+int gpeg_compile_any
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    vec_printf(state->assembly,
+      "  range 00 ff\n"
+    );
+  }
+  return 0;
+}
+
 /**
  *
  */
@@ -413,6 +431,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_RULE, gpeg_compile_rule, &state);
   gpeg_result_callback(tree, SLOT_EXPRESSION, gpeg_compile_expr, &state);
   gpeg_result_callback(tree, SLOT_REFERENCE, gpeg_compile_call, &state);
+  gpeg_result_callback(tree, SLOT_ANY, gpeg_compile_any, &state);
   gpeg_result_callback(tree, SLOT_STRING, gpeg_compile_string, &state);
   gpeg_result_callback(tree, SLOT_QUANTIFIEDMATCHER, gpeg_compile_q, &state);
   gpeg_result_callback(tree, SLOT_SCANMATCHER, gpeg_compile_notand, &state);
