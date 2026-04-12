@@ -331,6 +331,49 @@ int gpeg_compile_q
   }
   return 0;
 }
+
+static
+int gpeg_compile_notand
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)i;
+
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    {
+      unsigned label = (state->label)++;
+      vec_append(vec, &label, sizeof(label));
+      vec_printf(state->assembly,
+        "  catch L%u\n"
+        , label
+      );
+    }
+    break;
+  case GPEG_FNC_POSTNODE:
+    if (node->children[ 0 ]->type == SLOT_NOT) {
+      unsigned* label = (unsigned*)(vec->data);
+      vec_printf(state->assembly,
+        "  failtwice\n"
+        "L%u:\n"
+        , *label
+      );
+    } else if (node->children[ 0 ]->type == SLOT_AND) {
+      unsigned* label = (unsigned*)(vec->data);
+      vec_printf(state->assembly,
+        "  backcommit OUT%u\n"
+        "L%u:\n"
+        "  fail\n"
+        "OUT%u:\n"
+        , *label
+        , *label
+        , *label
+      );
+    }
+    break;
+  }
+  return 0;
+}
 /**
  *
  */
@@ -372,6 +415,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_REFERENCE, gpeg_compile_call, &state);
   gpeg_result_callback(tree, SLOT_STRING, gpeg_compile_string, &state);
   gpeg_result_callback(tree, SLOT_QUANTIFIEDMATCHER, gpeg_compile_q, &state);
+  gpeg_result_callback(tree, SLOT_SCANMATCHER, gpeg_compile_notand, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
