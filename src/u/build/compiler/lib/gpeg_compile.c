@@ -184,6 +184,153 @@ int gpeg_compile_string
   return 0;
 }
 
+static
+void gpeg_compile_q_01_pre
+  (struct compilestate* state, vec_t* vec)
+{
+  unsigned label = (state->label)++;
+  vec_append(vec, &label, sizeof(label));
+  vec_printf(state->assembly,
+    "  catch L%u\n"
+    , label
+  );
+}
+
+static
+void gpeg_compile_q_01_post
+  (struct compilestate* state, vec_t* vec)
+{
+  unsigned* label = (unsigned*)(vec->data);
+  vec_printf(state->assembly,
+    "  commit __NEXT__\n"
+    "L%u:\n"
+    , *label
+  );
+}
+
+static
+void gpeg_compile_q_0p_pre
+  (struct compilestate* state, vec_t* vec)
+{
+  unsigned label = (state->label)++;
+  vec_append(vec, &label, sizeof(label));
+  vec_printf(state->assembly,
+    "  catch L%u\n"
+    "LOOP%u:\n"
+    , label
+    , label
+  );
+}
+
+static
+void gpeg_compile_q_0p_post
+  (struct compilestate* state, vec_t* vec)
+{
+  unsigned* label = (unsigned*)(vec->data);
+  vec_printf(state->assembly,
+    "  partialcommit LOOP%u\n"
+    "L%u:\n"
+    , *label
+    , *label
+  );
+}
+
+static
+void gpeg_compile_q_1p_pre
+  (struct compilestate* state, vec_t* vec)
+{
+  unsigned label = (state->label)++;
+  vec_append(vec, &label, sizeof(label));
+  vec_appendv(vec, state->assembly);
+  state->assembly->data = 0;
+  state->assembly->size = 0;
+}
+
+static
+void gpeg_compile_q_1p_post
+  (struct compilestate* state, vec_t* vec)
+{
+  unsigned* label = (unsigned*)(vec->data);
+  vec_t inbetween = *(state->assembly);
+  state->assembly->data = 0;
+  state->assembly->size = 0;
+  vec_append(
+    state->assembly,
+    vec->data + sizeof(unsigned),
+    vec->size - sizeof(unsigned)
+  );
+  vec_appendv(state->assembly, &inbetween);
+  vec_printf(state->assembly,
+    "  catch L%u\n"
+    "LOOP%u:\n"
+    , *label
+    , *label
+  );
+  vec_appendv(state->assembly, &inbetween);
+  vec_printf(state->assembly,
+    "  partialcommit LOOP%u\n"
+    "L%u:\n"
+    , *label
+    , *label
+  );
+  free(inbetween.data);
+}
+
+static
+int gpeg_compile_q
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)i;
+
+  if (node->nchildren == 2) {
+    switch (phase) {
+    case GPEG_FNC_PRENODE:
+      switch (node->children[ 1 ]->children[ 0 ]->type) {
+      case SLOT_Q_ZEROORONE:
+        gpeg_compile_q_01_pre(state, vec);
+        break;
+      case SLOT_Q_ONEORMORE:
+        gpeg_compile_q_1p_pre(state, vec);
+        break;
+      case SLOT_Q_ZEROORMORE:
+        gpeg_compile_q_0p_pre(state, vec);
+        break;
+      case SLOT_Q_FROMTO:
+        break;
+      case SLOT_Q_UNTIL:
+        break;
+      case SLOT_Q_FROM:
+        break;
+      case SLOT_Q_SPECIFIC:
+        break;
+      }
+      break;
+    case GPEG_FNC_POSTNODE:
+      switch (node->children[ 1 ]->children[ 0 ]->type) {
+      case SLOT_Q_ZEROORONE:
+        gpeg_compile_q_01_post(state, vec);
+        break;
+      case SLOT_Q_ONEORMORE:
+        gpeg_compile_q_1p_post(state, vec);
+        break;
+      case SLOT_Q_ZEROORMORE:
+        gpeg_compile_q_0p_post(state, vec);
+        break;
+      case SLOT_Q_FROMTO:
+        break;
+      case SLOT_Q_UNTIL:
+        break;
+      case SLOT_Q_FROM:
+        break;
+      case SLOT_Q_SPECIFIC:
+        break;
+      }
+      break;
+    }
+  }
+  return 0;
+}
 /**
  *
  */
@@ -224,6 +371,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_EXPRESSION, gpeg_compile_expr, &state);
   gpeg_result_callback(tree, SLOT_REFERENCE, gpeg_compile_call, &state);
   gpeg_result_callback(tree, SLOT_STRING, gpeg_compile_string, &state);
+  gpeg_result_callback(tree, SLOT_QUANTIFIEDMATCHER, gpeg_compile_q, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
