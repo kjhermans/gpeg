@@ -37,12 +37,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 static
 #include <gpeg/compiler/grammar_bytecode.h>
 
+#include <gpeg/engine/release.h>
+
 struct compilestate
 {
   unsigned  flags;
   unsigned  label;
   unsigned  capture;
   int       prefixset;
+  int       firstrule;
   vec_t*    assembly;
 };
 
@@ -57,6 +60,18 @@ int gpeg_compile_rule
   switch (phase) {
   case GPEG_FNC_PRENODE:
     rulename = (char*)(node->children[ 0 ]->vec.data);
+    if (!(state->firstrule)) {
+      state->firstrule = 1;
+      vec_printf(state->assembly,
+        "-- GPEG compiler, release %-.*s\n"
+        "  call %s\n"
+        "  end 0\n"
+        "\n"
+        , release_len
+        , release
+        , rulename
+      );
+    }
     vec_printf(state->assembly, "%s:\n", rulename);
     if (state->prefixset) {
       vec_printf(state->assembly, "  call __prefix\n");

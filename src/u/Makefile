@@ -1,4 +1,5 @@
 all:
+	xxd -i release engine/include/gpeg/engine/release.h
 	cd build && make
 	cd engine && make
 	cd compiler && make
