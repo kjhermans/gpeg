@@ -228,10 +228,8 @@ struct gpege_node
   unsigned         type;
   gpege_node_t**   children;
   unsigned         nchildren;
-  int            (*prefunc)(gpege_node_t*,vec_t*,void*);
-  void*            prearg;
-  int            (*postfunc)(gpege_node_t*,vec_t*,void*);
-  void*            postarg;
+  int            (*fnc)(gpege_node_t*,unsigned,unsigned,vec_t*,void*);
+  void*            arg;
 };
 
 extern
@@ -249,21 +247,17 @@ extern
 void gpeg_result_remove
   (gpege_node_t* node, unsigned type, int recursive, int force);
 
-extern
-void gpeg_result_prefunc
-  (
-    gpege_node_t* node,
-    unsigned type,
-    int(*fn)(gpege_node_t*,vec_t*,void*),
-    void* arg
-  );
+#define GPEG_FNC_PRENODE      1
+#define GPEG_FNC_PRECHILD     2
+#define GPEG_FNC_POSTCHILD    3
+#define GPEG_FNC_POSTNODE     4
 
 extern
-void gpeg_result_postfunc
+void gpeg_result_callback
   (
     gpege_node_t* node,
     unsigned type,
-    int(*fn)(gpege_node_t*,vec_t*,void*),
+    int(*fnc)(gpege_node_t*,unsigned,unsigned,vec_t*,void*),
     void* arg
   );
 

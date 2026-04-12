@@ -46,273 +46,126 @@ struct compilestate
   vec_t*    assembly;
 };
 
-/*
-#ifdef _DEBUG
 static
-void debug_capture
-  (
-    gpege_caplist_t* captures,
-    unsigned i
-  )
-{
-  gpege_capture_t* capture = &(captures->list[ i ]);
-  for (; i < captures->count
-       && captures->list[ i ].offset < capture->offset + capture->vec.size; i++)
-  {
-    gpege_capture_t* sub = &(captures->list[ i ]);
-    fprintf(stderr,
-      "%.3u: %.6u: %-.*s\n"
-      , sub->reg
-      , sub->offset
-      , sub->vec.size
-      , sub->vec.data
-    );
-  }
-}
-#endif
-
-static
-void unescape_string
-  (gpege_capture_t* string, vec_t* assembly)
-{
-  for (unsigned i=0; i < string->vec.size; i++) {
-    char c = string->vec.data[ i ];
-    if (c == '\\') {
-      char e = string->vec.data[ ++i ];
-      switch (e) {
-      case 'n': vec_printf(assembly, "  range 0a\n"); break;
-      case 'r': vec_printf(assembly, "  range 0d\n"); break;
-      case 't': vec_printf(assembly, "  range 09\n"); break;
-      default:  vec_printf(assembly, "  range %.2x\n", e); break;
-      }
-    } else {
-      vec_printf(assembly, "  range %.2x\n", c);
-    }
-  }
-}
-
-static
-int gpeg_compile_p1_matcher
-  (
-    gpege_caplist_t* captures,
-    gpege_capture_t* matcher,
-    unsigned i,
-    vec_t* assembly,
-    struct compilestate* state
-  )
-{
-  switch (matcher[ 1 ].reg) {
-  case SLOT_ANY:
-    vec_printf(assembly, "  range 00 ff\n");
-    break;
-  case SLOT_SET:
-#ifdef _DEBUG
-    fprintf(stderr, "SET:\n");
-    debug_capture(captures, i);
-    fprintf(stderr, "\n");
-#endif
-    break;
-  case SLOT_STRING:
-    unescape_string(&(matcher[ 3 ]), assembly);
-    break;
-  case SLOT_BITMASK:
-    break;
-  case SLOT_HEXLITERAL:
-    break;
-  case SLOT_VARCAPTURE:
-    break;
-  case SLOT_CAPTURE:
-    break;
-  case SLOT_GROUP:
-    break;
-  case SLOT_MACRO:
-    break;
-  case SLOT_ENDFORCE:
-    break;
-  case SLOT_VARREFERENCE:
-    break;
-  case SLOT_REFERENCE:
-    vec_printf(assembly,
-      "  call %-.*s\n", matcher[ 2 ].vec.size, matcher[ 2 ].vec.data
-    );
-    break;
-  case SLOT_LIMITEDCALL:
-    break;
-  }
-  return 0;
-}
-
-static
-int gpeg_compile_p1_term
-  (
-    gpege_caplist_t* captures,
-    gpege_capture_t* term,
-    unsigned i,
-    vec_t* assembly,
-    struct compilestate* state
-  )
-{
-  if (term[ 1 ].reg == SLOT_SCANMATCHER) {
-    //..
-  } else if (term[ 1 ].reg == SLOT_QUANTIFIEDMATCHER) {
-    CHECK(
-      gpeg_compile_p1_matcher(
-        captures,
-        &(captures->list[ i+2 ]),
-        i+2,
-        assembly,
-        state
-      )
-    );
-  }
-  return 0;
-}
-
-static
-int gpeg_compile_p1_terms
-  (
-    gpege_caplist_t* captures,
-    gpege_capture_t* terms,
-    unsigned i,
-    vec_t* assembly,
-    struct compilestate* state
-  )
-{
-  for (; i < captures->count
-         && captures->list[ i ].offset < terms->offset + terms->vec.size; i++)
-  {
-    gpege_capture_t* capture = &(captures->list[ i ]);
-    if (capture->reg == SLOT_TERM) {
-      CHECK(gpeg_compile_p1_term(captures, capture, i, assembly, state));
-    }
-  }
-  return 0;
-}
-
-static
-int gpeg_compile_p1_rule
-  (
-    gpege_caplist_t* captures,
-    gpege_capture_t* rule,
-    unsigned i,
-    vec_t* assembly,
-    struct compilestate* state
-  )
-{
-  vec_t terms = { 0 };
-  for (; i < captures->count
-         && captures->list[ i ].offset < rule->offset + rule->vec.size; i++)
-  {
-    gpege_capture_t* capture = &(captures->list[ i ]);
-    if (capture->reg == SLOT_TERMS && !(terms.data)) {
-      CHECK(gpeg_compile_p1_terms(captures, capture, i, &terms, state));
-    } else if (capture->reg == SLOT_OR) {
-      vec_t alt = { 0 };
-      CHECK(gpeg_compile_p1_rule(captures, rule, i+1, &alt, state));
-      vec_printf(assembly,
-        "  catch L_%u\n"
-        "%s"
-        "  commit L_%u\n"
-        "L_%u:\n"
-        "%s"
-        "L_%u:\n"
-        , state->label
-        , terms.data
-        , state->label + 1
-        , state->label
-        , alt.data
-        , state->label + 1
-      );
-      state->label += 2;
-      //free(terms.data); free(alt.data);
-      return 0;
-    }
-  }
-  vec_appendv(assembly, &terms);
-  //free(terms.data);
-  return 0;
-}
-
-static
-int gpeg_compile_p1_rules
-  (
-    gpege_caplist_t* captures,
-    vec_t* assembly,
-    struct compilestate* state
-  )
-{
-  for (unsigned i=0; i < captures->count; i++) {
-    gpege_capture_t* capture = &(captures->list[ i ]);
-    if (capture->reg == SLOT_RULE) {
-      unsigned autocapture = 0;
-      vec_printf(assembly,
-        "%-.*s:\n", capture[ 1 ].vec.size, capture[ 1 ].vec.data
-      );
-      if (state->prefixset) {
-        vec_printf(assembly,
-          "  call __prefix\n"
-        );
-      }
-      if (0 == vec_strcmp(&(capture[ 1 ].vec), "__prefix")) {
-        state->prefixset = 1;
-      }
-      if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
-        autocapture = state->capture;
-        ++(state->capture);
-        vec_printf(assembly,
-          "  opencapture %u\n"
-          , autocapture
-        );
-      }
-      CHECK(gpeg_compile_p1_rule(captures, capture, i, assembly, state));
-      if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
-        vec_printf(assembly,
-          "  closecapture %u\n"
-          , autocapture
-        );
-      }
-      vec_printf(assembly,
-        "  ret\n\n"
-      );
-    }
-  }
-  return 0;
-}
-*/
-
-static
-int gpeg_compile_pre_rule
-  (gpege_node_t* node, vec_t* vec, void* arg)
+int gpeg_compile_rule
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
-  char* rulename = node->children[ 0 ]->vec.data;
+  char* rulename;
+  (void)i;
 
-  vec_printf(state->assembly, "%s:\n", rulename);
-  if (state->prefixset) {
-    vec_printf(state->assembly, "  call __prefix\n");
-  }
-  if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
-    unsigned capture = (state->capture)++;
-    vec_append(vec, &capture, sizeof(capture));
-    vec_printf(state->assembly, "  opencapture %u\n", capture);
-  }
-  if (0 == strcmp(rulename, "__prefix")) {
-    state->prefixset = 1;
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    rulename = (char*)(node->children[ 0 ]->vec.data);
+    vec_printf(state->assembly, "%s:\n", rulename);
+    if (state->prefixset) {
+      vec_printf(state->assembly, "  call __prefix\n");
+    }
+    if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
+      unsigned capture = (state->capture)++;
+      vec_append(vec, &capture, sizeof(capture));
+      vec_printf(state->assembly, "  opencapture %u\n", capture);
+    }
+    if (0 == strcmp(rulename, "__prefix")) {
+      state->prefixset = 1;
+    }
+    break;
+  case GPEG_FNC_POSTNODE:
+    if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
+      unsigned capture = *((unsigned*)(vec->data));
+      vec_printf(state->assembly, "  closecapture %u\n", capture);
+    }
+    vec_printf(state->assembly, "  ret\n\n");
+    break;
   }
   return 0;
 }
 
 static
-int gpeg_compile_post_rule
-  (gpege_node_t* node, vec_t* vec, void* arg)
+int gpeg_compile_expr
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
+  unsigned* labels;
 
-  if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
-    unsigned capture = *((unsigned*)(vec->data));
-    vec_printf(state->assembly, "  opencapture %u\n", capture);
+  if (node->nchildren > 1) {
+    switch (phase) {
+    case GPEG_FNC_PRENODE:
+      {
+        unsigned label = (state->label)++;
+        vec_append(vec, &label, sizeof(label));
+      }
+      break;
+    case GPEG_FNC_PRECHILD:
+      {
+        unsigned label = (state->label)++;
+        vec_append(vec, &label, sizeof(label));
+        labels = (unsigned*)(vec->data);
+        if (i + 1 < node->nchildren) {
+          vec_printf(state->assembly,
+            "  catch L%u\n"
+            , labels[ (vec->size / sizeof(unsigned)) - 1 ]);
+        }
+      }
+      break;
+    case GPEG_FNC_POSTCHILD:
+      labels = (unsigned*)(vec->data);
+      if (i + 1 < node->nchildren) {
+        vec_printf(state->assembly,
+          "  commit L%u\n"
+          "L%u:\n"
+          , labels[ 0 ]
+          , labels[ (vec->size / sizeof(unsigned)) - 1 ]
+        );
+      }
+      break;
+    case GPEG_FNC_POSTNODE:
+      labels = (unsigned*)(vec->data);
+      vec_printf(state->assembly,
+        "L%u:\n"
+        , labels[ 0 ]
+      );
+      break;
+    }
   }
-  vec_printf(state->assembly, "  ret\n\n");
+  return 0;
+}
+
+static
+int gpeg_compile_call
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  char* rulename = (char*)(node->children[ 0 ]->vec.data);
+  (void)i;
+  (void)vec;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    vec_printf(state->assembly, "  call %s\n", rulename);
+  }
+  return 0;
+}
+
+static
+int gpeg_compile_string
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  vec_t* string = &(node->children[ 0 ]->children[ 0 ]->vec);
+  (void)i;
+  (void)vec;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    for (unsigned i=0; i < string->size; i++) {
+      unsigned char c = string->data[ i ];
+      switch (c) {
+      case 0x5c:
+        break;
+      default:
+        vec_printf(state->assembly, "  range %.2x\n", c);
+      }
+    }
+  }
   return 0;
 }
 
@@ -345,17 +198,17 @@ int gpeg_compile
     fprintf(stderr, "Parser error at [TODO].\n");
     RETURN_ERR(GPEGC_ERR_PARSER);
   }
-/*
-  CHECK(gpeg_compile_p1_rules(&(result.captures), assembly, &state));
-*/
 
   gpege_node_t* tree = gpeg_result_to_tree(&result);
   gpeg_result_remove(tree, SLOT_S, 1, 1);
   gpeg_result_remove(tree, SLOT_MULTILINECOMMENT, 1, 1);
   gpeg_result_remove(tree, SLOT_COMMENT, 1, 1);
 //gpeg_result_debug(tree);
-  gpeg_result_prefunc(tree, SLOT_RULE, gpeg_compile_pre_rule, &state);
-  gpeg_result_postfunc(tree, SLOT_RULE, gpeg_compile_post_rule, &state);
+
+  gpeg_result_callback(tree, SLOT_RULE, gpeg_compile_rule, &state);
+  gpeg_result_callback(tree, SLOT_EXPRESSION, gpeg_compile_expr, &state);
+  gpeg_result_callback(tree, SLOT_REFERENCE, gpeg_compile_call, &state);
+  gpeg_result_callback(tree, SLOT_STRING, gpeg_compile_string, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;

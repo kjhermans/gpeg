@@ -47,38 +47,125 @@ struct compilestate
 };
 
 static
-int gpeg_compile_pre_rule
-  (gpege_node_t* node, vec_t* vec, void* arg)
+int gpeg_compile_rule
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
-  char* rulename = node->children[ 0 ]->vec.data;
+  char* rulename;
+  (void)i;
 
-  vec_printf(state->assembly, "%s:\n", rulename);
-  if (state->prefixset) {
-    vec_printf(state->assembly, "  call __prefix\n");
-  }
-  if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
-    unsigned capture = (state->capture)++;
-    vec_append(vec, &capture, sizeof(capture));
-    vec_printf(state->assembly, "  opencapture %u\n", capture);
-  }
-  if (0 == strcmp(rulename, "__prefix")) {
-    state->prefixset = 1;
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    rulename = (char*)(node->children[ 0 ]->vec.data);
+    vec_printf(state->assembly, "%s:\n", rulename);
+    if (state->prefixset) {
+      vec_printf(state->assembly, "  call __prefix\n");
+    }
+    if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
+      unsigned capture = (state->capture)++;
+      vec_append(vec, &capture, sizeof(capture));
+      vec_printf(state->assembly, "  opencapture %u\n", capture);
+    }
+    if (0 == strcmp(rulename, "__prefix")) {
+      state->prefixset = 1;
+    }
+    break;
+  case GPEG_FNC_POSTNODE:
+    if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
+      unsigned capture = *((unsigned*)(vec->data));
+      vec_printf(state->assembly, "  closecapture %u\n", capture);
+    }
+    vec_printf(state->assembly, "  ret\n\n");
+    break;
   }
   return 0;
 }
 
 static
-int gpeg_compile_post_rule
-  (gpege_node_t* node, vec_t* vec, void* arg)
+int gpeg_compile_expr
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
+  unsigned* labels;
 
-  if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
-    unsigned capture = *((unsigned*)(vec->data));
-    vec_printf(state->assembly, "  opencapture %u\n", capture);
+  if (node->nchildren > 1) {
+    switch (phase) {
+    case GPEG_FNC_PRENODE:
+      {
+        unsigned label = (state->label)++;
+        vec_append(vec, &label, sizeof(label));
+      }
+      break;
+    case GPEG_FNC_PRECHILD:
+      {
+        unsigned label = (state->label)++;
+        vec_append(vec, &label, sizeof(label));
+        labels = (unsigned*)(vec->data);
+        if (i + 1 < node->nchildren) {
+          vec_printf(state->assembly,
+            "  catch L%u\n"
+            , labels[ (vec->size / sizeof(unsigned)) - 1 ]);
+        }
+      }
+      break;
+    case GPEG_FNC_POSTCHILD:
+      labels = (unsigned*)(vec->data);
+      if (i + 1 < node->nchildren) {
+        vec_printf(state->assembly,
+          "  commit L%u\n"
+          "L%u:\n"
+          , labels[ 0 ]
+          , labels[ (vec->size / sizeof(unsigned)) - 1 ]
+        );
+      }
+      break;
+    case GPEG_FNC_POSTNODE:
+      labels = (unsigned*)(vec->data);
+      vec_printf(state->assembly,
+        "L%u:\n"
+        , labels[ 0 ]
+      );
+      break;
+    }
   }
-  vec_printf(state->assembly, "  ret\n\n");
+  return 0;
+}
+
+static
+int gpeg_compile_call
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  char* rulename = (char*)(node->children[ 0 ]->vec.data);
+  (void)i;
+  (void)vec;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    vec_printf(state->assembly, "  call %s\n", rulename);
+  }
+  return 0;
+}
+
+static
+int gpeg_compile_string
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  vec_t* string = &(node->children[ 0 ]->children[ 0 ]->vec);
+  (void)i;
+  (void)vec;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    for (unsigned i=0; i < string->size; i++) {
+      unsigned char c = string->data[ i ];
+      switch (c) {
+      case 0x5c:
+        break;
+      default:
+        vec_printf(state->assembly, "  range %.2x\n", c);
+      }
+    }
+  }
   return 0;
 }
 
@@ -117,8 +204,11 @@ int gpeg_compile
   gpeg_result_remove(tree, SLOT_MULTILINECOMMENT, 1, 1);
   gpeg_result_remove(tree, SLOT_COMMENT, 1, 1);
 //gpeg_result_debug(tree);
-  gpeg_result_prefunc(tree, SLOT_RULE, gpeg_compile_pre_rule, &state);
-  gpeg_result_postfunc(tree, SLOT_RULE, gpeg_compile_post_rule, &state);
+
+  gpeg_result_callback(tree, SLOT_RULE, gpeg_compile_rule, &state);
+  gpeg_result_callback(tree, SLOT_EXPRESSION, gpeg_compile_expr, &state);
+  gpeg_result_callback(tree, SLOT_REFERENCE, gpeg_compile_call, &state);
+  gpeg_result_callback(tree, SLOT_STRING, gpeg_compile_string, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;

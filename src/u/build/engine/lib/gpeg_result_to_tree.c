@@ -133,58 +133,56 @@ void gpeg_result_remove
   }
 }
 
-void gpeg_result_prefunc
+void gpeg_result_callback
   (
     gpege_node_t* node,
     unsigned type,
-    int(*fn)(gpege_node_t*,vec_t*,void*),
+    int(*fnc)(gpege_node_t*,unsigned,unsigned,vec_t*,void*),
     void* arg
   )
 {
   for (unsigned i=0; i < node->nchildren; i++) {
     gpege_node_t* child = node->children[ i ];
     if (child->type == type) {
-      child->prefunc = fn;
-      child->prearg = arg;
+      child->fnc = fnc;
+      child->arg = arg;
     }
-    gpeg_result_prefunc(child, type, fn, arg);
+    gpeg_result_callback(child, type, fnc, arg);
   }
 }
 
-void gpeg_result_postfunc
-  (
-    gpege_node_t* node,
-    unsigned type,
-    int(*fn)(gpege_node_t*,vec_t*,void*),
-    void* arg
-  )
+static
+int gpeg_result_run_
+  (gpege_node_t* parent, vec_t* parentvec)
 {
-  for (unsigned i=0; i < node->nchildren; i++) {
-    gpege_node_t* child = node->children[ i ];
-    if (child->type == type) {
-      child->postfunc = fn;
-      child->postarg = arg;
-    }
-    gpeg_result_postfunc(child, type, fn, arg);
-  }
-}
-
-int gpeg_result_run
-  (gpege_node_t* node)
-{
-  for (unsigned i=0; i < node->nchildren; i++) {
-    gpege_node_t* child = node->children[ i ];
+  for (unsigned i=0; i < parent->nchildren; i++) {
+    gpege_node_t* child = parent->children[ i ];
     vec_t vec = { 0 };
-    if (child->prefunc) {
-      CHECK(child->prefunc(child, &vec, child->prearg));
+    if (child->fnc) {
+      CHECK(child->fnc(child, GPEG_FNC_PRENODE, i, &vec, child->arg));
     }
-    CHECK(gpeg_result_run(child));
-    if (child->postfunc) {
-      CHECK(child->postfunc(child, &vec, child->postarg));
+    if (parent->fnc) {
+      CHECK(parent->fnc(parent, GPEG_FNC_PRECHILD, i, parentvec, parent->arg));
+    }
+    CHECK(gpeg_result_run_(child, &vec));
+    if (parent->fnc) {
+      CHECK(parent->fnc(parent, GPEG_FNC_POSTCHILD, i, parentvec, parent->arg));
+    }
+    if (child->fnc) {
+      CHECK(child->fnc(child, GPEG_FNC_POSTNODE, i, &vec, child->arg));
     }
     if (vec.data) { free(vec.data); }
   }
   return 0;
+}
+
+/**
+ *
+ */
+int gpeg_result_run
+  (gpege_node_t* parent)
+{
+  return gpeg_result_run_(parent, NULL);
 }
 
 /**
