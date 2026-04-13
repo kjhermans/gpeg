@@ -320,7 +320,6 @@ void gpeg_compile_q_ft_post
   )
 {
   unsigned* label = (unsigned*)(vec->data);
-//  unsigned counter0 = label[ 1 ];
   unsigned counter1 = label[ 2 ];
 
   vec_printf(state->assembly,
@@ -622,16 +621,155 @@ int gpeg_compile_set
       gpege_node_t* child = node->children[ i ];
       switch (child->type) {
       case SLOT_SET_1:
-        vec_printf(state->assembly,
-          "SET%u_%u:\n"
-          , label
-          , i
-        );
-        ++i;
+        {
+          gpege_node_t* child1 = node->children[ ++i ];
+          unsigned char from = child->vec.data[ 0 ];
+          unsigned char until = child1->vec.data[ 0 ];
+          if (i+2 < node->nchildren) {
+            vec_printf(state->assembly,
+              "  catch SET%u_%u\n"
+              "  range %.2x %.2x\n"
+              "  commit L%u\n"
+              "SET%u_%u:\n"
+              , label
+              , i
+              , from
+              , until
+              , label
+              , label
+              , i
+            );
+          } else {
+            vec_printf(state->assembly,
+              "  range %.2x %.2x\n"
+              , from
+              , until
+            );
+          }
+        }
         break;
       case SLOT_SET_3:
+        {
+          unsigned char chr = child->vec.data[ 0 ];
+          if (i+2 < node->nchildren) {
+            vec_printf(state->assembly,
+              "  catch SET%u_%u\n"
+              "  range %.2x\n"
+              "  commit L%u\n"
+              "SET%u_%u:\n"
+              , label
+              , i
+              , chr
+              , label
+              , label
+              , i
+            );
+          } else {
+            vec_printf(state->assembly,
+              "  range %.2x\n"
+              , chr
+            );
+          }
+        }
         break;
       }
+    }
+    vec_printf(state->assembly,
+      "L%u:\n"
+      , label
+    );
+  }
+  return 0;
+}
+
+static
+int gpeg_compile_macro
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  unsigned label;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    label = (state->label)++;
+    if (0 == strcmp((char*)(node->vec.data), "%s")) {
+      vec_printf(state->assembly,
+        "  catch MACRO%u_1\n"
+        "  range 20\n"
+        "  commit L%u\n"
+        "MACRO%u_1:\n"
+        "  range 07 0d\n"
+        "L%u:\n"
+        , label
+        , label
+        , label
+        , label
+      );
+    } else if (0 == strcmp((char*)(node->vec.data), "%w")) {
+      vec_printf(state->assembly,
+        "  catch MACRO%u_1\n"
+        "  range 41 5a\n"
+        "  commit L%u\n"
+        "MACRO%u_1:\n"
+        "  range 61 7a\n"
+        "L%u:\n"
+        , label
+        , label
+        , label
+        , label
+      );
+    } else if (0 == strcmp((char*)(node->vec.data), "%a")) {
+      vec_printf(state->assembly,
+        "  catch MACRO%u_1\n"
+        "  range 41 5a\n"
+        "  commit L%u\n"
+        "MACRO%u_1:\n"
+        "  catch MACRO%u_2\n"
+        "  range 61 7a\n"
+        "  commit L%u\n"
+        "MACRO%u_2:\n"
+        "  range 30 39\n"
+        "L%u:\n"
+        , label
+        , label
+        , label
+        , label
+        , label
+        , label
+        , label
+      );
+    } else if (0 == strcmp((char*)(node->vec.data), "%n")) {
+      vec_printf(state->assembly,
+        "  range 30 39\n"
+      );
+    } else if (0 == strcmp((char*)(node->vec.data), "%p")) {
+      vec_printf(state->assembly,
+        "  catch MACRO%u_1\n"
+        "  range 20 7e\n"
+        "  commit L%u\n"
+        "MACRO%u_1:\n"
+        "  catch MACRO%u_2\n"
+        "  range 0a\n"
+        "  commit L%u\n"
+        "MACRO%u_2:\n"
+        "  range 0c\n"
+        "L%u:\n"
+        , label
+        , label
+        , label
+        , label
+        , label
+        , label
+        , label
+      );
+    } else if (0 == strcmp((char*)(node->vec.data), "%n")) {
+      vec_printf(state->assembly,
+        "  range 30 39\n"
+      );
+    } else {
+      RETURN_ERR(GPEGC_ERR_MACRO);
     }
   }
   return 0;
@@ -681,6 +819,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_QUANTIFIEDMATCHER, gpeg_compile_q, &state);
   gpeg_result_callback(tree, SLOT_SCANMATCHER, gpeg_compile_notand, &state);
   gpeg_result_callback(tree, SLOT_SET, gpeg_compile_set, &state);
+  gpeg_result_callback(tree, SLOT_MACRO, gpeg_compile_macro, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
