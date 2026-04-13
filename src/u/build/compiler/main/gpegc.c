@@ -84,7 +84,8 @@ int main
   }
 
   if (gpeg_compile(&input, &output, flags)) {
-    //..
+    fprintf(stderr, "Compilation error.\n");
+    return ~0;
   }
   if (0 != strcmp(outputfile, "-")) {
     fdout = open(outputfile, O_WRONLY|O_CREAT|O_TRUNC, 0644);

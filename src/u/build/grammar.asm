@@ -64,42 +64,42 @@ L8:
 
 __prefix:
   opencapture 4
-  catch L9
-LOOP9:
-  catch L11
-  call MULTILINECOMMENT
-  commit L10
-L11:
+  catch L10
+LOOP10:
   catch L12
-  call COMMENT
-  commit L10
+  call MULTILINECOMMENT
+  commit L11
 L12:
+  catch L13
+  call COMMENT
+  commit L11
+L13:
   call S
+L11:
+  partialcommit LOOP10
 L10:
-  partialcommit LOOP9
-L9:
   closecapture 4
   ret
 
 END:
   call __prefix
   opencapture 5
-  catch L14
+  catch L15
   range 00 ff
   failtwice
-L14:
+L15:
   closecapture 5
   ret
 
 DEFINITION:
   call __prefix
   opencapture 6
-  catch L16
+  catch L17
   call RULE
-  commit L15
-L16:
+  commit L16
+L17:
   call IMPORTDECL
-L15:
+L16:
   closecapture 6
   ret
 
@@ -116,12 +116,12 @@ EXPRESSION:
   call __prefix
   opencapture 8
   call TERMS
-  catch L18
-LOOP18:
+  catch L19
+LOOP19:
   call OR
   call TERMS
-  partialcommit LOOP18
-L18:
+  partialcommit LOOP19
+L19:
   closecapture 8
   ret
 
@@ -129,35 +129,35 @@ TERMS:
   call __prefix
   opencapture 9
   call TERM
-  catch L19
-LOOP19:
+  catch L20
+LOOP20:
   call TERM
-  partialcommit LOOP19
-L19:
+  partialcommit LOOP20
+L20:
   closecapture 9
   ret
 
 TERM:
   call __prefix
   opencapture 10
-  catch L21
+  catch L22
   call SCANMATCHER
-  commit L20
-L21:
+  commit L21
+L22:
   call QUANTIFIEDMATCHER
-L20:
+L21:
   closecapture 10
   ret
 
 SCANMATCHER:
   call __prefix
   opencapture 11
-  catch L24
+  catch L25
   call NOT
-  commit L23
-L24:
+  commit L24
+L25:
   call AND
-L23:
+L24:
   call MATCHER
   closecapture 11
   ret
@@ -166,46 +166,46 @@ QUANTIFIEDMATCHER:
   call __prefix
   opencapture 12
   call MATCHER
-  catch L26
+  catch L27
   call QUANTIFIER
   commit __NEXT__
-L26:
+L27:
   closecapture 12
   ret
 
 QUANTIFIER:
   call __prefix
   opencapture 13
-  catch L28
-  call Q_ZEROORONE
-  commit L27
-L28:
   catch L29
-  call Q_ONEORMORE
-  commit L27
+  call Q_ZEROORONE
+  commit L28
 L29:
   catch L30
-  call Q_ZEROORMORE
-  commit L27
+  call Q_ONEORMORE
+  commit L28
 L30:
   catch L31
-  call Q_FROMTO
-  commit L27
+  call Q_ZEROORMORE
+  commit L28
 L31:
   catch L32
-  call Q_UNTIL
-  commit L27
+  call Q_FROMTO
+  commit L28
 L32:
   catch L33
-  call Q_FROM
-  commit L27
+  call Q_UNTIL
+  commit L28
 L33:
   catch L34
-  call Q_SPECIFIC
-  commit L27
+  call Q_FROM
+  commit L28
 L34:
+  catch L35
+  call Q_SPECIFIC
+  commit L28
+L35:
   call Q_VAR
-L27:
+L28:
   closecapture 13
   ret
 
@@ -234,15 +234,19 @@ Q_FROMTO:
   call __prefix
   opencapture 17
   range 5e
-  catch L36
-LOOP36:
-  partialcommit LOOP36
-L36:
-  range 2d
+SET38_1:
   catch L37
 LOOP37:
+SET39_1:
   partialcommit LOOP37
 L37:
+  range 2d
+SET41_1:
+  catch L40
+LOOP40:
+SET42_1:
+  partialcommit LOOP40
+L40:
   closecapture 17
   ret
 
@@ -251,10 +255,12 @@ Q_UNTIL:
   opencapture 18
   range 5e
   range 2d
-  catch L38
-LOOP38:
-  partialcommit LOOP38
-L38:
+SET44_1:
+  catch L43
+LOOP43:
+SET45_1:
+  partialcommit LOOP43
+L43:
   closecapture 18
   ret
 
@@ -262,10 +268,12 @@ Q_FROM:
   call __prefix
   opencapture 19
   range 5e
-  catch L39
-LOOP39:
-  partialcommit LOOP39
-L39:
+SET47_1:
+  catch L46
+LOOP46:
+SET48_1:
+  partialcommit LOOP46
+L46:
   range 2d
   closecapture 19
   ret
@@ -274,10 +282,12 @@ Q_SPECIFIC:
   call __prefix
   opencapture 20
   range 5e
-  catch L40
-LOOP40:
-  partialcommit LOOP40
-L40:
+SET50_1:
+  catch L49
+LOOP49:
+SET51_1:
+  partialcommit LOOP49
+L49:
   closecapture 20
   ret
 
@@ -294,56 +304,56 @@ Q_VAR:
 MATCHER:
   call __prefix
   opencapture 22
-  catch L42
-  call ANY
-  commit L41
-L42:
-  catch L43
-  call SET
-  commit L41
-L43:
-  catch L44
-  call STRING
-  commit L41
-L44:
-  catch L45
-  call BITMASK
-  commit L41
-L45:
-  catch L46
-  call HEXLITERAL
-  commit L41
-L46:
-  catch L47
-  call VARCAPTURE
-  commit L41
-L47:
-  catch L48
-  call CAPTURE
-  commit L41
-L48:
-  catch L49
-  call GROUP
-  commit L41
-L49:
-  catch L50
-  call MACRO
-  commit L41
-L50:
-  catch L51
-  call ENDFORCE
-  commit L41
-L51:
-  catch L52
-  call VARREFERENCE
-  commit L41
-L52:
   catch L53
-  call REFERENCE
-  commit L41
+  call ANY
+  commit L52
 L53:
+  catch L54
+  call SET
+  commit L52
+L54:
+  catch L55
+  call STRING
+  commit L52
+L55:
+  catch L56
+  call BITMASK
+  commit L52
+L56:
+  catch L57
+  call HEXLITERAL
+  commit L52
+L57:
+  catch L58
+  call VARCAPTURE
+  commit L52
+L58:
+  catch L59
+  call CAPTURE
+  commit L52
+L59:
+  catch L60
+  call GROUP
+  commit L52
+L60:
+  catch L61
+  call MACRO
+  commit L52
+L61:
+  catch L62
+  call ENDFORCE
+  commit L52
+L62:
+  catch L63
+  call VARREFERENCE
+  commit L52
+L63:
+  catch L64
+  call REFERENCE
+  commit L52
+L64:
   call LIMITEDCALL
-L41:
+L52:
   closecapture 22
   ret
 
@@ -351,6 +361,16 @@ BITMASK:
   call __prefix
   opencapture 23
   range 7c
+  counter 0 1
+CTR0:
+  condjump 0 CTR0
+  catch L66
+  counter 1 31
+CTR1:
+  partialcommit __NEXT__
+  condjump 1 CTR1
+  commit __NEXT__
+L66:
   range 7c
   closecapture 23
   ret
@@ -361,10 +381,10 @@ VARCAPTURE:
   call CBOPEN
   call COLON
   call IDENT
-  catch L55
+  catch L69
   call CAPTURETYPE
   commit __NEXT__
-L55:
+L69:
   call COLON
   call EXPRESSION
   call CBCLOSE
@@ -382,21 +402,21 @@ CAPTURETYPE:
 TYPE:
   call __prefix
   opencapture 26
-  catch L57
+  catch L71
   range 75
   range 69
   range 6e
   range 74
   range 33
   range 32
-  commit L56
-L57:
+  commit L70
+L71:
   range 69
   range 6e
   range 74
   range 33
   range 32
-L56:
+L70:
   closecapture 26
   ret
 
@@ -422,84 +442,120 @@ SET:
   call __prefix
   opencapture 29
   call ABOPEN
-  catch L59
+  catch L73
   range 5e
   commit __NEXT__
-L59:
-  catch L62
-  catch L64
-  catch L66
-  commit L65
-L66:
+L73:
+  catch L76
+  catch L78
+  catch L80
+  commit L79
+L80:
   range 30
   range 78
-L65:
-  commit L63
-L64:
-L63:
-  range 2d
-  catch L70
-  catch L72
-  commit L71
-L72:
-  range 30
-  range 78
-L71:
-  commit L69
-L70:
-L69:
-  commit L61
-L62:
-  catch L77
-  catch L79
-  commit L78
+  counter 2 2
+CTR2:
+SET83_1:
+SET83_3:
+SET83_5:
+  condjump 2 CTR2
 L79:
-  range 30
-  range 78
+  commit L77
 L78:
-  commit L76
 L77:
-L76:
-L61:
-  catch L60
-LOOP60:
-  catch L62
-  catch L64
-  catch L66
-  commit L65
-L66:
-  range 30
-  range 78
-L65:
-  commit L63
-L64:
-L63:
   range 2d
-  catch L70
-  catch L72
-  commit L71
-L72:
+  catch L87
+  catch L89
+  commit L88
+L89:
   range 30
   range 78
-L71:
-  commit L69
-L70:
-L69:
-  commit L61
-L62:
-  catch L77
-  catch L79
-  commit L78
-L79:
-  range 30
-  range 78
-L78:
-  commit L76
-L77:
+  counter 3 2
+CTR3:
+SET92_1:
+SET92_3:
+SET92_5:
+  condjump 3 CTR3
+L88:
+  commit L86
+L87:
+L86:
+  commit L75
 L76:
-L61:
-  partialcommit LOOP60
-L60:
+  catch L97
+  catch L99
+  commit L98
+L99:
+  range 30
+  range 78
+  counter 4 2
+CTR4:
+SET102_1:
+SET102_3:
+SET102_5:
+  condjump 4 CTR4
+L98:
+  commit L96
+L97:
+L96:
+L75:
+  catch L74
+LOOP74:
+  catch L106
+  catch L108
+  catch L110
+  commit L109
+L110:
+  range 30
+  range 78
+  counter 5 2
+CTR5:
+SET113_1:
+SET113_3:
+SET113_5:
+  condjump 5 CTR5
+L109:
+  commit L107
+L108:
+L107:
+  range 2d
+  catch L117
+  catch L119
+  commit L118
+L119:
+  range 30
+  range 78
+  counter 6 2
+CTR6:
+SET122_1:
+SET122_3:
+SET122_5:
+  condjump 6 CTR6
+L118:
+  commit L116
+L117:
+L116:
+  commit L105
+L106:
+  catch L127
+  catch L129
+  commit L128
+L129:
+  range 30
+  range 78
+  counter 7 2
+CTR7:
+SET132_1:
+SET132_3:
+SET132_5:
+  condjump 7 CTR7
+L128:
+  commit L126
+L127:
+L126:
+L105:
+  partialcommit LOOP74
+L74:
   call ABCLOSE
   closecapture 29
   ret
@@ -508,32 +564,32 @@ VARREFERENCE:
   call __prefix
   opencapture 30
   range 24
-  catch L83
+  catch L136
   call IDENT
-  commit L82
-L83:
+  commit L135
+L136:
   call NUMBER
-L82:
-  catch L85
+L135:
+  catch L138
   range 2d
   call BITMASK
   commit __NEXT__
-L85:
+L138:
   closecapture 30
   ret
 
 REFERENCE:
   call __prefix
   opencapture 31
-  catch L86
+  catch L139
   call KW_IMPORT
   failtwice
-L86:
+L139:
   call IDENT
-  catch L87
+  catch L140
   call LEFTARROW
   failtwice
-L87:
+L140:
   closecapture 31
   ret
 
@@ -546,10 +602,10 @@ LIMITEDCALL:
   call LCPARAM
   call COLON
   call IDENT
-  catch L88
-LOOP88:
-  partialcommit LOOP88
-L88:
+  catch L141
+LOOP141:
+  partialcommit LOOP141
+L141:
   range 3e
   closecapture 32
   ret
@@ -570,10 +626,10 @@ LCMODES:
 LCPARAM:
   call __prefix
   opencapture 34
-  catch L89
-LOOP89:
-  partialcommit LOOP89
-L89:
+  catch L142
+LOOP142:
+  partialcommit LOOP142
+L142:
   closecapture 34
   ret
 
@@ -603,10 +659,15 @@ MACRO:
   call __prefix
   opencapture 38
   range 25
-  catch L90
-LOOP90:
-  partialcommit LOOP90
-L90:
+SET144_1:
+SET144_3:
+  catch L145
+LOOP145:
+SET146_1:
+SET146_3:
+SET146_5:
+  partialcommit LOOP145
+L145:
   closecapture 38
   ret
 
@@ -628,16 +689,24 @@ HEXLITERAL:
   opencapture 40
   range 30
   range 78
+  counter 8 2
+CTR8:
+SET147_1:
+SET147_3:
+SET147_5:
+  condjump 8 CTR8
   closecapture 40
   ret
 
 NUMBER:
   call __prefix
   opencapture 41
-  catch L91
-LOOP91:
-  partialcommit LOOP91
-L91:
+SET149_1:
+  catch L148
+LOOP148:
+SET150_1:
+  partialcommit LOOP148
+L148:
   closecapture 41
   ret
 
@@ -645,10 +714,10 @@ STRING:
   call __prefix
   opencapture 42
   call STRINGLITERAL
-  catch L92
+  catch L151
   range 69
   commit __NEXT__
-L92:
+L151:
   closecapture 42
   ret
 
@@ -691,11 +760,11 @@ KW_IMPORT:
 OPTNAMESPACE:
   call __prefix
   opencapture 47
-  catch L93
+  catch L152
   call KW_AS
   call IDENT
   commit __NEXT__
-L93:
+L152:
   closecapture 47
   ret
 
@@ -711,19 +780,25 @@ STRINGLITERAL:
   call __prefix
   opencapture 49
   range 27
-  catch L94
-LOOP94:
-  catch L96
-  catch L98
-  commit L97
-L98:
+  catch L153
+LOOP153:
+  catch L155
+  catch L157
+  commit L156
+L157:
   range 78
-L97:
-  commit L95
-L96:
-L95:
-  partialcommit LOOP94
-L94:
+  counter 9 2
+CTR9:
+SET160_1:
+SET160_3:
+SET160_5:
+  condjump 9 CTR9
+L156:
+  commit L154
+L155:
+L154:
+  partialcommit LOOP153
+L153:
   range 27
   closecapture 49
   ret
@@ -731,6 +806,24 @@ L94:
 IDENT:
   call __prefix
   opencapture 50
+SET163_1:
+SET163_3:
+  counter 10 0
+CTR10:
+SET165_1:
+SET165_3:
+SET165_5:
+  condjump 10 CTR10
+  catch L164
+  counter 11 63
+CTR11:
+SET166_1:
+SET166_3:
+SET166_5:
+  partialcommit __NEXT__
+  condjump 11 CTR11
+  commit __NEXT__
+L164:
   closecapture 50
   ret
 
