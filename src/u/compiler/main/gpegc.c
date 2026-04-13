@@ -57,6 +57,7 @@ int main
   char defaultoutput[] = "-";
   char* inputfile = defaultinput;
   char* outputfile = defaultoutput;
+  FILE* slotmap = NULL;
   char* value;
   vec_t input = { 0 };
   vec_t output = { 0 };
@@ -78,12 +79,18 @@ int main
   if (queryargs(argc, argv, 'C', "autocapture", 0, 0, 0, 0) == 0) {
     flags |= GPEGC_FLG_AUTOCAPTURE;
   }
+  if (queryargs(argc, argv, 'M', "slotmap", 0, 1, 0, &value) == 0) {
+    if ((slotmap = fopen(value, "w")) == NULL) {
+      fprintf(stderr, "Could not open slotmap file '%s'\n", value);
+      return ~0;
+    }
+  }
   if (absorb_file(inputfile, &(input.data), &(input.size))) {
     fprintf(stderr, "Could not absorb file '%s'\n", inputfile);
     return ~0;
   }
 
-  if (gpeg_compile(&input, &output, flags)) {
+  if (gpeg_compile(&input, &output, flags, slotmap)) {
     fprintf(stderr, "Compilation error.\n");
     return ~0;
   }
@@ -97,6 +104,9 @@ int main
     fprintf(stderr, "Assembly writing error: %d\n", errno);
   }
   close(fdout);
+  if (slotmap) {
+    fclose(slotmap);
+  }
 
   return 0;
 }

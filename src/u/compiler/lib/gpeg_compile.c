@@ -41,13 +41,17 @@ static
 
 struct compilestate
 {
-  unsigned  flags;
-  unsigned  label;
-  unsigned  counter;
-  unsigned  capture;
-  int       prefixset;
-  int       firstrule;
-  vec_t*    assembly;
+  unsigned      flags;
+  unsigned      label;
+  unsigned      counter;
+  unsigned      capture;
+  int           prefixset;
+  int           firstrule;
+  int           secondpass;
+  vec_t*        assembly;
+  FILE*         slotmap;
+  const char*   rulename;
+  unsigned      rulecapture;
 };
 
 static
@@ -77,19 +81,25 @@ int gpeg_compile_rule
     if (state->prefixset) {
       vec_printf(state->assembly, "  call __prefix\n");
     }
-    if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
+    if (0 == strcmp(rulename, "__prefix")) {
+      state->prefixset = 1;
+    } else if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
       unsigned capture = (state->capture)++;
       vec_append(vec, &capture, sizeof(capture));
       vec_printf(state->assembly, "  opencapture %u\n", capture);
+      if (state->slotmap) {
+        fprintf(state->slotmap, "#define SLOT_%s %u\n", rulename, capture);
+      }
     }
-    if (0 == strcmp(rulename, "__prefix")) {
-      state->prefixset = 1;
-    }
+    state->rulename = rulename;
+    state->rulecapture = 0;
     break;
   case GPEG_FNC_POSTNODE:
     if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
-      unsigned capture = *((unsigned*)(vec->data));
-      vec_printf(state->assembly, "  closecapture %u\n", capture);
+      unsigned* capture = (unsigned*)(vec->data);
+      if (capture) {
+        vec_printf(state->assembly, "  closecapture %u\n", *capture);
+      }
     }
     vec_printf(state->assembly, "  ret\n\n");
     break;
@@ -243,7 +253,9 @@ int gpeg_compile_q_1p_pre
   unsigned label = (state->label)++;
 
   vec_append(vec, &label, sizeof(label));
+  state->secondpass = 1;
   CHECK(gpeg_result_run(node->children[ 0 ]));
+  state->secondpass = 0;
   vec_printf(state->assembly,
     "  catch L%u\n"
     "LOOP%u:\n"
@@ -296,7 +308,9 @@ int gpeg_compile_q_ft_pre
     , from
     , counter0
   );
+  state->secondpass = 1;
   CHECK(gpeg_result_run(node->children[ 0 ]));
+  state->secondpass = 0;
   vec_printf(state->assembly,
     "  condjump %u CTR%u\n"
     "  catch L%u\n"
@@ -354,7 +368,9 @@ int gpeg_compile_q_fr_pre
     , from
     , counter
   );
+  state->secondpass = 1;
   CHECK(gpeg_result_run(node->children[ 0 ]));
+  state->secondpass = 0;
   vec_printf(state->assembly,
     "  condjump %u CTR%u\n"
     "  catch L%u\n"
@@ -775,6 +791,49 @@ int gpeg_compile_macro
   return 0;
 }
 
+static
+int gpeg_compile_capture
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)node;
+  (void)i;
+
+  if (state->secondpass) {
+    return 0;
+  }
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    {
+      unsigned capture = (state->capture)++;
+      vec_append(vec, &capture, sizeof(capture));
+      vec_printf(state->assembly,
+        "  opencapture %u\n"
+        , capture
+      );
+      if (state->slotmap) {
+        fprintf(state->slotmap,
+          "#define SLOT_%s_%u %u\n"
+          , state->rulename
+          , (state->rulecapture)++
+          , capture
+        );
+      }
+    }
+    break;
+  case GPEG_FNC_POSTNODE:
+    {
+      unsigned* capture = (unsigned*)(vec->data);
+      vec_printf(state->assembly,
+        "  closecapture %u\n"
+        , *capture
+      );
+    }
+    break;
+  }
+  return 0;
+}
+
 /**
  *
  */
@@ -782,7 +841,8 @@ int gpeg_compile
   (
     const vec_t* grammar,
     vec_t* assembly,
-    unsigned flags
+    unsigned flags,
+    FILE* slotmap
   )
 {
   DEBUGFUNCTION
@@ -797,6 +857,7 @@ int gpeg_compile
     .prefixset  = 0,
     .capture = 0,
     .assembly = assembly,
+    .slotmap = slotmap,
   };
 
   CHECK(gpeg_engine_run(&bytecode, grammar, 0, &result));
@@ -818,6 +879,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_SCANMATCHER, gpeg_compile_notand, &state);
   gpeg_result_callback(tree, SLOT_SET, gpeg_compile_set, &state);
   gpeg_result_callback(tree, SLOT_MACRO, gpeg_compile_macro, &state);
+  gpeg_result_callback(tree, SLOT_CAPTURE, gpeg_compile_capture, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
