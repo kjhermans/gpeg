@@ -1,1 +1,0 @@
-../../../gen1/lib/assembler/gpega_labelmap_write.c

@@ -1,3 +1,0 @@
-RULE1 <- { RULE2 }
-RULE2 <- { RULE3 }
-RULE3 <- 'a'
