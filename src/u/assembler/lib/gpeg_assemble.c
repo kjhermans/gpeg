@@ -43,6 +43,7 @@ struct assemblerstate
 {
   unsigned      pass;
   unsigned      offset;
+  str2int_map_t offsets;
   vec_t*        bytecode;
 };
 
@@ -57,11 +58,63 @@ int gpeg_asm_label
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-gpeg_result_debug(node);
-    } else {
+      char* label = (char*)(node->children[ 0 ]->vec.data);
+      str2int_map_put(&(state->offsets), label, state->offset);
     }
   }
   return 0;
+}
+
+static
+void gpeg_asm_instr
+  (uint32_t* instr, uint8_t opcode, unsigned nfields, ...)
+{
+  va_list ap;
+  uint8_t* bytes = (uint8_t*)instr;
+
+  bytes[ 0 ] = (opcode << 4);
+  bytes[ 1 ] = 0;
+  bytes[ 2 ] = 0;
+  bytes[ 3 ] = 0;
+  va_start(ap, nfields);
+  for (unsigned i=0; i < nfields; i++) {
+    unsigned offset = va_arg(ap, unsigned);
+    unsigned length = va_arg(ap, unsigned);
+    unsigned field = va_arg(ap, unsigned);
+    ASSERT(offset + length <= 32)
+    for (unsigned j=0; j < length; j++) {
+      if (field & (1 << j)) {
+        unsigned byte = (offset + length - j - 1) / 8;
+        unsigned bit = 7 - ((offset + length - j - 1) % 8);
+        bytes[ byte ] |= (1 << bit);
+      }
+    }
+  }
+  va_end(ap);
+}
+
+static
+int gpeg_asm_labeled_instr
+  (struct assemblerstate* state, gpege_node_t* node, uint8_t opcode)
+{
+  char* label = (char*)(node->children[ 0 ]->vec.data);
+  unsigned o;
+  unsigned* offset;
+
+  if (0 == strcmp(label, "__NEXT__")) {
+    o = state->offset + GPEG_INSTR_SIZE;
+    offset = &o;
+  } else {
+    offset = str2int_map_getptr(&(state->offsets), label);
+  }
+  if (offset) {
+    uint32_t instr = 0;
+    gpeg_asm_instr(&instr, opcode, 1, 12, 20, *offset);
+    vec_append(state->bytecode, &instr, sizeof(instr));
+    return 0;
+  } else {
+    RETURN_ERR(GPEGA_ERR_LABEL);
+  }
 }
 
 static
@@ -75,8 +128,9 @@ int gpeg_asm_bcm
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      CHECK(gpeg_asm_labeled_instr(state, node, OP_BACKCOMMIT));
     }
   }
   return 0;
@@ -93,8 +147,9 @@ int gpeg_asm_cll
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      CHECK(gpeg_asm_labeled_instr(state, node, OP_CALL));
     }
   }
   return 0;
@@ -111,8 +166,9 @@ int gpeg_asm_ctc
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      CHECK(gpeg_asm_labeled_instr(state, node, OP_CATCH));
     }
   }
   return 0;
@@ -129,8 +185,12 @@ int gpeg_asm_ccp
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      uint32_t instr = 0;
+      unsigned capture = atoi((char*)(node->children[ 0 ]->vec.data));
+      gpeg_asm_instr(&instr, OP_CLOSECAPTURE, 1, 16, 16, capture);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
@@ -147,8 +207,9 @@ int gpeg_asm_com
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      CHECK(gpeg_asm_labeled_instr(state, node, OP_COMMIT));
     }
   }
   return 0;
@@ -165,8 +226,12 @@ int gpeg_asm_end
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      uint32_t instr = 0;
+      unsigned endcode = atoi((char*)(node->children[ 0 ]->vec.data));
+      gpeg_asm_instr(&instr, OP_OPENCAPTURE, 1, 8, 24, endcode);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
@@ -183,8 +248,11 @@ int gpeg_asm_fai
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      uint32_t instr = 0;
+      gpeg_asm_instr(&instr, OP_FAIL, 0);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
@@ -201,8 +269,11 @@ int gpeg_asm_fa2
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      uint32_t instr = 0;
+      gpeg_asm_instr(&instr, OP_FAILTWICE, 0);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
@@ -219,8 +290,12 @@ int gpeg_asm_ocp
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      uint32_t instr = 0;
+      unsigned capture = atoi((char*)(node->children[ 0 ]->vec.data));
+      gpeg_asm_instr(&instr, OP_OPENCAPTURE, 1, 16, 16, capture);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
@@ -237,8 +312,9 @@ int gpeg_asm_pcm
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      CHECK(gpeg_asm_labeled_instr(state, node, OP_PARTIALCOMMIT));
     }
   }
   return 0;
@@ -255,11 +331,36 @@ int gpeg_asm_ret
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      uint32_t instr = 0;
+      gpeg_asm_instr(&instr, OP_RET, 0);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
+}
+
+static
+uint8_t gpeg_asm_hex
+  (char* hex)
+{
+  uint8_t result = 0;
+  if (hex[ 0 ] >= 'a' && hex[ 0 ] <= 'f') {
+    result |= ((10 + hex[ 0 ] - 'a') << 4);
+  } else if (hex[ 0 ] >= 'A' && hex[ 0 ] <= 'F') {
+    result |= ((10 + hex[ 0 ] - 'A') << 4);
+  } else if (hex[ 0 ] >= '0' && hex[ 0 ] <= '9') {
+    result |= ((hex[ 0 ] - '0') << 4);
+  }
+  if (hex[ 1 ] >= 'a' && hex[ 1 ] <= 'f') {
+    result |= (10 + hex[ 1 ] - 'a');
+  } else if (hex[ 1 ] >= 'A' && hex[ 1 ] <= 'F') {
+    result |= (10 + hex[ 1 ] - 'A');
+  } else if (hex[ 1 ] >= '0' && hex[ 1 ] <= '9') {
+    result |= (hex[ 1 ] - '0');
+  }
+  return result;
 }
 
 static
@@ -273,8 +374,26 @@ int gpeg_asm_rng
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      uint32_t instr = 0;
+      unsigned p1 = 0xff, p2 = 0, p3 = 0;
+      switch (node->nchildren) {
+      case 1:
+        p2 = p3 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
+        break;
+      case 2:
+        p2 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
+        p3 = gpeg_asm_hex((char*)(node->children[ 1 ]->vec.data));
+        break;
+      case 3:
+        p1 = gpeg_asm_hex((char*)(node->children[ 2 ]->vec.data));
+        p2 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
+        p3 = gpeg_asm_hex((char*)(node->children[ 1 ]->vec.data));
+        break;
+      }
+      gpeg_asm_instr(&instr, OP_RANGE, 3, 8, 8, p1, 16, 8, p2, 24, 8, p3);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
@@ -291,8 +410,12 @@ int gpeg_asm_var
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      uint32_t instr = 0;
+      unsigned capture = atoi((char*)(node->children[ 0 ]->vec.data));
+      gpeg_asm_instr(&instr, OP_OPENCAPTURE, 1, 16, 16, capture);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
@@ -309,8 +432,13 @@ int gpeg_asm_ctr
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      unsigned counter = atoi((char*)(node->children[ 0 ]->vec.data));
+      unsigned value = atoi((char*)(node->children[ 1 ]->vec.data));
+      uint32_t instr = 0;
+      gpeg_asm_instr(&instr, OP_COUNTER, 2, 4, 8, counter, 12, 20, value);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
@@ -327,8 +455,13 @@ int gpeg_asm_cjp
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      state->offset += 4;
+      state->offset += GPEG_INSTR_SIZE;
     } else {
+      unsigned counter = atoi((char*)(node->children[ 0 ]->vec.data));
+      unsigned offset = atoi((char*)(node->children[ 1 ]->vec.data));
+      uint32_t instr = 0;
+      gpeg_asm_instr(&instr, OP_COUNTER, 2, 4, 8, counter, 12, 20, offset);
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;

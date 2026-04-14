@@ -40,3 +40,38 @@ rm -f assembly.asm assembly.byc assembly_bytecode.h assembly_slotmap.h
 
 ./compiler/main/gpegc -C -i grammar.gpeg -o grammar.asm -M grammar_slotmap.h
 ./compiler/main/gpegc -C -i assembly.gpeg -o assembly.asm -M assembly_slotmap.h
+
+./assembler/main/gpega -i grammar.asm -o grammar.byc
+./assembler/main/gpega -i assembly.asm -o assembly.byc
+
+xxd -i grammar.byc grammar_bytecode.h
+xxd -i assembly.byc assembly_bytecode.h
+
+rm -rf compiler assembler engine
+mkdir compiler assembler engine
+cp -rf ../compiler/* compiler/
+cp -rf ../assembler/* assembler/
+cp -rf ../engine/* engine/
+
+make -C engine/
+ 
+cp grammar.* compiler/lib/
+cp grammar_*.h compiler/include/gpeg/compiler/
+make -C compiler/
+
+cp assembly.* assembler/lib/
+cp assembly_*.h assembler/include/gpeg/assembler/
+make -C assembler/
+
+## round 3
+
+cp grammar.* ../compiler/lib/
+cp grammar_*.h ../compiler/include/gpeg/compiler/
+
+cp assembly.* ../assembler/lib/
+cp assembly_*.h ../assembler/include/gpeg/assembler/
+
+rm -f grammar.asm grammar.byc grammar_bytecode.h grammar_slotmap.h grammar.map
+rm -f assembly.asm assembly.byc assembly_bytecode.h assembly_slotmap.h assembly.map
+
+rm -rf compiler assembler engine

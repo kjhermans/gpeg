@@ -39,12 +39,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 #include <string.h>
 #include <errno.h>
+#include <stdarg.h>
 #include <unistd.h>
 #include <fcntl.h>
 
 #include <andy/vec_t.h>
 #include <andy/devmacroes.h>
 #include <andy/util_functions.h>
+#include <andy/str2int_map.h>
 
 #include <gpeg/assembler/gpeg_assembler.h>
 #include <gpeg/assembler/assembly_slotmap.h>

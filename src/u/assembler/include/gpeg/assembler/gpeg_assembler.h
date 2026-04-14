@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _GPEG_ASSEMBLER_H_
 
 #define GPEGA_ERR_PARSER      513
+#define GPEGA_ERR_LABEL       514
 
 extern
 int gpeg_assemble
