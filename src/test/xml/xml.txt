@@ -1,0 +1,4 @@
+<foo oi='nou'>
+<nested>
+</nested>
+</foo>

@@ -1,0 +1,19 @@
+\section{Building Process}
+
+A program that is a compiler, should build itself.
+But this is a mere PEG engine, it can only build the parsing bit of
+the compiler and assembler. The self building aim is to ensure that
+both the compiler and assembler get their parsing logic from the
+engine library using a bytecode for grammar and assembly that it itself
+has compiled and assembled. As follows:
+
+\begin{itemize}
+\item The suite is equipped with two reference implementation programs:
+      a compiler and an assembler.
+\item Step 1: the reference compiler compiles the grammar PEG file to
+      PEG assembly.
+\item Step 2: the reference assembler produces, from the result of the
+      previous step, a PEG bytecode.
+\item Step 3: the xxd executable produces, from the result of the previous
+      step, a header file.
+\item Step 4: 

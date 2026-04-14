@@ -1,12 +1,20 @@
-include composition.make
-
 all:
-	./echo_setup.sh
-	cd gen0 && make GPEG_COMPOSITION=$(GPEG_COMPOSITION)
-	cd gen1 && make GPEG_COMPOSITION=$(GPEG_COMPOSITION)
-	cd gen2 && make GPEG_COMPOSITION=$(GPEG_COMPOSITION)
+	xxd -i release engine/include/gpeg/engine/release.h
+	cd build && make
+	cd engine && make
+	cd compiler && make
+	cd assembler && make
 
-instructions:
-	cd gen0 && make instructions
-	cd gen1 && make instructions
-	cd gen2 && make instructions
+.PHONY: test
+
+test:
+	cd test && make
+
+debug:
+	make all DEBUG="-D_DEBUG=1"
+
+clean:
+	cd build && make clean
+	cd engine && make clean
+	cd compiler && make clean
+	cd assembler && make clean
