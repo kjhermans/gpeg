@@ -650,78 +650,171 @@ int gpeg_compile_any
 }
 
 static
+uint8_t dehex
+  (char* hex)
+{
+  uint8_t result = 0;
+  if (hex[ 0 ] >= 'a' && hex[ 0 ] <= 'f') {
+    result |= ((10 + hex[ 0 ] - 'a') << 4);
+  } else if (hex[ 0 ] >= 'A' && hex[ 0 ] <= 'F') {
+    result |= ((10 + hex[ 0 ] - 'A') << 4);
+  } else if (hex[ 0 ] >= '0' && hex[ 0 ] <= '9') {
+    result |= ((hex[ 0 ] - '0') << 4);
+  }
+  if (hex[ 1 ] >= 'a' && hex[ 1 ] <= 'f') {
+    result |= (10 + hex[ 1 ] - 'a');
+  } else if (hex[ 1 ] >= 'A' && hex[ 1 ] <= 'F') {
+    result |= (10 + hex[ 1 ] - 'A');
+  } else if (hex[ 1 ] >= '0' && hex[ 1 ] <= '9') {
+    result |= (hex[ 1 ] - '0');
+  }
+  return result;
+}
+
+static
+uint8_t range_unescape
+  (char* str)
+{
+  if (strlen(str) == 1) {
+    return *str;
+  } else if (*str == '\\') {
+    switch (str[ 1 ]) {
+    case 'n': return 0x0a;
+    case 'r': return 0x0d;
+    case 't': return 0x09;
+    case 'v': return 0x0b;
+    case 'x': return dehex(&(str[2]));
+    default: return str[1];
+    }
+  } else {
+    return 0;
+  }
+}
+
+static inline
+void setbit
+  (uint8_t* bits, unsigned bit)
+{
+  bits[ bit / 8 ] |= (1 << (bit % 8));
+}
+
+static inline
+void unsetbit
+  (uint8_t* bits, unsigned bit)
+{
+  bits[ bit / 8 ] &= ~(1 << (bit % 8));
+}
+
+static inline
+int bitset
+  (uint8_t* bits, unsigned bit)
+{
+  return (bits[ bit / 8 ] & (1 << (bit % 8))) ? 1 : 0;
+}
+
+static
+int gpeg_compile_ranges
+  (gpege_node_t* node, struct compilestate* state, int negative)
+{
+  uint8_t bits[ 32 ];
+  unsigned label = (state->label)++;
+
+  if (negative) {
+    memset(bits, 0xff, sizeof(bits));
+  } else {
+    memset(bits, 0x00, sizeof(bits));
+  }
+  for (unsigned i=0; i < node->nchildren; i++) {
+    gpege_node_t* child = node->children[ i ];
+    switch (child->type) {
+    case SLOT_SET_1:
+      {
+        gpege_node_t* child1 = node->children[ ++i ];
+        unsigned char from = range_unescape((char*)(child->vec.data));
+        unsigned char until = range_unescape((char*)(child1->vec.data));
+        for (unsigned i=from; i <= until; i++) {
+          if (negative) {
+            unsetbit(bits, i);
+          } else {
+            setbit(bits, i);
+          }
+        }
+      }
+      break;
+    case SLOT_SET_3:
+      {
+        unsigned char chr = range_unescape((char*)(child->vec.data));
+        if (negative) {
+          unsetbit(bits, chr);
+        } else {
+          setbit(bits, chr);
+        }
+      }
+      break;
+    }
+  }
+  int on = 0;
+  int seenbits = 0;
+  uint8_t range[ 2 ] = { 0, 0 };
+  unsigned rangecount = 0;
+  for (unsigned i=0; i < 256; i++) {
+    if (bitset(bits, i) && !on) {
+      seenbits = 1;
+      if (range[ 1 ]) {
+        vec_printf(state->assembly,
+          "  catch SET%u_%u\n"
+          "  range %.2x %.2x\n"
+          "  commit L%u\n"
+          "SET%u_%u:\n"
+          , label
+          , rangecount
+          , range[ 0 ]
+          , range[ 1 ]
+          , label
+          , label
+          , rangecount
+        );
+        ++rangecount;
+      }
+      on = 1;
+      range[ 0 ] = i;
+      range[ 1 ] = 0;
+    } else if (!bitset(bits, i) && on) {
+      on = 0;
+      range[ 1 ] = i-1;
+    }
+  }
+  if (!seenbits) {
+    RETURN_ERR(GPEGC_ERR_SET);
+  }
+  if (!range[ 1 ]) {
+    range[ 1 ] = 255;
+  }
+  vec_printf(state->assembly,
+    "  range %.2x %.2x\n"
+    "L%u:\n"
+    , range[ 0 ]
+    , range[ 1 ]
+    , label
+  );
+  return 0;
+}
+
+static
 int gpeg_compile_set
   (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
-  unsigned label;
   (void)node;
   (void)i;
   (void)vec;
 
   if (phase == GPEG_FNC_PRENODE) {
-    label = (state->label)++;
-    for (unsigned i=0; i < node->nchildren; i++) {
-      gpege_node_t* child = node->children[ i ];
-      switch (child->type) {
-      case SLOT_SET_1:
-        {
-          gpege_node_t* child1 = node->children[ ++i ];
-          unsigned char from = child->vec.data[ 0 ];
-          unsigned char until = child1->vec.data[ 0 ];
-          if (i+2 < node->nchildren) {
-            vec_printf(state->assembly,
-              "  catch SET%u_%u\n"
-              "  range %.2x %.2x\n"
-              "  commit L%u\n"
-              "SET%u_%u:\n"
-              , label
-              , i
-              , from
-              , until
-              , label
-              , label
-              , i
-            );
-          } else {
-            vec_printf(state->assembly,
-              "  range %.2x %.2x\n"
-              , from
-              , until
-            );
-          }
-        }
-        break;
-      case SLOT_SET_3:
-        {
-          unsigned char chr = child->vec.data[ 0 ];
-          if (i+2 < node->nchildren) {
-            vec_printf(state->assembly,
-              "  catch SET%u_%u\n"
-              "  range %.2x\n"
-              "  commit L%u\n"
-              "SET%u_%u:\n"
-              , label
-              , i
-              , chr
-              , label
-              , label
-              , i
-            );
-          } else {
-            vec_printf(state->assembly,
-              "  range %.2x\n"
-              , chr
-            );
-          }
-        }
-        break;
-      }
+    if (node->children[ 1 ]->type == SLOT_SET_0) {
+      CHECK(gpeg_compile_ranges(node, state, 1));
+    } else {
+      CHECK(gpeg_compile_ranges(node, state, 0));
     }
-    vec_printf(state->assembly,
-      "L%u:\n"
-      , label
-    );
   }
   return 0;
 }
