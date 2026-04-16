@@ -32,6 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <gpeg/engine/lib.h>
+#include <gpeg/engine/release.h>
 #include <andy/queryargs.h>
 #include <andy/absorb_file.h>
 #include <andy/vec_t.h>
@@ -58,6 +59,10 @@ int main
   vec_t input = { 0 };
   vec_t bytecode = { 0 };
   gpege_result_t result = { 0 };
+
+#ifdef _DEBUG
+  fprintf(stderr, "gpege DEBUG version, release %-.*s\n", release_len, release);
+#endif
 
   if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0
       || queryargs(argc, argv, 'h', "help", 0, 0, 0, 0) == 0)
