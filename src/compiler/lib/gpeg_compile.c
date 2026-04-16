@@ -52,6 +52,7 @@ struct compilestate
   FILE*         slotmap;
   const char*   rulename;
   unsigned      rulecapture;
+  str2int_map_t variables;
 };
 
 static
@@ -93,6 +94,7 @@ int gpeg_compile_rule
     }
     state->rulename = rulename;
     state->rulecapture = 0;
+    state->variables.count = 0;
     break;
   case GPEG_FNC_POSTNODE:
     if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
@@ -999,13 +1001,14 @@ int gpeg_compile_varcapture
   switch (phase) {
   case GPEG_FNC_PRENODE:
     {
-gpeg_result_debug(node);
+      char* variablename = (char*)(node->children[ 2 ]->vec.data);
       unsigned capture;
       memcpy(&capture, node->aux, sizeof(capture));
       if (capture == 0) {
         capture = ++(state->capture);
         memcpy(node->aux, &capture, sizeof(capture));
       }
+      str2int_map_put(&(state->variables), variablename, capture);
       vec_append(vec, &capture, sizeof(capture));
       vec_printf(state->assembly,
         "  opencapture %u\n"
@@ -1028,6 +1031,34 @@ gpeg_result_debug(node);
         "  closecapture %u\n"
         , *capture
       );
+    }
+    break;
+  }
+  return 0;
+}
+
+static
+int gpeg_compile_varref
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    {
+      char* variablename = (char*)(node->children[ 0 ]->vec.data);
+      unsigned capture;
+      if (str2int_map_get(&(state->variables), variablename, &capture) == 0) {
+        vec_printf(state->assembly,
+          "  var %u\n"
+          , capture
+        );
+      } else {
+        RETURN_ERR(GPEGC_ERR_VARIABLE);
+      }
     }
     break;
   }
@@ -1081,6 +1112,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_MACRO, gpeg_compile_macro, &state);
   gpeg_result_callback(tree, SLOT_CAPTURE, gpeg_compile_capture, &state);
   gpeg_result_callback(tree, SLOT_VARCAPTURE, gpeg_compile_varcapture, &state);
+  gpeg_result_callback(tree, SLOT_VARREFERENCE, gpeg_compile_varref, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
