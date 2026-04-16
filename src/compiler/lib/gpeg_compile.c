@@ -84,7 +84,7 @@ int gpeg_compile_rule
     if (0 == strcmp(rulename, "__prefix")) {
       state->prefixset = 1;
     } else if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
-      unsigned capture = (state->capture)++;
+      unsigned capture = ++(state->capture);
       vec_append(vec, &capture, sizeof(capture));
       vec_printf(state->assembly, "  opencapture %u\n", capture);
       if (state->slotmap) {
@@ -799,13 +799,15 @@ int gpeg_compile_capture
   (void)node;
   (void)i;
 
-  if (state->secondpass) {
-    return 0;
-  }
   switch (phase) {
   case GPEG_FNC_PRENODE:
     {
-      unsigned capture = (state->capture)++;
+      unsigned capture;
+      memcpy(&capture, node->aux, sizeof(capture));
+      if (capture == 0) {
+        capture = ++(state->capture);
+        memcpy(node->aux, &capture, sizeof(capture));
+      }
       vec_append(vec, &capture, sizeof(capture));
       vec_printf(state->assembly,
         "  opencapture %u\n"

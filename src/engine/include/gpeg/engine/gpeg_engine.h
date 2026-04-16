@@ -232,6 +232,7 @@ struct gpege_node
   unsigned         nchildren;
   int            (*fnc)(gpege_node_t*,unsigned,unsigned,vec_t*,void*);
   void*            arg;
+  uint8_t          aux[ 32 ]; // this one is for you
 };
 
 extern
