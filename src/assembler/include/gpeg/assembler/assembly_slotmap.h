@@ -1,3 +1,6 @@
+#ifndef _SLOTMAP_H_
+#define _SLOTMAP_H_
+
 #define SLOT_TOP 0
 #define SLOT_S 1
 #define SLOT_MULTILINECOMMENT 2
@@ -30,3 +33,5 @@
 #define SLOT_TYPE 29
 #define SLOT_UNSIGNED 30
 #define SLOT_COLON 31
+
+#endif
