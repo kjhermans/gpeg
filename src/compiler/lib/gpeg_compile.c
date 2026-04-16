@@ -327,25 +327,37 @@ int gpeg_compile_q_ft_pre
     RETURN_ERR(GPEGC_ERR_RANGE);
   }
   vec_append(vec, &label, sizeof(label));
-  vec_append(vec, &counter0, sizeof(counter0));
   vec_append(vec, &counter1, sizeof(counter1));
+  switch (from) {
+  case 0:
+    break;
+  case 1:
+    CHECK(gpeg_result_run(node->children[ 0 ]));
+    break;
+  default:
+    {
+      vec_printf(state->assembly,
+        "  counter %u %u\n"
+        "CTR%u:\n"
+        , counter0
+        , from
+        , counter0
+      );
+      state->secondpass = 1;
+      CHECK(gpeg_result_run(node->children[ 0 ]));
+      state->secondpass = 0;
+      vec_printf(state->assembly,
+        "  condjump %u CTR%u\n"
+        , counter0
+        , counter0
+      );
+    }
+    break;
+  }
   vec_printf(state->assembly,
-    "  counter %u %u\n"
-    "CTR%u:\n"
-    , counter0
-    , from
-    , counter0
-  );
-  state->secondpass = 1;
-  CHECK(gpeg_result_run(node->children[ 0 ]));
-  state->secondpass = 0;
-  vec_printf(state->assembly,
-    "  condjump %u CTR%u\n"
     "  catch L%u\n"
     "  counter %u %u\n"
     "CTR%u:\n"
-    , counter0
-    , counter0
     , label
     , counter1
     , until - from
@@ -362,7 +374,7 @@ void gpeg_compile_q_ft_post
   )
 {
   unsigned* label = (unsigned*)(vec->data);
-  unsigned counter1 = label[ 2 ];
+  unsigned counter1 = label[ 1 ];
 
   vec_printf(state->assembly,
     "  partialcommit __NEXT__\n"
