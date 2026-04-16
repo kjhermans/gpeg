@@ -458,9 +458,14 @@ int gpeg_asm_cjp
       state->offset += GPEG_INSTR_SIZE;
     } else {
       unsigned counter = atoi((char*)(node->children[ 0 ]->vec.data));
-      unsigned offset = atoi((char*)(node->children[ 1 ]->vec.data));
+      unsigned* offset = str2int_map_getptr(
+          &(state->offsets),
+          (char*)(node->children[ 1 ]->vec.data));
       uint32_t instr = 0;
-      gpeg_asm_instr(&instr, OP_COUNTER, 2, 4, 8, counter, 12, 20, offset);
+      if (NULL == offset) {
+        RETURN_ERR(GPEGA_ERR_LABEL);
+      }
+      gpeg_asm_instr(&instr, OP_CONDJUMP, 2, 4, 8, counter, 12, 20, *offset);
       vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
