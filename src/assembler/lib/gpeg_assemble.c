@@ -102,7 +102,7 @@ int gpeg_asm_labeled_instr
   unsigned* offset;
 
   if (0 == strcmp(label, "__NEXT__")) {
-    o = state->offset + GPEG_INSTR_SIZE;
+    o = state->bytecode->size + GPEG_INSTR_SIZE;
     offset = &o;
   } else {
     offset = str2int_map_getptr(&(state->offsets), label);
