@@ -988,6 +988,52 @@ int gpeg_compile_capture
   return 0;
 }
 
+static
+int gpeg_compile_varcapture
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)node;
+  (void)i;
+
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    {
+gpeg_result_debug(node);
+      unsigned capture;
+      memcpy(&capture, node->aux, sizeof(capture));
+      if (capture == 0) {
+        capture = ++(state->capture);
+        memcpy(node->aux, &capture, sizeof(capture));
+      }
+      vec_append(vec, &capture, sizeof(capture));
+      vec_printf(state->assembly,
+        "  opencapture %u\n"
+        , capture
+      );
+      if (state->slotmap) {
+        fprintf(state->slotmap,
+          "#define SLOT_%s_%u %u\n"
+          , state->rulename
+          , (state->rulecapture)++
+          , capture
+        );
+      }
+    }
+    break;
+  case GPEG_FNC_POSTNODE:
+    {
+      unsigned* capture = (unsigned*)(vec->data);
+      vec_printf(state->assembly,
+        "  closecapture %u\n"
+        , *capture
+      );
+    }
+    break;
+  }
+  return 0;
+}
+
 /**
  *
  */
@@ -1034,6 +1080,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_SET, gpeg_compile_set, &state);
   gpeg_result_callback(tree, SLOT_MACRO, gpeg_compile_macro, &state);
   gpeg_result_callback(tree, SLOT_CAPTURE, gpeg_compile_capture, &state);
+  gpeg_result_callback(tree, SLOT_VARCAPTURE, gpeg_compile_varcapture, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
