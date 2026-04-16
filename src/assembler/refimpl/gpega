@@ -272,13 +272,15 @@ sub recompile_set
   if (scalar(@ranges) == 0) {
     push @tokens, { type => 'fail' };
   } elsif (scalar(@ranges) == 1) {
-    push @tokens, { type => 'range', from => $ranges[0]->[0], until => $ranges[0]->[1] };
+    push @tokens,
+      { type => 'range', from => $ranges[0]->[0], until => $ranges[0]->[1] };
   } else {
     my $lab = "SET_" . (++$setlabel) . '_';
     for (my $i=0; $i < scalar(@ranges)-1; $i++) {
       push @tokens,
         { type => 'catch', label => "$lab$i" },
-        { type => 'range', from => $ranges[$i]->[0], until => $ranges[$i]->[1] },
+        { type => 'range', from => $ranges[$i]->[0],
+                           until => $ranges[$i]->[1] },
         { type => 'commit', label => $lab . scalar(@ranges) },
         { type => 'label', label => "$lab$i" },
       ;
