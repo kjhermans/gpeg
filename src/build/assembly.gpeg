@@ -16,6 +16,7 @@ RULEINSTR          <- BACKCOMMITINSTR / CALLINSTR /
                       CATCHINSTR /
                       CLOSECAPTUREINSTR / COMMITINSTR /
                       ENDINSTR / FAILTWICEINSTR / FAILINSTR /
+                      LIMITINSTR /
                       OPENCAPTUREINSTR / PARTIALCOMMITINSTR /
                       RETINSTR / RANGEINSTR /
                       VARINSTR /
@@ -31,6 +32,7 @@ COMMITINSTR        <- 'commit' S LABEL
 ENDINSTR           <- 'end' S CODE
 FAILINSTR          <- 'fail'
 FAILTWICEINSTR     <- 'failtwice'
+LIMITINSTR         <- 'limit' S BIT S ( BIT S UNSIGNED S SLOT S )?
 OPENCAPTUREINSTR   <- 'opencapture' S SLOT
 PARTIALCOMMITINSTR <- 'partialcommit' S LABEL
 RETINSTR           <- 'ret'
@@ -50,4 +52,5 @@ SLOT               <- UNSIGNED
 REGISTER           <- UNSIGNED
 TYPE               <- UNSIGNED
 UNSIGNED           <- [0-9]+
+BIT                <- [01]
 COLON              <- ':'
