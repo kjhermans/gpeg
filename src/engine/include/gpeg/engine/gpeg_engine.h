@@ -49,11 +49,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * LIMIT
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * |0 0 1 0|               |O|E| S |           register            |
+ * |0 0 1 0|         |O|E|    S    |           register            |
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * O : 1 = set limit, 0, unset limit (pop limit stack).
  * E : 1 = big endian interpretation, 0 = little endian.
- * S : +1 = size of integer being interpreted (1,2,3,4).
+ * S : +1 = size of integer being interpreted in bits.
  *
  * CALL
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

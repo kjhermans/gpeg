@@ -280,11 +280,13 @@ int gpeg_engine_run
   unsigned instrptr = 0;
   uint8_t* instr8 = 0;
   unsigned inputptr = 0;
+  unsigned inputsiz = input->size;
   uint8_t* input8 = 0;
   uint8_t opcode = 0;
   int eof = 0;
   gpege_stack_t stack = { 0 };
   gpege_actionlist_t actions = { 0 };
+  uint32list_t inputsizes = { 0 };
   int r = 0;
   unsigned instrctr = 0;
   unsigned counters[ GPEGE_MAX_COUNTERS ][ 2 ] = { 0 };
@@ -300,7 +302,7 @@ int gpeg_engine_run
     if (instrptr >= bytecode->size + 4) {
       RETURN_ERR2(GPEGE_ERR_OVERFLOW, CLEANUP);
     }
-    if (inputptr >= input->size) {
+    if (inputptr >= inputsiz) {
       eof = 1;
     } else {
       eof = 0;
@@ -344,7 +346,31 @@ int gpeg_engine_run
       }
       break;
     case OP_LIMIT:
-abort(); //REMOVE
+      {
+        unsigned O   = ((instr8[1]>>6)&0x01);
+        unsigned E   = ((instr8[1]>>5)&0x01);
+        unsigned S   =  (instr8[1]&0x1f) + 1;
+        unsigned reg = ((instr8[2]<<8)|(instr8[3]));
+        if (O) {
+          uint32_t len = 0; uint8_t* lenptr = (uint8_t*)(&len);
+          vec_t value = { 0 };
+          CHECK2(resolve_variable(input, &actions, reg, &value), CLEANUP);
+          for (unsigned i=0; i < S && i < value.size * 8; i++) {
+            if (value.data[ i/8 ] & (1<<(i%8))) {
+              if (E) {
+                lenptr[ i/8 ] |= (1<<(i%8));
+              } else {
+                lenptr[ (31-i)/8 ] |= (1<<(i%8));
+              }
+            }
+          }
+          uint32list_push(&inputsizes, len);
+          inputsiz = len;
+        } else {
+          uint32list_pop(&inputsizes, 0);
+        }
+        instrptr += 4;
+      }
       break;
     case OP_CALL:
       {
