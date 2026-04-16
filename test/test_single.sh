@@ -1,7 +1,7 @@
 #!/bin/sh
 
 GEN=1
-BIN=../src/gen$GEN/bin
+BIN=../bin
 
 TESTS=`ls single_*.tst | sort -n`
 for TEST in $TESTS; do
