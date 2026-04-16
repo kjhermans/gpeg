@@ -185,7 +185,35 @@ int gpeg_compile_string
     for (unsigned i=0; i < string->size; i++) {
       unsigned char c = string->data[ i ];
       switch (c) {
-      case 0x5c:
+      case '\\':
+        if (i < string->size-1) {
+          ++i;
+          switch (c = string->data[ i ]) {
+          case 'n':
+            vec_printf(state->assembly, "  range 0a\n");
+            break;
+          case 'r':
+            vec_printf(state->assembly, "  range 0d\n");
+            break;
+          case 't':
+            vec_printf(state->assembly, "  range 09\n");
+            break;
+          case 'v':
+            vec_printf(state->assembly, "  range 0b\n");
+            break;
+          case 'x':
+            if (i < string->size-2) {
+              vec_printf(state->assembly,
+                "  range %-.*s\n", 2, &(string->data[ i + 1 ]));
+            }
+            i += 2;
+            break;
+          default:
+            vec_printf(state->assembly, "  range %.2x\n", c);
+          }
+        } else {
+          RETURN_ERR(GPEGC_ERR_ESCAPE);
+        }
         break;
       default:
         vec_printf(state->assembly, "  range %.2x\n", c);
