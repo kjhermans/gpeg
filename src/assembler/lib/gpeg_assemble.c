@@ -230,7 +230,7 @@ int gpeg_asm_end
     } else {
       uint32_t instr = 0;
       unsigned endcode = atoi((char*)(node->children[ 0 ]->vec.data));
-      gpeg_asm_instr(&instr, OP_OPENCAPTURE, 1, 8, 24, endcode);
+      gpeg_asm_instr(&instr, OP_END, 1, 8, 24, endcode);
       vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
