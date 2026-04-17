@@ -1062,6 +1062,50 @@ int gpeg_compile_varref
   return 0;
 }
 
+static
+int gpeg_compile_hex
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    {
+      vec_printf(state->assembly,
+        "  range %s\n"
+        , (char*)(&(node->vec.data[ 2 ]))
+      );
+    }
+    break;
+  }
+  return 0;
+}
+
+static
+int gpeg_compile_endforce
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    {
+      vec_printf(state->assembly,
+        "  end %s\n"
+        , (char*)(node->children[ 0 ]->vec.data)
+      );
+    }
+    break;
+  }
+  return 0;
+}
+
 /**
  *
  */
@@ -1110,6 +1154,8 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_CAPTURE, gpeg_compile_capture, &state);
   gpeg_result_callback(tree, SLOT_VARCAPTURE, gpeg_compile_varcapture, &state);
   gpeg_result_callback(tree, SLOT_VARREFERENCE, gpeg_compile_varref, &state);
+  gpeg_result_callback(tree, SLOT_HEXLITERAL, gpeg_compile_hex, &state);
+  gpeg_result_callback(tree, SLOT_ENDFORCE, gpeg_compile_endforce, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
