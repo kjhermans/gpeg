@@ -47,7 +47,6 @@ struct compilestate
   unsigned      capture;
   int           prefixset;
   int           firstrule;
-  int           secondpass;
   vec_t*        assembly;
   FILE*         slotmap;
   const char*   rulename;
@@ -283,9 +282,7 @@ int gpeg_compile_q_1p_pre
   unsigned label = (state->label)++;
 
   vec_append(vec, &label, sizeof(label));
-  state->secondpass = 1;
   CHECK(gpeg_result_run(node->children[ 0 ]));
-  state->secondpass = 0;
   vec_printf(state->assembly,
     "  catch L%u\n"
     "LOOP%u:\n"
@@ -345,9 +342,7 @@ int gpeg_compile_q_ft_pre
         , from
         , counter0
       );
-      state->secondpass = 1;
       CHECK(gpeg_result_run(node->children[ 0 ]));
-      state->secondpass = 0;
       vec_printf(state->assembly,
         "  condjump %u CTR%u\n"
         , counter0
@@ -411,9 +406,7 @@ int gpeg_compile_q_fr_pre
       , from
       , counter
     );
-    state->secondpass = 1;
     CHECK(gpeg_result_run(node->children[ 0 ]));
-    state->secondpass = 0;
     vec_printf(state->assembly,
       "  condjump %u CTR%u\n"
       , counter
