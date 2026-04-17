@@ -29,7 +29,9 @@ sed "/--INPUT--/e cat $TESTDIR/input.vhdl" \
 
 cp gpeg_engine.vhdl $TESTDIR/
 
-ghdl -a --std=08 $TESTDIR/gpeg_engine.vhdl $TESTDIR/gpeg_engine_tb.vhdl && \
-ghdl -e --std=08 $TESTDIR/gpeg_engine_tb && \
-ghdl -r --std=08 $TESTDIR/gpeg_engine_tb
+cd $TESTDIR
+
+ghdl -a --std=08 gpeg_engine.vhdl gpeg_engine_tb.vhdl && \
+ghdl -e --std=08 gpeg_engine_tb && \
+ghdl -r --std=08 gpeg_engine_tb
 
