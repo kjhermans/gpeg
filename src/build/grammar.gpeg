@@ -12,7 +12,7 @@ __prefix           <- ( MULTILINECOMMENT / COMMENT / S )*
 
 END                <- !.
 
-DEFINITION         <- RULE / IMPORTDECL
+DEFINITION         <- RULE
 
 RULE               <- IDENT LEFTARROW EXPRESSION
 
@@ -76,7 +76,7 @@ SET                <- ABOPEN { '^' }? (
 
 VARREFERENCE       <- '$' ( IDENT / NUMBER )
 
-REFERENCE          <- !( KW_IMPORT ) IDENT !LEFTARROW
+REFERENCE          <- IDENT !LEFTARROW
 
 LIMITEDCALL        <- '<:' IDENT COLON BIT COLON NUMBER COLON IDENT %s* '>'
 
@@ -90,11 +90,6 @@ NUMBER             <- [0-9]+
 STRING             <- STRINGLITERAL 'i'?
 OR                 <- '/'
 ANY                <- '.'
-
-IMPORTDECL         <- KW_IMPORT STRINGLITERAL OPTNAMESPACE SEMICOLON
-KW_IMPORT          <- 'import'
-OPTNAMESPACE       <- (KW_AS IDENT)?
-KW_AS              <- 'as'
 
 STRINGLITERAL      <- '\''
                       { ( '\\' ([nrtv\\'] / 'x' [0-9a-fA-F]^2) / [^'\\] )* }
