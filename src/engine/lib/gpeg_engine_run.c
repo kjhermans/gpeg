@@ -90,7 +90,7 @@ inline int stack_pop
   if (type && elt.type != type) {
     RETURN_ERR(GPEGE_ERR_STACKELT);
   }
-  if (found) {
+  if (found != NULL) {
     *found = elt;
   }
   return 0;
