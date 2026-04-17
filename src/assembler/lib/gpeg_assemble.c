@@ -414,7 +414,7 @@ int gpeg_asm_var
     } else {
       uint32_t instr = 0;
       unsigned capture = atoi((char*)(node->children[ 0 ]->vec.data));
-      gpeg_asm_instr(&instr, OP_OPENCAPTURE, 1, 16, 16, capture);
+      gpeg_asm_instr(&instr, OP_VAR, 1, 16, 16, capture);
       vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
