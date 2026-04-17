@@ -403,22 +403,26 @@ int gpeg_compile_q_fr_pre
   unsigned from = atoi((char*)(fromstr->data));
 
   vec_append(vec, &label, sizeof(label));
+  if (from) {
+    vec_printf(state->assembly,
+      "  counter %u %u\n"
+      "CTR%u:\n"
+      , counter
+      , from
+      , counter
+    );
+    state->secondpass = 1;
+    CHECK(gpeg_result_run(node->children[ 0 ]));
+    state->secondpass = 0;
+    vec_printf(state->assembly,
+      "  condjump %u CTR%u\n"
+      , counter
+      , counter
+    );
+  }
   vec_printf(state->assembly,
-    "  counter %u %u\n"
-    "CTR%u:\n"
-    , counter
-    , from
-    , counter
-  );
-  state->secondpass = 1;
-  CHECK(gpeg_result_run(node->children[ 0 ]));
-  state->secondpass = 0;
-  vec_printf(state->assembly,
-    "  condjump %u CTR%u\n"
     "  catch L%u\n"
     "LOOP%u:\n"
-    , counter
-    , counter
     , label
     , label
   );
