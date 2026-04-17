@@ -1106,6 +1106,44 @@ int gpeg_compile_endforce
   return 0;
 }
 
+static
+int gpeg_compile_bitmask
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    {
+      uint8_t target = 0, mask = 0;
+      for (unsigned i=0; i < 8; i++) {
+        switch (node->vec.data[ i+1 ]) {
+        case '0':
+          mask |= (1<<(7-i));
+          break;
+        case '1':
+          target |= (1<<(7-i));
+          mask |= (1<<(7-i));
+          break;
+        case '_':
+          break;
+        }
+      }
+      vec_printf(state->assembly,
+        "  range %.2x %.2x %.2x\n"
+        , target
+        , target
+        , mask
+      );
+    }
+    break;
+  }
+  return 0;
+}
+
 /**
  *
  */
@@ -1156,6 +1194,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_VARREFERENCE, gpeg_compile_varref, &state);
   gpeg_result_callback(tree, SLOT_HEXLITERAL, gpeg_compile_hex, &state);
   gpeg_result_callback(tree, SLOT_ENDFORCE, gpeg_compile_endforce, &state);
+  gpeg_result_callback(tree, SLOT_BITMASK, gpeg_compile_bitmask, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
