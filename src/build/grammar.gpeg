@@ -1,6 +1,6 @@
 -- GPEG Grammar Grammar
 
-GRAMMAR            <- ( DEFINITION+ / EXPRESSION ) END
+GRAMMAR            <- ( RULE+ / EXPRESSION ) END
 
 S                  <- %s+
 
@@ -11,8 +11,6 @@ COMMENT            <- '--' [^\n]* '\n'
 __prefix           <- ( MULTILINECOMMENT / COMMENT / S )*
 
 END                <- !.
-
-DEFINITION         <- RULE
 
 RULE               <- IDENT LEFTARROW EXPRESSION
 
