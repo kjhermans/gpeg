@@ -1,0 +1,21 @@
+-- Grammar:
+
+UTF8TEXT    <- UTF8CHAR* !.
+UTF8CHAR    <- ASCII / DOUBLE / TRIPLE / QUADRUPLE
+ASCII       <- [\x00-\x7f]
+DOUBLE      <- [\xc0-\xdf] [\x80-\xbf]
+TRIPLE      <- [\xe0-\xef] [\x80-\xbf] [\x80-\xbf]
+QUADRUPLE   <- [\xf0-\xf7] [\x80-\xbf] [\x80-\xbf] [\x80-\xbf]
+
+-- Hexinput:
+
+e20a85a0202d206f6e650ae285a1202d2074776f0a
+e285a2202d2074687265650ae285a3202d20666f
+75720ae285a4202d20666976650ae285a5202d20
+7369780ae285a6202d20736576656e0ae285a720
+2d2065696768740ae285a8202d206e696e650ae2
+85a9202d2074656e
+
+-- Result:
+
+NOK
