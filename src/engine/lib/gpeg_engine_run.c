@@ -513,7 +513,15 @@ int gpeg_engine_run
           if (counters[ i-1 ][ 0 ] == ctr) {
             --(counters[ i-1 ][ 1 ]);
             if (counters[ i-1 ][ 1 ] == 0) {
-//.. splice
+              if (i == countercount-1) {
+                --countercount;
+              } else {
+                memmove(
+                  &(counters[ i-1 ]),
+                  &(counters[ i ]),
+                  sizeof(unsigned) * 2 * (countercount - i)
+                );
+              }
               instrptr += 4;
             } else {
               instrptr = offset;
