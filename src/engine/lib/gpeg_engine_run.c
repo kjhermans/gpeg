@@ -147,6 +147,7 @@ typedef struct
   int      action;
   uint16_t reg;
   uint32_t offset;
+  unsigned stacklen;
 }
 gpege_action_t;
 
@@ -204,12 +205,16 @@ inline int resolve_variable
     const vec_t* input,
     gpege_actionlist_t* actions,
     uint16_t reg,
+    unsigned stacklen,
     vec_t* result
   )
 {
   for (unsigned i = actions->count; i > 0; i--) {
     gpege_action_t* action0 = &(actions->list[ i-1 ]);
-    if (action0->action == ACT_CLOSE && action0->reg == reg) {
+    if (action0->action == ACT_CLOSE
+        && action0->reg == reg
+        && action0->stacklen == stacklen)
+    {
       unsigned level = 1;
       for (unsigned j = i-1; j > 0; j--) {
         gpege_action_t* action1 = &(actions->list[ j-1 ]);
@@ -354,7 +359,10 @@ int gpeg_engine_run
         if (O) {
           uint32_t len = 0; uint8_t* lenptr = (uint8_t*)(&len);
           vec_t value = { 0 };
-          CHECK2(resolve_variable(input, &actions, reg, &value), CLEANUP);
+          CHECK2(
+            resolve_variable(input, &actions, reg, stack.count, &value),
+            CLEANUP
+          );
           for (unsigned i=0; i < S && i < value.size * 8; i++) {
             if (value.data[ i/8 ] & (1<<(i%8))) {
               if (E) {
@@ -440,7 +448,10 @@ int gpeg_engine_run
       {
         uint16_t reg = (instr8[2] << 8) | instr8[3];
         vec_t value = { 0 };
-        CHECK2(resolve_variable(input, &actions, reg, &value), CLEANUP);
+        CHECK2(
+          resolve_variable(input, &actions, reg, stack.count, &value),
+          CLEANUP
+        );
         if (value.size == 0) {
           failed = 1;
         } else if (inputptr + value.size > input->size) {
@@ -459,9 +470,10 @@ int gpeg_engine_run
       {
         uint16_t reg = (instr8[2] << 8) | instr8[3];
         gpege_action_t action = {
-          .action = ACT_OPEN,
-          .reg    = reg,
-          .offset = inputptr,
+          .action   = ACT_OPEN,
+          .reg      = reg,
+          .offset   = inputptr,
+          .stacklen = stack.count,
         };
         gpege_actionlist_push(&actions, action);
         instrptr += 4;
@@ -471,9 +483,10 @@ int gpeg_engine_run
       {
         uint16_t reg = (instr8[2] << 8) | instr8[3];
         gpege_action_t action = {
-          .action = ACT_CLOSE,
-          .reg    = reg,
-          .offset = inputptr,
+          .action   = ACT_CLOSE,
+          .reg      = reg,
+          .offset   = inputptr,
+          .stacklen = stack.count,
         };
         gpege_actionlist_push(&actions, action);
         instrptr += 4;
