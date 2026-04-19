@@ -485,6 +485,20 @@ int gpeg_asm_limit
     if (state->pass == 1) {
       state->offset += GPEG_INSTR_SIZE;
     } else {
+      unsigned endianness = atoi((char*)(node->children[ 0 ]->vec.data));
+      unsigned bitlength = atoi((char*)(node->children[ 0 ]->vec.data));
+      unsigned slot = atoi((char*)(node->children[ 0 ]->vec.data));
+      uint32_t instr = 0;
+      if (bitlength > 32) {
+        RETURN_ERR(GPEGA_ERR_LIMIT);
+      }
+      gpeg_asm_instr(&instr, OP_LIMIT, 4
+        , 9, 1, 1
+        , 10, 1, endianness
+        , 12, 4, bitlength-1
+        , 16, 16, slot
+      );
+      vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
   return 0;
