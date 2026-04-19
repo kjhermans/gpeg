@@ -472,6 +472,24 @@ int gpeg_asm_cjp
   return 0;
 }
 
+static
+int gpeg_asm_limit
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct assemblerstate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    if (state->pass == 1) {
+      state->offset += GPEG_INSTR_SIZE;
+    } else {
+    }
+  }
+  return 0;
+}
+
 /**
  *
  */
@@ -520,6 +538,7 @@ int gpeg_assemble
   gpeg_result_callback(tree, SLOT_VARINSTR, gpeg_asm_var, &state);
   gpeg_result_callback(tree, SLOT_COUNTERINSTR, gpeg_asm_ctr, &state);
   gpeg_result_callback(tree, SLOT_CONDJUMPINSTR, gpeg_asm_cjp, &state);
+  gpeg_result_callback(tree, SLOT_LIMITINSTR, gpeg_asm_limit, &state);
 
   state.pass = 1;
   CHECK(gpeg_result_run(tree));

@@ -76,7 +76,7 @@ VARREFERENCE       <- '$' ( IDENT / NUMBER )
 
 REFERENCE          <- IDENT !LEFTARROW
 
-LIMITEDCALL        <- '<:' IDENT COLON BIT COLON NUMBER COLON IDENT %s* '>'
+LIMITEDCALL        <- '<:$' IDENT COLON BIT COLON NUMBER COLON IDENT %s* '>'
 
 LEFTARROW          <- '<-'
 NOT                <- '!'

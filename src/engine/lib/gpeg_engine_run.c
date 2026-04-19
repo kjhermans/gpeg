@@ -212,7 +212,7 @@ inline int resolve_variable
   for (unsigned i = actions->count; i > 0; i--) {
     gpege_action_t* action0 = &(actions->list[ i-1 ]);
     if (action0->action == ACT_CLOSE
-        && action0->reg == reg
+        && (0 == reg || action0->reg == reg)
         && action0->stacklen == stacklen)
     {
       unsigned level = 1;

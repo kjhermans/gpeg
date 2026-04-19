@@ -1047,15 +1047,16 @@ int gpeg_compile_varref
   case GPEG_FNC_PRENODE:
     {
       char* variablename = (char*)(node->children[ 0 ]->vec.data);
-      unsigned capture;
-      if (str2int_map_get(&(state->variables), variablename, &capture) == 0) {
-        vec_printf(state->assembly,
-          "  var %u\n"
-          , capture
-        );
-      } else {
-        RETURN_ERR(GPEGC_ERR_VARIABLE);
+      unsigned capture = 0;
+      if (strcmp(variablename, "_")) {
+        if (str2int_map_get(&(state->variables), variablename, &capture)) {
+          RETURN_ERR(GPEGC_ERR_VARIABLE);
+        }
       }
+      vec_printf(state->assembly,
+        "  var %u\n"
+        , capture
+      );
     }
     break;
   }
@@ -1144,6 +1145,46 @@ int gpeg_compile_bitmask
   return 0;
 }
 
+static
+int gpeg_compile_lim
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  char* variablename = (char*)(node->children[ 0 ]->vec.data);
+  unsigned endian = atoi((char*)(node->children[ 2 ]->vec.data));
+  unsigned bitlength = atoi((char*)(node->children[ 4 ]->vec.data));
+  char* function = (char*)(node->children[ 6 ]->vec.data);
+  unsigned capture = 0;
+
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  if (bitlength > 32) {
+    RETURN_ERR(GPEGC_ERR_BITLENGTH);
+  }
+  if (strcmp(variablename, "_")) {
+    if (str2int_map_get(&(state->variables), variablename, &capture)) {
+      RETURN_ERR(GPEGC_ERR_VARIABLE);
+    }
+  }
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    {
+      vec_printf(state->assembly,
+        "  limit %u %u %u\n"
+        "  call %s\n"
+        , (endian ? 1 : 0)
+        , bitlength
+        , capture
+        , function
+      );
+    }
+    break;
+  }
+  return 0;
+}
+
 /**
  *
  */
@@ -1195,6 +1236,7 @@ int gpeg_compile
   gpeg_result_callback(tree, SLOT_HEXLITERAL, gpeg_compile_hex, &state);
   gpeg_result_callback(tree, SLOT_ENDFORCE, gpeg_compile_endforce, &state);
   gpeg_result_callback(tree, SLOT_BITMASK, gpeg_compile_bitmask, &state);
+  gpeg_result_callback(tree, SLOT_LIMITEDCALL, gpeg_compile_lim, &state);
   CHECK(gpeg_result_run(tree));
 
   RETURN_OK;
