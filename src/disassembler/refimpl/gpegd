@@ -67,8 +67,13 @@ sub disassemble
         $output .= ' ' . sprintf("%.2x", $bytes[1]);
       }
     } elsif ($opcode == 2) {
-      $output .= 'limit ';
-      ##..
+      my ($O, $E, $S, $reg) = (
+        (($bytes[1] >> 6) & 0x01),
+        (($bytes[1] >> 5) & 0x01),
+        (($bytes[1] & 0x1f)+1),
+        (($bytes[2] << 8)|$bytes[3])
+      );
+      $output .= "limit $E $S $reg";
     } elsif ($opcode == 3 ||
              $opcode == 5 ||
              $opcode == 6 ||
