@@ -220,7 +220,7 @@ inline int resolve_variable
         gpege_action_t* action1 = &(actions->list[ j-1 ]);
         if (action1->action == ACT_OPEN) {
           --level;
-          if (level == 0 && action1->reg == action0->reg) {
+          if (level == 0 && (0 == reg || action1->reg == action0->reg)) {
             result->data = input->data + action1->offset;
             result->size = action0->offset - action1->offset;
             return 0;
@@ -372,6 +372,7 @@ int gpeg_engine_run
               }
             }
           }
+fprintf(stderr, "LEN FOUND lenlen=%u, len=%u\n", S, len);
           uint32list_push(&inputsizes, len);
           inputsiz = len;
         } else {
