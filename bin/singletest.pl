@@ -93,6 +93,8 @@ if ($test =~ /-- (Replace|Capture|Grammar|Assembly):\s*\n(.*)\n-- (Input|Hexinpu
   $e .= " >>$tmpfile.$n.log " . '2>&1';
   system("echo \"---- Input:\" >> $tmpfile.$n.log");
   system("cat $tmpfile.txt >> $tmpfile.$n.log");
+  system("echo >> $tmpfile.$n.log");
+  system("hexdump -C $tmpfile.txt >> $tmpfile.$n.log");
   system("echo \"---- Log:\" >> $tmpfile.$n.log");
   my $x = system($e);
   if ($x) {
