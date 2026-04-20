@@ -407,19 +407,16 @@ int gpeg_engine_run
             CLEANUP
           );
           for (unsigned i=0; i < S && i < value.size * 8; i++) {
-            if (value.data[ value.size - (i/8) ] & (1<<(i%8))) {
-fprintf(stderr, "1");
-              if (E) {
-                len |= (1<<i);
-              } else {
-                len |= (1<<(32-i));
-              }
+            int bit = 0;
+            if (E) {
+              bit = (value.data[ value.size-((i/8)+1) ] & (1<<(i%8)) ? 1 : 0);
+            } else {
+              bit = (value.data[ i/8 ] & (1<<(i%8)) ? 1 : 0);
             }
-else { fprintf(stderr, "0"); }
+            if (bit) {
+              len |= (1<<i);
+            }
           }
-fprintf(stderr, "\n");
-fprintf(stderr, "LEN FOUND lenlen=%u, len=%u; %x\n", S, len, len);
-flogmem(stderr, value.data, value.size);
           uint32list_push(&inputsizes, len);
           if (len > inputsiz) {
             RETURN_ERR(GPEGE_ERR_LIMIT);
