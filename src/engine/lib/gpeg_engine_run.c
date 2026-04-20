@@ -199,6 +199,31 @@ inline void wrap_captures
   }
 }
 
+/*
+static
+void gpege_actionlist_debug
+  (const vec_t* input, gpege_actionlist_t* list)
+{
+  for (unsigned i=0; i < list->count; i++) {
+    fprintf(stderr,
+      "ACTION %u: %s reg=%u off=%u stk=%u "
+      , i
+      , list->list[ i ].action == ACT_OPEN ? "open " : "close"
+      , list->list[ i ].reg
+      , list->list[ i ].offset
+      , list->list[ i ].stacklen
+    );
+    if (input && list->list[ i ].action == ACT_OPEN) {
+      for (unsigned j=0; j < 12; j++) {
+        char c = input->data[ list->list[ i ].offset + j ];
+        fprintf(stderr, "%c", (c >= 32 && c < 127) ? c : '.');
+      }
+    }
+    fprintf(stderr, "\n");
+  }
+}
+*/
+
 static
 inline int resolve_variable
   (
