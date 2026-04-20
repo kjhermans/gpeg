@@ -171,6 +171,7 @@ gpege_result_t;
 #define GPEGE_ERR_VARIABLE      5
 #define GPEGE_ERR_MAXINSTR      6
 #define GPEGE_ERR_COUNTER       7
+#define GPEGE_ERR_LIMIT         8
 
 #define GPEGE_FLG_COPYCAPTURES  (1<<0)
 

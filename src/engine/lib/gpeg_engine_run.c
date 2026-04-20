@@ -400,23 +400,30 @@ int gpeg_engine_run
         unsigned S   =  (instr8[1]&0x1f) + 1;
         unsigned reg = ((instr8[2]<<8)|(instr8[3]));
         if (O) {
-          uint32_t len = 0; uint8_t* lenptr = (uint8_t*)(&len);
+          uint32_t len = 0;
           vec_t value = { 0 };
           CHECK2(
             resolve_variable(input, &actions, reg, stack.count, &value),
             CLEANUP
           );
           for (unsigned i=0; i < S && i < value.size * 8; i++) {
-            if (value.data[ i/8 ] & (1<<(i%8))) {
+            if (value.data[ value.size - (i/8) ] & (1<<(i%8))) {
+fprintf(stderr, "1");
               if (E) {
-                lenptr[ i/8 ] |= (1<<(i%8));
+                len |= (1<<i);
               } else {
-                lenptr[ (31-i)/8 ] |= (1<<(i%8));
+                len |= (1<<(32-i));
               }
             }
+else { fprintf(stderr, "0"); }
           }
-fprintf(stderr, "LEN FOUND lenlen=%u, len=%u\n", S, len);
+fprintf(stderr, "\n");
+fprintf(stderr, "LEN FOUND lenlen=%u, len=%u; %x\n", S, len, len);
+flogmem(stderr, value.data, value.size);
           uint32list_push(&inputsizes, len);
+          if (len > inputsiz) {
+            RETURN_ERR(GPEGE_ERR_LIMIT);
+          }
           inputsiz = len;
         } else {
           uint32list_pop(&inputsizes, 0);
