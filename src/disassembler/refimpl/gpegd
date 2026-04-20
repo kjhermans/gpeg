@@ -67,7 +67,8 @@ sub disassemble
         $output .= ' ' . sprintf("%.2x", $bytes[1]);
       }
     } elsif ($opcode == 2) {
-      ##.. todo implement
+      $output .= 'limit ';
+      ##..
     } elsif ($opcode == 3 ||
              $opcode == 5 ||
              $opcode == 6 ||
