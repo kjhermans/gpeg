@@ -175,11 +175,11 @@ int gpeg_compile_call
 
 static
 int gpeg_compile_string
-  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+  (gpege_node_t* node, unsigned phase, unsigned _i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
   vec_t* string = &(node->children[ 0 ]->children[ 0 ]->vec);
-  (void)i;
+  (void)_i;
   (void)vec;
 
   if (phase == GPEG_FNC_PRENODE) {
@@ -743,11 +743,11 @@ int gpeg_compile_ranges
         gpege_node_t* child1 = node->children[ ++i ];
         unsigned char from = range_unescape((char*)(child->vec.data));
         unsigned char until = range_unescape((char*)(child1->vec.data));
-        for (unsigned i=from; i <= until; i++) {
+        for (unsigned j=from; j <= until; j++) {
           if (negative) {
-            unsetbit(bits, i);
+            unsetbit(bits, j);
           } else {
-            setbit(bits, i);
+            setbit(bits, j);
           }
         }
       }
@@ -1109,11 +1109,11 @@ int gpeg_compile_endforce
 
 static
 int gpeg_compile_bitmask
-  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+  (gpege_node_t* node, unsigned phase, unsigned _i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
   (void)node;
-  (void)i;
+  (void)_i;
   (void)vec;
 
   switch (phase) {

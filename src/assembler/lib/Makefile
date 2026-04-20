@@ -2,7 +2,7 @@ OBJECTS:=$(shell ls *.c | sort | sed -e 's/\.c$$/.o/')
 LIB=libgpega.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
-CFLAGS=-g -O2 -Wall -Wextra $(DEBUG) -fPIC -I../include -I../../engine/include
+CFLAGS=-g -O2 -Wall -Wextra -Wshadow $(DEBUG) -fPIC -I../include -I../../engine/include
 
 all: $(LIB)
 
