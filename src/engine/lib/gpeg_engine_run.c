@@ -66,6 +66,7 @@ typedef struct
   uint32_t      inputptr;
   unsigned      actioncount;
   unsigned      countercount;
+  unsigned      inputsizescount;
 }
 gpege_stackelt_t;
 
@@ -363,11 +364,12 @@ int gpeg_engine_run
     opcode = instr8[0] >> 4;
 #ifdef _DEBUG
     fprintf(stderr,
-      "%.8u: %.8u: %s: %.8u: %s: #s=%u\n"
+      "%.8u: %.8u: %s: %.6u: %.6u: %s: #s=%u\n"
       , instrctr-1
       , instrptr
       , instrstr[opcode]
       , inputptr
+      , inputsiz
       , (eof ? "EOF" : readable_text(input, inputptr))
       , stack.count
     );
@@ -417,10 +419,12 @@ int gpeg_engine_run
               len |= (1<<i);
             }
           }
-          uint32list_push(&inputsizes, len);
-          if (len > inputsiz) {
+          len += inputptr;
+          if (len > input->size) {
+            DBGMSG("Limit: length %u + %u > %u\n", len-inputptr, inputptr, input->size);
             RETURN_ERR(GPEGE_ERR_LIMIT);
           }
+          uint32list_push(&inputsizes, len);
           inputsiz = len;
         } else {
           uint32list_pop(&inputsizes, 0);
@@ -436,6 +440,7 @@ int gpeg_engine_run
           .inputptr = inputptr,
           .actioncount = actions.count,
           .countercount = countercount,
+          .inputsizescount = inputsizes.count,
         };
         gpege_stack_push(&stack, elt);
         instrptr = GPEGU_INSTR_OFFSET(instr8);
@@ -446,6 +451,8 @@ int gpeg_engine_run
         gpege_stackelt_t elt = { 0 };
         CHECK2(stack_pop(&stack, STACK_CALL, &elt), CLEANUP);
         instrptr = elt.instrptr;
+        inputsizes.count = elt.inputsizescount;
+        inputsiz = (inputsizes.count ? inputsizes.list[ inputsizes.count-1 ] : input->size);
       }
       break;
     case OP_CATCH:
@@ -456,6 +463,7 @@ int gpeg_engine_run
           .inputptr = inputptr,
           .actioncount = actions.count,
           .countercount = countercount,
+          .inputsizescount = inputsizes.count,
         };
         gpege_stack_push(&stack, elt);
         instrptr += 4;
@@ -472,6 +480,8 @@ int gpeg_engine_run
         inputptr = elt.inputptr;
         actions.count = elt.actioncount;
         countercount = elt.countercount;
+        inputsizes.count = elt.inputsizescount;
+        inputsiz = (inputsizes.count ? inputsizes.list[ inputsizes.count-1 ] : input->size);
         instrptr = GPEGU_INSTR_OFFSET(instr8);
       }
       break;
@@ -482,6 +492,7 @@ int gpeg_engine_run
         eltptr->inputptr = inputptr;
         eltptr->actioncount = actions.count;
         eltptr->countercount = countercount;
+        eltptr->inputsizescount = inputsizes.count;
         instrptr = GPEGU_INSTR_OFFSET(instr8);
       }
       break;
@@ -588,6 +599,9 @@ CTRFOUND: ;
       inputptr = elt.inputptr;
       instrptr = elt.instrptr;
       actions.count = elt.actioncount;
+      countercount = elt.countercount;
+      inputsizes.count = elt.inputsizescount;
+      inputsiz = (inputsizes.count ? inputsizes.list[ inputsizes.count-1 ] : input->size);
     }
   }
   wrap_captures(input, flags, &actions, &(result->captures));
