@@ -43,7 +43,11 @@ char* usage =
   "Where options are:\n"
   "-? or -h   Display this text and exit.\n"
   "-i <path>  Specify input path.\n"
-  "-c <path>  Speficy bytecode path.\n"
+  "-c <path>  Specify bytecode path.\n"
+#ifdef _DEBUG
+  "-v         Verbose mode (debug version only).\n"
+  "-d         Start debugger (debug version only).\n"
+#endif
 ;
 
 /**
@@ -59,6 +63,7 @@ int main
   vec_t input = { 0 };
   vec_t bytecode = { 0 };
   gpege_result_t result = { 0 };
+  unsigned flags = 0;
 
 #ifdef _DEBUG
   fprintf(stderr, "gpege DEBUG version, release %-.*s\n", release_len, release);
@@ -88,7 +93,15 @@ int main
     fprintf(stderr, "Could not absorb file '%s'\n", bytecodefile);
     return ~0;
   }
-  if (gpeg_engine_run(&bytecode, &input, 0, &result)) {
+#ifdef _DEBUG
+  if (queryargs(argc, argv, 'v', "verbose", 0, 0, 0, 0) == 0) {
+    flags |= GPEGE_FLG_DEBUG;
+  }
+  if (queryargs(argc, argv, 'd', "debug", 0, 0, 0, 0) == 0) {
+    flags |= GPEGE_FLG_DEBUGGER;
+  }
+#endif
+  if (gpeg_engine_run(&bytecode, &input, flags, &result)) {
     fprintf(stderr, "GPEG engine ended in error.\n");
     return ~0;
   } else if (0 == result.success) {

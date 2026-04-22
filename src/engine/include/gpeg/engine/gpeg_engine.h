@@ -174,6 +174,8 @@ gpege_result_t;
 #define GPEGE_ERR_LIMIT         8
 
 #define GPEGE_FLG_COPYCAPTURES  (1<<0)
+#define GPEGE_FLG_DEBUG         (1<<1)
+#define GPEGE_FLG_DEBUGGER      (1<<2)
 
 /**
  * Runs the GPEG engine on \p input, using \p bytecode, and fills \p result.

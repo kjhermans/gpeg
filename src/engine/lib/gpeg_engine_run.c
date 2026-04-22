@@ -97,6 +97,38 @@ inline int stack_pop
   return 0;
 }
 
+#ifdef _DEBUG
+static
+inline int stack_fail
+  (gpege_stack_t* stack, gpege_stackelt_t* ret, int debug)
+{
+  gpege_stackelt_t elt = { 0 };
+  if (stack->count == 0) {
+    RETURN_ERR(GPEGE_ERR_STACKEMPTY);
+  }
+  if (debug) {
+    fprintf(stderr, "FAIL: ");
+  }
+  while (stack->count) {
+    stack_pop(stack, 0, &elt);
+    if (debug) {
+      fprintf(stderr, "[%s,%u]"
+        , (elt.type == STACK_CATCH ? "ctc" : "cll"), elt.instrptr);
+    }
+    if (elt.type == STACK_CATCH) {
+      if (ret) { *ret = elt; }
+      break;
+    } else if (debug) {
+      fprintf(stderr, ", ");
+    }
+  }
+  if (elt.type == STACK_CATCH) {
+    fprintf(stderr, "\n");
+  }
+  return 0;
+}
+#else
+
 static
 inline int stack_fail
   (gpege_stack_t* stack, gpege_stackelt_t* ret)
@@ -105,28 +137,16 @@ inline int stack_fail
   if (stack->count == 0) {
     RETURN_ERR(GPEGE_ERR_STACKEMPTY);
   }
-#ifdef _DEBUG
-  fprintf(stderr, "FAIL: ");
-#endif
   while (stack->count) {
     stack_pop(stack, 0, &elt);
-#ifdef _DEBUG
-    fprintf(stderr, "[%s,%u]"
-      , (elt.type == STACK_CATCH ? "ctc" : "cll"), elt.instrptr);
-#endif
     if (elt.type == STACK_CATCH) {
       if (ret) { *ret = elt; }
       break;
     }
-#ifdef _DEBUG
-    else { fprintf(stderr, ", "); }
-#endif
   }
-#ifdef _DEBUG
-  fprintf(stderr, "\n");
-#endif
   return 0;
 }
+#endif
 
 static
 inline int stack_peek
@@ -363,16 +383,23 @@ int gpeg_engine_run
     instr8 = bytecode->data + instrptr;
     opcode = instr8[0] >> 4;
 #ifdef _DEBUG
-    fprintf(stderr,
-      "%.8u: %.8u: %s: %.6u: %.6u: %s: #s=%u\n"
-      , instrctr-1
-      , instrptr
-      , instrstr[opcode]
-      , inputptr
-      , inputsiz
-      , (eof ? "EOF" : readable_text(input, inputptr))
-      , stack.count
-    );
+    if (flags & GPEGE_FLG_DEBUG) {
+      fprintf(stderr,
+        "%.8u: %.8u: %s: %.6u: %.6u: %s: #s=%u\n"
+        , instrctr-1
+        , instrptr
+        , instrstr[opcode]
+        , inputptr
+        , inputsiz
+        , (eof ? "EOF" : readable_text(input, inputptr))
+        , stack.count
+      );
+    }
+    if (flags & GPEGE_FLG_DEBUGGER) {
+      char cmd[ 64 ] = { 0 };
+      printf("> ");
+      fgets(cmd, sizeof(cmd), stdin);
+    }
 #endif
     switch (opcode) {
     case OP_END:
