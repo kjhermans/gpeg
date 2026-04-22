@@ -2,8 +2,7 @@
 
 This document describes the gpeg parsing system, which is a 
 modular system to process structured arbitrary length data inputs,
-in order to extract meaning (matching, capturing from data), or to
-manipulate (replacements within data).
+in order to extract meaning (matching a policy and/or capturing from data).
 The system was designed with a focus on information and system security.
 
 The system comes in three parts: a grammar compiler, an assembler,
@@ -77,8 +76,7 @@ It is designed to be:
 \begin{itemize}
 
 \item Easy and quick to interpret.
-\item Resilient against bit upset events.
-\item Resilient against endless loops.
+\item Resilient against endless loops and other runaway behaviour.
 \item Usable while keeping both bytecode and input as read-only buffers.
 
 \end{itemize}

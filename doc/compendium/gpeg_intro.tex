@@ -4,11 +4,11 @@
 
 This is the documentation describing gpeg, which is a collection of
 specifications, libraries and tools enabling data parsing. It is based, by
-now loosely, on Lua Parsing Expression Grammars, or LPEG [REF].
+now loosely, on Lua Parsing Expression Grammars, or LPEG \cite{bib:peg}.
 
 \subsection{gpeg}
 
-gpeg adds to Lua PEG the following features:
+gpeg adds to a Lua PEG engine the following features:
 
 \begin{itemize}
 \item Discoverability features:
@@ -22,13 +22,10 @@ gpeg adds to Lua PEG the following features:
 \item Security features:
 
   \begin{itemize}
-  \item Bit upset event detection and traps.
-  \item Endless loop detection.
+  \item Maximum amount of instructions, preventing runaway code.
   \end{itemize}
 
 \item Interoperability with C (library, header files).
-\item As well as Java, Perl and Rust.
-\item Added instructions for matchers (ranges, quads).
 \item Added instructions for counters (to enable efficient looping).
 \item Added instructions for parsing binary inputs.
 \end{itemize}
