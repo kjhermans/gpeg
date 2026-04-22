@@ -1,1 +1,2 @@
 TEST <- TEST		a		ERR_ASM
+TEST <- FOO		a		ERR_ASM
