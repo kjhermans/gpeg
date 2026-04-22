@@ -42,8 +42,8 @@ char* usage =
   "Where options are:\n"
   "-? or -h   Display this text and exit.\n"
   "-i <path>  Specify input path.\n"
-  "-o <path>  Speficy output path.\n"
-  "-C         Treat every rule as an automatic capture regio.\n"
+  "-o <path>  Specify output path.\n"
+  "-C         Treat every rule as an automatic capture region.\n"
   "-M <path>  Specify slotmap header file.\n"
 ;
 

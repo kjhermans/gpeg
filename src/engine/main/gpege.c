@@ -112,7 +112,7 @@ int main
     e = strxypos((char*)(input.data), result.maxinputptr, yx);
     fprintf(stderr,
       "GPEG engine ended in no match.\n"
-      "Further input position reached: %u, which is line %u, character %u.\n"
+      "Furthest input position reached: %u, which is line %u, character %u.\n"
       , result.maxinputptr
       , yx[ 0 ]
       , yx[ 1 ]
