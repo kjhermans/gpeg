@@ -167,11 +167,23 @@ gpege_result_t;
 #define GPEGE_ERR_OVERFLOW      1
 #define GPEGE_ERR_STACKEMPTY    2
 #define GPEGE_ERR_STACKELT      3
-#define GPEGE_ERR_CAPREG        4
+#define GPEGE_ERR_COUNTER       4
 #define GPEGE_ERR_VARIABLE      5
 #define GPEGE_ERR_MAXINSTR      6
-#define GPEGE_ERR_COUNTER       7
+#define GPEGE_ERR_MAXCOUNTER    7
 #define GPEGE_ERR_LIMIT         8
+
+#define GPEGE_ERR_STRINGS { \
+  NULL, \
+  "Bytecode instruction pointer overflow", \
+  "Stack unexpectedly empty", \
+  "Unexpected stack element type", \
+  "Counter not found", \
+  "Variable not found", \
+  "Maximum amount of instructions exceeded", \
+  "Maximum amount of counters exceeded", \
+  "Limit exceeds input length", \
+}
 
 #define GPEGE_FLG_COPYCAPTURES  (1<<0)
 #define GPEGE_FLG_DEBUG         (1<<1)

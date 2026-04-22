@@ -36,6 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <andy/queryargs.h>
 #include <andy/absorb_file.h>
 #include <andy/vec_t.h>
+#include <andy/util_functions.h>
 
 static
 char* usage =
@@ -64,6 +65,7 @@ int main
   vec_t bytecode = { 0 };
   gpege_result_t result = { 0 };
   unsigned flags = 0;
+  int e;
 
 #ifdef _DEBUG
   fprintf(stderr, "gpege DEBUG version, release %-.*s\n", release_len, release);
@@ -101,11 +103,20 @@ int main
     flags |= GPEGE_FLG_DEBUGGER;
   }
 #endif
-  if (gpeg_engine_run(&bytecode, &input, flags, &result)) {
-    fprintf(stderr, "GPEG engine ended in error.\n");
+  if ((e = gpeg_engine_run(&bytecode, &input, flags, &result)) != 0) {
+    char* errs[] = GPEGE_ERR_STRINGS;
+    fprintf(stderr, "GPEG engine ended in error; %s.\n", errs[ e ]);
     return ~0;
   } else if (0 == result.success) {
-    fprintf(stderr, "GPEG engine ended in no match.\n");
+    unsigned yx[ 2 ] = { 0 };
+    e = strxypos((char*)(input.data), result.maxinputptr, yx);
+    fprintf(stderr,
+      "GPEG engine ended in no match.\n"
+      "Further input position reached: %u, which is line %u, character %u.\n"
+      , result.maxinputptr
+      , yx[ 0 ]
+      , yx[ 1 ]
+    );
     return ~0;
   } else {
     return 0;

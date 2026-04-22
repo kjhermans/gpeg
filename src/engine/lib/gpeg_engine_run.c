@@ -583,7 +583,7 @@ int gpeg_engine_run
         uint8_t ctr = ((instr8[0] & 0x0f) << 4) | ((instr8[1] & 0xf0) >> 4);
         uint32_t value = GPEGU_INSTR_OFFSET(instr8);
         if (countercount == GPEGE_MAX_COUNTERS) {
-          RETURN_ERR(GPEGE_ERR_COUNTER);
+          RETURN_ERR(GPEGE_ERR_MAXCOUNTER);
         }
         counters[ countercount ][ 0 ] = ctr;
         counters[ countercount ][ 1 ] = value;
@@ -615,7 +615,7 @@ int gpeg_engine_run
             goto CTRFOUND;
           }
         }
-        RETURN_ERR(GPEGE_ERR_CAPREG);
+        RETURN_ERR(GPEGE_ERR_COUNTER);
 CTRFOUND: ;
       }
       break;
