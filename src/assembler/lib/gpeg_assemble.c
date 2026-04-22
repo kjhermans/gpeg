@@ -45,6 +45,7 @@ struct assemblerstate
   unsigned      offset;
   str2int_map_t offsets;
   vec_t*        bytecode;
+  vec_t*        error;
 };
 
 static
@@ -107,6 +108,13 @@ int gpeg_asm_labeled_instr
   } else {
     offset = str2int_map_getptr(&(state->offsets), label);
     if (offset && *offset == state->bytecode->size) {
+      if (state->error) {
+        vec_printf(state->error,
+          "Endless loop detected in instruction %u, label '%s'.\n"
+          , state->bytecode->size
+          , label
+        );
+      }
       RETURN_ERR(GPEGA_ERR_ENDLESSLOOP);
     }
   }
@@ -116,6 +124,12 @@ int gpeg_asm_labeled_instr
     vec_append(state->bytecode, &instr, sizeof(instr));
     return 0;
   } else {
+    if (state->error) {
+      vec_printf(state->error,
+        "Label '%s' cannot be resolved.\n"
+        , label
+      );
+    }
     RETURN_ERR(GPEGA_ERR_LABEL);
   }
 }
@@ -466,6 +480,12 @@ int gpeg_asm_cjp
           (char*)(node->children[ 1 ]->vec.data));
       uint32_t instr = 0;
       if (NULL == offset) {
+        if (state->error) {
+          vec_printf(state->error,
+            "Condjump: label '%s' cannot be resolved.\n"
+            , node->children[ 1 ]->vec.data
+          );
+        }
         RETURN_ERR(GPEGA_ERR_LABEL);
       }
       gpeg_asm_instr(&instr, OP_CONDJUMP, 2, 4, 8, counter, 12, 20, *offset);
@@ -493,6 +513,12 @@ int gpeg_asm_limit
       unsigned slot = atoi((char*)(node->children[ 2 ]->vec.data));
       uint32_t instr = 0;
       if (bitlength > 32) {
+        if (state->error) {
+          vec_printf(state->error,
+            "Limit: bitlength overflow (have %u).\n"
+            , bitlength
+          );
+        }
         RETURN_ERR(GPEGA_ERR_LIMIT);
       }
       gpeg_asm_instr(&instr, OP_LIMIT, 4
@@ -513,7 +539,8 @@ int gpeg_asm_limit
 int gpeg_assemble
   (
     const vec_t* assembly,
-    vec_t* bytecode
+    vec_t* bytecode,
+    vec_t* error
   )
 {
   DEBUGFUNCTION
@@ -524,13 +551,33 @@ int gpeg_assemble
   gpege_result_t result = { 0 };
   struct assemblerstate state = {
     .bytecode = bytecode,
+    .error = error,
     .pass = 0,
     .offset = 0,
   };
+  int e;
 
-  CHECK(gpeg_engine_run(&assemblybytecode, assembly, 0, &result));
+  if ((e = gpeg_engine_run(&assemblybytecode, assembly, 0, &result)) != 0) {
+    if (error) {
+      char* errs[] = GPEGE_ERR_STRINGS;
+      vec_printf(error,
+        "Assembler parser engine ended in error; %s.\n", errs[ e ]
+      );
+    }
+    RETURN_ERR(GPEGA_ERR_PARSER);
+  }
   if (!(result.success)) {
-    fprintf(stderr, "Parser error at [TODO].\n");
+    if (error) {
+      unsigned yx[ 2 ] = { 0 };
+      e = strxypos((char*)(assembly->data), result.maxinputptr, yx);
+      vec_printf(error,
+        "Assembler parser engine ended in no match;\n"
+        "Furthest input position reached: %u, which is line %u, character %u.\n"
+        , result.maxinputptr
+        , yx[ 0 ]
+        , yx[ 1 ]
+      );
+    }
     RETURN_ERR(GPEGA_ERR_PARSER);
   }
 

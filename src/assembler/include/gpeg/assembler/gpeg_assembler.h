@@ -43,7 +43,8 @@ extern
 int gpeg_assemble
   (
     const vec_t* assembly,
-    vec_t* bytecode
+    vec_t* bytecode,
+    vec_t* error
   )
   __attribute__ ((warn_unused_result));
 

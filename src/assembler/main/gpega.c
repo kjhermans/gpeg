@@ -58,6 +58,7 @@ int main
   char* value;
   vec_t input = { 0 };
   vec_t output = { 0 };
+  vec_t error = { 0 };
   int fdout = 1;
 
   if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0
@@ -77,8 +78,11 @@ int main
     return ~0;
   }
 
-  if (gpeg_assemble(&input, &output)) {
+  if (gpeg_assemble(&input, &output, &error)) {
     fprintf(stderr, "Assembler error.\n");
+    if (error.data) {
+      fprintf(stderr, "%s", error.data);
+    }
     return ~0;
   }
   if (0 != strcmp(outputfile, "-")) {
