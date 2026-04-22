@@ -1,1 +1,1 @@
-TEST <- TEST		a		NOK
+TEST <- TEST		a		ERR_ASM
