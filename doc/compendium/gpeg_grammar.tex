@@ -91,6 +91,14 @@ S <- ( !E2 E1 )* E2
 \end{verbatim}
 \end{myquote}
 
+Which would implement the original example, as follows:
+
+\begin{myquote}
+\begin{verbatim}
+RULE <- ( !'foo' .)* 'foo'
+\end{verbatim}
+\end{myquote}
+
 And greedy, so catching only the last lookahead match:
 
 \begin{myquote}
