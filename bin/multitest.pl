@@ -39,10 +39,10 @@ foreach my $test (@tests) {
     if ($x) {
       print "Compile NOK - ";
       if ($fields[2] eq 'ERR_COMP') {
-        print "Test Ok\n";
+        print "             -            - Test Ok\n";
         system("cat $tmpfile.$n.log >> /tmp/success.$file.log");
       } else {
-        print "Test NOK\n";
+        print "             -            - Test NOK\n";
         system("cat $tmpfile.$n.log >> /tmp/failure.$file.log");
       }
       next;
@@ -59,7 +59,6 @@ foreach my $test (@tests) {
     system("echo \"---- Assembly:\" >> $tmpfile.$n.log");
     system("cat $tmpfile.asm >> $tmpfile.$n.log");
     my $x = system($a);
-    system("hexdump -C $tmpfile.byc >> $tmpfile.$n.log");
     if (-x $disassembler) {
       system("echo \"---- Disassembly:\" >> $tmpfile.$n.log");
       system("$disassembler -i $tmpfile.byc >> $tmpfile.$n.log 2>\&1");
@@ -70,14 +69,15 @@ foreach my $test (@tests) {
     if ($x) {
       print "Assembly NOK - ";
       if ($fields[2] eq 'ERR_ASM') {
-        print "Test Ok\n";
+        print "           - Test Ok\n";
         system("cat $tmpfile.$n.log >> /tmp/success.$file.log");
       } else {
-        print "Test NOK\n";
+        print "           - Test NOK\n";
         system("cat $tmpfile.$n.log >> /tmp/failure.$file.log");
       }
       next;
     } else {
+      system("hexdump -C $tmpfile.byc >> $tmpfile.$n.log");
       print "Assembly Ok  - ";
     }
     my $e = "$engine";
