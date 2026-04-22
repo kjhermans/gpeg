@@ -48,6 +48,7 @@ struct compilestate
   int           prefixset;
   int           firstrule;
   vec_t*        assembly;
+  vec_t*        error;
   FILE*         slotmap;
   const char*   rulename;
   unsigned      rulecapture;
@@ -213,6 +214,11 @@ int gpeg_compile_string
             vec_printf(state->assembly, "  range %.2x\n", c);
           }
         } else {
+          if (state->error) {
+            vec_printf(state->error,
+              "Error in escape sequence: backslash before end.\n"
+            );
+          }
           RETURN_ERR(GPEGC_ERR_ESCAPE);
         }
         break;
@@ -323,6 +329,13 @@ int gpeg_compile_q_ft_pre
   unsigned until = atoi((char*)(untilstr->data));
 
   if (until == 0 || until < from) {
+    if (state->error) {
+      vec_printf(state->error,
+        "Error in range; until zero or until smaller than from (have %u-%u).\n"
+        , from
+        , until
+      );
+    }
     RETURN_ERR(GPEGC_ERR_RANGE);
   }
   vec_append(vec, &label, sizeof(label));
@@ -447,6 +460,11 @@ int gpeg_compile_q_un_pre
   unsigned until = atoi((char*)(n->data));
 
   if (until == 0) {
+    if (state->error) {
+      vec_printf(state->error,
+        "Error in range; until zero.\n"
+      );
+    }
     RETURN_ERR(GPEGC_ERR_RANGE);
   }
   vec_append(vec, &label, sizeof(label));
@@ -796,6 +814,11 @@ int gpeg_compile_ranges
     }
   }
   if (!seenbits) {
+    if (state->error) {
+      vec_printf(state->error,
+        "Error in set; empty.\n"
+      );
+    }
     RETURN_ERR(GPEGC_ERR_SET);
   }
   if (!range[ 1 ]) {
@@ -936,6 +959,11 @@ int gpeg_compile_macro
         "  range 30 39\n"
       );
     } else {
+      if (state->error) {
+        vec_printf(state->error,
+          "Error in macro; unknown macro.\n"
+        );
+      }
       RETURN_ERR(GPEGC_ERR_MACRO);
     }
   }
@@ -1050,6 +1078,11 @@ int gpeg_compile_varref
       unsigned capture = 0;
       if (strcmp(variablename, "_")) {
         if (str2int_map_get(&(state->variables), variablename, &capture)) {
+          if (state->error) {
+            vec_printf(state->error,
+              "Error in variable reference; unknown identifier.\n"
+            );
+          }
           RETURN_ERR(GPEGC_ERR_VARIABLE);
         }
       }
@@ -1161,10 +1194,20 @@ int gpeg_compile_lim
   (void)vec;
 
   if (bitlength > 32) {
+    if (state->error) {
+      vec_printf(state->error,
+        "Error in limit; bitlength > 32.\n"
+      );
+    }
     RETURN_ERR(GPEGC_ERR_BITLENGTH);
   }
   if (strcmp(variablename, "_")) {
     if (str2int_map_get(&(state->variables), variablename, &capture)) {
+    if (state->error) {
+      vec_printf(state->error,
+        "Error in limit; variable reference not found.\n"
+      );
+    }
       RETURN_ERR(GPEGC_ERR_VARIABLE);
     }
   }
@@ -1193,7 +1236,8 @@ int gpeg_compile
     const vec_t* grammar,
     vec_t* assembly,
     unsigned flags,
-    FILE* slotmap
+    FILE* slotmap,
+    vec_t* error
   )
 {
   DEBUGFUNCTION
@@ -1208,12 +1252,31 @@ int gpeg_compile
     .prefixset  = 0,
     .capture = 0,
     .assembly = assembly,
+    .error = error,
     .slotmap = slotmap,
   };
+  int e;
 
-  CHECK(gpeg_engine_run(&bytecode, grammar, 0, &result));
-  if (!(result.success)) {
-    fprintf(stderr, "Parser error at [TODO].\n");
+  if ((e = gpeg_engine_run(&bytecode, grammar, 0, &result)) != 0) {
+    if (error) {
+      char* errs[] = GPEGE_ERR_STRINGS;
+      vec_printf(error,
+        "Compiler parser engine ended in error; %s.\n", errs[ e ]
+      );
+    }
+    RETURN_ERR(GPEGC_ERR_PARSER);
+  } else if (!(result.success)) {
+    if (error) {
+      unsigned yx[ 2 ] = { 0 };
+      e = strxypos((char*)(grammar->data), result.maxinputptr, yx);
+      vec_printf(error,
+        "Compiler parser engine ended in no match;\n"
+        "Furthest input position reached: %u, which is line %u, character %u.\n"
+        , result.maxinputptr
+        , yx[ 0 ]
+        , yx[ 1 ]
+      );
+    }
     RETURN_ERR(GPEGC_ERR_PARSER);
   }
 

@@ -50,7 +50,8 @@ int gpeg_compile
     const vec_t* grammar,
     vec_t* assembly,
     unsigned flags,
-    FILE* slotmap
+    FILE* slotmap,
+    vec_t* error
   )
   __attribute__ ((warn_unused_result));
 

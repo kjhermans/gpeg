@@ -61,6 +61,7 @@ int main
   char* value;
   vec_t input = { 0 };
   vec_t output = { 0 };
+  vec_t error = { 0 };
   int fdout = 1;
   unsigned flags = 0;
 
@@ -90,8 +91,11 @@ int main
     return ~0;
   }
 
-  if (gpeg_compile(&input, &output, flags, slotmap)) {
+  if (gpeg_compile(&input, &output, flags, slotmap, &error)) {
     fprintf(stderr, "Compilation error.\n");
+    if (error.data) {
+      fprintf(stderr, "%s", error.data);
+    }
     return ~0;
   }
   if (0 != strcmp(outputfile, "-")) {
