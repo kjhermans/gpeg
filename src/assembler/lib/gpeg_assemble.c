@@ -106,6 +106,9 @@ int gpeg_asm_labeled_instr
     offset = &o;
   } else {
     offset = str2int_map_getptr(&(state->offsets), label);
+    if (offset && *offset == state->bytecode->size) {
+      RETURN_ERR(GPEGA_ERR_ENDLESSLOOP);
+    }
   }
   if (offset) {
     uint32_t instr = 0;
