@@ -10,47 +10,8 @@
 
 \subsubsection{Assembly Syntax}
 
-\begin{myquote}
-\begin{verbatim}
-FAILTWICEINSTR <- 'failtwice'
-\end{verbatim}
-\end{myquote}
-
 \InputIfFileExists{instr_failtwice_assembly.tex}{}{}
 
-\subsubsection{Bytecode Encoding}
+\subsubsection{Bytecode}
 
-This instruction has a size of 4 bytes and is structured in bytecode as follows:
-
-%DEADBEEF
-$_{00}$\ 
-\fbox{%
-  \parbox{20pt}{%
-00
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-00
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-03
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-90
-  }%
-}
-
-%DEADBEEF
 \InputIfFileExists{instr_failtwice_bytecode.tex}{}{}
-
-\subsubsection{Execution State Change}
-
-.
-
-\InputIfFileExists{instr_failtwice_state.tex}{}{}
-

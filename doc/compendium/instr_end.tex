@@ -10,73 +10,8 @@
 
 \subsubsection{Assembly Syntax}
 
-\begin{myquote}
-\begin{verbatim}
-ENDINSTR <- 'end' S CODE
-S <- %s+
-CODE <- UNSIGNED
-\end{verbatim}
-\end{myquote}
-
 \InputIfFileExists{instr_end_assembly.tex}{}{}
 
-\subsubsection{Bytecode Encoding}
+\subsubsection{Bytecode}
 
-This instruction has a size of 8 bytes and is structured in bytecode as follows:
-
-%DEADBEEF
-$_{00}$\ 
-\fbox{%
-  \parbox{20pt}{%
-00
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-04
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-00
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-d8
-  }%
-}
-
-
-
-$_{04}$\ 
-\fbox{%
-  \parbox{20pt}{%
-00
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-00
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-00
-  }%
-}
-\fbox{%
-  \parbox{20pt}{%
-00
-  }%
-}
-
-%DEADBEEF
 \InputIfFileExists{instr_end_bytecode.tex}{}{}
-
-\subsubsection{Execution State Change}
-
-.
-
-\InputIfFileExists{instr_end_state.tex}{}{}
-
