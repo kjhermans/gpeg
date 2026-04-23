@@ -4,6 +4,7 @@ all:
 	cd engine && make
 	cd compiler && make
 	cd assembler && make
+	cd debugger && make
 
 .PHONY: test
 
@@ -18,3 +19,4 @@ clean:
 	cd engine && make clean
 	cd compiler && make clean
 	cd assembler && make clean
+	cd debugger && make clean
