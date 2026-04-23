@@ -6,7 +6,7 @@ TESTS=`ls multi_*.tst | sort -n`
 for TEST in $TESTS; do
   perl ../bin/multitest.pl \
     $TEST \
-    "$BIN/gpegc -i GRAMMAR -o ASM" \
+    "$BIN/gpegc -v -i GRAMMAR -o ASM" \
     "$BIN/gpega -i ASM -o BYTECODE" \
     "$BIN/gpege -c BYTECODE -i INPUT -v" \
     "$BIN/gpegd"
