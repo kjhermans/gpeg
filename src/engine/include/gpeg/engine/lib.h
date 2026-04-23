@@ -45,4 +45,55 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gpeg/engine/gpeg_engine.h>
 
+#define ACT_OPEN  1
+#define ACT_CLOSE 2
+
+typedef struct
+{
+  int      action;
+  uint16_t reg;
+  uint32_t offset;
+  unsigned stacklen;
+}
+gpege_action_t;
+
+MAKE_ARRAY_HEADER(gpege_action_t, gpege_actionlist_);
+
+#define GPEGU_INSTR_OFFSET(_ptr8) \
+  (uint32_t)(((_ptr8[1]&0x0f)<<16)|(_ptr8[2]<<8)|_ptr8[3])
+
+typedef struct
+{
+  uint8_t       type;
+  uint32_t      instrptr;
+  uint32_t      inputptr;
+  unsigned      actioncount;
+  unsigned      countercount;
+  unsigned      inputsizescount;
+}
+gpege_stackelt_t;
+
+#undef ARRAY_EQUALS
+#define ARRAY_EQUALS(a,b) (&a == &b)
+MAKE_ARRAY_HEADER(gpege_stackelt_t, gpege_stack_);
+
+typedef struct gpege_state
+{
+  const vec_t*          bytecode;
+  const vec_t*          input;
+  unsigned              inputsiz;
+  int                   ended;
+  int                   failed;
+  int                   eof;
+  unsigned              instrptr;
+  unsigned              inputptr;
+  gpege_stack_t         stack;
+  gpege_actionlist_t    actions;
+  uint32list_t          inputsizes;
+  unsigned              instrctr;
+  unsigned              counters[ GPEGE_MAX_COUNTERS ][ 2 ];
+  unsigned              countercount;
+}
+gpege_state_t;
+
 #endif
