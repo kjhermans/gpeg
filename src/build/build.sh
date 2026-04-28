@@ -74,13 +74,13 @@ $GEN0/assembler/main/gpega \
 
 xxd -n grammar_byc -i $GEN1/grammar.byc $GEN1/grammar_bytecode.h
 
-../compiler/refimpl/gpegc \
+$GEN0/compiler/main/gpegc \
   -C \
   -i $GEN1/assembly.gpeg \
   -o $GEN1/assembly.asm \
   -M $GEN1/assembly_slotmap.h
 
-../assembler/refimpl/gpega \
+$GEN0/assembler/main/gpega \
   -i $GEN1/assembly.asm \
   -o $GEN1/assembly.byc \
   -S $GEN1/assembly.map
@@ -121,13 +121,13 @@ $GEN1/assembler/main/gpega \
 
 xxd -n grammar_byc -i $GEN2/grammar.byc $GEN2/grammar_bytecode.h
 
-../compiler/refimpl/gpegc \
+$GEN1/compiler/main/gpegc \
   -C \
   -i $GEN2/assembly.gpeg \
   -o $GEN2/assembly.asm \
   -M $GEN2/assembly_slotmap.h
 
-../assembler/refimpl/gpega \
+$GEN1/assembler/main/gpega \
   -i $GEN2/assembly.asm \
   -o $GEN2/assembly.byc \
   -S $GEN2/assembly.map
@@ -152,8 +152,12 @@ make -C $GEN2/assembler/
 
 ## copying the artefacts to the proper build directory
 
+cp $GEN2/grammar.asm ../compiler/refimpl/
+cp $GEN2/grammar.byc ../compiler/refimpl/
 cp $GEN2/grammar_slotmap.h ../compiler/include/gpeg/compiler/
 cp $GEN2/grammar_bytecode.h ../compiler/include/gpeg/compiler/
 
+cp $GEN2/assembly.asm ../assembler/refimpl/
+cp $GEN2/assembly.byc ../assembler/refimpl/
 cp $GEN2/assembly_bytecode.h ../assembler/include/gpeg/assembler/
 cp $GEN2/assembly_slotmap.h ../assembler/include/gpeg/assembler/
