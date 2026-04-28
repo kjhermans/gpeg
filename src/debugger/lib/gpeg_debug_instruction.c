@@ -31,7 +31,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
+#include <gpeg/engine/lib.h>
+
 void gpeg_debug_instruction
-  (void)
+  (gpege_state_t* state)
 {
 }

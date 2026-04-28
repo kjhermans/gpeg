@@ -96,4 +96,10 @@ typedef struct gpege_state
 }
 gpege_state_t;
 
+#ifdef _DEBUGGER
+extern
+void gpeg_debug_instruction
+  (gpege_state_t* state);
+#endif
+
 #endif

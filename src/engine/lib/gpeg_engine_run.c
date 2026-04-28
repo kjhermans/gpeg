@@ -358,7 +358,7 @@ int gpeg_engine_run
     }
 #endif
 #ifdef _DEBUGGER
-    gpeg_debug_instruction();
+    gpeg_debug_instruction(&state);
 #endif
     switch (opcode) {
     case OP_END:
