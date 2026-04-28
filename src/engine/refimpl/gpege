@@ -55,6 +55,7 @@ sub run
   my $actions = []; ## used by opencapture, closecapture and var
   my $counters = []; ## used by counter and condjump
   my $inputptr = 0;
+  my $bitoffset = 0;
   my $instrptr = 0;
   my $instrcnt = 0;
   my $ended = 0;
@@ -67,13 +68,6 @@ sub run
   {
     if ($instrptr >= length($bytecode)-4) {
       die "Engine error: instruction offset outside bytecode.";
-    }
-    my $chr;
-    if ($inputptr >= length($input)) {
-      $eof = 1;
-    } else {
-      $eof = 0;
-      $chr = ord(substr($input, $inputptr, 1));
     }
     my $opcode = ord(substr($bytecode, $instrptr, 1)) >> 4;
     print STDERR
@@ -96,11 +90,20 @@ sub run
       $ended = 1;
       return (1, $endcode);
     } elsif ($opcode == 1) { ## RANGE
-      my ($mask, $from, $until) = (
+      my $chr;
+      if ($inputptr >= length($input)) {
+        $eof = 1;
+      } else {
+        $eof = 0;
+        $chr = ord(substr($input, $inputptr, 1));
+      }
+      my ($nbits, $mask, $from, $until) = (
+          ord(substr($bytecode, $instrptr, 1)) & 0x0f,
           ord(substr($bytecode, $instrptr+1, 1)),
           ord(substr($bytecode, $instrptr+2, 1)),
           ord(substr($bytecode, $instrptr+3, 1))
       );
+      if (!$nbits) { $nbits = 8; }
       if ($eof ||(($mask & $chr) < $from) || (($mask & $chr) > $until)) {
         $failed = 1;
       } else {
