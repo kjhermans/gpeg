@@ -35,9 +35,19 @@ Then create the following C file (sample.c):
 
     $ cat sample.c
 
-    #include <sample_slotmap.h>
-    #include <sample_bytecode.h>
+    #include "sample_slotmap.h"
+    #include "sample_bytecode.h"
     #include <gpeg/engine/gpeg_engine.h>
+
+    static
+    int show_number
+      (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+    {
+      if (phase == GPEG_FNC_PRENODE) {
+        fprintf(stderr, "Number: %s\n", (char*)node->vec.data);
+      }
+      return 0;
+    }
 
     int main
       (int argc, char* argv[])
@@ -47,7 +57,26 @@ Then create the following C file (sample.c):
       gpege_result_t result = { 0 };
 
       if ((e = gpeg_engine_run(&bytecode, &input, 0, &result)) != 0) {
+        char* errs[] = GPEGE_ERR_STRINGS;
+        fprintf(stderr, "Parser ended in error; %s.\n", errs[ e ]);
+        return ~0;
+      } else if (!(result.success)) {
+        fprintf(stderr, "Parser error at offset %u.\n", result.maxinputptr);
+        return ~0;
+      } else {
+        gpege_node_t* tree = gpeg_result_to_tree(&result);
+        gpeg_result_callback(tree, SLOT_NUMBER, show_number, NULL);
+        gpeg_result_run(tree);
+        return 0;
       }
     }
 
-TODO...
+The resultant executable should list individual numbers, for example:
+
+    $ ./sample 1,5,8,3,5
+
+    Number: 1
+    Number: 5
+    Number: 8
+    Number: 3
+    Number: 5
