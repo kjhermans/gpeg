@@ -182,8 +182,12 @@ int gpeg_compile_string
   vec_t* string = &(node->children[ 0 ]->children[ 0 ]->vec);
   (void)_i;
   (void)vec;
+  int nocase = 0;
 
   if (phase == GPEG_FNC_PRENODE) {
+    if (node->vec.data[ node->vec.size-1 ] == 'i') {
+      nocase = 1;
+    }
     for (unsigned i=0; i < string->size; i++) {
       unsigned char c = string->data[ i ];
       switch (c) {
@@ -223,7 +227,13 @@ int gpeg_compile_string
         }
         break;
       default:
-        vec_printf(state->assembly, "  range %.2x\n", c);
+        if (nocase && c >= 'a' && c <= 'z') {
+          vec_printf(state->assembly, "  range false 0 ff %.2x %.2x\n", c-32, c);
+        } else if (nocase && c >= 'A' && c <= 'Z') {
+          vec_printf(state->assembly, "  range false 0 ff %.2x %.2x\n", c, c+32);
+        } else {
+          vec_printf(state->assembly, "  range %.2x\n", c);
+        }
       }
     }
   }
@@ -999,6 +1009,15 @@ int gpeg_compile_capture
           , (state->rulecapture)++
           , capture
         );
+        if (!(state->flags & GPEGC_FLG_AUTOCAPTURE)
+            && state->rulecapture == 1)
+        {
+          fprintf(state->slotmap,
+            "#define SLOT_%s SLOT_%s_0\n"
+            , state->rulename
+            , state->rulename
+          );
+        }
       }
     }
     break;
