@@ -228,11 +228,14 @@ int gpeg_compile_string
         break;
       default:
         if (nocase && c >= 'a' && c <= 'z') {
-          vec_printf(state->assembly, "  range false 0 ff %.2x %.2x\n", c-32, c);
+          vec_printf(state->assembly,
+            "  range false 0 ff %.2x %.2x\n", c-32, c);
         } else if (nocase && c >= 'A' && c <= 'Z') {
-          vec_printf(state->assembly, "  range false 0 ff %.2x %.2x\n", c, c+32);
+          vec_printf(state->assembly,
+            "  range false 0 ff %.2x %.2x\n", c, c+32);
         } else {
-          vec_printf(state->assembly, "  range %.2x\n", c);
+          vec_printf(state->assembly,
+            "  range %.2x\n", c);
         }
       }
     }
