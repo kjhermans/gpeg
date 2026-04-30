@@ -408,6 +408,12 @@ int gpeg_asm_rng
         p2 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
         p3 = gpeg_asm_hex((char*)(node->children[ 1 ]->vec.data));
         break;
+      case 5:
+        //.. TODO 0 contains boolean, 1 contains nbits
+        p1 = gpeg_asm_hex((char*)(node->children[ 4 ]->vec.data));
+        p2 = gpeg_asm_hex((char*)(node->children[ 2 ]->vec.data));
+        p3 = gpeg_asm_hex((char*)(node->children[ 3 ]->vec.data));
+        break;
       }
       gpeg_asm_instr(&instr, OP_RANGE, 3, 8, 8, p1, 16, 8, p2, 24, 8, p3);
       vec_append(state->bytecode, &instr, sizeof(instr));

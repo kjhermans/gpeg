@@ -97,12 +97,14 @@ sub run
         $eof = 0;
         $chr = ord(substr($input, $inputptr, 1));
       }
-      my ($nbits, $mask, $from, $until) = (
-          ord(substr($bytecode, $instrptr, 1)) & 0x0f,
+      my ($truerange, $nbits, $mask, $from, $until) = (
+          ord(substr($bytecode, $instrptr, 1)) & 0x08,
+          ord(substr($bytecode, $instrptr, 1)) & 0x07,
           ord(substr($bytecode, $instrptr+1, 1)),
           ord(substr($bytecode, $instrptr+2, 1)),
           ord(substr($bytecode, $instrptr+3, 1))
       );
+##.. implement truerange
       if (!$nbits) { $nbits = 8; }
       if ($eof ||(($mask & $chr) < $from) || (($mask & $chr) > $until)) {
         $failed = 1;

@@ -87,7 +87,8 @@ sub tokenize
 {
   while (length($input)) {
     while (1) {
-      last if (0 == ($input =~ s/^[ \t\r\n]+//) && 0 == ($input =~ s/^--(.*)?\n//));
+      last if (0 == ($input =~ s/^[ \t\r\n]+//)
+               && 0 == ($input =~ s/^--(.*)?\n//));
     }
     if ($input =~ s/^([a-zA-Z0-9_]+)://) {
       push @tokens, { type => 'label', label => $1 };
@@ -99,19 +100,37 @@ sub tokenize
       push @tokens, { type => $1 };
     } elsif ($input =~ s/^any//) {
       push @tokens, { type => 'range', from => 0, until => 255 };
-    } elsif ($input =~ s/^range\s+([a-fA-F0-9]{2})//) {
-      my $from = hex($1);
-      my $until = $from;
-      my $bitmask = 0xff;
+    } elsif ($input =~ s/^range\s+//) {
+      my ($truerange, $nbits, $bitmask, $from, $until) = (1, 8, 0xff, 0, 0);
+      if ($input =~ s/^\s*(true|false)\s+([0-9]+)//) {
+        $truerange = ($1 eq 'true') ? 1 : 0;
+        $nbits = $1;
+      }
       if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
-        $until = hex($1);
+        $from = hex($1);
+        $until = $from;
         if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
-          $bitmask = hex($1);
+          $until = hex($1);
+          if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+            $bitmask = hex($1);
+          }
         }
       }
-      push @tokens, { type => 'range', from => $from, until => $until, bitmask => $bitmask };
+      push @tokens, {
+        type => 'range',
+        from => $from,
+        until => $until,
+        bitmask => $bitmask,
+        truerange => $truerange,
+        nbits => $nbits,
+      };
     } elsif ($input =~ s/^bitmask\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
-      push @tokens, { type => 'range', bitmask => hex($1), from => hex($2), until => hex($2) };
+      push @tokens, {
+        type => 'range',
+        bitmask => hex($1),
+        from => hex($2),
+        until => hex($2)
+      };
     } elsif ($input =~ s/^(open|close)capture\s+([0-9]+)//) {
       push @tokens, { type => "$1capture", reg => $2 };
     } elsif ($input =~ s/^counter\s+([0-9]+)\s+([0-9]+)//) {
@@ -166,10 +185,13 @@ sub second_pass
         ($code & 0xff)
       );
     } elsif ($token->{type} eq 'range') {
+      my $byte0 = 0x10 |
+                  ($token->{truerange} ? 0x08 : 0x00) |
+                  ($token->{nbits} & 0x07);
       my $bitmask = (defined($token->{bitmask}) ? $token->{bitmask} : 0xff);
       $output .= pack(
         'CCCC',
-        0x10,
+        $byte0,
         $bitmask,
         $token->{from} & 0xff,
         $token->{until} & 0xff
