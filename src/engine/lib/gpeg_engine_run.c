@@ -296,6 +296,12 @@ char* readable_text
 static
 unsigned maxinstrctr = GPEGE_MAX_INSTRUCTIONS;
 
+void gpeg_engine_set_maxinstr
+  (unsigned m)
+{
+  maxinstrctr = m;
+}
+
 /**
  * Runs the GPEG engine using \p bytecode on \p input.
  * Returns zero on success (no fatal errors), or non-zero on fatal errors.
@@ -328,7 +334,7 @@ int gpeg_engine_run
   (void)instrstr;
 
   while (!state.ended && !(state.failed && state.stack.count == 0)) {
-    if (++state.instrctr > maxinstrctr) {
+    if (maxinstrctr && ++state.instrctr > maxinstrctr) {
       RETURN_ERR2(GPEGE_ERR_MAXINSTR, CLEANUP);
     }
     state.failed = 0;
