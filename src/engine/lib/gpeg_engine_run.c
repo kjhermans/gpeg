@@ -31,6 +31,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
+#include <andy/uint32list.h>
+MAKE_ARRAY_CODE(uint32_t, uint32list_)
+
 #include <gpeg/engine/lib.h>
 
 #define STACK_CALL  1
