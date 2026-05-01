@@ -34,7 +34,11 @@ cp -rfL ./src/compiler/include/gpeg     /usr/local/include/
 cp -rfL ./src/assembler/include/gpeg    /usr/local/include/
 cp -rfL ./src/engine/include/gpeg       /usr/local/include/
 
-echo "I left an uninstall script in /usr/local/bin/gpeg_uninstall.sh:"
+echo
+echo "I left an uninstall script in /usr/local/bin/gpeg_uninstall.sh."
+echo "I will now list this file."
+echo "You can execute these commands to uninstall gpeg."
+echo
 
 find /usr/local/include/gpeg/ \
   | sed -e 's/^/rm -f /' > /usr/local/bin/gpeg_uninstall.sh
