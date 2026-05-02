@@ -73,8 +73,21 @@ gpege_node_t* gpeg_result_to_tree
   return tree;
 }
 
+void gpeg_result_free
+  (gpege_result_t* result)
+{
+  if (result->flags & GPEGE_FLG_COPYCAPTURES) {
+    for (unsigned i=0; i < result->captures.count; i++) {
+      free(result->captures.list[ i ].vec.data);
+    }
+  }
+  free(result->captures.list);
+  result->captures.list = 0;
+  result->captures.count = 0;
+}
+
 static
-void gpeg_result_debug_
+void gpeg_node_debug_
   (const gpege_node_t* node, unsigned indent)
 {
   for (unsigned i=0; i < indent; i++) { fprintf(stderr, " "); }
@@ -89,33 +102,33 @@ void gpeg_result_debug_
   }
   fprintf(stderr, "\n");
   for (unsigned i=0; i < node->nchildren; i++) {
-    gpeg_result_debug_(node->children[ i ], indent + 1);
+    gpeg_node_debug_(node->children[ i ], indent + 1);
   }
 }
 
 /**
  * Logs the contents of a parse (sub) tree to stderr.
  */
-void gpeg_result_debug
+void gpeg_node_debug
   (const gpege_node_t* node)
 {
-  gpeg_result_debug_(node, 0);
+  gpeg_node_debug_(node, 0);
 }
 
 /**
  *
  */
-void gpeg_result_remove
+void gpeg_node_remove
   (gpege_node_t* node, unsigned type, int recursive, int force)
 {
   for (unsigned i=0; i < node->nchildren; i++) {
     gpege_node_t* child = node->children[ i ];
     if (recursive) {
-      gpeg_result_remove(child, type, recursive, force);
+      gpeg_node_remove(child, type, recursive, force);
     }
     if (child->type == type) {
       if (force || child->nchildren == 0) {
-        gpeg_result_free(child);
+        gpeg_node_free(child);
         if (i == node->nchildren - 1) {
           --(node->nchildren);
           return;
@@ -133,7 +146,7 @@ void gpeg_result_remove
   }
 }
 
-void gpeg_result_callback
+void gpeg_node_callback
   (
     gpege_node_t* node,
     unsigned type,
@@ -147,12 +160,12 @@ void gpeg_result_callback
       child->fnc = fnc;
       child->arg = arg;
     }
-    gpeg_result_callback(child, type, fnc, arg);
+    gpeg_node_callback(child, type, fnc, arg);
   }
 }
 
 static
-int gpeg_result_run_
+int gpeg_node_run_
   (gpege_node_t* parent, vec_t* parentvec)
 {
   for (unsigned i=0; i < parent->nchildren; i++) {
@@ -164,7 +177,7 @@ int gpeg_result_run_
     if (parent->fnc) {
       CHECK(parent->fnc(parent, GPEG_FNC_PRECHILD, i, parentvec, parent->arg));
     }
-    CHECK(gpeg_result_run_(child, &vec));
+    CHECK(gpeg_node_run_(child, &vec));
     if (parent->fnc) {
       CHECK(parent->fnc(parent, GPEG_FNC_POSTCHILD, i, parentvec, parent->arg));
     }
@@ -179,20 +192,20 @@ int gpeg_result_run_
 /**
  *
  */
-int gpeg_result_run
+int gpeg_node_run
   (gpege_node_t* parent)
 {
-  return gpeg_result_run_(parent, NULL);
+  return gpeg_node_run_(parent, NULL);
 }
 
 /**
  *
  */
-void gpeg_result_free
+void gpeg_node_free
   (gpege_node_t* node)
 {
   for (unsigned i=0; i < node->nchildren; i++) {
-    gpeg_result_free(node->children[ i ]);
+    gpeg_node_free(node->children[ i ]);
   }
   free(node->children);
   if (node->vec.data) { free(node->vec.data); }

@@ -161,6 +161,7 @@ typedef struct
   int               success;
   uint32_t          endcode;
   uint32_t          maxinputptr;
+  unsigned          flags;
   gpege_caplist_t   captures;
 }
 gpege_result_t;
@@ -258,19 +259,26 @@ struct gpege_node
   uint8_t          aux[ 32 ]; // this one is for you
 };
 
+/**
+ * 'Pours over' the captures list into a capture tree.
+ * Note that this will empty the captures list, freeing all the contents,
+ * so you can call this function only once with any effect.
+ */
 extern
 gpege_node_t* gpeg_result_to_tree
-  (
-    const gpege_result_t* result
-  )
+  (const gpege_result_t* result)
   __attribute__ ((warn_unused_result));
 
 extern
-void gpeg_result_debug
+void gpeg_result_free
+  (gpege_result_t* result);
+
+extern
+void gpeg_node_debug
   (const gpege_node_t* node);
 
 extern
-void gpeg_result_remove
+void gpeg_node_remove
   (gpege_node_t* node, unsigned type, int recursive, int force);
 
 #define GPEG_FNC_PRENODE      1
@@ -279,7 +287,7 @@ void gpeg_result_remove
 #define GPEG_FNC_POSTNODE     4
 
 extern
-void gpeg_result_callback
+void gpeg_node_callback
   (
     gpege_node_t* node,
     unsigned type,
@@ -288,11 +296,11 @@ void gpeg_result_callback
   );
 
 extern
-int gpeg_result_run
+int gpeg_node_run
   (gpege_node_t* node);
 
 extern
-void gpeg_result_free
+void gpeg_node_free
   (gpege_node_t* node);
 
 #endif

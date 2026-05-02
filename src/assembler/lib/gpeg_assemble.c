@@ -588,32 +588,32 @@ int gpeg_assemble
   }
 
   gpege_node_t* tree = gpeg_result_to_tree(&result);
-  gpeg_result_remove(tree, SLOT_S, 1, 1);
-  gpeg_result_remove(tree, SLOT_MULTILINECOMMENT, 1, 1);
-  gpeg_result_remove(tree, SLOT_COMMENT, 1, 1);
+  gpeg_node_remove(tree, SLOT_S, 1, 1);
+  gpeg_node_remove(tree, SLOT_MULTILINECOMMENT, 1, 1);
+  gpeg_node_remove(tree, SLOT_COMMENT, 1, 1);
 
-  gpeg_result_callback(tree, SLOT_LABELDEF, gpeg_asm_label, &state);
-  gpeg_result_callback(tree, SLOT_BACKCOMMITINSTR, gpeg_asm_bcm, &state);
-  gpeg_result_callback(tree, SLOT_CALLINSTR, gpeg_asm_cll, &state);
-  gpeg_result_callback(tree, SLOT_CATCHINSTR, gpeg_asm_ctc, &state);
-  gpeg_result_callback(tree, SLOT_CLOSECAPTUREINSTR, gpeg_asm_ccp, &state);
-  gpeg_result_callback(tree, SLOT_COMMITINSTR, gpeg_asm_com, &state);
-  gpeg_result_callback(tree, SLOT_ENDINSTR, gpeg_asm_end, &state);
-  gpeg_result_callback(tree, SLOT_FAILINSTR, gpeg_asm_fai, &state);
-  gpeg_result_callback(tree, SLOT_FAILTWICEINSTR, gpeg_asm_fa2, &state);
-  gpeg_result_callback(tree, SLOT_OPENCAPTUREINSTR, gpeg_asm_ocp, &state);
-  gpeg_result_callback(tree, SLOT_PARTIALCOMMITINSTR, gpeg_asm_pcm, &state);
-  gpeg_result_callback(tree, SLOT_RETINSTR, gpeg_asm_ret, &state);
-  gpeg_result_callback(tree, SLOT_RANGEINSTR, gpeg_asm_rng, &state);
-  gpeg_result_callback(tree, SLOT_VARINSTR, gpeg_asm_var, &state);
-  gpeg_result_callback(tree, SLOT_COUNTERINSTR, gpeg_asm_ctr, &state);
-  gpeg_result_callback(tree, SLOT_CONDJUMPINSTR, gpeg_asm_cjp, &state);
-  gpeg_result_callback(tree, SLOT_LIMITINSTR, gpeg_asm_limit, &state);
+  gpeg_node_callback(tree, SLOT_LABELDEF, gpeg_asm_label, &state);
+  gpeg_node_callback(tree, SLOT_BACKCOMMITINSTR, gpeg_asm_bcm, &state);
+  gpeg_node_callback(tree, SLOT_CALLINSTR, gpeg_asm_cll, &state);
+  gpeg_node_callback(tree, SLOT_CATCHINSTR, gpeg_asm_ctc, &state);
+  gpeg_node_callback(tree, SLOT_CLOSECAPTUREINSTR, gpeg_asm_ccp, &state);
+  gpeg_node_callback(tree, SLOT_COMMITINSTR, gpeg_asm_com, &state);
+  gpeg_node_callback(tree, SLOT_ENDINSTR, gpeg_asm_end, &state);
+  gpeg_node_callback(tree, SLOT_FAILINSTR, gpeg_asm_fai, &state);
+  gpeg_node_callback(tree, SLOT_FAILTWICEINSTR, gpeg_asm_fa2, &state);
+  gpeg_node_callback(tree, SLOT_OPENCAPTUREINSTR, gpeg_asm_ocp, &state);
+  gpeg_node_callback(tree, SLOT_PARTIALCOMMITINSTR, gpeg_asm_pcm, &state);
+  gpeg_node_callback(tree, SLOT_RETINSTR, gpeg_asm_ret, &state);
+  gpeg_node_callback(tree, SLOT_RANGEINSTR, gpeg_asm_rng, &state);
+  gpeg_node_callback(tree, SLOT_VARINSTR, gpeg_asm_var, &state);
+  gpeg_node_callback(tree, SLOT_COUNTERINSTR, gpeg_asm_ctr, &state);
+  gpeg_node_callback(tree, SLOT_CONDJUMPINSTR, gpeg_asm_cjp, &state);
+  gpeg_node_callback(tree, SLOT_LIMITINSTR, gpeg_asm_limit, &state);
 
   state.pass = 1;
-  CHECK(gpeg_result_run(tree));
+  CHECK(gpeg_node_run(tree));
   state.pass = 2;
-  CHECK(gpeg_result_run(tree));
+  CHECK(gpeg_node_run(tree));
 
   RETURN_OK;
 }

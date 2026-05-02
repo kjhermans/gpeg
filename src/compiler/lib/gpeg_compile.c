@@ -301,7 +301,7 @@ int gpeg_compile_q_1p_pre
   unsigned label = (state->label)++;
 
   vec_append(vec, &label, sizeof(label));
-  CHECK(gpeg_result_run(node->children[ 0 ]));
+  CHECK(gpeg_node_run(node->children[ 0 ]));
   vec_printf(state->assembly,
     "  catch L%u\n"
     "LOOP%u:\n"
@@ -357,7 +357,7 @@ int gpeg_compile_q_ft_pre
   case 0:
     break;
   case 1:
-    CHECK(gpeg_result_run(node->children[ 0 ]));
+    CHECK(gpeg_node_run(node->children[ 0 ]));
     break;
   default:
     {
@@ -368,7 +368,7 @@ int gpeg_compile_q_ft_pre
         , from
         , counter0
       );
-      CHECK(gpeg_result_run(node->children[ 0 ]));
+      CHECK(gpeg_node_run(node->children[ 0 ]));
       vec_printf(state->assembly,
         "  condjump %u CTR%u\n"
         , counter0
@@ -432,7 +432,7 @@ int gpeg_compile_q_fr_pre
       , from
       , counter
     );
-    CHECK(gpeg_result_run(node->children[ 0 ]));
+    CHECK(gpeg_node_run(node->children[ 0 ]));
     vec_printf(state->assembly,
       "  condjump %u CTR%u\n"
       , counter
@@ -1303,26 +1303,26 @@ int gpeg_compile
   }
 
   gpege_node_t* tree = gpeg_result_to_tree(&result);
-  gpeg_result_remove(tree, SLOT_S, 1, 1);
-  gpeg_result_remove(tree, SLOT_MULTILINECOMMENT, 1, 1);
-  gpeg_result_remove(tree, SLOT_COMMENT, 1, 1);
-  gpeg_result_callback(tree, SLOT_RULE, gpeg_compile_rule, &state);
-  gpeg_result_callback(tree, SLOT_EXPRESSION, gpeg_compile_expr, &state);
-  gpeg_result_callback(tree, SLOT_REFERENCE, gpeg_compile_call, &state);
-  gpeg_result_callback(tree, SLOT_ANY, gpeg_compile_any, &state);
-  gpeg_result_callback(tree, SLOT_STRING, gpeg_compile_string, &state);
-  gpeg_result_callback(tree, SLOT_QUANTIFIEDMATCHER, gpeg_compile_q, &state);
-  gpeg_result_callback(tree, SLOT_SCANMATCHER, gpeg_compile_notand, &state);
-  gpeg_result_callback(tree, SLOT_SET, gpeg_compile_set, &state);
-  gpeg_result_callback(tree, SLOT_MACRO, gpeg_compile_macro, &state);
-  gpeg_result_callback(tree, SLOT_CAPTURE, gpeg_compile_capture, &state);
-  gpeg_result_callback(tree, SLOT_VARCAPTURE, gpeg_compile_varcapture, &state);
-  gpeg_result_callback(tree, SLOT_VARREFERENCE, gpeg_compile_varref, &state);
-  gpeg_result_callback(tree, SLOT_HEXLITERAL, gpeg_compile_hex, &state);
-  gpeg_result_callback(tree, SLOT_ENDFORCE, gpeg_compile_endforce, &state);
-  gpeg_result_callback(tree, SLOT_BITMASK, gpeg_compile_bitmask, &state);
-  gpeg_result_callback(tree, SLOT_LIMITEDCALL, gpeg_compile_lim, &state);
-  CHECK(gpeg_result_run(tree));
+  gpeg_node_remove(tree, SLOT_S, 1, 1);
+  gpeg_node_remove(tree, SLOT_MULTILINECOMMENT, 1, 1);
+  gpeg_node_remove(tree, SLOT_COMMENT, 1, 1);
+  gpeg_node_callback(tree, SLOT_RULE, gpeg_compile_rule, &state);
+  gpeg_node_callback(tree, SLOT_EXPRESSION, gpeg_compile_expr, &state);
+  gpeg_node_callback(tree, SLOT_REFERENCE, gpeg_compile_call, &state);
+  gpeg_node_callback(tree, SLOT_ANY, gpeg_compile_any, &state);
+  gpeg_node_callback(tree, SLOT_STRING, gpeg_compile_string, &state);
+  gpeg_node_callback(tree, SLOT_QUANTIFIEDMATCHER, gpeg_compile_q, &state);
+  gpeg_node_callback(tree, SLOT_SCANMATCHER, gpeg_compile_notand, &state);
+  gpeg_node_callback(tree, SLOT_SET, gpeg_compile_set, &state);
+  gpeg_node_callback(tree, SLOT_MACRO, gpeg_compile_macro, &state);
+  gpeg_node_callback(tree, SLOT_CAPTURE, gpeg_compile_capture, &state);
+  gpeg_node_callback(tree, SLOT_VARCAPTURE, gpeg_compile_varcapture, &state);
+  gpeg_node_callback(tree, SLOT_VARREFERENCE, gpeg_compile_varref, &state);
+  gpeg_node_callback(tree, SLOT_HEXLITERAL, gpeg_compile_hex, &state);
+  gpeg_node_callback(tree, SLOT_ENDFORCE, gpeg_compile_endforce, &state);
+  gpeg_node_callback(tree, SLOT_BITMASK, gpeg_compile_bitmask, &state);
+  gpeg_node_callback(tree, SLOT_LIMITEDCALL, gpeg_compile_lim, &state);
+  CHECK(gpeg_node_run(tree));
 
   RETURN_OK;
 }

@@ -330,6 +330,7 @@ int gpeg_engine_run
   state.bytecode = bytecode;
   state.input = input;
   state.inputsiz = input->size;
+  result->flags = flags;
 
   (void)instrstr;
 
