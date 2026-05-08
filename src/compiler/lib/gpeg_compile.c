@@ -881,24 +881,6 @@ int gpeg_compile_macro
     if (0 == strcmp((char*)(node->vec.data), "%s")) {
       vec_printf(state->assembly,
         "  catch MACRO%u_1\n"
-        "  range 09 0b\n"
-        "  commit L%u\n"
-        "MACRO%u_1:\n"
-        "  catch MACRO%u_2\n"
-        "  range 0d\n"
-        "  commit L%u\n"
-        "MACRO%u_2:\n"
-        "  range 20\n"
-        "L%u:\n"
-        , label
-        , label
-        , label
-        , label
-        , label
-        , label
-        , label
-        /*
-        "  catch MACRO%u_1\n"
         "  range 20\n"
         "  commit L%u\n"
         "MACRO%u_1:\n"
@@ -908,7 +890,6 @@ int gpeg_compile_macro
         , label
         , label
         , label
-        */
       );
     } else if (0 == strcmp((char*)(node->vec.data), "%w")) {
       vec_printf(state->assembly,

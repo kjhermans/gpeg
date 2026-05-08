@@ -12,26 +12,18 @@ TOP:
 S:
   opencapture 2
   catch MACRO2_1
-  range 09 0b
+  range 20
   commit L2
 MACRO2_1:
-  catch MACRO2_2
-  range 0d
-  commit L2
-MACRO2_2:
-  range 20
+  range 07 0d
 L2:
   catch L1
 LOOP1:
   catch MACRO3_1
-  range 09 0b
+  range 20
   commit L3
 MACRO3_1:
-  catch MACRO3_2
-  range 0d
-  commit L3
-MACRO3_2:
-  range 20
+  range 07 0d
 L3:
   partialcommit LOOP1
 L1:
