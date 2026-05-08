@@ -1,6 +1,7 @@
 src/assembler/main/gpega
 src/compiler/main/gpegc
 src/engine/main/gpege
+src/debugger/main/gpege_dbg
 
 doc/compendium/compendium.aux
 doc/compendium/compendium.log

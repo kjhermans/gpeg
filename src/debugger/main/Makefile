@@ -1,4 +1,4 @@
-TARGET=gpegde
+TARGET=gpege_dbg
 CFLAGS=-g -O2 -Wall -Wextra -I../include -D_DEBUG
 
 all: $(TARGET)
