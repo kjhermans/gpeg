@@ -1083,7 +1083,8 @@ int gpeg_compile_varref
         if (str2int_map_get(&(state->variables), variablename, &capture)) {
           if (state->error) {
             vec_printf(state->error,
-              "Error in variable reference; unknown identifier.\n"
+              "Error in variable reference; unknown identifier '%s'.\n"
+              , variablename
             );
           }
           RETURN_ERR(GPEGC_ERR_VARIABLE);
