@@ -191,7 +191,8 @@ inline void wrap_captures
   }
 }
 
-/*
+#ifdef _DEBUG
+__attribute__ ((unused))
 static
 void gpege_actionlist_debug
   (const vec_t* input, gpege_actionlist_t* list)
@@ -214,7 +215,7 @@ void gpege_actionlist_debug
     fprintf(stderr, "\n");
   }
 }
-*/
+#endif
 
 static
 inline int resolve_variable
@@ -302,6 +303,352 @@ void gpeg_engine_set_maxinstr
   maxinstrctr = m;
 }
 
+#ifdef _DEBUG
+#define DEBUGPOINT_INSTRUCTION \
+    if (flags & GPEGE_FLG_DEBUG) { \
+      fprintf(stderr, \
+        "%.8u: %.8u: %s: %.6u: %.6u: %s: #s=%u\n" \
+        , state.instrctr-1 \
+        , state.instrptr \
+        , instrstr[opcode] \
+        , state.inputptr \
+        , state.inputsiz \
+        , (state.eof ? "EOF" : readable_text(input, state.inputptr)) \
+        , state.stack.count \
+      ); \
+    }
+#else
+#define DEBUGPOINT_INSTRUCTION { }
+#endif
+
+#ifdef _DEBUGGER
+#define DEBUGGER_INSTRUCTION \
+    gpeg_debug_instruction(&state);
+#else
+#define DEBUGGER_INSTRUCTION { }
+#endif
+
+static inline
+void gpeg_engine_run_end
+  (uint8_t* instr8, gpege_result_t* result, gpege_state_t* state)
+{
+  result->success = 1;
+  result->endcode = (
+    (instr8[1]<<16) |
+    (instr8[2]<<8) |
+    instr8[3]
+  );
+  state->ended = 1;
+}
+
+static inline
+void gpeg_engine_run_range
+  (uint8_t* instr8, uint8_t* input8, gpege_state_t* state)
+{
+  unsigned R = instr8[ 0 ] & 0x08;
+  unsigned nbits = (instr8[ 0 ] & 0x07) + 1;
+  unsigned mask = instr8[ 1 ];
+  unsigned from = instr8[ 2 ];
+  unsigned until = instr8[ 3 ];
+  unsigned chr = 0;
+
+  if (state->inputbit == 0 && nbits == 8) {
+    chr = *input8;
+  } else if (state->inputbit + nbits <= 8) {
+    chr = (input8[ 8 ] >> state->inputbit) & ((1 << nbits) - 1);
+  } else {
+    abort();
+  }
+  if (state->eof) {
+    state->failed = 1;
+  } else if (R) {
+    if ((chr & mask) < from || (chr & mask) > until) {
+      state->failed = 1;
+    } else {
+      state->instrptr += 4;
+      state->inputbit += nbits;
+      if (state->inputbit >= 8) {
+        state->inputptr++;
+        state->inputbit -= 8;
+      }
+    }
+  } else {
+    if ((chr & mask) == from || (chr & mask) == until) {
+      state->instrptr += 4;
+      state->inputbit += nbits;
+      if (state->inputbit >= 8) {
+        state->inputptr++;
+        state->inputbit -= 8;
+      }
+    } else {
+      state->failed = 1;
+    }
+  }
+}
+
+static inline
+int gpeg_engine_run_limit
+  (uint8_t* instr8, const vec_t* input, gpege_state_t* state)
+{
+  unsigned O   = ((instr8[1]>>6)&0x01);
+  unsigned E   = ((instr8[1]>>5)&0x01);
+  unsigned S   =  (instr8[1]&0x1f) + 1;
+  unsigned reg = ((instr8[2]<<8)|(instr8[3]));
+
+  if (O) {
+    uint32_t len = 0;
+    vec_t value = { 0 };
+    CHECK(
+      resolve_variable(
+        input,
+        &(state->actions),
+        reg,
+        state->stack.count,
+        &value
+      )
+    );
+    for (unsigned i=0; i < S && i < value.size * 8; i++) {
+      int bit = 0;
+      if (E) {
+        bit = (value.data[ value.size-((i/8)+1) ] & (1<<(i%8)) ? 1 : 0);
+      } else {
+        bit = (value.data[ i/8 ] & (1<<(i%8)) ? 1 : 0);
+      }
+      if (bit) {
+        len |= (1<<i);
+      }
+    }
+    len += state->inputptr;
+    if (len > input->size) {
+      DBGMSG("Limit: length %u + %u > %u\n"
+             , len-state->inputptr
+             , state->inputptr
+             , input->size);
+      RETURN_ERR(GPEGE_ERR_LIMIT);
+    }
+    uint32list_push(&(state->inputsizes), len);
+    state->inputsiz = len;
+  } else {
+    uint32list_pop(&(state->inputsizes), 0);
+  }
+  state->instrptr += 4;
+  return 0;
+}
+
+static inline
+void gpeg_engine_run_call
+  (uint8_t* instr8, gpege_state_t* state)
+{
+  gpege_stackelt_t elt = {
+    .type = STACK_CALL,
+    .instrptr= state->instrptr + 4,
+    .inputptr = state->inputptr,
+    .actioncount = state->actions.count,
+    .countercount = state->countercount,
+    .inputsizescount = state->inputsizes.count,
+  };
+  gpege_stack_push(&(state->stack), elt);
+  state->instrptr = GPEGU_INSTR_OFFSET(instr8);
+}
+
+static inline
+int gpeg_engine_run_ret
+  (const vec_t* input, gpege_state_t* state)
+{
+  gpege_stackelt_t elt = { 0 };
+  CHECK(stack_pop(&(state->stack), STACK_CALL, &elt));
+  state->instrptr = elt.instrptr;
+  state->inputsizes.count = elt.inputsizescount;
+  state->inputsiz = (state->inputsizes.count ?
+                     state->inputsizes.list[ state->inputsizes.count-1 ] :
+                     input->size);
+  return 0;
+}
+
+static inline
+void gpeg_engine_run_catch
+  (uint8_t* instr8, gpege_state_t* state)
+{
+  gpege_stackelt_t elt = {
+    .type = STACK_CATCH,
+    .instrptr = GPEGU_INSTR_OFFSET(instr8),
+    .inputptr = state->inputptr,
+    .actioncount = state->actions.count,
+    .countercount = state->countercount,
+    .inputsizescount = state->inputsizes.count,
+  };
+  gpege_stack_push(&(state->stack), elt);
+  state->instrptr += 4;
+}
+
+static inline
+int gpeg_engine_run_backcommit
+  (uint8_t* instr8, const vec_t* input, gpege_state_t* state)
+{
+  gpege_stackelt_t elt = { 0 };
+  CHECK(stack_pop(&(state->stack), 0, &elt));
+  state->inputptr = elt.inputptr;
+  //state->actions.count = elt.actioncount;
+  state->countercount = elt.countercount;
+  state->inputsizes.count = elt.inputsizescount;
+  state->inputsiz = (state->inputsizes.count ?
+                     state->inputsizes.list[ state->inputsizes.count-1 ] :
+                     input->size);
+  state->instrptr = GPEGU_INSTR_OFFSET(instr8);
+  return 0;
+}
+
+static inline
+int gpeg_engine_run_partialcommit
+  (uint8_t* instr8, gpege_state_t* state)
+{
+  gpege_stackelt_t* eltptr = NULL;
+  CHECK(stack_peek(&(state->stack), &eltptr));
+  eltptr->inputptr = state->inputptr;
+  eltptr->actioncount = state->actions.count;
+  eltptr->countercount = state->countercount;
+  eltptr->inputsizescount = state->inputsizes.count;
+  state->instrptr = GPEGU_INSTR_OFFSET(instr8);
+  return 0;
+}
+
+static inline
+int gpeg_engine_run_failtwice
+  (gpege_state_t* state, unsigned flags)
+{
+  (void)flags;
+#ifdef _DEBUG
+  CHECK(stack_fail(&(state->stack), NULL, flags & GPEGE_FLG_DEBUG));
+#else
+  CHECK(stack_fail(&(state->stack), NULL));
+#endif
+  state->failed = 1;
+  return 0;
+}
+
+static inline
+int gpeg_engine_run_var
+  (uint8_t* instr8, uint8_t* input8, const vec_t* input, gpege_state_t* state)
+{
+  uint16_t reg = (instr8[2] << 8) | instr8[3];
+  vec_t value = { 0 };
+  CHECK(
+    resolve_variable(input, &(state->actions), reg, state->stack.count, &value)
+  );
+  if (value.size == 0) {
+    state->failed = 1;
+  } else if (state->inputptr + value.size > input->size) {
+    state->failed = 1;
+  } else if (state->eof) {
+    state->failed = 1;
+  } else if (0 != memcmp(input8, value.data, value.size)) {
+    state->failed = 1;
+  } else {
+    state->inputptr += value.size;
+    state->instrptr += 4;
+  }
+  return 0;
+}
+
+static inline
+void gpeg_engine_run_opencapture
+  (uint8_t* instr8, gpege_state_t* state)
+{
+  uint16_t reg = (instr8[2] << 8) | instr8[3];
+  gpege_action_t action = {
+    .action   = ACT_OPEN,
+    .reg      = reg,
+    .offset   = state->inputptr,
+    .stacklen = state->stack.count,
+  };
+  gpege_actionlist_push(&state->actions, action);
+  state->instrptr += 4;
+}
+
+static inline
+void gpeg_engine_run_closecapture
+  (uint8_t* instr8, gpege_state_t* state)
+{
+  uint16_t reg = (instr8[2] << 8) | instr8[3];
+  gpege_action_t action = {
+    .action   = ACT_CLOSE,
+    .reg      = reg,
+    .offset   = state->inputptr,
+    .stacklen = state->stack.count,
+  };
+  gpege_actionlist_push(&state->actions, action);
+  state->instrptr += 4;
+}
+
+static inline
+int gpeg_engine_run_counter
+  (uint8_t* instr8, gpege_state_t* state)
+{
+  uint8_t ctr = ((instr8[0] & 0x0f) << 4) | ((instr8[1] & 0xf0) >> 4);
+  uint32_t value = GPEGU_INSTR_OFFSET(instr8);
+  if (state->countercount >= GPEGE_MAX_COUNTERS) {
+    RETURN_ERR(GPEGE_ERR_MAXCOUNTER);
+  }
+  state->counters[ state->countercount ][ 0 ] = ctr;
+  state->counters[ state->countercount ][ 1 ] = value;
+  ++state->countercount;
+  state->instrptr += 4;
+  return 0;
+}
+
+static inline
+int gpeg_engine_run_condjump
+  (uint8_t* instr8, gpege_state_t* state)
+{
+  uint8_t ctr = ((instr8[0] & 0x0f) << 4) | ((instr8[1] & 0xf0) >> 4);
+  uint32_t offset = GPEGU_INSTR_OFFSET(instr8);
+  for (unsigned i=state->countercount; i > 0; i--) {
+    if (state->counters[ i-1 ][ 0 ] == ctr) {
+      --(state->counters[ i-1 ][ 1 ]);
+      if (state->counters[ i-1 ][ 1 ] == 0) {
+        if (i == state->countercount-1) {
+          --state->countercount;
+        } else {
+          memmove(
+            &(state->counters[ i-1 ]),
+            &(state->counters[ i ]),
+            sizeof(unsigned) * 2 * (state->countercount - i)
+          );
+        }
+        state->instrptr += 4;
+      } else {
+        state->instrptr = offset;
+      }
+      goto CTRFOUND;
+    }
+  }
+  RETURN_ERR(GPEGE_ERR_COUNTER);
+CTRFOUND: ;
+  return 0;
+}
+
+static inline
+int gpeg_engine_fail
+  (const vec_t* input, gpege_state_t* state, unsigned flags)
+{
+  gpege_stackelt_t elt = { 0 };
+  (void)flags;
+#ifdef _DEBUG
+  CHECK(stack_fail(&(state->stack), &elt, flags & GPEGE_FLG_DEBUG));
+#else
+  CHECK(stack_fail(&(state->stack), &elt));
+#endif
+  state->inputptr = elt.inputptr;
+  state->instrptr = elt.instrptr;
+  state->actions.count = elt.actioncount;
+  state->countercount = elt.countercount;
+  state->inputsizes.count = elt.inputsizescount;
+  state->inputsiz = (state->inputsizes.count ?
+                    state->inputsizes.list[ state->inputsizes.count-1 ] :
+                    input->size);
+  return 0;
+}
+
 /**
  * Runs the GPEG engine using \p bytecode on \p input.
  * Returns zero on success (no fatal errors), or non-zero on fatal errors.
@@ -342,6 +689,8 @@ int gpeg_engine_run
     if (state.instrptr >= bytecode->size + 4) {
       RETURN_ERR2(GPEGE_ERR_OVERFLOW, CLEANUP);
     }
+    instr8 = bytecode->data + state.instrptr;
+    opcode = instr8[0] >> 4;
     if (state.inputptr >= state.inputsiz) {
       state.eof = 1;
     } else {
@@ -351,263 +700,67 @@ int gpeg_engine_run
     if (state.inputptr > result->maxinputptr) {
       result->maxinputptr = state.inputptr;
     }
-    instr8 = bytecode->data + state.instrptr;
-    opcode = instr8[0] >> 4;
-#ifdef _DEBUG
-    if (flags & GPEGE_FLG_DEBUG) {
-      fprintf(stderr,
-        "%.8u: %.8u: %s: %.6u: %.6u: %s: #s=%u\n"
-        , state.instrctr-1
-        , state.instrptr
-        , instrstr[opcode]
-        , state.inputptr
-        , state.inputsiz
-        , (state.eof ? "EOF" : readable_text(input, state.inputptr))
-        , state.stack.count
-      );
-    }
-#endif
-#ifdef _DEBUGGER
-    gpeg_debug_instruction(&state);
-#endif
+
+DEBUGPOINT_INSTRUCTION
+DEBUGGER_INSTRUCTION
+
     switch (opcode) {
     case OP_END:
-      result->success = 1;
-      result->endcode = (
-        (instr8[1]<<16) |
-        (instr8[2]<<8) |
-        instr8[3]
-      );
-      state.ended = 1;
+      gpeg_engine_run_end(instr8, result, &state);
       break;
     case OP_RANGE:
-      if (state.eof ||
-          (*input8 & instr8[1]) < instr8[2] ||
-          (*input8 & instr8[1]) > instr8[3])
-      {
-        state.failed = 1;
-      } else {
-        state.instrptr += 4;
-        state.inputptr++;
-      }
+      gpeg_engine_run_range(instr8, input8, &state);
       break;
     case OP_LIMIT:
-      {
-        unsigned O   = ((instr8[1]>>6)&0x01);
-        unsigned E   = ((instr8[1]>>5)&0x01);
-        unsigned S   =  (instr8[1]&0x1f) + 1;
-        unsigned reg = ((instr8[2]<<8)|(instr8[3]));
-        if (O) {
-          uint32_t len = 0;
-          vec_t value = { 0 };
-          CHECK2(
-            resolve_variable(input, &(state.actions), reg, state.stack.count, &value),
-            CLEANUP
-          );
-          for (unsigned i=0; i < S && i < value.size * 8; i++) {
-            int bit = 0;
-            if (E) {
-              bit = (value.data[ value.size-((i/8)+1) ] & (1<<(i%8)) ? 1 : 0);
-            } else {
-              bit = (value.data[ i/8 ] & (1<<(i%8)) ? 1 : 0);
-            }
-            if (bit) {
-              len |= (1<<i);
-            }
-          }
-          len += state.inputptr;
-          if (len > input->size) {
-            DBGMSG("Limit: length %u + %u > %u\n", len-state.inputptr, state.inputptr, input->size);
-            RETURN_ERR(GPEGE_ERR_LIMIT);
-          }
-          uint32list_push(&(state.inputsizes), len);
-          state.inputsiz = len;
-        } else {
-          uint32list_pop(&(state.inputsizes), 0);
-        }
-        state.instrptr += 4;
-      }
+      CHECK2(gpeg_engine_run_limit(instr8, input, &state), CLEANUP);
       break;
     case OP_CALL:
-      {
-        gpege_stackelt_t elt = {
-          .type = STACK_CALL,
-          .instrptr= state.instrptr + 4,
-          .inputptr = state.inputptr,
-          .actioncount = state.actions.count,
-          .countercount = state.countercount,
-          .inputsizescount = state.inputsizes.count,
-        };
-        gpege_stack_push(&(state.stack), elt);
-        state.instrptr = GPEGU_INSTR_OFFSET(instr8);
-      }
+      gpeg_engine_run_call(instr8, &state);
       break;
     case OP_RET:
-      {
-        gpege_stackelt_t elt = { 0 };
-        CHECK2(stack_pop(&(state.stack), STACK_CALL, &elt), CLEANUP);
-        state.instrptr = elt.instrptr;
-        state.inputsizes.count = elt.inputsizescount;
-        state.inputsiz = (state.inputsizes.count ? state.inputsizes.list[ state.inputsizes.count-1 ] : input->size);
-      }
+      CHECK2(gpeg_engine_run_ret(input, &state), CLEANUP);
       break;
     case OP_CATCH:
-      {
-        gpege_stackelt_t elt = {
-          .type = STACK_CATCH,
-          .instrptr = GPEGU_INSTR_OFFSET(instr8),
-          .inputptr = state.inputptr,
-          .actioncount = state.actions.count,
-          .countercount = state.countercount,
-          .inputsizescount = state.inputsizes.count,
-        };
-        gpege_stack_push(&(state.stack), elt);
-        state.instrptr += 4;
-      }
+      gpeg_engine_run_catch(instr8, &state);
       break;
     case OP_COMMIT:
       CHECK2(stack_pop(&(state.stack), STACK_CATCH, NULL), CLEANUP);
       state.instrptr = GPEGU_INSTR_OFFSET(instr8);
       break;
     case OP_BACKCOMMIT:
-      {
-        gpege_stackelt_t elt = { 0 };
-        CHECK2(stack_pop(&(state.stack), 0, &elt), CLEANUP);
-        state.inputptr = elt.inputptr;
-        state.actions.count = elt.actioncount;
-        state.countercount = elt.countercount;
-        state.inputsizes.count = elt.inputsizescount;
-        state.inputsiz = (state.inputsizes.count ? state.inputsizes.list[ state.inputsizes.count-1 ] : input->size);
-        state.instrptr = GPEGU_INSTR_OFFSET(instr8);
-      }
+      CHECK2(gpeg_engine_run_backcommit(instr8, input, &state), CLEANUP);
       break;
     case OP_PARTIALCOMMIT:
-      {
-        gpege_stackelt_t* eltptr = NULL;
-        CHECK2(stack_peek(&(state.stack), &eltptr), CLEANUP);
-        eltptr->inputptr = state.inputptr;
-        eltptr->actioncount = state.actions.count;
-        eltptr->countercount = state.countercount;
-        eltptr->inputsizescount = state.inputsizes.count;
-        state.instrptr = GPEGU_INSTR_OFFSET(instr8);
-      }
+      CHECK2(gpeg_engine_run_partialcommit(instr8, &state), CLEANUP);
       break;
     case OP_FAIL:
       state.failed = 1;
       break;
     case OP_FAILTWICE:
-#ifdef _DEBUG
-      CHECK2(stack_fail(&(state.stack), NULL, flags & GPEGE_FLG_DEBUG), CLEANUP);
-#else
-      CHECK2(stack_fail(&(state.stack), NULL), CLEANUP);
-#endif
-      state.failed = 1;
+      CHECK2(gpeg_engine_run_failtwice(&state, flags), CLEANUP);
       break;
     case OP_VAR:
-      {
-        uint16_t reg = (instr8[2] << 8) | instr8[3];
-        vec_t value = { 0 };
-        CHECK2(
-          resolve_variable(input, &state.actions, reg, state.stack.count, &value),
-          CLEANUP
-        );
-        if (value.size == 0) {
-          state.failed = 1;
-        } else if (state.inputptr + value.size > input->size) {
-          state.failed = 1;
-        } else if (state.eof) {
-          state.failed = 1;
-        } else if (0 != memcmp(input8, value.data, value.size)) {
-          state.failed = 1;
-        } else {
-          state.inputptr += value.size;
-          state.instrptr += 4;
-        }
-      }
+      CHECK2(gpeg_engine_run_var(instr8, input8, input, &state), CLEANUP);
       break;
     case OP_OPENCAPTURE:
-      {
-        uint16_t reg = (instr8[2] << 8) | instr8[3];
-        gpege_action_t action = {
-          .action   = ACT_OPEN,
-          .reg      = reg,
-          .offset   = state.inputptr,
-          .stacklen = state.stack.count,
-        };
-        gpege_actionlist_push(&state.actions, action);
-        state.instrptr += 4;
-      }
+      gpeg_engine_run_opencapture(instr8, &state);
       break;
     case OP_CLOSECAPTURE:
-      {
-        uint16_t reg = (instr8[2] << 8) | instr8[3];
-        gpege_action_t action = {
-          .action   = ACT_CLOSE,
-          .reg      = reg,
-          .offset   = state.inputptr,
-          .stacklen = state.stack.count,
-        };
-        gpege_actionlist_push(&state.actions, action);
-        state.instrptr += 4;
-      }
+      gpeg_engine_run_closecapture(instr8, &state);
       break;
     case OP_COUNTER:
-      {
-        uint8_t ctr = ((instr8[0] & 0x0f) << 4) | ((instr8[1] & 0xf0) >> 4);
-        uint32_t value = GPEGU_INSTR_OFFSET(instr8);
-        if (state.countercount == GPEGE_MAX_COUNTERS) {
-          RETURN_ERR(GPEGE_ERR_MAXCOUNTER);
-        }
-        state.counters[ state.countercount ][ 0 ] = ctr;
-        state.counters[ state.countercount ][ 1 ] = value;
-        ++state.countercount;
-        state.instrptr += 4;
-      }
+      CHECK2(gpeg_engine_run_counter(instr8, &state), CLEANUP);
       break;
     case OP_CONDJUMP:
-      {
-        uint8_t ctr = ((instr8[0] & 0x0f) << 4) | ((instr8[1] & 0xf0) >> 4);
-        uint32_t offset = GPEGU_INSTR_OFFSET(instr8);
-        for (unsigned i=state.countercount; i > 0; i--) {
-          if (state.counters[ i-1 ][ 0 ] == ctr) {
-            --(state.counters[ i-1 ][ 1 ]);
-            if (state.counters[ i-1 ][ 1 ] == 0) {
-              if (i == state.countercount-1) {
-                --state.countercount;
-              } else {
-                memmove(
-                  &(state.counters[ i-1 ]),
-                  &(state.counters[ i ]),
-                  sizeof(unsigned) * 2 * (state.countercount - i)
-                );
-              }
-              state.instrptr += 4;
-            } else {
-              state.instrptr = offset;
-            }
-            goto CTRFOUND;
-          }
-        }
-        RETURN_ERR(GPEGE_ERR_COUNTER);
-CTRFOUND: ;
-      }
+      CHECK2(gpeg_engine_run_condjump(instr8, &state), CLEANUP);
       break;
     }
+
     if (state.failed) {
-      gpege_stackelt_t elt = { 0 };
-#ifdef _DEBUG
-      CHECK2(stack_fail(&(state.stack), &elt, flags & GPEGE_FLG_DEBUG), CLEANUP);
-#else
-      CHECK2(stack_fail(&(state.stack), &elt), CLEANUP);
-#endif
-      state.inputptr = elt.inputptr;
-      state.instrptr = elt.instrptr;
-      state.actions.count = elt.actioncount;
-      state.countercount = elt.countercount;
-      state.inputsizes.count = elt.inputsizescount;
-      state.inputsiz = (state.inputsizes.count ? state.inputsizes.list[ state.inputsizes.count-1 ] : input->size);
+      CHECK2(gpeg_engine_fail(input, &state, flags), CLEANUP);
     }
   }
+
   wrap_captures(input, flags, &state.actions, &(result->captures));
 CLEAN_UP:
   if (state.stack.list) { free(state.stack.list); }
