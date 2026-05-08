@@ -394,28 +394,44 @@ int gpeg_asm_rng
       state->offset += GPEG_INSTR_SIZE;
     } else {
       uint32_t instr = 0;
-      unsigned p1 = 0xff, p2 = 0, p3 = 0;
+      unsigned p1 = 1, p2 = 7, p3 = 0xff, p4 = 0, p5 = 0;
       switch (node->nchildren) {
       case 1:
-        p2 = p3 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
+        p4 = p5 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
         break;
       case 2:
-        p2 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
-        p3 = gpeg_asm_hex((char*)(node->children[ 1 ]->vec.data));
+        p4 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
+        p5 = gpeg_asm_hex((char*)(node->children[ 1 ]->vec.data));
         break;
       case 3:
-        p1 = gpeg_asm_hex((char*)(node->children[ 2 ]->vec.data));
-        p2 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
-        p3 = gpeg_asm_hex((char*)(node->children[ 1 ]->vec.data));
+        p3 = gpeg_asm_hex((char*)(node->children[ 2 ]->vec.data));
+        p4 = gpeg_asm_hex((char*)(node->children[ 0 ]->vec.data));
+        p5 = gpeg_asm_hex((char*)(node->children[ 1 ]->vec.data));
+        break;
+      case 4:
+        p1 = (0==strcmp((char*)(node->children[ 0 ]->vec.data), "true")? 1 : 0);
+        p2 = (atoi((char*)(node->children[ 1 ]->vec.data)) - 1) & 0x07;
+        p4 = gpeg_asm_hex((char*)(node->children[ 2 ]->vec.data));
+        p5 = gpeg_asm_hex((char*)(node->children[ 3 ]->vec.data));
         break;
       case 5:
-        //.. TODO 0 contains boolean, 1 contains nbits
-        p1 = gpeg_asm_hex((char*)(node->children[ 4 ]->vec.data));
-        p2 = gpeg_asm_hex((char*)(node->children[ 2 ]->vec.data));
-        p3 = gpeg_asm_hex((char*)(node->children[ 3 ]->vec.data));
+        p1 = (0==strcmp((char*)(node->children[ 0 ]->vec.data), "true")? 1 : 0);
+        p2 = (atoi((char*)(node->children[ 1 ]->vec.data)) - 1) & 0x07;
+        p3 = gpeg_asm_hex((char*)(node->children[ 4 ]->vec.data));
+        p4 = gpeg_asm_hex((char*)(node->children[ 2 ]->vec.data));
+        p5 = gpeg_asm_hex((char*)(node->children[ 3 ]->vec.data));
         break;
       }
-      gpeg_asm_instr(&instr, OP_RANGE, 3, 8, 8, p1, 16, 8, p2, 24, 8, p3);
+      gpeg_asm_instr(
+        &instr,
+        OP_RANGE,
+        5,
+        4, 1, p1,
+        5, 3, p2,
+        8, 8, p3,
+        16, 8, p4,
+        24, 8, p5
+      );
       vec_append(state->bytecode, &instr, sizeof(instr));
     }
   }
