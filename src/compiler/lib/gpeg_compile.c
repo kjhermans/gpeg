@@ -1157,7 +1157,7 @@ int gpeg_compile_bitmask
   case GPEG_FNC_PRENODE:
     {
       uint8_t target = 0, mask = 0;
-      for (unsigned i=0; i < 8; i++) {
+      for (unsigned i=0; i < 8 && i < node->vec.size-2; i++) {
         switch (node->vec.data[ i+1 ]) {
         case '0':
           mask |= (1<<(7-i));
@@ -1171,7 +1171,8 @@ int gpeg_compile_bitmask
         }
       }
       vec_printf(state->assembly,
-        "  range %.2x %.2x %.2x\n"
+        "  range false %u %.2x %.2x %.2x\n"
+        , node->vec.size-2
         , target
         , target
         , mask
@@ -1186,48 +1187,45 @@ static
 int gpeg_compile_lim
   (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
-  struct compilestate* state = arg;
-  char* variablename = (char*)(node->children[ 0 ]->vec.data);
-  unsigned endian = atoi((char*)(node->children[ 2 ]->vec.data));
-  unsigned bitlength = atoi((char*)(node->children[ 4 ]->vec.data));
-  char* function = (char*)(node->children[ 6 ]->vec.data);
-  unsigned capture = 0;
+  if (phase == GPEG_FNC_PRENODE) {
+    struct compilestate* state = arg;
+    char* variablename = (char*)(node->children[ 0 ]->vec.data);
+    unsigned endian = atoi((char*)(node->children[ 2 ]->vec.data));
+    unsigned bitlength = atoi((char*)(node->children[ 4 ]->vec.data));
+    char* function = (char*)(node->children[ 6 ]->vec.data);
+    unsigned capture = 0;
 
-  (void)node;
-  (void)i;
-  (void)vec;
+    (void)node;
+    (void)i;
+    (void)vec;
 
-  if (bitlength > 32) {
-    if (state->error) {
-      vec_printf(state->error,
-        "Error in limit; bitlength > 32.\n"
-      );
+    if (bitlength > 32) {
+      if (state->error) {
+        vec_printf(state->error,
+          "Error in limit; bitlength > 32.\n"
+        );
+      }
+      RETURN_ERR(GPEGC_ERR_BITLENGTH);
     }
-    RETURN_ERR(GPEGC_ERR_BITLENGTH);
-  }
-  if (strcmp(variablename, "_")) {
-    if (str2int_map_get(&(state->variables), variablename, &capture)) {
-    if (state->error) {
-      vec_printf(state->error,
-        "Error in limit; variable reference not found.\n"
-      );
+    if (strcmp(variablename, "_")) {
+      if (str2int_map_get(&(state->variables), variablename, &capture)) {
+        if (state->error) {
+          vec_printf(state->error,
+            "Error in limit; variable reference '%s' not found.\n"
+            , variablename
+          );
+        }
+        RETURN_ERR(GPEGC_ERR_VARIABLE);
+      }
     }
-      RETURN_ERR(GPEGC_ERR_VARIABLE);
-    }
-  }
-  switch (phase) {
-  case GPEG_FNC_PRENODE:
-    {
-      vec_printf(state->assembly,
-        "  limit %u %u %u\n"
-        "  call %s\n"
-        , (endian ? 1 : 0)
-        , bitlength
-        , capture
-        , function
-      );
-    }
-    break;
+    vec_printf(state->assembly,
+      "  limit %u %u %u\n"
+      "  call %s\n"
+      , (endian ? 1 : 0)
+      , bitlength
+      , capture
+      , function
+    );
   }
   return 0;
 }
