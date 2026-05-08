@@ -24,6 +24,7 @@ my (
   $currentrule,
   $slotmapfile,
   $slotmaphfile,
+  $parsetree,
 );
 
 my %imports;
@@ -110,17 +111,17 @@ sub compile
   my $grammar = shift;
   my $asm = '';
   my @tokens = tokenize($grammar);
-  my $tree = rearrange(@tokens);
-#use Data::Dumper; print STDERR Dumper $tree->{rules};
-  my $firstrule = $tree->{order}[0];
+  $parsetree = rearrange(@tokens);
+#use Data::Dumper; print STDERR Dumper $parsetree->{rules};
+  my $firstrule = $parsetree->{order}[0];
   if ($firstrule eq '__prefix') {
-    $firstrule = $tree->{order}[1];
+    $firstrule = $parsetree->{order}[1];
   }
   $asm .= "  call $firstrule\n" .
           "  end 0\n";
-  foreach my $rulename (@{$tree->{order}}) {
+  foreach my $rulename (@{$parsetree->{order}}) {
     $asm .= "\n$rulename:\n";
-    $asm .= compile_rule($tree->{rules}{$rulename});
+    $asm .= compile_rule($parsetree->{rules}{$rulename});
     $asm .= "  ret\n";
   }
   invert_calltree();
@@ -131,6 +132,7 @@ sub tokenize
 {
   my $grammar = shift;
   my @tokens;
+  my $ident = '[_a-zA-Z][_a-zA-Z0-9]*';
   while (1) {
     while (1) {
       my $again = 0;
@@ -146,15 +148,17 @@ sub tokenize
       push @tokens, { type => 'replace' };
     } elsif ($grammar =~ s/^=>//) {
       push @tokens, { type => 'fatarrow' };
+    } elsif ($grammar =~ s/^\|([01_]{1,8})\|//) {
+      push @tokens, { type => 'bits', bits => $1, nbits => length($1) };
+    } elsif ($grammar =~ s/^as\s+($ident)//) {
+      $tokens[ -1 ]{capturename} = $1;
     } elsif ($grammar =~
-        s/^<\s*(ruint32)\s*:\s*([^\s]+)\s*:\s*([_a-zA-Z][_a-zA-Z0-9]*)\s*>//)
+        s/^<:\$($ident)\s*:\s*([01])\s*:\s*([0-9]+)\s*:\s*($ident)\s*>//)
     {
-      push @tokens, { type => 'limcall', mode => $1, parm => $2, string => $3 };
+      push @tokens, { type => 'lim', reg => $1, E => $2, S => $3, fnc => $4 };
     } elsif ($grammar =~ s/^__end\s+([0-9]+)//) {
       push @tokens, { type => 'end', code => $1 };
-    } elsif ($grammar =~
-             s/^import\s+'(\S+)'(\s*as\s+([0-9a-fA-F][0-9a-fA-F_]*))?\n//)
-    {
+    } elsif ($grammar =~ s/^import\s+'(\S+)'(\s*as\s+($ident))?\n//) {
       push @tokens, { type => 'import', path => $1, as => $3 };
     } elsif ($grammar =~ s/^0x([a-fA-F0-9]{2})//) {
       push @tokens, { type => 'char', string => $1 };
@@ -350,7 +354,8 @@ sub rearrange_groups
             my @sublist = splice(@{$list}, $i+1, $j-$i);
             $list->[ $i ]->{type} = ($c eq 'c') ? 'capture' : 'group';
             if ($list->[ $i ]->{type} eq 'capture') {
-              my $slotmapident = slotmap_ident({ string => $rulename }, @sublist);
+              my $slotmapident =
+                slotmap_ident({ string => $rulename }, @sublist);
               $slotmap{$slotmapident} = int($capturecounter);
               $ruleslotmap{int($capturecounter)} = $rulename;
               $list->[ $i ]->{capturecounter} = $capturecounter++;
@@ -474,6 +479,8 @@ sub compile_token
     return compile_token_string($token);
   } elsif ($token->{type} eq 'char') {
     return compile_quantifier($token, "  char $token->{string}\n");
+  } elsif ($token->{type} eq 'bits') {
+    return compile_token_bits($token);
   } elsif ($token->{type} eq 'maskedchar') {
     return compile_quantifier($token,
               "  maskedchar $token->{byte} $token->{mask}\n");
@@ -491,22 +498,37 @@ sub compile_token
     return compile_token_not($list, $i);
   } elsif ($token->{type} eq 'and') {
     return compile_token_and($list, $i);
-  } elsif ($token->{type} eq 'import') {
-    return compile_token_import($token);
+#  } elsif ($token->{type} eq 'import') {
+#    return compile_token_import($token);
   } elsif ($token->{type} eq 'end') {
     return "  end $token->{code}\n";
-  } elsif ($token->{type} eq 'limcall') {
-    ##.. todo
+  } elsif ($token->{type} eq 'lim') {
+    return compile_token_limitedcall($token);
   } elsif ($token->{type} =~ /^(bclose|cbclose)$/) {
     ##.. do nothing
   } elsif ($token->{type} eq 'varref') {
-    my $ctr = $currentrule->{variables}{$token->{variable}}
-              || die "Could not resolve variable '$token->{variable}'";
+    my $ctr = resolve_variable($token->{variable});
+    if (!defined($ctr)) {
+      die "Could not resolve variable '$token->{variable}'";
+    }
     return "  var $ctr\n";
   } elsif ($token->{type}) {
     die "Unknown token '$token->{type}'";
   }
   return '';
+}
+
+sub compile_token_limitedcall
+{
+  my $token = shift;
+  my $ref = resolve_variable($token->{reg});
+  if (!defined($ref)) {
+    die "Could not resolve $token->{reg}";
+  }
+  return compile_quantifier($token,
+    "  limit $token->{E} $token->{S} $ref\n" .
+    "  call $token->{fnc}\n"
+  );
 }
 
 sub resolve_path
@@ -528,6 +550,43 @@ sub compile_token_ident
     $rulename = $nsp . '_' . $rulename;
   }
   return compile_quantifier($token, "  call $rulename\n");
+}
+
+sub resolve_variable
+{
+  my $var = shift;
+  if (defined(my $value = $currentrule->{variables}{$var})) {
+    return $value;
+  }
+  foreach my $rulename (reverse @{$parsetree->{order}}) {
+    my $rule = $parsetree->{rules}{$rulename};
+    if (defined(my $value = $rule->{variables}{$var})) {
+      return $value;
+    }
+  }
+  return undef;
+}
+
+sub compile_token_bits
+{
+  my $token = shift;
+  my $i = 1;
+  my $mask = 0;
+  my $value = 0;
+  my $nbits = $token->{nbits};
+  foreach my $bit (split(//, $token->{bits})) {
+    if ($bit eq '0') {
+      $mask |= (1<<($nbits-$i));
+    } elsif ($bit eq '1') {
+      $mask |= (1<<($nbits-$i));
+      $value |= (1<<($nbits-$i));
+    }
+    ++$i;
+  }
+  return compile_quantifier($token,
+    "  range false $token->{nbits} " .
+    sprintf("%.2x %.2x %.2x\n", $mask, $value, $value)
+  );
 }
 
 sub compile_token_capture

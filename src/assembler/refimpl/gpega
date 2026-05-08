@@ -99,12 +99,15 @@ sub tokenize
     } elsif ($input =~ s/^(ret|failtwice|fail)//) {
       push @tokens, { type => $1 };
     } elsif ($input =~ s/^any//) {
-      push @tokens, { type => 'range', from => 0, until => 255 };
+      push @tokens, { type => 'range',from => 0, until => 255, truerange => 1 };
+    } elsif ($input =~ s/^limit\s+([01])\s+([0-9]+)\s+([0-9]+)//) {
+      my ($E, $S, $reg) = ($1, $2, $3);
+      push @tokens, { type => 'limit', E => $E, S => $S, reg => $reg };
     } elsif ($input =~ s/^range\s+//) {
       my ($truerange, $nbits, $bitmask, $from, $until) = (1, 8, 0xff, 0, 0);
       if ($input =~ s/^\s*(true|false)\s+([0-9]+)//) {
         $truerange = ($1 eq 'true') ? 1 : 0;
-        $nbits = $1;
+        $nbits = $2;
       }
       if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
         $from = hex($1);
@@ -185,9 +188,12 @@ sub second_pass
         ($code & 0xff)
       );
     } elsif ($token->{type} eq 'range') {
+      if ($token->{nbits} == 0) {
+        $token->{nbits} = 8;
+      }
       my $byte0 = 0x10 |
                   ($token->{truerange} ? 0x08 : 0x00) |
-                  ($token->{nbits} & 0x07);
+                  (($token->{nbits} - 1) & 0x07);
       my $bitmask = (defined($token->{bitmask}) ? $token->{bitmask} : 0xff);
       $output .= pack(
         'CCCC',
@@ -195,6 +201,14 @@ sub second_pass
         $bitmask,
         $token->{from} & 0xff,
         $token->{until} & 0xff
+      );
+    } elsif ($token->{type} eq 'limit') {
+      $output .= pack(
+        'CCCC',
+        0x20,
+        0x70 | (($token->{E} ? 0x30 : 0x00)) | ($token->{S} & 0x1f),
+        ($token->{reg} >> 8) & 0xff,
+        ($token->{reg} & 0xff)
       );
     } elsif ($token->{type} =~ /^(call|catch|(back|partial|)commit)$/) {
       my $offset;
@@ -295,20 +309,29 @@ sub recompile_set
     push @tokens, { type => 'fail' };
   } elsif (scalar(@ranges) == 1) {
     push @tokens,
-      { type => 'range', from => $ranges[0]->[0], until => $ranges[0]->[1] };
+      { type => 'range',
+        from => $ranges[0]->[0],
+        until => $ranges[0]->[1],
+        truerange => 1
+      };
   } else {
     my $lab = "SET_" . (++$setlabel) . '_';
     for (my $i=0; $i < scalar(@ranges)-1; $i++) {
       push @tokens,
         { type => 'catch', label => "$lab$i" },
         { type => 'range', from => $ranges[$i]->[0],
-                           until => $ranges[$i]->[1] },
+                           until => $ranges[$i]->[1],
+                           truerange => 1,
+        },
         { type => 'commit', label => $lab . scalar(@ranges) },
         { type => 'label', label => "$lab$i" },
       ;
     }
     push @tokens,
-      { type => 'range', from => $ranges[-1]->[0], until => $ranges[-1]->[1] },
+      { type => 'range',
+        from => $ranges[-1]->[0],
+        until => $ranges[-1]->[1],
+        truerange => 1 },
       { type => 'label', label => $lab . scalar(@ranges) },
     ;
   }
