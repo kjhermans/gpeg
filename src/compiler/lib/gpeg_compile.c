@@ -94,7 +94,7 @@ int gpeg_compile_rule
     }
     state->rulename = rulename;
     state->rulecapture = 0;
-    state->variables.count = 0;
+    //state->variables.count = 0;
     break;
   case GPEG_FNC_POSTNODE:
     if (state->flags & GPEGC_FLG_AUTOCAPTURE) {
