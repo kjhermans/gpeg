@@ -28,7 +28,8 @@ if ($inputfile eq '-') {
 }
 
 my @jumpinstr = (
-  undef, undef, undef, 'call', undef, 'catch', 'commit', 'backcommit', 'partialcommit'
+  undef, undef, undef, 'call', undef,
+  'catch', 'commit', 'backcommit', 'partialcommit'
 );
 disassemble();
 
@@ -59,12 +60,20 @@ sub disassemble
         $bytes[3]
       );
     } elsif ($opcode == 1) {
-      $output .= "range " . sprintf("%.2x", $bytes[2]);
-      if ($bytes[2] != $bytes[3]) {
-        $output .= ' ' . sprintf("%.2x", $bytes[3]);
+      my $R = $bytes[ 0 ] & 0x08;
+      my $nbits = ($bytes[ 0 ] & 0x07) + 1;
+      $output .= "range ";
+      if ($R) {
+        $output .= "true $nbits ";
+      } else {
+        $output .= "false $nbits ";
       }
-      if ($bytes[1] != 0xff) {
-        $output .= ' ' . sprintf("%.2x", $bytes[1]);
+      $output .= sprintf("%.2x ", $bytes[2]);
+      if ($bytes[2] != $bytes[3]) {
+        $output .= sprintf("%.2x ", $bytes[3]);
+        if ($bytes[1] != 0xff || !$R) {
+          $output .= sprintf("%.2x", $bytes[1]);
+        }
       }
     } elsif ($opcode == 2) {
       my ($O, $E, $S, $reg) = (
