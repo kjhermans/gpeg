@@ -1,0 +1,9 @@
+TEST <- 'hello'		HELLO	NOK
+TEST <- 'hello'i	HELLO	OK
+TEST <- 'hello'i	HeLlO	OK
+TEST <- 'hello'i	He1LO	NOK
+TEST <- 'hello'i	He1LLO	NOK
+TEST <- 'hello'i	he1llo	NOK
+TEST <- 'hello'i	HELLO1	OK
+TEST <- 'h4llo'i	H4LLO	OK
+TEST <- 'h4llo'i	HTLLO	NOK
