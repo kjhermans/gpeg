@@ -1,0 +1,54 @@
+The GPEG range assembly instruction is a complicated beast.
+It has five parameters in bytecode, and a full version of the
+instruction exists in assembly, supporting each of these.
+However, for readability, there also exist shorter versions of the instruction.
+Therefore we say that the range assembly instruction is polymorph.
+It has three possible forms:
+
+Single char-like matching. This is the result of case-sensitive
+(or: non-case-insensitive) matching individual bytes in strings or
+hex literals. In Lua PEG, this is equivalent to the 'char' instruction.
+The assembly below strictly matches the ASCII letter 'a'.
+The first form is the short form. The second form is the full form.
+
+\begin{myquote}
+\begin{verbatim}
+range 61
+range false 8 61 61 ff
+\end{verbatim}
+\end{myquote}
+
+The second form of the range instruction assembly, is a proper range.
+These are the result of sets in grammar, or macroes.
+The assembly below strictly matches the range from ASCII 'a' through 'z',
+inclusive. Again, the first form is the short form, while the second
+form is the full form.
+
+\begin{myquote}
+\begin{verbatim}
+range 61 7a
+range true 8 61 7a ff
+\end{verbatim}
+\end{myquote}
+
+The third form of the range instruction assembly is the form to which
+it is compiled when encountering anything else, such as:
+
+\begin{itemize}
+\item Alternatives.
+\item Bitmasks, even for matching less than a full byte.
+\end{itemize}
+
+In this case, the range instruction will take the following parameters,
+in order: truerange, nbits, from, until, mask. In this example, both
+instructions are full form, where the first example represents an
+alternative (lower and upper case 'a', for example the result of a
+case insensitive string match). The second example represents a bitmask
+of six bits.
+
+\begin{myquote}
+\begin{verbatim}
+range false 8 41 61 ff
+range false 6 38 10 10
+\end{verbatim}
+\end{myquote}

@@ -1,0 +1,14 @@
+The range instruction will be emitted by the compiler:
+
+\begin{itemize}
+\item As a transliteration of a hexadecimal byte literal.
+\item As part of the matching all the individual characters (bytes) of
+      a string literal.
+\item The same, but when the string is case insensitive.
+\item As part of a set.
+\item The same, when macroes yield a set.
+\item As part of a bitmask.
+\end{itemize}
+
+Under all of these (grammar) circumstances, the compiler will yield
+some variation or variations of the range instruction.

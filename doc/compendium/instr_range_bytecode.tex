@@ -1,11 +1,18 @@
-Where:
+Range instruction decomposition:
 
-Bytes 0-3 denote the instruction opcde.
+\begin{myquote}
+\begin{verbatim}
 
-Bytes 4-7 denote the matching range
-from which to match the input byte (inclusive).
-(big endian 32 bit unsigned).
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0 0 0 1|R|nbits|    bitmask    |     from      |     until     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-Bytes 8-11 denote the matching range
-until which to match the input byte (inclusive).
-(big endian 32 bit unsigned).
+R : True range (1), or alternatives in 'from' and 'until' (0).
+nbits:
+bitmask:
+from:
+until:
+
+\end{verbatim}
+\end{myquote}
