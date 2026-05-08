@@ -9,6 +9,6 @@ for TEST in $TESTS; do
     $TEST \
     "$BIN/gpegc -i GRAMMAR -o ASM" \
     "$BIN/gpega -i ASM -o BYTECODE" \
-    "$BIN/gpege -c BYTECODE -i INPUT -v" \
+    "$BIN/gpege -c BYTECODE -i INPUT -v -o -" \
     "$BIN/gpegd"
 done

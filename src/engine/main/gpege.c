@@ -45,6 +45,7 @@ char* usage =
   "-? or -h   Display this text and exit.\n"
   "-i <path>  Specify input path.\n"
   "-c <path>  Specify bytecode path.\n"
+  "-o <path>  Specify output (captures) path.\n"
 #ifdef _DEBUG
   "-v         Verbose mode (debug version only).\n"
   "-d         Start debugger (debug version only).\n"
@@ -119,6 +120,45 @@ int main
     );
     return ~0;
   } else {
+    if (queryargs(argc, argv, 'o', "output", 0, 1, 0, &value) == 0) {
+      FILE* file;
+      if (0 == strcmp(value, "-")) {
+        file = stdout;
+      } else {
+        file = fopen(value, "w");
+      }
+      if (file) {
+        for (unsigned i=0; i < result.captures.count; i++) {
+          fprintf(file, "%u,%u,\""
+                        , result.captures.list[ i ].reg
+                        , result.captures.list[ i ].offset
+          );
+          for (unsigned j=0; j < result.captures.list[ i ].vec.size; j++) {
+            char c = result.captures.list[ i ].vec.data[ j ];
+            if (c >= 32 && c < 127) {
+              if (c == '\"' || c == '\\') {
+                fprintf(file, "\\%c", c);
+              } else {
+                fprintf(file, "%c", c);
+              }
+            } else {
+              switch (c) {
+              case '\n': fprintf(file, "\\n"); break;
+              case '\r': fprintf(file, "\\r"); break;
+              case '\t': fprintf(file, "\\t"); break;
+              case '\v': fprintf(file, "\\v"); break;
+              default: fprintf(file, "\\x%.2x", c); break;
+              }
+            }
+          }
+          fprintf(file, "\"\n");
+        }
+        fclose(file);
+      } else {
+        fprintf(stderr, "Couldn't open output file '%s' for writing.\n", value);
+        return ~0;
+      }
+    }
     return 0;
   }
 }
