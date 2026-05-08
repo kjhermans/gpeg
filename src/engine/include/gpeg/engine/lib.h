@@ -87,6 +87,7 @@ typedef struct gpege_state
   int                   eof;
   unsigned              instrptr;
   unsigned              inputptr;
+  unsigned              inputbit;
   gpege_stack_t         stack;
   gpege_actionlist_t    actions;
   uint32list_t          inputsizes;
