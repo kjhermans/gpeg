@@ -134,7 +134,7 @@ int main
                         , result.captures.list[ i ].offset
           );
           for (unsigned j=0; j < result.captures.list[ i ].vec.size; j++) {
-            char c = result.captures.list[ i ].vec.data[ j ];
+            unsigned char c = result.captures.list[ i ].vec.data[ j ];
             if (c >= 32 && c < 127) {
               if (c == '\"' || c == '\\') {
                 fprintf(file, "\\%c", c);
