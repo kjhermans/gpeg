@@ -5,12 +5,12 @@ JREAP           <- X0 / X1 / X7
 X0              <- !.
 X7              <- !.
 
-TTR             <- |_|
-APV             <- |____|
+TTR             <- { |_| }
+APV             <- { |____| }
 ABML            <- {:abml: .. }
 JRE_SI          <- ..
-TA              <- |____|
-DVT             <- |____| ...
+TA              <- { |____| }
+DVT             <- { |____| ... }
 
 X1              <- &AH1 <:$abml:1:16: X1PAYLOAD >
 AH1             <- 0x31 TTR SP3 APV ABML JRE_SI TA DVT
