@@ -614,6 +614,7 @@ int gpeg_engine_run_condjump
             &(state->counters[ i ]),
             sizeof(unsigned) * 2 * (state->countercount - i)
           );
+          --state->countercount;
         }
         state->instrptr += 4;
       } else {
