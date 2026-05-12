@@ -241,7 +241,7 @@ int gpeg_engine_run
 void gpeg_engine_set_maxinstr
   (unsigned m);
 
-#define GPEGE_MAX_INSTRUCTIONS    (1<<24)
+#define GPEGE_MAX_INSTRUCTIONS    (1<<30)
 #define GPEGE_MAX_STACKSIZE       (1<<16)
 #define GPEGE_MAX_COUNTERS        (1<<16)
 
