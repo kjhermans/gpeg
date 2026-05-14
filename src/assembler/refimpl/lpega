@@ -1,0 +1,155 @@
+#!/usr/bin/perl
+
+use strict;
+
+my $inputfile = '-';
+my $outputfile = '-';
+
+while (scalar(@ARGV)) {
+  my $arg = shift @ARGV;
+  if ($arg =~ s/^-//) {
+    if ($arg eq 'i' || $arg eq '-inputfile') {
+      $inputfile = shift @ARGV;
+    } elsif ($arg eq 'o' || $arg eq '-outputfile') {
+      $outputfile = shift @ARGV;
+    }
+  } else {
+    die "Unknown argument $arg";
+  }
+}
+
+my $input;
+if ($inputfile eq '-') {
+  $input = join('', <STDIN>);
+} else {
+  $input = `cat $inputfile`;
+}
+
+my @tokens;
+my %labels;
+my $offset = 0;
+while (length($input)) {
+  while ($input =~ s/^\s+// || $input =~ s/^--.*?\n//) { }
+  last if (!length($input));
+  if ($input =~ s/^end(\s+([0-9]+))?//) {
+    push @tokens, { type => 'end' };
+    $offset += 4;
+  } elsif ($input =~ s/^range\s+//) {
+    my ($truerange, $nbits, $bitmask, $from, $until) = (1, 8, 0xff, 0, 0);
+    if ($input =~ s/^\s*(true|false)\s+([0-9]+)//) {
+      $truerange = ($1 eq 'true') ? 1 : 0;
+      $nbits = $2;
+    }
+    if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+      $from = hex($1);
+      $until = $from;
+      if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+        $until = hex($1);
+        if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+          $bitmask = hex($1);
+        }
+      }
+    }
+    die "Range contains LPEG unsupportable bitmask" if ($bitmask != 0xff);
+    die "Range contains LPEG unsupportable nbits" if ($nbits != 8);
+    if ($truerange) {
+      if ($from == 0 && $until == 255) {
+        push @tokens, { type => 'any' };
+        $offset += 4;
+      } else {
+        push @tokens, { type => 'set', from => $from, until => $until };
+        $offset += 36;
+      }
+    } elsif ($from == $until) {
+      push @tokens, { type => 'char', char => $from };
+      $offset += 4;
+    } else {
+    }
+  } elsif ($input =~ s/^(limit|(open|close)capture|counter|condjump)\s+//) {
+    die "Assembly contains '$1' instruction, which can't be translated to LPEG";
+  } elsif ($input =~ s/^call\s+([a-zA-Z0-9_-]+)//) {
+    push @tokens, { type => 'call', label => $1 };
+    $offset += 8;
+  } elsif ($input =~ s/^ret\s+//) {
+    push @tokens, { type => 'ret' };
+    $offset += 4;
+  } elsif ($input =~ s/^catch\s+([a-zA-Z0-9_-]+)//) {
+    push @tokens, { type => 'choice', label => $1 };
+    $offset += 8;
+  } elsif ($input =~ s/^commit\s+([a-zA-Z0-9_-]+)//) {
+    push @tokens, { type => 'commit', label => $1 };
+    $offset += 8;
+  } elsif ($input =~ s/^backcommit\s+([a-zA-Z0-9_-]+)//) {
+    push @tokens, { type => 'backcommit', label => $1 };
+    $offset += 8;
+  } elsif ($input =~ s/^partialcommit\s+([a-zA-Z0-9_-]+)//) {
+    push @tokens, { type => 'partialcommit', label => $1 };
+    $offset += 8;
+  } elsif ($input =~ s/^failtwice\s+//) {
+    push @tokens, { type => 'failtwice' };
+    $offset += 4;
+  } elsif ($input =~ s/^fail\s+//) {
+    push @tokens, { type => 'fail' };
+    $offset += 4;
+  } elsif ($input =~ s/^([0-0a-zA-Z_-]+)\s*://) {
+    $labels{$1} = $offset;
+  } else {
+    die "Unknown token at '$input'";
+  }
+}
+
+my $instr = {
+  end => 9,
+  any => 0,
+  set => 2,
+  char => 1,
+  call => 12,
+  ret => 8,
+  choice => 10,
+  commit => 14,
+  backcommit => 16,
+  partialcommit => 15,
+  failtwice => 17,
+  fail => 18,
+};
+
+sub quad
+{
+  my ($c0, $c1, $c2, $c3) = @_;
+  return chr($c0) . chr($c1) . chr($c2) . chr($c3);
+}
+
+my $bytecode = '';
+foreach my $token (@tokens) {
+  if ($token->{type} =~ /^(end|any|ret|failtwice|fail)$/) {
+    $bytecode .= quad($instr->{$token->{type}}, 0, 0, 0);
+  } elsif ($token->{type} eq 'set') {
+    $bytecode .= quad($instr->{$token->{type}}, 0, 0, 0);
+    my $charset = [ (0 x 32) ];
+    for (my $i=$token->{from}; $i <= $token->{until}; $i++) {
+      $charset->[ int($i/8) ] |= (1<<($i%8));
+    }
+    for (my $i=0; $i < 32; $i++) {
+      $bytecode .= chr($charset->[ $i ]);
+    }
+  } elsif ($token->{type} eq 'char') {
+    $bytecode .= quad($instr->{char}, $token->{char}, 0, 0);
+  } elsif ($token->{type} =~ /^(call|choice|(back|partial|)commit)$/) {
+    my $offset = $labels{$token->{label}};
+    die "Couldn't find label $token->{label}" if (!defined($offset));
+    my $reloffset = $offset - length($bytecode);
+    $bytecode .= quad($instr->{call}, 0, 0, 0) . pack('V', $reloffset / 4);
+  } else {
+    die "Unknown token $token->{type}";
+  }
+}
+
+if ($outputfile eq '-') {
+  syswrite STDOUT, $bytecode;
+} else {
+  open FILE, "> $outputfile" || die "Could not open output file $outputfile";
+  syswrite FILE, $bytecode;
+  close FILE;
+}
+
+1;
