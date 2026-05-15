@@ -360,7 +360,34 @@ int gpeg_compile_q_ft_pre
     CHECK(gpeg_node_run(node->children[ 0 ]));
     break;
   default:
-    {
+    if (state->flags & GPEGC_FLG_NOCOUNTER) {
+      for (unsigned i=0; i < from; i++) {
+        CHECK(gpeg_node_run(node->children[ 0 ]));
+      }
+      if (until - from) {
+        vec_printf(state->assembly,
+          "  catch L%u\n"
+          , label
+        );
+        for (unsigned i=0; i < until - from; i++) {
+          CHECK(gpeg_node_run(node->children[ 0 ]));
+          if (i + 1 < until - from) {
+            vec_printf(state->assembly,
+              "  partialcommit __NEXT__\n"
+            );
+          } else {
+            vec_printf(state->assembly,
+              "  commit __NEXT__\n"
+            );
+          }
+        }
+        vec_printf(state->assembly,
+          "L%u:\n"
+          , label
+        );
+      }
+      return GPEGE_ERR_NOFURTHERPROC;
+    } else {
       vec_printf(state->assembly,
         "  counter %u %u\n"
         "CTR%u:\n"
@@ -423,29 +450,49 @@ int gpeg_compile_q_fr_pre
   unsigned counter = (state->counter)++;
   unsigned from = atoi((char*)(fromstr->data));
 
-  vec_append(vec, &label, sizeof(label));
-  if (from) {
+  if (state->flags & GPEGC_FLG_NOCOUNTER) {
+    for (unsigned i=0; i < from; i++) {
+      CHECK(gpeg_node_run(node->children[ 0 ]));
+    }
     vec_printf(state->assembly,
-      "  counter %u %u\n"
-      "CTR%u:\n"
-      , counter
-      , from
-      , counter
+      "  catch L%u\n"
+      "PART%u:\n"
+      , label
+      , label
     );
     CHECK(gpeg_node_run(node->children[ 0 ]));
     vec_printf(state->assembly,
-      "  condjump %u CTR%u\n"
-      , counter
-      , counter
+      "  partialcommit PART%u\n"
+      "L%u:\n"
+      , label
+      , label
     );
+    return GPEGE_ERR_NOFURTHERPROC;
+  } else {
+    vec_append(vec, &label, sizeof(label));
+    if (from) {
+      vec_printf(state->assembly,
+        "  counter %u %u\n"
+        "CTR%u:\n"
+        , counter
+        , from
+        , counter
+      );
+      CHECK(gpeg_node_run(node->children[ 0 ]));
+      vec_printf(state->assembly,
+        "  condjump %u CTR%u\n"
+        , counter
+        , counter
+      );
+    }
+    vec_printf(state->assembly,
+      "  catch L%u\n"
+      "LOOP%u:\n"
+      , label
+      , label
+    );
+    return 0;
   }
-  vec_printf(state->assembly,
-    "  catch L%u\n"
-    "LOOP%u:\n"
-    , label
-    , label
-  );
-  return 0;
 }
 
 static
@@ -466,7 +513,7 @@ void gpeg_compile_q_fr_post
 
 static
 int gpeg_compile_q_un_pre
-  (struct compilestate* state, vec_t* vec, vec_t* n)
+  (gpege_node_t* node, struct compilestate* state, vec_t* vec, vec_t* n)
 {
   unsigned counter = (state->counter)++;
   unsigned label = (state->label)++;
@@ -480,18 +527,43 @@ int gpeg_compile_q_un_pre
     }
     RETURN_ERR(GPEGC_ERR_RANGE);
   }
-  vec_append(vec, &label, sizeof(label));
-  vec_append(vec, &counter, sizeof(counter));
-  vec_printf(state->assembly,
-    "  catch L%u\n"
-    "  counter %u %u\n"
-    "CTR%u:\n"
-    , label
-    , counter
-    , until
-    , counter
-  );
-  return 0;
+
+  if (state->flags & GPEGC_FLG_NOCOUNTER) {
+    vec_printf(state->assembly,
+      "  catch L%u\n"
+      , label
+    );
+    for (unsigned i=0; i < until; i++) {
+      CHECK(gpeg_node_run(node->children[ 0 ]));
+      if (i + 1 < until) {
+        vec_printf(state->assembly,
+          "  partialcommit __NEXT__\n"
+        );
+      } else {
+        vec_printf(state->assembly,
+          "  commit __NEXT__\n"
+        );
+      }
+    }
+    vec_printf(state->assembly,
+      "L%u:\n"
+      , label
+    );
+    return GPEGE_ERR_NOFURTHERPROC;
+  } else {
+    vec_append(vec, &label, sizeof(label));
+    vec_append(vec, &counter, sizeof(counter));
+    vec_printf(state->assembly,
+      "  catch L%u\n"
+      "  counter %u %u\n"
+      "CTR%u:\n"
+      , label
+      , counter
+      , until
+      , counter
+    );
+    return 0;
+  }
 }
 
 static
@@ -513,18 +585,28 @@ void gpeg_compile_q_un_post
 }
 
 static
-void gpeg_compile_q_sp_pre
-  (struct compilestate* state, vec_t* vec, vec_t* n)
+int gpeg_compile_q_sp_pre
+  (gpege_node_t* node, struct compilestate* state, vec_t* vec, vec_t* n)
 {
   unsigned counter = (state->counter)++;
-  vec_append(vec, &counter, sizeof(counter));
-  vec_printf(state->assembly,
-    "  counter %u %s\n"
-    "CTR%u:\n"
-    , counter
-    , (char*)(n->data)
-    , counter
-  );
+  unsigned counts = atoi((char*)(n->data));
+
+  if (state->flags & GPEGC_FLG_NOCOUNTER) {
+    for (unsigned i=0; i < counts; i++) {
+      CHECK(gpeg_node_run(node->children[ 0 ]));
+    }
+    return GPEGE_ERR_NOFURTHERPROC;
+  } else {
+    vec_append(vec, &counter, sizeof(counter));
+    vec_printf(state->assembly,
+      "  counter %u %u\n"
+      "CTR%u:\n"
+      , counter
+      , counts
+      , counter
+    );
+    return 0;
+  }
 }
 
 static
@@ -573,6 +655,7 @@ int gpeg_compile_q
       case SLOT_Q_UNTIL:
         CHECK(
           gpeg_compile_q_un_pre(
+            node,
             state,
             vec,
             &(node->children[ 1 ]->children[ 0 ]->children[ 0 ]->vec)
@@ -590,10 +673,13 @@ int gpeg_compile_q
         );
         break;
       case SLOT_Q_SPECIFIC:
-        gpeg_compile_q_sp_pre(
-          state,
-          vec,
-          &(node->children[ 1 ]->children[ 0 ]->children[ 0 ]->vec)
+        CHECK(
+          gpeg_compile_q_sp_pre(
+            node,
+            state,
+            vec,
+            &(node->children[ 1 ]->children[ 0 ]->children[ 0 ]->vec)
+          )
         );
         break;
       }
