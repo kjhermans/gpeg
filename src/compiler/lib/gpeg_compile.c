@@ -364,29 +364,6 @@ int gpeg_compile_q_ft_pre
       for (unsigned i=0; i < from; i++) {
         CHECK(gpeg_node_run(node->children[ 0 ]));
       }
-      if (until - from) {
-        vec_printf(state->assembly,
-          "  catch L%u\n"
-          , label
-        );
-        for (unsigned i=0; i < until - from; i++) {
-          CHECK(gpeg_node_run(node->children[ 0 ]));
-          if (i + 1 < until - from) {
-            vec_printf(state->assembly,
-              "  partialcommit __NEXT__\n"
-            );
-          } else {
-            vec_printf(state->assembly,
-              "  commit __NEXT__\n"
-            );
-          }
-        }
-        vec_printf(state->assembly,
-          "L%u:\n"
-          , label
-        );
-      }
-      return GPEGE_ERR_NOFURTHERPROC;
     } else {
       vec_printf(state->assembly,
         "  counter %u %u\n"
@@ -404,16 +381,42 @@ int gpeg_compile_q_ft_pre
     }
     break;
   }
-  vec_printf(state->assembly,
-    "  catch L%u\n"
-    "  counter %u %u\n"
-    "CTR%u:\n"
-    , label
-    , counter1
-    , until - from
-    , counter1
-  );
-  return 0;
+  if (state->flags & GPEGC_FLG_NOCOUNTER) {
+    if (until - from) {
+      vec_printf(state->assembly,
+        "  catch L%u\n"
+        , label
+      );
+      for (unsigned i=0; i < until - from; i++) {
+        CHECK(gpeg_node_run(node->children[ 0 ]));
+        if (i + 1 < until - from) {
+          vec_printf(state->assembly,
+            "  partialcommit __NEXT__\n"
+          );
+        } else {
+          vec_printf(state->assembly,
+            "  commit __NEXT__\n"
+          );
+        }
+      }
+      vec_printf(state->assembly,
+        "L%u:\n"
+        , label
+      );
+    }
+    return GPEGE_ERR_NOFURTHERPROC;
+  } else {
+    vec_printf(state->assembly,
+      "  catch L%u\n"
+      "  counter %u %u\n"
+      "CTR%u:\n"
+      , label
+      , counter1
+      , until - from
+      , counter1
+    );
+    return 0;
+  }
 }
 
 static
