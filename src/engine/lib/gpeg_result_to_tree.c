@@ -171,8 +171,18 @@ int gpeg_node_run_
   for (unsigned i=0; i < parent->nchildren; i++) {
     gpege_node_t* child = parent->children[ i ];
     vec_t vec = { 0 };
+    int r;
+
     if (child->fnc) {
-      CHECK(child->fnc(child, GPEG_FNC_PRENODE, i, &vec, child->arg));
+      switch (r = child->fnc(child, GPEG_FNC_PRENODE, i, &vec, child->arg)) {
+      case 0:
+        break;
+      case GPEGE_ERR_NOFURTHERPROC:
+        if (vec.data) { free(vec.data); }
+        continue;
+      default:
+        return r;
+      }
     }
     if (parent->fnc) {
       CHECK(parent->fnc(parent, GPEG_FNC_PRECHILD, i, parentvec, parent->arg));

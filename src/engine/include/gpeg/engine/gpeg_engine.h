@@ -174,6 +174,7 @@ gpege_result_t;
 #define GPEGE_ERR_MAXINSTR      6
 #define GPEGE_ERR_MAXCOUNTER    7
 #define GPEGE_ERR_LIMIT         8
+#define GPEGE_ERR_NOFURTHERPROC 9
 
 #define GPEGE_ERR_STRINGS { \
   NULL, \
@@ -185,6 +186,7 @@ gpege_result_t;
   "Maximum amount of instructions exceeded", \
   "Maximum amount of counters exceeded", \
   "Limit exceeds input length", \
+  "No further processing (not an error)", \
 }
 
 #define GPEGE_FLG_COPYCAPTURES  (1<<0)
