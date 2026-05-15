@@ -4,6 +4,7 @@ use strict;
 
 my $inputfile = '-';
 my $outputfile = '-';
+my $ignore_unknown = 0;
 
 while (scalar(@ARGV)) {
   my $arg = shift @ARGV;
@@ -12,6 +13,8 @@ while (scalar(@ARGV)) {
       $inputfile = shift @ARGV;
     } elsif ($arg eq 'o' || $arg eq '-outputfile') {
       $outputfile = shift @ARGV;
+    } elsif ($arg eq '-ignore-unknown') {
+      $ignore_unknown = 1;
     }
   } else {
     die "Unknown argument $arg";
@@ -36,16 +39,16 @@ while (length($input)) {
     $offset += 4;
   } elsif ($input =~ s/^range\s+//) {
     my ($truerange, $nbits, $bitmask, $from, $until) = (1, 8, 0xff, 0, 0);
-    if ($input =~ s/^\s*(true|false)\s+([0-9]+)//) {
+    if ($input =~ s/^(true|false)\s+([0-9]+)\s+//) {
       $truerange = ($1 eq 'true') ? 1 : 0;
       $nbits = $2;
     }
-    if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+    if ($input =~ s/^([a-fA-F0-9]{2})\s+//) {
       $from = hex($1);
       $until = $from;
-      if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+      if ($input =~ s/^([a-fA-F0-9]{2})\s+//) {
         $until = hex($1);
-        if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+        if ($input =~ s/^([a-fA-F0-9]{2})\s+//) {
           $bitmask = hex($1);
         }
       }
@@ -66,7 +69,11 @@ while (length($input)) {
     } else {
     }
   } elsif ($input =~ s/^(limit|(open|close)capture|counter|condjump)\s+//) {
-    die "Assembly contains '$1' instruction, which can't be translated to LPEG";
+    if (!$ignore_unknown) {
+      die "Assembly '$1' instruction, which can't be translated to LPEG";
+    } else {
+      $input =~ s/^.*?\n//;
+    }
   } elsif ($input =~ s/^call\s+([a-zA-Z0-9_-]+)//) {
     push @tokens, { type => 'call', label => $1 };
     $offset += 8;
@@ -91,7 +98,7 @@ while (length($input)) {
   } elsif ($input =~ s/^fail\s+//) {
     push @tokens, { type => 'fail' };
     $offset += 4;
-  } elsif ($input =~ s/^([0-0a-zA-Z_-]+)\s*://) {
+  } elsif ($input =~ s/^([0-9a-zA-Z_-]+)\s*://) {
     $labels{$1} = $offset;
   } else {
     die "Unknown token at '$input'";
@@ -135,7 +142,12 @@ foreach my $token (@tokens) {
   } elsif ($token->{type} eq 'char') {
     $bytecode .= quad($instr->{char}, $token->{char}, 0, 0);
   } elsif ($token->{type} =~ /^(call|choice|(back|partial|)commit)$/) {
-    my $offset = $labels{$token->{label}};
+    my $offset;
+    if ($token->{label} eq '__NEXT__') {
+      $offset = length($bytecode) + 8;
+    } else {
+      $offset = $labels{$token->{label}};
+    }
     die "Couldn't find label $token->{label}" if (!defined($offset));
     my $reloffset = $offset - length($bytecode);
     $bytecode .= quad($instr->{call}, 0, 0, 0) . pack('V', $reloffset / 4);
