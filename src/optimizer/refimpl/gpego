@@ -1,0 +1,151 @@
+#!/usr/bin/perl
+  
+use strict;
+    
+my $inputfile = '-';
+my $input = '';
+
+my $outputfile = '-';
+my $output = '';
+
+while (scalar(@ARGV)) {
+  my $arg = shift @ARGV;
+  if ($arg =~ s/^-//) {
+    if ($arg eq 'h' || $arg eq '?') {
+      print "Usage: $0 [options]
+Where options are:
+-i <path>  Specify assembly file input path (default '-' or stdin).
+-o <path>  Specify bytecode file output path (default '-' or stdout).
+";
+      exit 0;
+    } elsif ($arg eq 'i') {
+      $inputfile = shift @ARGV || die "No input file specified.";
+    } elsif ($arg eq 'o') {
+      $outputfile = shift @ARGV || die "No output file specified.";
+    } else {
+      die "Unrecognized option -$arg.";
+    }
+  }
+}
+
+if ($inputfile eq '-') {
+  $input = join('', <STDIN>);
+} else {
+  $input = `cat $inputfile` || die "Could not absorb input file '$inputfile'";
+}
+
+my @tokens;
+my %labels;
+
+tokenize();
+first_pass();
+second_pass();
+
+if ($outputfile eq '-') {
+  syswrite(STDOUT, $output);
+} else {
+  open FILE, "> $outputfile" || die "Could not open '$outputfile' for output.";
+  syswrite(FILE, $output);
+  close FILE;
+}
+
+exit 0;
+
+##---- functions ----##
+
+sub tokenize
+{
+  while (length($input)) {
+    while (1) {
+      last if (0 == ($input =~ s/^[ \t\r\n]+//)
+               && 0 == ($input =~ s/^--(.*)?\n//));
+    }
+    if ($input =~ s/^([a-zA-Z0-9_]+)://) {
+      push @tokens, { type => 'label', label => $1 };
+    } elsif ($input =~ s/^end(\s+([0-9]+))?//) {
+      push @tokens, { type => 'end', code => $2 };
+    } elsif ($input =~ s/^char\s+([a-fA-F0-9]{2})//) {
+      push @tokens, { type => 'range', from => hex($1), until => hex($1) };
+    } elsif ($input =~ s/^(ret|failtwice|fail)//) {
+      push @tokens, { type => $1 };
+    } elsif ($input =~ s/^any//) {
+      push @tokens, { type => 'range',from => 0, until => 255, truerange => 1 };
+    } elsif ($input =~ s/^limit\s+([01])\s+([0-9]+)\s+([0-9]+)//) {
+      my ($E, $S, $reg) = ($1, $2, $3);
+      push @tokens, { type => 'limit', E => $E, S => $S, reg => $reg };
+    } elsif ($input =~ s/^range\s+//) {
+      my ($truerange, $nbits, $bitmask, $from, $until) = (1, 8, 0xff, 0, 0);
+      if ($input =~ s/^\s*(true|false)\s+([0-9]+)//) {
+        $truerange = ($1 eq 'true') ? 1 : 0;
+        $nbits = $2;
+      }
+      if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+        $from = hex($1);
+        $until = $from;
+        if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+          $until = hex($1);
+          if ($input =~ s/^\s+([a-fA-F0-9]{2})//) {
+            $bitmask = hex($1);
+          }
+        }
+      }
+      push @tokens, {
+        type => 'range',
+        from => $from,
+        until => $until,
+        bitmask => $bitmask,
+        truerange => $truerange,
+        nbits => $nbits,
+      };
+    } elsif ($input =~ s/^bitmask\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
+      push @tokens, {
+        type => 'range',
+        bitmask => hex($1),
+        from => hex($2),
+        until => hex($2)
+      };
+    } elsif ($input =~ s/^(open|close)capture\s+([0-9]+)//) {
+      push @tokens, { type => "$1capture", reg => $2 };
+    } elsif ($input =~ s/^counter\s+([0-9]+)\s+([0-9]+)//) {
+      push @tokens, { type => 'counter', reg => $1, value => $2 };
+    } elsif ($input =~ s/^condjump\s+([0-9]+)\s+([a-zA-Z0-9_]+)//) {
+      push @tokens, { type => 'condjump', reg => $1, label => $2 };
+    } elsif ($input =~ s/^var\s+([0-9]+)//) {
+      push @tokens, { type => 'var', reg => $1 };
+    } elsif ($input =~ s/^(call|catch|(partial|back|)commit)\s+([a-zA-Z0-9_]+)//) {
+      push @tokens, { type => $1, label => $3 };
+    } elsif ($input =~ s/^quad\s+([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})//) {
+      push @tokens,
+        { type => 'range', from => hex($1), until => hex($1) },
+        { type => 'range', from => hex($2), until => hex($2) },
+        { type => 'range', from => hex($3), until => hex($3) },
+        { type => 'range', from => hex($4), until => hex($4) };
+    } elsif ($input =~ s/^set\s+([0-9a-fA-F]{64})// ) {
+      recompile_set($1);
+    } elsif (length($input)) {
+      die "Unknown token at '$input'.";
+    }
+  }
+}
+
+sub first_pass
+{
+  my $bc_offset = 0;
+  for (my $i=0; $i < scalar(@tokens); $i++) {
+    my $token = $tokens[ $i ];
+    if ($token->{type} eq 'label') {
+      $labels{$token->{label}} = $bc_offset * 4;
+    } else {
+      ++$bc_offset;
+    }
+  }
+}
+
+sub second_pass
+{
+  for (my $i=0; $i < scalar(@tokens); $i++) {
+    my $token = $tokens[ $i ];
+  }
+}
+
+1;
