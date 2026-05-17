@@ -83,19 +83,19 @@ sub disassemble
       die "Bytecode too short @ choice" if (length($input) < 4);
       my $reloff = get_reloff(substr($input, 0, 4));
       $input = substr($input, 4);
-      $output .= "L$offset: choice L" . (($offset + $reloff) * 4) . "\n";
+      $output .= "L$offset: choice L" . ($offset + ($reloff * 4)) . "\n";
       $offset += 8;
     } elsif ($bytes[ 0 ] == 11) {
       die "Bytecode too short @ jmp" if (length($input) < 4);
       my $reloff = get_reloff(substr($input, 0, 4));
       $input = substr($input, 4);
-      $output .= "L$offset: jmp L" . (($offset + $reloff) * 4). "\n";
+      $output .= "L$offset: jmp L" . ($offset + ($reloff * 4)) . "\n";
       $offset += 8;
     } elsif ($bytes[ 0 ] == 12) {
       die "Bytecode too short @ call" if (length($input) < 4);
       my $reloff = get_reloff(substr($input, 0, 4));
       $input = substr($input, 4);
-      $output .= "L$offset: call L" . (($offset + $reloff) * 4) . "\n";
+      $output .= "L$offset: call L" . ($offset + ($reloff * 4)) . "\n";
       $offset += 8;
     } elsif ($bytes[ 0 ] == 13) {
       ##.. opencall
@@ -103,19 +103,19 @@ sub disassemble
       die "Bytecode too short @ commit" if (length($input) < 4);
       my $reloff = get_reloff(substr($input, 0, 4));
       $input = substr($input, 4);
-      $output .= "L$offset: commit L" . (($offset + $reloff) * 4) . "\n";
+      $output .= "L$offset: commit L" . ($offset + ($reloff * 4)) . "\n";
       $offset += 8;
     } elsif ($bytes[ 0 ] == 15) {
       die "Bytecode too short @ partialcommit" if (length($input) < 4);
       my $reloff = get_reloff(substr($input, 0, 4));
       $input = substr($input, 4);
-      $output .= "L$offset: partialcommit L" . (($offset + $reloff) * 4) . "\n";
+      $output .= "L$offset: partialcommit L" . ($offset + ($reloff * 4)) . "\n";
       $offset += 8;
     } elsif ($bytes[ 0 ] == 16) {
       die "Bytecode too short @ backcommit" if (length($input) < 4);
       my $reloff = get_reloff(substr($input, 0, 4));
       $input = substr($input, 4);
-      $output .= "L$offset: backcommit L" . (($offset + $reloff) * 4) . "\n";
+      $output .= "L$offset: backcommit L" . ($offset + ($reloff * 4)) . "\n";
       $offset += 8;
     } elsif ($bytes[ 0 ] == 17) {
       $output .= "L$offset: failtwice\n"; $offset += 4;
