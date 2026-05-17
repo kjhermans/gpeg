@@ -66,11 +66,34 @@ sub disassemble
         die "Bytecode too short @ set.";
       }
     } elsif ($bytes[ 0 ] == 3) {
-      ##.. testany
+      die "Bytecode too short @ testany" if (length($input) < 4);
+      my $reloff = get_reloff(substr($input, 0, 4));
+      $input = substr($input, 4);
+      $output .= "L$offset: testany L" . ($offset + ($reloff * 4)) . "\n";
+      $offset += 8;
     } elsif ($bytes[ 0 ] == 4) {
-      ##.. testchar
+      die "Bytecode too short @ testchar" if (length($input) < 4);
+      my $reloff = get_reloff(substr($input, 0, 4));
+      $input = substr($input, 4);
+      $output .= sprintf
+        "L$offset: testchar %.2x L" . ($offset + ($reloff * 4)) . "\n"
+        , $bytes[ 1 ];
+      $offset += 8;
     } elsif ($bytes[ 0 ] == 5) {
-      ##.. testset
+      if (length($input) >= 36) {
+        my $reloff = get_reloff(substr($input, 0, 4));
+        $input = substr($input, 4);
+        $output .= "L$offset: testset L" . ($offset + ($reloff * 4)) . " ";
+        for (my $i=0; $i < 32; $i++) {
+          my $byte = ord(substr($input, $i + 4, 1));
+          $output .= sprintf("%.2x", $byte);
+        }
+        $input = substr($input, 32);
+        $output .= "\n";
+        $offset += 36;
+      } else {
+        die "Bytecode too short @ testset.";
+      }
     } elsif ($bytes[ 0 ] == 6) {
       ##.. span
     } elsif ($bytes[ 0 ] == 7) {
