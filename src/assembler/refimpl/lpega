@@ -174,7 +174,6 @@ foreach my $token (@tokens) {
     $bytecode .=
       quad($instr->{$token->{type}}, 0, 0, 0) .
       pack_sig_low_32($reloffset / 4);
-      #pack('V', $reloffset / 4);
   } else {
     die "Unknown token $token->{type}";
   }
