@@ -59,6 +59,9 @@ while (length($input)) {
       if ($from == 0 && $until == 255) {
         push @tokens, { type => 'any' };
         $offset += 4;
+      } elsif ($from == $until) {
+        push @tokens, { type => 'char', char => $from };
+        $offset += 4;
       } else {
         push @tokens, { type => 'set', from => $from, until => $until };
         $offset += 36;
@@ -67,6 +70,7 @@ while (length($input)) {
       push @tokens, { type => 'char', char => $from };
       $offset += 4;
     } else {
+##.. either or from or until
     }
   } elsif ($input =~ s/^(limit|(open|close)capture|counter|condjump)\s+//) {
     if (!$ignore_unknown) {
@@ -80,8 +84,8 @@ while (length($input)) {
   } elsif ($input =~ s/^ret\s+//) {
     push @tokens, { type => 'ret' };
     $offset += 4;
-  } elsif ($input =~ s/^catch\s+([a-zA-Z0-9_-]+)//) {
-    push @tokens, { type => 'choice', label => $1 };
+  } elsif ($input =~ s/^(catch|choice)\s+([a-zA-Z0-9_-]+)//) {
+    push @tokens, { type => 'choice', label => $2 };
     $offset += 8;
   } elsif ($input =~ s/^commit\s+([a-zA-Z0-9_-]+)//) {
     push @tokens, { type => 'commit', label => $1 };
@@ -112,6 +116,7 @@ my $instr = {
   char => 1,
   call => 12,
   ret => 8,
+  catch => 10,
   choice => 10,
   commit => 14,
   backcommit => 16,
@@ -124,6 +129,20 @@ sub quad
 {
   my ($c0, $c1, $c2, $c3) = @_;
   return chr($c0) . chr($c1) . chr($c2) . chr($c3);
+}
+
+sub pack_sig_low_32
+{
+  my $n = shift;
+  my $neg = 0;
+  if ($n < 0) {
+    $neg = 1;
+    $n = -$n;
+  }
+  my $res =
+    chr($n & 0xff) . chr(($n >> 8) & 0xff) . chr(($n >> 16) & 0xff) .
+    chr((($n >> 24) & 0x7f) | ($neg ? 0x80 : 0x00));
+  return $res;
 }
 
 my $bytecode = '';
@@ -141,16 +160,21 @@ foreach my $token (@tokens) {
     }
   } elsif ($token->{type} eq 'char') {
     $bytecode .= quad($instr->{char}, $token->{char}, 0, 0);
-  } elsif ($token->{type} =~ /^(call|choice|(back|partial|)commit)$/) {
-    my $offset;
-    if ($token->{label} eq '__NEXT__') {
-      $offset = length($bytecode) + 8;
-    } else {
-      $offset = $labels{$token->{label}};
+  } elsif ($token->{type} =~ /^(call|catch|choice|(back|partial|)commit)$/) {
+    my $reloffset;
+    {
+      if ($token->{label} eq '__NEXT__') {
+        $reloffset = 8;
+      } else {
+        my $offset = $labels{$token->{label}};
+        die "Couldn't find label $token->{label}" if (!defined($offset));
+        $reloffset = $offset - length($bytecode);
+      }
     }
-    die "Couldn't find label $token->{label}" if (!defined($offset));
-    my $reloffset = $offset - length($bytecode);
-    $bytecode .= quad($instr->{call}, 0, 0, 0) . pack('V', $reloffset / 4);
+    $bytecode .=
+      quad($instr->{$token->{type}}, 0, 0, 0) .
+      pack_sig_low_32($reloffset / 4);
+      #pack('V', $reloffset / 4);
   } else {
     die "Unknown token $token->{type}";
   }

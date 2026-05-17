@@ -1,0 +1,180 @@
+#!/usr/bin/perl
+
+use strict;
+
+my $inputfile = '-';
+my $input = '';
+
+my $outputfile = '-';
+my $output = '';
+
+while (scalar(@ARGV)) {
+  my $arg = shift @ARGV;
+  if ($arg =~ s/^-//) {
+    if ($arg eq 'i') {
+      $inputfile = shift @ARGV || die "No input file specified.";
+    } elsif ($arg eq 'o') {
+      $outputfile = shift @ARGV || die "No output file specified.";
+    } else {
+      die "Unrecognized option -$arg.";
+    }
+  }
+}
+
+if ($inputfile eq '-') {
+  $input = join('', <STDIN>);
+} else {
+  $input = absorb_binary($inputfile);
+}
+
+disassemble();
+
+if ($outputfile eq '-') {
+  print $output;
+}
+
+exit 0;
+
+##---- functions ----##
+
+sub disassemble
+{
+  my $offset = 0;
+  while (length($input) >= 4) {
+    my @bytes = (
+      ord(substr($input, 0, 1)),
+      ord(substr($input, 1, 1)),
+      ord(substr($input, 2, 1)),
+      ord(substr($input, 3, 1)),
+    );
+    $input = substr($input, 4);
+    if ($bytes[ 0 ] == 0) {
+      $output .= "L$offset: any\n"; $offset += 4;
+    } elsif ($bytes[ 0 ] == 1) {
+      $output .= sprintf "L$offset: char %.2x\n", $bytes[ 1 ]; $offset += 4;
+    } elsif ($bytes[ 0 ] == 2) {
+      if (length($input) >= 32) {
+        $output .= "L$offset: set ";
+        for (my $i=0; $i < 32; $i++) {
+          my $byte = ord(substr($input, $i, 1));
+          $output .= sprintf("%.2x", $byte);
+        }
+        $input = substr($input, 32);
+        $output .= "\n";
+        $offset += 36;
+      } else {
+        die "Bytecode too short @ set.";
+      }
+    } elsif ($bytes[ 0 ] == 3) {
+      ##.. testany
+    } elsif ($bytes[ 0 ] == 4) {
+      ##.. testchar
+    } elsif ($bytes[ 0 ] == 5) {
+      ##.. testset
+    } elsif ($bytes[ 0 ] == 6) {
+      ##.. span
+    } elsif ($bytes[ 0 ] == 7) {
+      ##.. behind
+    } elsif ($bytes[ 0 ] == 8) {
+      $output .= "L$offset: ret\n"; $offset += 4;
+    } elsif ($bytes[ 0 ] == 9) {
+      $output .= "L$offset: end\n"; $offset += 4;
+    } elsif ($bytes[ 0 ] == 10) {
+      die "Bytecode too short @ choice" if (length($input) < 4);
+      my $reloff = get_reloff(substr($input, 0, 4));
+      $input = substr($input, 4);
+      $output .= "L$offset: choice L" . (($offset + $reloff) * 4) . "\n";
+      $offset += 8;
+    } elsif ($bytes[ 0 ] == 11) {
+      die "Bytecode too short @ jmp" if (length($input) < 4);
+      my $reloff = get_reloff(substr($input, 0, 4));
+      $input = substr($input, 4);
+      $output .= "L$offset: jmp L" . (($offset + $reloff) * 4). "\n";
+      $offset += 8;
+    } elsif ($bytes[ 0 ] == 12) {
+      die "Bytecode too short @ call" if (length($input) < 4);
+      my $reloff = get_reloff(substr($input, 0, 4));
+      $input = substr($input, 4);
+      $output .= "L$offset: call L" . (($offset + $reloff) * 4) . "\n";
+      $offset += 8;
+    } elsif ($bytes[ 0 ] == 13) {
+      ##.. opencall
+    } elsif ($bytes[ 0 ] == 14) {
+      die "Bytecode too short @ commit" if (length($input) < 4);
+      my $reloff = get_reloff(substr($input, 0, 4));
+      $input = substr($input, 4);
+      $output .= "L$offset: commit L" . (($offset + $reloff) * 4) . "\n";
+      $offset += 8;
+    } elsif ($bytes[ 0 ] == 15) {
+      die "Bytecode too short @ partialcommit" if (length($input) < 4);
+      my $reloff = get_reloff(substr($input, 0, 4));
+      $input = substr($input, 4);
+      $output .= "L$offset: partialcommit L" . (($offset + $reloff) * 4) . "\n";
+      $offset += 8;
+    } elsif ($bytes[ 0 ] == 16) {
+      die "Bytecode too short @ backcommit" if (length($input) < 4);
+      my $reloff = get_reloff(substr($input, 0, 4));
+      $input = substr($input, 4);
+      $output .= "L$offset: backcommit L" . (($offset + $reloff) * 4) . "\n";
+      $offset += 8;
+    } elsif ($bytes[ 0 ] == 17) {
+      $output .= "L$offset: failtwice\n"; $offset += 4;
+    } elsif ($bytes[ 0 ] == 18) {
+      $output .= "L$offset: fail\n"; $offset += 4;
+    } elsif ($bytes[ 0 ] == 19) {
+      $output .= "L$offset: giveup\n"; $offset += 4;
+    } elsif ($bytes[ 0 ] == 20) {
+      ##.. fullcapture
+    } elsif ($bytes[ 0 ] == 21) {
+      ##.. opencapture
+    } elsif ($bytes[ 0 ] == 22) {
+      ##.. closecapture
+    } elsif ($bytes[ 0 ] == 23) {
+      $output .= "L$offset: closeruntime\n"; $offset += 4;
+    }
+  }
+}
+
+sub get_reloff
+{
+  my $str = shift;
+  my @bytes = (
+    ord(substr($str, 0, 1)),
+    ord(substr($str, 1, 1)),
+    ord(substr($str, 2, 1)),
+    ord(substr($str, 3, 1)),
+  );
+  my $neg = 0;
+  if ($bytes[ 3 ] & 0x80) {
+    $neg = 1;
+  }
+  my $n = (
+    $bytes[ 0 ] |
+    ($bytes[ 1 ] << 8) |
+    ($bytes[ 2 ] << 16) |
+    (($bytes[ 3 ] & 0x7f) << 24)
+  );
+  if ($neg) {
+    $n = -$n;
+  }
+  return $n;
+}
+
+sub absorb_binary
+{
+  my $path = shift; die "$path not found" if (! -f $path);
+  my $result = '';
+  die "Error $@ opening $path" if (!open(FILE, '<', $path));
+  binmode FILE;
+  my $buf;
+  while (1) {
+    my $n = sysread(FILE, $buf, 1024);
+    if (!$n) {
+      close FILE;
+      return $result;
+    }
+    $result .= $buf;
+  }
+}
+
+1;
