@@ -41,11 +41,11 @@ echo "You can execute these commands to uninstall gpeg."
 echo
 
 find /usr/local/include/gpeg/ \
-  | sed -e 's/^/rm -f /' > /usr/local/bin/gpeg_uninstall.sh
+  | sed -e 's/^/rm -rf /' > /usr/local/bin/gpeg_uninstall.sh
 find /usr/local/lib/libgpeg* \
-  | sed -e 's/^/rm -f /' >> /usr/local/bin/gpeg_uninstall.sh
+  | sed -e 's/^/rm -rf /' >> /usr/local/bin/gpeg_uninstall.sh
 find /usr/local/bin/gpeg* \
-  | sed -e 's/^/rm -f /' >> /usr/local/bin/gpeg_uninstall.sh
+  | sed -e 's/^/rm -rf /' >> /usr/local/bin/gpeg_uninstall.sh
 echo "rm -rf /usr/local/include/gpeg/" >> /usr/local/bin/gpeg_uninstall.sh
 
 chmod 775 /usr/local/bin/gpeg_uninstall.sh
