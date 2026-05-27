@@ -5,6 +5,10 @@ all:
 	cd compiler && make
 	cd assembler && make
 	cd debugger && make
+	if [ ! -d ../../util ]; then \
+	  git clone https://github.com/kjhermans/util ../../; \
+	fi
+	cd util && make
 
 .PHONY: test
 
@@ -20,3 +24,4 @@ clean:
 	cd compiler && make clean
 	cd assembler && make clean
 	cd debugger && make clean
+	cd util && make clean
