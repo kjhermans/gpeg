@@ -9,6 +9,7 @@ all:
 	  git clone https://github.com/kjhermans/util ../../; \
 	fi
 	cd util && make
+	cd lib && make
 
 .PHONY: test
 
@@ -25,3 +26,4 @@ clean:
 	cd assembler && make clean
 	cd debugger && make clean
 	cd util && make clean
+	cd lib && make clean
