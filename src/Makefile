@@ -1,14 +1,14 @@
 all:
 	xxd -i release engine/include/gpeg/engine/release.h
 	cd build && make
-	cd engine && make
-	cd compiler && make
-	cd assembler && make
-	cd debugger && make
 	if [ ! -d ../../util ]; then \
 	  git clone https://github.com/kjhermans/util ../../; \
 	fi
-	cd util && make
+	cd util && make ARCH=$(GPEGARCH)
+	cd engine && make ARCH=$(GPEGARCH)
+	cd compiler && make ARCH=$(GPEGARCH)
+	cd assembler && make ARCH=$(GPEGARCH)
+	cd debugger && make
 	cd lib && make
 
 .PHONY: test

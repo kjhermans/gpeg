@@ -41,11 +41,13 @@ xxd -n grammar_byc -i $GEN0/grammar.byc $GEN0/grammar_bytecode.h
 
 xxd -n assembly_byc -i $GEN0/assembly.byc $GEN0/assembly_bytecode.h
 
-mkdir $GEN0/compiler $GEN0/assembler $GEN0/engine
+mkdir $GEN0/compiler $GEN0/assembler $GEN0/engine $GEN0/util
 cp -rf ../compiler/* $GEN0/compiler/
 cp -rf ../assembler/* $GEN0/assembler/
 cp -rf ../engine/* $GEN0/engine/
+cp -rf ../util/* $GEN0/util/
 
+make -C $GEN0/util/
 make -C $GEN0/engine/
  
 cp $GEN0/grammar.* $GEN0/compiler/lib/
@@ -87,11 +89,13 @@ $GEN0/assembler/main/gpega \
 
 xxd -n assembly_byc -i $GEN1/assembly.byc $GEN1/assembly_bytecode.h
 
-mkdir $GEN1/compiler $GEN1/assembler $GEN1/engine
+mkdir $GEN1/compiler $GEN1/assembler $GEN1/engine $GEN1/util
 cp -rf ../compiler/* $GEN1/compiler/
 cp -rf ../assembler/* $GEN1/assembler/
 cp -rf ../engine/* $GEN1/engine/
+cp -rf ../util/* $GEN1/util/
 
+make -C $GEN1/util/
 make -C $GEN1/engine/
  
 cp $GEN1/grammar.* $GEN1/compiler/lib/
@@ -134,11 +138,13 @@ $GEN1/assembler/main/gpega \
 
 xxd -n assembly_byc -i $GEN2/assembly.byc $GEN2/assembly_bytecode.h
 
-mkdir $GEN2/compiler $GEN2/assembler $GEN2/engine
+mkdir $GEN2/compiler $GEN2/assembler $GEN2/engine $GEN2/util
 cp -rf ../compiler/* $GEN2/compiler/
 cp -rf ../assembler/* $GEN2/assembler/
 cp -rf ../engine/* $GEN2/engine/
+cp -rf ../util/* $GEN2/util/
 
+make -C $GEN2/util/
 make -C $GEN2/engine/
  
 cp $GEN2/grammar.* $GEN2/compiler/lib/

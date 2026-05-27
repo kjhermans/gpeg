@@ -1,3 +1,10 @@
+##
+## Set GPEGARCH to the CPU architecture prefix, and not ARCH, if you
+## want to cross compile. The reason being that setting ARCH will
+## compile the utilities that produce the next generation of utilities
+## for the platform that they won't run on (yours).
+##
+
 all:
 	cd src && make
 
