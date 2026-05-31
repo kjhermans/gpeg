@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+use strict;
+
 my $file = shift @ARGV;
 my $compiler = shift @ARGV;
 my $assembler = shift @ARGV;
@@ -13,11 +15,12 @@ if ($file =~ /([0-9]+)\.tst$/) {
   $n = int($1);
 }
 
-my $tmpfile="/tmp/test$$";
+#my $tmpfile="/tmp/test$$";
+my $tmpfile="/tmp/gpeg_$file";
 
 if ($test =~ /-- (Replace|Capture|Grammar|Assembly):\s*\n(.*)\n-- (Input|Hexinput):\s*\n(.*)\n-- Result:(.*)$/s) {
   print "Test $file - ";
-  system("echo \"Test file $file\" > $tmpfile.$n.log");
+  system("echo \"Test file $file\" > $tmpfile.log");
   my $action = $1;
   my $inputtype = $3;
   my (@fields) = ($2, $4, $5);
@@ -25,30 +28,30 @@ if ($test =~ /-- (Replace|Capture|Grammar|Assembly):\s*\n(.*)\n-- (Input|Hexinpu
   if ($inputtype eq 'Hexinput') {
     my $bin = hexdecode($fields[1]);
     open FILE, "> $tmpfile.txt"; syswrite FILE, $bin; close FILE;
-    system("ls -l $tmpfile.txt >> $tmpfile.$n.log");
+    system("ls -l $tmpfile.txt >> $tmpfile.log");
   } else {
     open FILE, "> $tmpfile.txt"; print FILE $fields[1]; close FILE;
   }
   if ($action eq 'Assembly') {
     open FILE, "> $tmpfile.asm"; print FILE $fields[0]; close FILE;
-    system("rm -f $tmpfile.$n.log; touch $tmpfile.$n.log");
+    system("rm -f $tmpfile.log; touch $tmpfile.log");
   } else {
     open FILE, "> $tmpfile.gpeg"; print FILE $fields[0]; close FILE;
-    system("echo \"---- Grammar:\" >> $tmpfile.$n.log");
-    system("cat $tmpfile.gpeg >> $tmpfile.$n.log");
+    system("echo \"---- Grammar:\" >> $tmpfile.log");
+    system("cat $tmpfile.gpeg >> $tmpfile.log");
     my $c = "$compiler";
     $c =~ s/GRAMMAR/$tmpfile.gpeg/g;
     $c =~ s/ASM/$tmpfile.asm/g;
-    $c .= " 2>>$tmpfile.$n.log";
+    $c .= " 2>>$tmpfile.log";
     my $x = system($c);
     if ($x) {
       print "Compile NOK - ";
       if ($fields[2] eq 'ERR_COMP') {
         print "Test Ok\n";
-        system("mv $tmpfile.$n.log /tmp/success.$n.log");
+#        system("cp $tmpfile.log /tmp/success.$n.log");
       } else {
         print "Test NOK\n";
-        system("mv $tmpfile.$n.log /tmp/failure.$n.log");
+#        system("cp $tmpfile.log /tmp/failure.$n.log");
       }
       exit 0;
     } else {
@@ -58,27 +61,27 @@ if ($test =~ /-- (Replace|Capture|Grammar|Assembly):\s*\n(.*)\n-- (Input|Hexinpu
   my $a = "$assembler";
   $a =~ s/ASM/$tmpfile.asm/g;
   $a =~ s/BYTECODE/$tmpfile.byc/g;
-  $a .= " 2>>$tmpfile.$n.log";
-  system("echo \"---- Assembly:\" >> $tmpfile.$n.log");
-  system("cat $tmpfile.asm >> $tmpfile.$n.log");
+  $a .= " 2>>$tmpfile.log";
+  system("echo \"---- Assembly:\" >> $tmpfile.log");
+  system("cat $tmpfile.asm >> $tmpfile.log");
   my $x = system($a);
-  system("ls -l $tmpfile.byc >> $tmpfile.$n.log");
-  system("echo \"---- Bytecode:\" >> $tmpfile.$n.log");
-  system("hexdump -C $tmpfile.byc >> $tmpfile.$n.log");
+  system("ls -l $tmpfile.byc >> $tmpfile.log");
+  system("echo \"---- Bytecode:\" >> $tmpfile.log");
+  system("hexdump -C $tmpfile.byc >> $tmpfile.log");
   if (-x $disassembler) {
-    system("echo \"---- Disassembly:\" >> $tmpfile.$n.log");
-    system("$disassembler -i $tmpfile.byc >> $tmpfile.$n.log 2>\&1");
+    system("echo \"---- Disassembly:\" >> $tmpfile.log");
+    system("$disassembler -i $tmpfile.byc >> $tmpfile.log 2>\&1");
   } else {
-    system("echo \"---- No disassembly: $disassembler\" >> $tmpfile.$n.log");
+    system("echo \"---- No disassembly: $disassembler\" >> $tmpfile.log");
   }
   if ($x) {
     print "Assembly NOK - ";
     if ($fields[2] eq 'ERR_ASM') {
       print "Test Ok\n";
-      system("mv $tmpfile.$n.log /tmp/success.$n.log");
+#      system("cp $tmpfile.log /tmp/success.$n.log");
     } else {
       print "Test NOK\n";
-      system("mv $tmpfile.$n.log /tmp/failure.$n.log");
+#      system("cp $tmpfile.log /tmp/failure.$n.log");
     }
     exit 0;
   } else {
@@ -90,34 +93,33 @@ if ($test =~ /-- (Replace|Capture|Grammar|Assembly):\s*\n(.*)\n-- (Input|Hexinpu
   }
   $e =~ s/BYTECODE/$tmpfile.byc/g;
   $e =~ s/INPUT/$tmpfile.txt/g;
-  $e .= " >>$tmpfile.$n.log " . '2>&1';
-  system("echo \"---- Input:\" >> $tmpfile.$n.log");
-  system("cat $tmpfile.txt >> $tmpfile.$n.log");
-  system("echo >> $tmpfile.$n.log");
-  system("hexdump -C $tmpfile.txt >> $tmpfile.$n.log");
-  system("echo \"---- Log:\" >> $tmpfile.$n.log");
+  $e .= " >>$tmpfile.log " . '2>&1';
+  system("echo \"---- Input:\" >> $tmpfile.log");
+  system("cat $tmpfile.txt >> $tmpfile.log");
+  system("echo >> $tmpfile.log");
+  system("hexdump -C $tmpfile.txt >> $tmpfile.log");
+  system("echo \"---- Log:\" >> $tmpfile.log");
   my $x = system($e);
   if ($x) {
     print "Engine NOK - ";
     if ($fields[2] eq 'NOK') {
       print "Test Ok\n";
-      system("mv $tmpfile.$n.log /tmp/success.$n.log");
+#      system("cp $tmpfile.log /tmp/success.$n.log");
     } else {
       print "Test NOK\n";
-      system("mv $tmpfile.$n.log /tmp/failure.$n.log");
+#      system("cp $tmpfile.log /tmp/failure.$n.log");
     }
-    exit 0;
   } else {
     print "Engine Ok  - ";
     if ($fields[2] eq 'OK') {
       print "Test Ok\n";
-      system("mv $tmpfile.$n.log /tmp/success.$n.log");
+#      system("cp $tmpfile.log /tmp/success.$n.log");
     } else {
       print "Test NOK\n";
-      system("mv $tmpfile.$n.log /tmp/failure.$n.log");
+#      system("cp $tmpfile.log /tmp/failure.$n.log");
     }
   }
-  system("rm $tmpfile.*");
+  system("rm -f $tmpfile.txt $tmpfile.gpeg $tmpfile.asm $tmpfile.byc");
 } else {
   print STDERR "Ignoring $file\n";
 }

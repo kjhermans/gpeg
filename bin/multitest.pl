@@ -14,7 +14,7 @@ my $tmpfile="/tmp/test$$";
 system("rm -f $tmpfile.$n.log");
 
 print "Multitest $file\n";
-system("rm -f /tmp/success.$file.log /tmp/failure.$file.log");
+system("rm -f /tmp/gpeg_$file.log");
 
 my $n = 0;
 foreach my $test (@tests) {
@@ -25,7 +25,7 @@ foreach my $test (@tests) {
     ++$n;
     my $header = sprintf "TEST #%.3d - ", $n;
     print $header;
-    system("echo \"---- $header\" >> $tmpfile.$n.log");
+    system("echo \"======== $header\" >> $tmpfile.$n.log");
     open FILE, "> $tmpfile.gpeg"; print FILE $fields[0]; close FILE;
     open FILE, "> $tmpfile.txt"; print FILE $fields[1]; close FILE;
     my $c = "$compiler";
@@ -40,10 +40,12 @@ foreach my $test (@tests) {
       print "Compile NOK - ";
       if ($fields[2] eq 'ERR_COMP') {
         print "             -            - Test Ok\n";
-        system("cat $tmpfile.$n.log >> /tmp/success.$file.log");
+        system("cat $tmpfile.$n.log >> /tmp/gpeg_$file.log");
+        system("echo 'Test Ok' >> /tmp/gpeg_$file.log");
       } else {
         print "             -            - Test NOK\n";
-        system("cat $tmpfile.$n.log >> /tmp/failure.$file.log");
+        system("cat $tmpfile.$n.log >> /tmp/gpeg_$file.log");
+        system("echo 'Test NOK' >> /tmp/gpeg_$file.log");
       }
       next;
     } else {
@@ -70,10 +72,12 @@ foreach my $test (@tests) {
       print "Assembly NOK - ";
       if ($fields[2] eq 'ERR_ASM') {
         print "           - Test Ok\n";
-        system("cat $tmpfile.$n.log >> /tmp/success.$file.log");
+        system("cat $tmpfile.$n.log >> /tmp/gpeg_$file.log");
+        system("echo 'Test Ok' >> /tmp/gpeg_$file.log");
       } else {
         print "           - Test NOK\n";
-        system("cat $tmpfile.$n.log >> /tmp/failure.$file.log");
+        system("cat $tmpfile.$n.log >> /tmp/gpeg_$file.log");
+        system("echo 'Test NOK' >> /tmp/gpeg_$file.log");
       }
       next;
     } else {
@@ -89,20 +93,24 @@ foreach my $test (@tests) {
       print "Engine NOK - ";
       if ($fields[2] eq 'NOK') {
         print "Test Ok\n";
-        system("cat $tmpfile.$n.log >> /tmp/success.$file.log");
+        system("cat $tmpfile.$n.log >> /tmp/gpeg_$file.log");
+        system("echo 'Test Ok' >> /tmp/gpeg_$file.log");
       } else {
         print "Test NOK\n";
-        system("cat $tmpfile.$n.log >> /tmp/failure.$file.log");
+        system("cat $tmpfile.$n.log >> /tmp/gpeg_$file.log");
+        system("echo 'Test NOK' >> /tmp/gpeg_$file.log");
       }
       next;
     } else {
       print "Engine Ok  - ";
       if ($fields[2] eq 'OK') {
         print "Test Ok\n";
-        system("cat $tmpfile.$n.log >> /tmp/success.$file.log");
+        system("cat $tmpfile.$n.log >> /tmp/gpeg_$file.log");
+        system("echo 'Test Ok' >> /tmp/gpeg_$file.log");
       } else {
         print "Test NOK\n";
-        system("cat $tmpfile.$n.log >> /tmp/failure.$file.log");
+        system("cat $tmpfile.$n.log >> /tmp/gpeg_$file.log");
+        system("echo 'Test NOK' >> /tmp/gpeg_$file.log");
       }
     }
   }
