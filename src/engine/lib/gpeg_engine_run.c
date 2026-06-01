@@ -272,7 +272,7 @@ inline int resolve_variable
 
 #ifdef _DEBUG
 static char readable_buf[ 17 ];
-static int readable_hex = 0;
+int readable_hex = 0;
 
 static
 char* readable_text
