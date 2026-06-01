@@ -10,4 +10,4 @@ $(LIB): $(OBJECTS)
 	$(AR) -rcs $(LIB) $(OBJECTS)
 
 clean:
-		rm -f $(LIB) $(OBJECTS)
+	rm -f $(LIB) $(OBJECTS)
