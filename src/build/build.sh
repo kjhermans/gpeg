@@ -47,6 +47,8 @@ cp -rf ../assembler/* $GEN0/assembler/
 cp -rf ../engine/* $GEN0/engine/
 cp -rf ../util/* $GEN0/util/
 
+find $GEN0 -type f | grep Makefile | xargs -n 1 sed -i 's/..ARCH.//'
+
 make -C $GEN0/util/
 make -C $GEN0/engine/
  
@@ -89,13 +91,14 @@ $GEN0/assembler/main/gpega \
 
 xxd -n assembly_byc -i $GEN1/assembly.byc $GEN1/assembly_bytecode.h
 
-mkdir $GEN1/compiler $GEN1/assembler $GEN1/engine $GEN1/util
+mkdir $GEN1/compiler $GEN1/assembler $GEN1/engine
 cp -rf ../compiler/* $GEN1/compiler/
 cp -rf ../assembler/* $GEN1/assembler/
 cp -rf ../engine/* $GEN1/engine/
-cp -rf ../util/* $GEN1/util/
+ln -s $GEN0/util $GEN1/util
 
-make -C $GEN1/util/
+find $GEN1 -type f | grep Makefile | xargs -n 1 sed -i 's/..ARCH.//'
+
 make -C $GEN1/engine/
  
 cp $GEN1/grammar.* $GEN1/compiler/lib/
@@ -138,13 +141,14 @@ $GEN1/assembler/main/gpega \
 
 xxd -n assembly_byc -i $GEN2/assembly.byc $GEN2/assembly_bytecode.h
 
-mkdir $GEN2/compiler $GEN2/assembler $GEN2/engine $GEN2/util
+mkdir $GEN2/compiler $GEN2/assembler $GEN2/engine
 cp -rf ../compiler/* $GEN2/compiler/
 cp -rf ../assembler/* $GEN2/assembler/
 cp -rf ../engine/* $GEN2/engine/
-cp -rf ../util/* $GEN2/util/
+ln -s $GEN1/util $GEN2/util
 
-make -C $GEN2/util/
+find $GEN2 -type f | grep Makefile | xargs -n 1 sed -i 's/..ARCH.//'
+
 make -C $GEN2/engine/
  
 cp $GEN2/grammar.* $GEN2/compiler/lib/
