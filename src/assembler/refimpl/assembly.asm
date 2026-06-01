@@ -1,4 +1,4 @@
--- GPEG compiler, release 0.5.11
+-- GPEG compiler, release 0.5.12
 
   call TOP
   end 0
