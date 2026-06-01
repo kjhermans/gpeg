@@ -271,21 +271,28 @@ inline int resolve_variable
 }
 
 #ifdef _DEBUG
-static char readable_buf[ 9 ];
+static char readable_buf[ 17 ];
+static int readable_hex = 0;
 
 static
 char* readable_text
   (const vec_t* input, unsigned inputptr)
 {
   unsigned o = 0;
+  char hex[] = "0123456789abcdef";
   while (o < sizeof(readable_buf)-1 && o + inputptr < input->size) {
-    char c = input->data[ inputptr + o ];
-    if (c > 32 && c < 127) {
-      readable_buf[ o ] = c;
+    unsigned char c = input->data[ inputptr + o ];
+    if (readable_hex) {
+      readable_buf[ o++ ] = hex[ c >> 4 ];
+      readable_buf[ o++ ] = hex[ c & 0x0f ];
     } else {
-      readable_buf[ o ] = '.';
+      if (c > 32 && c < 127) {
+        readable_buf[ o ] = c;
+      } else {
+        readable_buf[ o ] = '.';
+      }
+      o++;
     }
-    o++;
   }
   readable_buf[ o ] = 0;
   return readable_buf;
@@ -362,6 +369,7 @@ void gpeg_engine_run_range
   if (state->eof) {
     state->failed = 1;
   } else if (R) {
+//fprintf(stderr, "TRUE RANGE: matching %.2x <= %.2x & %.2x <= %.2x\n", from, chr, mask, until);
     if ((chr & mask) < from || (chr & mask) > until) {
       state->failed = 1;
     } else {
@@ -373,6 +381,7 @@ void gpeg_engine_run_range
       }
     }
   } else {
+//fprintf(stderr, "Match %.2x & %.2x == %.2x\n", chr, mask, from);
     if ((chr & mask) == from || (chr & mask) == until) {
       state->instrptr += 4;
       state->inputbit += nbits;
@@ -681,6 +690,10 @@ int gpeg_engine_run
   result->flags = flags;
 
   (void)instrstr;
+
+#ifdef _DEBUG
+  if (flags & GPEGE_FLG_DEBUGHEX) { readable_hex = 1; }
+#endif
 
   while (!state.ended && !(state.failed && state.stack.count == 0)) {
     if (maxinstrctr && ++state.instrctr > maxinstrctr) {
