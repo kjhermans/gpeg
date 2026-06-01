@@ -36,4 +36,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 void gpeg_debug_instruction
   (gpege_state_t* state)
 {
+  char buf[ 32 ];
+  (void)state;
+
+  fprintf(stderr, "> ");
+  if (fgets(buf, sizeof(buf), stdin)) {
+    //..
+  }
 }
