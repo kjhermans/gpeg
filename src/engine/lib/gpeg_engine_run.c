@@ -330,7 +330,12 @@ void gpeg_engine_set_maxinstr
 
 #ifdef _DEBUGGER
 #define DEBUGGER_INSTRUCTION \
-    gpeg_debug_instruction(&state);
+  { \
+    int dontstep = 1; \
+    while (dontstep) { \
+      gpeg_debug_instruction(&state, &dontstep); \
+    } \
+  }
 #else
 #define DEBUGGER_INSTRUCTION { }
 #endif

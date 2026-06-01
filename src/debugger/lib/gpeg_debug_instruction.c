@@ -34,13 +34,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <gpeg/engine/lib.h>
 
 void gpeg_debug_instruction
-  (gpege_state_t* state)
+  (gpege_state_t* state, int* dontstep)
 {
-  char buf[ 32 ];
+  char buf[ 32 ] = { 0 };
   (void)state;
 
   fprintf(stderr, "> ");
   if (fgets(buf, sizeof(buf), stdin)) {
-    //..
+    if (0 == strcmp(buf, "q\n")) {
+      fprintf(stderr, "Exiting.\n");
+      exit(0);
+    } else if (0 == strcmp(buf, "h\n") || 0 == strcmp(buf, "?\n")) {
+      fprintf(stderr,
+"Help:\n\n"
+"q           Quit\n"
+"? or h      Print this help text.\n"
+"<Enter>     Step.\n"
+"c           Run to the next call.\n"
+"o           Step over the call.\n"
+"a           Always step over this call.\n"
+"r <n>       Run to instruction number <n>.\n"
+      );
+    } else if (0 == strcmp(buf, "\n")) {
+      *dontstep = 0;
+    }
   }
 }

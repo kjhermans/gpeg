@@ -100,7 +100,7 @@ gpege_state_t;
 #ifdef _DEBUGGER
 extern
 void gpeg_debug_instruction
-  (gpege_state_t* state);
+  (gpege_state_t* state, int* dontstep);
 #endif
 
 #endif
