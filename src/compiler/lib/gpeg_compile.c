@@ -1346,7 +1346,7 @@ int gpeg_compile
     .error = error,
     .slotmap = slotmap,
   };
-  int e;
+  int e = 0;
 
   if ((e = gpeg_engine_run(&bytecode, grammar, 0, &result)) != 0) {
     if (error) {

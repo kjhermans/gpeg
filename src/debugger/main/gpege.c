@@ -57,14 +57,14 @@ int main
 {
   char defaultinput[] = "-";
   char* inputfile = defaultinput;
-  char* bytecodefile = 0;
-  char* value = 0;
+  char* bytecodefile = NULL;
   char* labelmapfile = NULL;
+  char* value = NULL;
   vec_t input = { 0 };
   vec_t bytecode = { 0 };
   gpege_result_t result = { 0 };
   unsigned flags = 0;
-  int e;
+  int e = 0;
 
 #ifdef _DEBUG
   fprintf(stderr, "gpege DEBUG version, release %-.*s\n", release_len, release);
