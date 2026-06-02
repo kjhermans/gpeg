@@ -49,32 +49,50 @@ void gpeg_debug_instruction
     *dontstep = 0;
     return;
   }
-  fprintf(stderr, "> ");
+  fprintf(stderr, "[?qcoarsHf] > ");
   if (fgets(buf, sizeof(buf), stdin)) {
     if (0 == strcmp(buf, "q\n")) {
       fprintf(stderr, "Exiting.\n");
       exit(0);
-    } else if (0 == strcmp(buf, "?\n")) {
+    } else if (0 == strcmp(buf, "?\n") || 0 == strcmp(buf, "h\n")) {
       fprintf(stderr,
 "Help:\n\n"
 "q           Quit\n"
-"?           Print this help text.\n"
+"? or h      Print this help text.\n"
 "<Enter>     Step.\n"
 "c           Run to the next call.\n"
 "o           Step over the call.\n"
 "a           Always step over this call.\n"
 "r <n>       Run to instruction number <n>.\n"
 "s           Print stack fully.\n"
-"h           Input in hex.\n"
+"H           Toggle input in hex.\n"
+"f           Introduce a FAIL.\n"
       );
     } else if (0 == strcmp(buf, "\n")) {
       *dontstep = 0;
-    } else if (0 == strcmp(buf, "h\n")) {
+    } else if (0 == strcmp(buf, "H\n")) {
       fprintf(stderr, "Input now in hex.\n");
-      readable_hex = 1;
+      readable_hex = !readable_hex;
     } else if (0 == strcmp(buf, "c\n")) {
       *dontstep = 0;
       state->debuggerstate |= GPEG_DBGRSTAT_NEXTCALL;
+    } else if (0 == strcmp(buf, "s\n")) {
+      if (state->stack.count == 0) {
+        fprintf(stderr, "No stack.\n");
+      }
+      for (unsigned i=0; i < state->stack.count; i++) {
+        fprintf(stderr, "  #%u; typ=%s, instr=%u, input=%u, #action=%u, #counters=%u, inputlen=%u\n"
+          , i
+          , (state->stack.list[ i ].type == 1 ? "call" : "catch")
+          , state->stack.list[ i ].instrptr
+          , state->stack.list[ i ].inputptr
+          , state->stack.list[ i ].actioncount
+          , state->stack.list[ i ].countercount
+          , state->stack.list[ i ].inputsizescount
+        );
+      }
+    } else if (0 == strcmp(buf, "f\n")) {
+      //.. introduce a FAIL condition
     }
   }
 }
