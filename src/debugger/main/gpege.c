@@ -44,7 +44,7 @@ char* usage =
   "Where options are:\n"
   "-? or -h   Display this text and exit.\n"
   "-i <path>  Specify input path.\n"
-  "-c <path>  Specify bytecode path.\n"
+  "-c <path>  Specify output bytecode path.\n"
   "-o <path>  Specify output (captures) path.\n"
   "-L <path>  Specify input labelmap path.\n"
 ;
