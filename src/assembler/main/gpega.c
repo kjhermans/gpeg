@@ -42,7 +42,7 @@ char* usage =
   "Where options are:\n"
   "-? or -h   Display this text and exit.\n"
   "-i <path>  Specify input path.\n"
-  "-o <path>  Speficy output path.\n"
+  "-o <path>  Specify output path.\n"
   "-L <path>  Specify label map path (output).\n"
 ;
 
