@@ -166,15 +166,16 @@ typedef struct
 }
 gpege_result_t;
 
-#define GPEGE_ERR_OVERFLOW      1
-#define GPEGE_ERR_STACKEMPTY    2
-#define GPEGE_ERR_STACKELT      3
-#define GPEGE_ERR_COUNTER       4
-#define GPEGE_ERR_VARIABLE      5
-#define GPEGE_ERR_MAXINSTR      6
-#define GPEGE_ERR_MAXCOUNTER    7
-#define GPEGE_ERR_LIMIT         8
-#define GPEGE_ERR_NOFURTHERPROC 9
+#define GPEGE_ERR_NOFURTHERPROC 1
+#define GPEGE_ERR_OVERFLOW      2
+#define GPEGE_ERR_STACKEMPTY    3
+#define GPEGE_ERR_STACKELT      4
+#define GPEGE_ERR_COUNTER       5
+#define GPEGE_ERR_VARIABLE      6
+#define GPEGE_ERR_MAXINSTR      7
+#define GPEGE_ERR_MAXCOUNTER    8
+#define GPEGE_ERR_LIMIT         9
+#define GPEGE_ERR_PARSER        10
 
 #define GPEGE_ERR_STRINGS { \
   NULL, \

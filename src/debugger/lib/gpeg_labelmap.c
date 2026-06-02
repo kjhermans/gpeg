@@ -31,22 +31,64 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
-#ifndef _GPEG_ASSEMBLER_H_
-#define _GPEG_ASSEMBLER_H_
+#include <gpeg/engine/lib.h>
 
-#define GPEGA_ERR_PARSER      513
-#define GPEGA_ERR_LABEL       514
-#define GPEGA_ERR_LIMIT       515
-#define GPEGA_ERR_ENDLESSLOOP 516
+#include "labelmap_bytecode.h"
+#include "labelmap_slotmap.h"
 
-extern
-int gpeg_assemble
-  (
-    const vec_t* assembly,
-    vec_t* bytecode,
-    vec_t* error,
-    vec_t* labelmap // may be NULL
-  )
-  __attribute__ ((warn_unused_result));
+static
+int gpeg_labelmap_label
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  (void)i;
+  (void)vec;
+  str2int_map_t* labelmap = arg;
 
-#endif
+  if (phase == GPEG_FNC_PRENODE) {
+    char* label = (char*)(node->children[ 0 ]->vec.data);
+    unsigned offset = strtoul((char*)(node->children[ 2 ]->vec.data), 0, 10);
+    str2int_map_put(labelmap, label, offset);
+  }
+  return 0;
+}
+
+int gpeg_labelmap_load
+  (vec_t* input, str2int_map_t* labelmap, vec_t* error)
+{
+  DEBUGFUNCTION
+  ASSERT(input)
+  ASSERT(labelmap)
+
+  vec_t bytecode = { (unsigned char*)labelmap_byc, labelmap_byc_len };
+  gpege_result_t result = { 0 };
+  int e = 0;
+
+  if ((e = gpeg_engine_run(&bytecode, input, 0, &result)) != 0) {
+    if (error) {
+      char* errs[] = GPEGE_ERR_STRINGS;
+      vec_printf(error,
+        "Labelmap parser engine ended in error; %s.\n", errs[ e ]
+      );
+    }
+    RETURN_ERR(GPEGE_ERR_PARSER);
+  } else if (!(result.success)) {
+    if (error) {
+      unsigned yx[ 2 ] = { 0 };
+      e = strxypos((char*)(input->data), result.maxinputptr, yx);
+      vec_printf(error,
+        "Labelmap parser engine ended in no match;\n"
+        "Furthest input position reached: %u, which is line %u, character %u.\n"
+        , result.maxinputptr
+        , yx[ 0 ]
+        , yx[ 1 ]
+      );
+    }
+    RETURN_ERR(GPEGE_ERR_PARSER);
+  }
+
+  gpege_node_t* tree = gpeg_result_to_tree(&result);
+  gpeg_node_callback(tree, SLOT_LABEL, gpeg_labelmap_label, labelmap);
+  CHECK(gpeg_node_run(tree));
+
+  return 0;
+}

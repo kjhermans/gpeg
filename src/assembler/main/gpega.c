@@ -43,6 +43,7 @@ char* usage =
   "-? or -h   Display this text and exit.\n"
   "-i <path>  Specify input path.\n"
   "-o <path>  Speficy output path.\n"
+  "-L <path>  Specify label map path (output).\n"
 ;
 
 /**
@@ -55,10 +56,12 @@ int main
   char defaultoutput[] = "-";
   char* inputfile = defaultinput;
   char* outputfile = defaultoutput;
+  char* labelmapfile = NULL;
   char* value;
   vec_t input = { 0 };
   vec_t output = { 0 };
   vec_t error = { 0 };
+  vec_t labelmap = { 0 };
   int fdout = 1;
 
   if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0
@@ -73,12 +76,15 @@ int main
   if (queryargs(argc, argv, 'o', "output", 0, 1, 0, &value) == 0) {
     outputfile = value;
   }
+  if (queryargs(argc, argv, 'L', "labelmap", 0, 1, 0, &value) == 0) {
+    labelmapfile = value;
+  }
   if (absorb_file(inputfile, &(input.data), &(input.size))) {
     fprintf(stderr, "Could not absorb file '%s'\n", inputfile);
     return ~0;
   }
 
-  if (gpeg_assemble(&input, &output, &error)) {
+  if (gpeg_assemble(&input, &output, &error, (labelmapfile ? &labelmap : 0))) {
     fprintf(stderr, "Assembler error.\n");
     if (error.data) {
       fprintf(stderr, "%s", error.data);
@@ -95,6 +101,18 @@ int main
     fprintf(stderr, "Assembly writing error: %d\n", errno);
   }
   close(fdout);
+
+  if (labelmapfile && labelmap.data) {
+    int labelmapfd = open(labelmapfile, O_WRONLY|O_CREAT|O_TRUNC, 0644);
+    if (labelmapfd >= 0) {
+      if (write_insistent(labelmapfd, labelmap.data, labelmap.size, 0)) {
+        fprintf(stderr, "Labelmap writing error: %d\n", errno);
+        return ~0;
+      }
+      close(labelmapfd);
+    }
+    free(labelmap.data);
+  }
 
   return 0;
 }

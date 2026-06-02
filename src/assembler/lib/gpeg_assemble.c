@@ -46,6 +46,7 @@ struct assemblerstate
   str2int_map_t offsets;
   vec_t*        bytecode;
   vec_t*        error;
+  vec_t*        labelmap;
 };
 
 static
@@ -61,6 +62,11 @@ int gpeg_asm_label
     if (state->pass == 1) {
       char* label = (char*)(node->children[ 0 ]->vec.data);
       str2int_map_put(&(state->offsets), label, state->offset);
+      if (state->labelmap) {
+        vec_printf(state->labelmap,
+          "%s:%u\n", label, state->offset
+        );
+      }
     }
   }
   return 0;
@@ -562,7 +568,8 @@ int gpeg_assemble
   (
     const vec_t* assembly,
     vec_t* bytecode,
-    vec_t* error
+    vec_t* error,
+    vec_t* labelmap
   )
 {
   DEBUGFUNCTION
@@ -572,10 +579,11 @@ int gpeg_assemble
   vec_t assemblybytecode = { (unsigned char*)assembly_byc, assembly_byc_len };
   gpege_result_t result = { 0 };
   struct assemblerstate state = {
-    .bytecode = bytecode,
-    .error = error,
-    .pass = 0,
-    .offset = 0,
+    .bytecode  = bytecode,
+    .error     = error,
+    .labelmap  = labelmap,
+    .pass      = 0,
+    .offset    = 0,
   };
   int e;
 

@@ -46,6 +46,7 @@ char* usage =
   "-i <path>  Specify input path.\n"
   "-c <path>  Specify bytecode path.\n"
   "-o <path>  Specify output (captures) path.\n"
+  "-L <path>  Specify input labelmap path.\n"
 ;
 
 /**
@@ -58,6 +59,7 @@ int main
   char* inputfile = defaultinput;
   char* bytecodefile = 0;
   char* value = 0;
+  char* labelmapfile = NULL;
   vec_t input = { 0 };
   vec_t bytecode = { 0 };
   gpege_result_t result = { 0 };
@@ -91,6 +93,9 @@ int main
   if (absorb_file(bytecodefile, &(bytecode.data), &(bytecode.size))) {
     fprintf(stderr, "Could not absorb file '%s'\n", bytecodefile);
     return ~0;
+  }
+  if (queryargs(argc, argv, 'L', "labelmap", 0, 1, 0, &value) == 0) {
+    labelmapfile = value;
   }
   flags |= GPEGE_FLG_DEBUG;
   flags |= GPEGE_FLG_DEBUGGER;

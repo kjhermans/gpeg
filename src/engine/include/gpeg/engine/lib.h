@@ -42,6 +42,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <andy/devmacroes.h>
 #include <andy/array.h>
 #include <andy/uint32list.h>
+#include <andy/str2int_map.h>
+#include <andy/util_functions.h>
 
 #include <gpeg/engine/gpeg_engine.h>
 
