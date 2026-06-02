@@ -99,6 +99,7 @@ int main
   }
   if (write_insistent(fdout, output.data, output.size, 0)) {
     fprintf(stderr, "Assembly writing error: %d\n", errno);
+    return ~0;
   }
   close(fdout);
 
