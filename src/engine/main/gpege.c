@@ -46,6 +46,7 @@ char* usage =
   "-i <path>  Specify input path.\n"
   "-c <path>  Specify bytecode path.\n"
   "-o <path>  Specify output (captures) path.\n"
+  "-H         Specify input is in hexadecimal.\n"
 #ifdef _DEBUG
   "-v         Verbose mode (debug version only).\n"
   "-d         Start debugger (debug version only).\n"
