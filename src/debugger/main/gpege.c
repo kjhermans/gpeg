@@ -46,6 +46,7 @@ char* usage =
   "-i <path>  Specify input path.\n"
   "-c <path>  Specify output bytecode path.\n"
   "-o <path>  Specify output (captures) path.\n"
+  "-H         Specify input is in hexadecimal.\n"
   "-L <path>  Specify input labelmap path.\n"
 ;
 
@@ -93,6 +94,12 @@ int main
   if (absorb_file(bytecodefile, &(bytecode.data), &(bytecode.size))) {
     fprintf(stderr, "Could not absorb file '%s'\n", bytecodefile);
     return ~0;
+  }
+  if (queryargs(argc, argv, 'H', "hex", 0, 0, 0, 0) == 0) {
+    if (vec_hex_decode(&input)) {
+      fprintf(stderr, "Hex decode error in input.\n");
+      return ~0;
+    }
   }
   if (queryargs(argc, argv, 'L', "labelmap", 0, 1, 0, &value) == 0) {
     labelmapfile = value;

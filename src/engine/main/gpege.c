@@ -97,6 +97,12 @@ int main
     fprintf(stderr, "Could not absorb file '%s'\n", bytecodefile);
     return ~0;
   }
+  if (queryargs(argc, argv, 'H', "hex", 0, 0, 0, 0) == 0) {
+    if (vec_hex_decode(&input)) {
+      fprintf(stderr, "Hex decode error in input.\n");
+      return ~0;
+    }
+  }
 #ifdef _DEBUG
   if (queryargs(argc, argv, 'v', "verbose", 0, 0, 0, 0) == 0) {
     flags |= GPEGE_FLG_DEBUG;
