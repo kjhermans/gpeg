@@ -49,7 +49,6 @@ char* usage =
   "-H         Specify input is in hexadecimal.\n"
 #ifdef _DEBUG
   "-v         Verbose mode (debug version only).\n"
-  "-d         Start debugger (debug version only).\n"
 #endif
 ;
 
@@ -106,9 +105,6 @@ int main
 #ifdef _DEBUG
   if (queryargs(argc, argv, 'v', "verbose", 0, 0, 0, 0) == 0) {
     flags |= GPEGE_FLG_DEBUG;
-  }
-  if (queryargs(argc, argv, 'd', "debug", 0, 0, 0, 0) == 0) {
-    flags |= GPEGE_FLG_DEBUGGER;
   }
 #endif
   if ((e = gpeg_engine_run(&bytecode, &input, flags, &result)) != 0) {
