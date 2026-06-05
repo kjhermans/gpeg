@@ -42,11 +42,13 @@ extern void gpeg_engine_state_print
 
 extern int readable_hex;
 
-__attribute__ ((unused))
 static
 void gpege_actionlist_debug
   (const vec_t* input, gpege_actionlist_t* list)
 {
+  if (list->count == 0) {
+    fprintf(stderr, "No actions.\n");
+  }
   for (unsigned i=0; i < list->count; i++) {
     fprintf(stderr,
       "ACTION %u: %s reg=%u off=%u stk=%u "
@@ -66,6 +68,52 @@ void gpege_actionlist_debug
   }
 }
 
+static
+void gpeg_instruction_print_labeled
+  (gpege_state_t* state, char* opcodestring)
+{
+  uint8_t* instr8 = state->bytecode->data + state->instrptr;
+  unsigned offset = (((instr8[ 1 ] & 0x0f) << 16) | (instr8[ 2 ] << 8) | instr8[ 3]);
+  char* label = NULL;
+
+  if (offset == state->instrptr + 4) {
+    fprintf(stderr, "  %s __NEXT__\n", opcodestring);
+  } else if (gpeg_labelmap &&
+             (label = gpeg_labelmap_inverse(gpeg_labelmap, offset)) != NULL)
+  {
+    fprintf(stderr, "  %s %s\n", opcodestring, label);
+  } else {
+    fprintf(stderr, "  %s %u\n", opcodestring, offset);
+  }
+}
+
+static
+void gpeg_instruction_print
+  (gpege_state_t* state)
+{
+  uint8_t* instr8 = state->bytecode->data + state->instrptr;
+  uint8_t opcode = instr8[0] >> 4;
+
+  switch (opcode) {
+  case OP_END: fprintf(stderr, "  end %u\n", ((instr8[1]<<16) | (instr8[2]<<8) | instr8[3])); break;
+  case OP_RANGE: break;
+  case OP_LIMIT: break;
+  case OP_CALL: gpeg_instruction_print_labeled(state, "call"); break;
+  case OP_RET: break;
+  case OP_CATCH: gpeg_instruction_print_labeled(state, "catch"); break;
+  case OP_COMMIT: gpeg_instruction_print_labeled(state, "commit"); break;
+  case OP_BACKCOMMIT: gpeg_instruction_print_labeled(state, "backcommit"); break;
+  case OP_PARTIALCOMMIT: gpeg_instruction_print_labeled(state, "partialcommit"); break;
+  case OP_FAIL: fprintf(stderr, "  fail\n"); break;
+  case OP_FAILTWICE: fprintf(stderr, "  failtwice\n"); break;
+  case OP_VAR: break;
+  case OP_OPENCAPTURE: break;
+  case OP_CLOSECAPTURE: break;
+  case OP_COUNTER: break;
+  case OP_CONDJUMP: break;
+  }
+}
+
 void gpeg_debug_instruction
   (gpege_state_t* state)
 {
@@ -76,12 +124,14 @@ void gpeg_debug_instruction
   if (gpeg_debugger_off) { return; }
   if (state->flags & GPEGE_FLG_DEBUGHEX) { readable_hex = 1; }
 
+AGAIN:
   gpeg_engine_state_print(state);
+  gpeg_instruction_print(state);
 
   if ((state->debuggerstate & GPEG_DBGRSTAT_NEXTCALL) && opcode != OP_CALL) {
     return;
   }
-  fprintf(stderr, "[?qcoarsHf] > ");
+  fprintf(stderr, "[?qcoarSAHF] > ");
   if (fgets(buf, sizeof(buf), stdin)) {
     if (0 == strcmp(buf, "q\n")) {
       fprintf(stderr, "Exiting.\n");
@@ -96,9 +146,10 @@ void gpeg_debug_instruction
 "o           Step over the call.\n"
 "a           Always step over this call.\n"
 "r <n>       Run to instruction number <n>.\n"
-"s           Print stack fully.\n"
+"S           Print stack.\n"
+"A           Print action list.\n"
 "H           Toggle input in hex.\n"
-"f           Introduce a FAIL.\n"
+"F           Introduce a FAIL.\n"
       );
     } else if (0 == strcmp(buf, "\n")) {
       return;
@@ -107,7 +158,10 @@ void gpeg_debug_instruction
       readable_hex = !readable_hex;
     } else if (0 == strcmp(buf, "c\n")) {
       state->debuggerstate |= GPEG_DBGRSTAT_NEXTCALL;
-    } else if (0 == strcmp(buf, "s\n")) {
+      return;
+    } else if (0 == strcmp(buf, "A\n")) {
+      gpege_actionlist_debug(state->input, &(state->actions));
+    } else if (0 == strcmp(buf, "S\n")) {
       if (state->stack.count == 0) {
         fprintf(stderr, "No stack.\n");
       }
@@ -123,8 +177,10 @@ void gpeg_debug_instruction
           , state->stack.list[ i ].inputsizescount
         );
       }
-    } else if (0 == strcmp(buf, "f\n")) {
-      //.. introduce a FAIL condition
+    } else if (0 == strcmp(buf, "F\n")) {
+      state->failed = 1;
+      return;
     }
   }
+  goto AGAIN;
 }

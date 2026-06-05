@@ -55,8 +55,6 @@ char* usage =
 extern int gpeg_labelmap_load
   (vec_t* input, str2int_map_t* labelmap, vec_t* error);
 
-extern str2int_map_t* gpeg_labelmap;
-
 /**
  *
  */

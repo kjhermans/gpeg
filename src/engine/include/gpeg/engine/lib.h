@@ -110,4 +110,10 @@ void gpeg_debug_instruction
   (gpege_state_t* state);
 #endif
 
+extern str2int_map_t* gpeg_labelmap;
+
+extern
+char* gpeg_labelmap_inverse
+  (str2int_map_t* map, unsigned offset);
+
 #endif
