@@ -146,6 +146,25 @@ typedef enum
 }
 gpege_opcode_t;
 
+#define GPEGE_OPCODE_STRINGS { \
+  "end", \
+  "rng", \
+  "lim", \
+  "cll", \
+  "ret", \
+  "ctc", \
+  "com", \
+  "bcm", \
+  "pcm", \
+  "fai", \
+  "fa2", \
+  "var", \
+  "ocp", \
+  "ccp", \
+  "ctr", \
+  "cjp", \
+}
+
 typedef struct
 {
   unsigned          offset;

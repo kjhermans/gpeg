@@ -2,7 +2,7 @@ OBJECTS:=$(shell ls *.c | sort | sed -e 's/\.c$$/.o/')
 LIB=libgpege.a
 CC=$(ARCH)gcc
 AR=$(ARCH)ar
-CFLAGS=-g -O2 -Wall -Wextra -Wshadow -D_DEBUG -D_DEBUGGER -fPIC -I../include
+CFLAGS=-g -O2 -Wall -Wextra -Wshadow $(DEBUG) -D_DEBUGGER -fPIC -I../include
 
 all: labelmap $(LIB)
 

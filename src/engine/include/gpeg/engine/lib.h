@@ -50,6 +50,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define ACT_OPEN  1
 #define ACT_CLOSE 2
 
+#define STACK_CALL  1
+#define STACK_CATCH 2
+
 typedef struct
 {
   int      action;
@@ -81,6 +84,7 @@ MAKE_ARRAY_HEADER(gpege_stackelt_t, gpege_stack_);
 
 typedef struct gpege_state
 {
+  unsigned              flags;
   const vec_t*          bytecode;
   const vec_t*          input;
   unsigned              inputsiz;
@@ -103,7 +107,7 @@ gpege_state_t;
 #ifdef _DEBUGGER
 extern
 void gpeg_debug_instruction
-  (gpege_state_t* state, int* dontstep);
+  (gpege_state_t* state);
 #endif
 
 #endif

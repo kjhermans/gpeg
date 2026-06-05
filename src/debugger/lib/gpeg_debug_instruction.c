@@ -35,18 +35,50 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define GPEG_DBGRSTAT_NEXTCALL  (1<<0)
 
-extern
-int readable_hex;
+int gpeg_debugger_off = 0;
+
+extern void gpeg_engine_state_print
+  (gpege_state_t* state);
+
+extern int readable_hex;
+
+__attribute__ ((unused))
+static
+void gpege_actionlist_debug
+  (const vec_t* input, gpege_actionlist_t* list)
+{
+  for (unsigned i=0; i < list->count; i++) {
+    fprintf(stderr,
+      "ACTION %u: %s reg=%u off=%u stk=%u "
+      , i
+      , list->list[ i ].action == ACT_OPEN ? "open " : "close"
+      , list->list[ i ].reg
+      , list->list[ i ].offset
+      , list->list[ i ].stacklen
+    );
+    if (input && list->list[ i ].action == ACT_OPEN) {
+      for (unsigned j=0; j < 12; j++) {
+        char c = input->data[ list->list[ i ].offset + j ];
+        fprintf(stderr, "%c", (c >= 32 && c < 127) ? c : '.');
+      }
+    }
+    fprintf(stderr, "\n");
+  }
+}
 
 void gpeg_debug_instruction
-  (gpege_state_t* state, int* dontstep)
+  (gpege_state_t* state)
 {
   char buf[ 32 ] = { 0 };
   uint8_t* instr8 = state->bytecode->data + state->instrptr;
   uint8_t opcode = instr8[0] >> 4;
 
+  if (gpeg_debugger_off) { return; }
+  if (state->flags & GPEGE_FLG_DEBUGHEX) { readable_hex = 1; }
+
+  gpeg_engine_state_print(state);
+
   if ((state->debuggerstate & GPEG_DBGRSTAT_NEXTCALL) && opcode != OP_CALL) {
-    *dontstep = 0;
     return;
   }
   fprintf(stderr, "[?qcoarsHf] > ");
@@ -69,19 +101,19 @@ void gpeg_debug_instruction
 "f           Introduce a FAIL.\n"
       );
     } else if (0 == strcmp(buf, "\n")) {
-      *dontstep = 0;
+      return;
     } else if (0 == strcmp(buf, "H\n")) {
       fprintf(stderr, "Input now in hex.\n");
       readable_hex = !readable_hex;
     } else if (0 == strcmp(buf, "c\n")) {
-      *dontstep = 0;
       state->debuggerstate |= GPEG_DBGRSTAT_NEXTCALL;
     } else if (0 == strcmp(buf, "s\n")) {
       if (state->stack.count == 0) {
         fprintf(stderr, "No stack.\n");
       }
       for (unsigned i=0; i < state->stack.count; i++) {
-        fprintf(stderr, "  #%u; typ=%s, instr=%u, input=%u, #action=%u, #counters=%u, inputlen=%u\n"
+        fprintf(stderr,
+          "  #%u; typ=%s, instr=%u, input=%u, #act=%u, #ctrs=%u, inplen=%u\n"
           , i
           , (state->stack.list[ i ].type == 1 ? "call" : "catch")
           , state->stack.list[ i ].instrptr

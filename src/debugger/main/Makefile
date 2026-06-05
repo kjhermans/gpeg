@@ -1,5 +1,5 @@
 TARGET=gpege_dbg
-CFLAGS=-g -O2 -Wall -Wextra -I../include -D_DEBUG
+CFLAGS=-g -O2 -Wall -Wextra -I../include $(DEBUG)
 
 all: $(TARGET)
 

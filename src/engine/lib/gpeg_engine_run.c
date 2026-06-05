@@ -36,32 +36,86 @@ MAKE_ARRAY_CODE(uint32_t, uint32list_)
 
 #include <gpeg/engine/lib.h>
 
-#define STACK_CALL  1
-#define STACK_CATCH 2
-
-static
-char* instrstr[] = {
-  "end",
-  "rng",
-  "lim",
-  "cll",
-  "ret",
-  "ctc",
-  "com",
-  "bcm",
-  "pcm",
-  "fai",
-  "fa2",
-  "var",
-  "ocp",
-  "ccp",
-  "ctr",
-  "cjp",
-};
-
 MAKE_ARRAY_CODE(gpege_stackelt_t, gpege_stack_);
 MAKE_ARRAY_CODE(gpege_action_t, gpege_actionlist_);
 MAKE_ARRAY_CODE(gpege_capture_t, gpege_caplist_);
+
+static
+char* instrstr[] = GPEGE_OPCODE_STRINGS;
+
+str2int_map_t* gpeg_labelmap = NULL;
+
+char* gpeg_labelmap_inverse
+  (str2int_map_t* map, unsigned offset)
+{
+  for (unsigned i=0; i < map->count; i++) {
+    if (offset == map->values[ i ]) {
+      return map->keys[ i ];
+    }
+  }
+  return NULL;
+}
+
+static char readable_buf[ 17 ];
+int readable_hex = 0;
+
+static
+char* readable_text
+  (const vec_t* input, unsigned inputptr)
+{
+  unsigned o = 0;
+  char hex[] = "0123456789abcdef";
+  while (o < sizeof(readable_buf)-1 && o + inputptr < input->size) {
+    unsigned char c = input->data[ inputptr + o ];
+    if (readable_hex) {
+      readable_buf[ o++ ] = hex[ c >> 4 ];
+      readable_buf[ o++ ] = hex[ c & 0x0f ];
+    } else {
+      if (c > 32 && c < 127) {
+        readable_buf[ o ] = c;
+      } else {
+        readable_buf[ o ] = '.';
+      }
+      o++;
+    }
+  }
+  readable_buf[ o ] = 0;
+  return readable_buf;
+}
+
+void gpeg_engine_state_print
+  (gpege_state_t* state)
+{
+  uint8_t opcode = (state->bytecode->data[ state->instrptr ] >> 4);
+#ifdef _DEBUGGER
+  char* label = NULL;
+  if (gpeg_labelmap &&
+      (label = gpeg_labelmap_inverse(gpeg_labelmap, state->instrptr)) != NULL)
+  {
+    fprintf(stderr,
+      "%.8u: %.8u (%s): %s: %.6u: %.6u: %s: #s=%u\n"
+      , state->instrctr-1
+      , state->instrptr
+      , label
+      , instrstr[ opcode ]
+      , state->inputptr
+      , state->inputsiz
+      , (state->eof ? "EOF" : readable_text(state->input, state->inputptr))
+      , state->stack.count
+    );
+  } else
+#endif
+  fprintf(stderr,
+    "%.8u: %.8u: %s: %.6u: %.6u: %s: #s=%u\n"
+    , state->instrctr-1
+    , state->instrptr
+    , instrstr[ opcode ]
+    , state->inputptr
+    , state->inputsiz
+    , (state->eof ? "EOF" : readable_text(state->input, state->inputptr))
+    , state->stack.count
+  );
+}
 
 static
 inline int stack_pop
@@ -85,38 +139,6 @@ inline int stack_pop
   return 0;
 }
 
-#ifdef _DEBUG
-static
-inline int stack_fail
-  (gpege_stack_t* stack, gpege_stackelt_t* ret, int debug)
-{
-  gpege_stackelt_t elt = { 0 };
-  if (stack->count == 0) {
-    RETURN_ERR(GPEGE_ERR_STACKEMPTY);
-  }
-  if (debug) {
-    fprintf(stderr, "FAIL: ");
-  }
-  while (stack->count) {
-    stack_pop(stack, 0, &elt);
-    if (debug) {
-      fprintf(stderr, "[%s,%u]"
-        , (elt.type == STACK_CATCH ? "ctc" : "cll"), elt.instrptr);
-    }
-    if (elt.type == STACK_CATCH) {
-      if (ret) { *ret = elt; }
-      break;
-    } else if (debug) {
-      fprintf(stderr, ", ");
-    }
-  }
-  if (elt.type == STACK_CATCH && debug) {
-    fprintf(stderr, "\n");
-  }
-  return 0;
-}
-#else
-
 static
 inline int stack_fail
   (gpege_stack_t* stack, gpege_stackelt_t* ret)
@@ -134,7 +156,6 @@ inline int stack_fail
   }
   return 0;
 }
-#endif
 
 static
 inline int stack_peek
@@ -191,32 +212,6 @@ inline void wrap_captures
   }
 }
 
-#ifdef _DEBUG
-__attribute__ ((unused))
-static
-void gpege_actionlist_debug
-  (const vec_t* input, gpege_actionlist_t* list)
-{
-  for (unsigned i=0; i < list->count; i++) {
-    fprintf(stderr,
-      "ACTION %u: %s reg=%u off=%u stk=%u "
-      , i
-      , list->list[ i ].action == ACT_OPEN ? "open " : "close"
-      , list->list[ i ].reg
-      , list->list[ i ].offset
-      , list->list[ i ].stacklen
-    );
-    if (input && list->list[ i ].action == ACT_OPEN) {
-      for (unsigned j=0; j < 12; j++) {
-        char c = input->data[ list->list[ i ].offset + j ];
-        fprintf(stderr, "%c", (c >= 32 && c < 127) ? c : '.');
-      }
-    }
-    fprintf(stderr, "\n");
-  }
-}
-#endif
-
 static
 inline int resolve_variable
   (
@@ -270,35 +265,6 @@ inline int resolve_variable
   }
 }
 
-#ifdef _DEBUG
-static char readable_buf[ 17 ];
-int readable_hex = 0;
-
-static
-char* readable_text
-  (const vec_t* input, unsigned inputptr)
-{
-  unsigned o = 0;
-  char hex[] = "0123456789abcdef";
-  while (o < sizeof(readable_buf)-1 && o + inputptr < input->size) {
-    unsigned char c = input->data[ inputptr + o ];
-    if (readable_hex) {
-      readable_buf[ o++ ] = hex[ c >> 4 ];
-      readable_buf[ o++ ] = hex[ c & 0x0f ];
-    } else {
-      if (c > 32 && c < 127) {
-        readable_buf[ o ] = c;
-      } else {
-        readable_buf[ o ] = '.';
-      }
-      o++;
-    }
-  }
-  readable_buf[ o ] = 0;
-  return readable_buf;
-}
-#endif
-
 #define CLEANUP { r = __r; goto CLEAN_UP; }
 
 static
@@ -309,36 +275,6 @@ void gpeg_engine_set_maxinstr
 {
   maxinstrctr = m;
 }
-
-#ifdef _DEBUG
-#define DEBUGPOINT_INSTRUCTION \
-    if (flags & GPEGE_FLG_DEBUG) { \
-      fprintf(stderr, \
-        "%.8u: %.8u: %s: %.6u: %.6u: %s: #s=%u\n" \
-        , state.instrctr-1 \
-        , state.instrptr \
-        , instrstr[opcode] \
-        , state.inputptr \
-        , state.inputsiz \
-        , (state.eof ? "EOF" : readable_text(input, state.inputptr)) \
-        , state.stack.count \
-      ); \
-    }
-#else
-#define DEBUGPOINT_INSTRUCTION { }
-#endif
-
-#ifdef _DEBUGGER
-#define DEBUGGER_INSTRUCTION \
-  { \
-    int dontstep = 1; \
-    while (dontstep) { \
-      gpeg_debug_instruction(&state, &dontstep); \
-    } \
-  }
-#else
-#define DEBUGGER_INSTRUCTION { }
-#endif
 
 static inline
 void gpeg_engine_run_end
@@ -374,7 +310,6 @@ void gpeg_engine_run_range
   if (state->eof) {
     state->failed = 1;
   } else if (R) {
-//fprintf(stderr, "TRUE RANGE: matching %.2x <= %.2x & %.2x <= %.2x\n", from, chr, mask, until);
     if ((chr & mask) < from || (chr & mask) > until) {
       state->failed = 1;
     } else {
@@ -386,7 +321,6 @@ void gpeg_engine_run_range
       }
     }
   } else {
-//fprintf(stderr, "Match %.2x & %.2x == %.2x\n", chr, mask, from);
     if ((chr & mask) == from || (chr & mask) == until) {
       state->instrptr += 4;
       state->inputbit += nbits;
@@ -531,11 +465,7 @@ int gpeg_engine_run_failtwice
   (gpege_state_t* state, unsigned flags)
 {
   (void)flags;
-#ifdef _DEBUG
-  CHECK(stack_fail(&(state->stack), NULL, flags & GPEGE_FLG_DEBUG));
-#else
   CHECK(stack_fail(&(state->stack), NULL));
-#endif
   state->failed = 1;
   return 0;
 }
@@ -648,11 +578,7 @@ int gpeg_engine_fail
 {
   gpege_stackelt_t elt = { 0 };
   (void)flags;
-#ifdef _DEBUG
-  CHECK(stack_fail(&(state->stack), &elt, flags & GPEGE_FLG_DEBUG));
-#else
   CHECK(stack_fail(&(state->stack), &elt));
-#endif
   state->inputptr = elt.inputptr;
   state->instrptr = elt.instrptr;
   state->actions.count = elt.actioncount;
@@ -663,6 +589,23 @@ int gpeg_engine_fail
                     input->size);
   return 0;
 }
+
+#ifdef _DEBUGGER
+  #define DEBUGPOINT_INSTRUCTION gpeg_debug_instruction(&state);
+  #define DEBUGPOINT_FAIL gpeg_debug_instruction(&state);
+#else
+  #ifdef _DEBUG
+    #define DEBUGPOINT_INSTRUCTION if (flags & GPEGE_FLG_DEBUG) { \
+      gpeg_engine_state_print(&state); \
+    }
+    #define DEBUGPOINT_FAIL if (flags & GPEGE_FLG_DEBUG) { \
+      fprintf(stderr, "FAIL\n"); \
+    }
+  #else
+    #define DEBUGPOINT_INSTRUCTION {}
+    #define DEBUGPOINT_FAIL {}
+  #endif
+#endif
 
 /**
  * Runs the GPEG engine using \p bytecode on \p input.
@@ -689,16 +632,11 @@ int gpeg_engine_run
   int r = 0;
   gpege_state_t state = { 0 };
 
+  state.flags = flags;
   state.bytecode = bytecode;
   state.input = input;
   state.inputsiz = input->size;
   result->flags = flags;
-
-  (void)instrstr;
-
-#ifdef _DEBUG
-  if (flags & GPEGE_FLG_DEBUGHEX) { readable_hex = 1; }
-#endif
 
   while (!state.ended && !(state.failed && state.stack.count == 0)) {
     if (maxinstrctr && ++state.instrctr > maxinstrctr) {
@@ -721,7 +659,6 @@ int gpeg_engine_run
     }
 
 DEBUGPOINT_INSTRUCTION
-DEBUGGER_INSTRUCTION
 
     switch (opcode) {
     case OP_END:
@@ -776,6 +713,9 @@ DEBUGGER_INSTRUCTION
     }
 
     if (state.failed) {
+
+DEBUGPOINT_FAIL
+
       CHECK2(gpeg_engine_fail(input, &state, flags), CLEANUP);
     }
   }

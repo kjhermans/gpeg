@@ -38,6 +38,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <andy/vec_t.h>
 #include <andy/util_functions.h>
 
+extern int gpeg_debugger_off;
+
 static
 char* usage =
   "Usage: %s [options]\n"
@@ -50,6 +52,11 @@ char* usage =
   "-L <path>  Specify input labelmap path.\n"
 ;
 
+extern int gpeg_labelmap_load
+  (vec_t* input, str2int_map_t* labelmap, vec_t* error);
+
+extern str2int_map_t* gpeg_labelmap;
+
 /**
  *
  */
@@ -59,11 +66,11 @@ int main
   char defaultinput[] = "-";
   char* inputfile = defaultinput;
   char* bytecodefile = NULL;
-  char* labelmapfile = NULL;
   char* value = NULL;
   vec_t input = { 0 };
   vec_t bytecode = { 0 };
   gpege_result_t result = { 0 };
+  str2int_map_t lm = { 0 };
   unsigned flags = 0;
   int e = 0;
 
@@ -102,10 +109,22 @@ int main
     }
   }
   if (queryargs(argc, argv, 'L', "labelmap", 0, 1, 0, &value) == 0) {
-    labelmapfile = value;
+    vec_t lmdata = { 0 };
+    if (absorb_file(value, &(lmdata.data), &(lmdata.size))) {
+      fprintf(stderr, "Could not absorb labelmap file '%s'.\n", value);
+      return ~0;
+    }
+    if (gpeg_labelmap_load(&lmdata, &lm, NULL)) {
+      free(lmdata.data);
+      fprintf(stderr, "Could not parse labelfile '%s.\n", value);
+      return ~0;
+    }
+    free(lmdata.data);
+    gpeg_labelmap = &lm;
   }
   flags |= GPEGE_FLG_DEBUG;
   flags |= GPEGE_FLG_DEBUGGER;
+  gpeg_debugger_off = 0;
   if ((e = gpeg_engine_run(&bytecode, &input, flags, &result)) != 0) {
     char* errs[] = GPEGE_ERR_STRINGS;
     fprintf(stderr, "GPEG engine ended in error; %s.\n", errs[ e ]);

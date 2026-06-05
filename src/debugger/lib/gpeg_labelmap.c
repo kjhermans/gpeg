@@ -36,6 +36,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "labelmap_bytecode.h"
 #include "labelmap_slotmap.h"
 
+extern int gpeg_debugger_off;
+
 static
 int gpeg_labelmap_label
   (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
@@ -46,7 +48,7 @@ int gpeg_labelmap_label
 
   if (phase == GPEG_FNC_PRENODE) {
     char* label = (char*)(node->children[ 0 ]->vec.data);
-    unsigned offset = strtoul((char*)(node->children[ 2 ]->vec.data), 0, 10);
+    unsigned offset = strtoul((char*)(node->children[ 1 ]->vec.data), 0, 10);
     str2int_map_put(labelmap, label, offset);
   }
   return 0;
@@ -63,6 +65,7 @@ int gpeg_labelmap_load
   gpege_result_t result = { 0 };
   int e = 0;
 
+  gpeg_debugger_off = 1;
   if ((e = gpeg_engine_run(&bytecode, input, 0, &result)) != 0) {
     if (error) {
       char* errs[] = GPEGE_ERR_STRINGS;
