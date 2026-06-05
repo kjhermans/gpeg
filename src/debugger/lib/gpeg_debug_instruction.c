@@ -48,23 +48,25 @@ void gpege_actionlist_debug
 {
   if (list->count == 0) {
     fprintf(stderr, "No actions.\n");
-  }
-  for (unsigned i=0; i < list->count; i++) {
-    fprintf(stderr,
-      "ACTION %u: %s reg=%u off=%u stk=%u "
-      , i
-      , list->list[ i ].action == ACT_OPEN ? "open " : "close"
-      , list->list[ i ].reg
-      , list->list[ i ].offset
-      , list->list[ i ].stacklen
-    );
-    if (input && list->list[ i ].action == ACT_OPEN) {
-      for (unsigned j=0; j < 12; j++) {
-        char c = input->data[ list->list[ i ].offset + j ];
-        fprintf(stderr, "%c", (c >= 32 && c < 127) ? c : '.');
+  } else {
+    fprintf(stderr, "Actions:\n");
+    for (unsigned i=0; i < list->count; i++) {
+      fprintf(stderr,
+        "  Action %u: %s reg=%u off=%u stk=%u "
+        , i
+        , list->list[ i ].action == ACT_OPEN ? "open " : "close"
+        , list->list[ i ].reg
+        , list->list[ i ].offset
+        , list->list[ i ].stacklen
+      );
+      if (input && list->list[ i ].action == ACT_OPEN) {
+        for (unsigned j=0; j < 12; j++) {
+          char c = input->data[ list->list[ i ].offset + j ];
+          fprintf(stderr, "%c", (c >= 32 && c < 127) ? c : '.');
+        }
       }
+      fprintf(stderr, "\n");
     }
-    fprintf(stderr, "\n");
   }
 }
 
@@ -164,18 +166,20 @@ AGAIN:
     } else if (0 == strcmp(buf, "S\n")) {
       if (state->stack.count == 0) {
         fprintf(stderr, "No stack.\n");
-      }
-      for (unsigned i=0; i < state->stack.count; i++) {
-        fprintf(stderr,
-          "  #%u; typ=%s, instr=%u, input=%u, #act=%u, #ctrs=%u, inplen=%u\n"
-          , i
-          , (state->stack.list[ i ].type == 1 ? "call" : "catch")
-          , state->stack.list[ i ].instrptr
-          , state->stack.list[ i ].inputptr
-          , state->stack.list[ i ].actioncount
-          , state->stack.list[ i ].countercount
-          , state->stack.list[ i ].inputsizescount
-        );
+      } else {
+        fprintf(stderr, "Stack:\n");
+        for (unsigned i=0; i < state->stack.count; i++) {
+          fprintf(stderr,
+            "  #%u; typ=%s, instr=%u, input=%u, #act=%u, #ctrs=%u, inplen=%u\n"
+            , i
+            , (state->stack.list[ i ].type == 1 ? "call" : "catch")
+            , state->stack.list[ i ].instrptr
+            , state->stack.list[ i ].inputptr
+            , state->stack.list[ i ].actioncount
+            , state->stack.list[ i ].countercount
+            , state->stack.list[ i ].inputsizescount
+          );
+        }
       }
     } else if (0 == strcmp(buf, "F\n")) {
       state->failed = 1;
