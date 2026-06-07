@@ -101,16 +101,16 @@ void gpeg_instruction_print
   case OP_RANGE: break;
   case OP_LIMIT: break;
   case OP_CALL: gpeg_instruction_print_labeled(state, "call"); break;
-  case OP_RET: break;
+  case OP_RET: fprintf(stderr, "  ret\n"); break;
   case OP_CATCH: gpeg_instruction_print_labeled(state, "catch"); break;
   case OP_COMMIT: gpeg_instruction_print_labeled(state, "commit"); break;
   case OP_BACKCOMMIT: gpeg_instruction_print_labeled(state, "backcommit"); break;
   case OP_PARTIALCOMMIT: gpeg_instruction_print_labeled(state, "partialcommit"); break;
   case OP_FAIL: fprintf(stderr, "  fail\n"); break;
   case OP_FAILTWICE: fprintf(stderr, "  failtwice\n"); break;
-  case OP_VAR: break;
-  case OP_OPENCAPTURE: break;
-  case OP_CLOSECAPTURE: break;
+  case OP_VAR: fprintf(stderr, "  var %u\n", ((instr8[2]<<8) | instr8[3])); break;
+  case OP_OPENCAPTURE: fprintf(stderr, "  opencapture %u\n", ((instr8[2]<<8) | instr8[3])); break;
+  case OP_CLOSECAPTURE: fprintf(stderr, "  closecapture %u\n", ((instr8[2]<<8) | instr8[3])); break;
   case OP_COUNTER: break;
   case OP_CONDJUMP: break;
   }
@@ -133,7 +133,7 @@ AGAIN:
   if ((state->debuggerstate & GPEG_DBGRSTAT_NEXTCALL) && opcode != OP_CALL) {
     return;
   }
-  fprintf(stderr, "[?qcoarSAHF] > ");
+  fprintf(stderr, "[?qdcoarSAHF] > ");
   if (fgets(buf, sizeof(buf), stdin)) {
     if (0 == strcmp(buf, "q\n")) {
       fprintf(stderr, "Exiting.\n");
@@ -144,6 +144,9 @@ AGAIN:
 "q           Quit\n"
 "? or h      Print this help text.\n"
 "<Enter>     Step.\n"
+"d           Dump the current input from current offset.\n"
+"d <n>       Dump the current input from current offset for <n> bytes.\n"
+"d <o> <n>   Dump the current input from absolute <o> for <n> bytes.\n"
 "c           Run to the next call.\n"
 "o           Step over the call.\n"
 "a           Always step over this call.\n"
