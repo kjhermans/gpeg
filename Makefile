@@ -19,8 +19,8 @@ instructions:
 install:
 	./bin/install.sh
 
-specials:
-	cd src/specials && make
+vhdl:
+	make -C src/vhdl
 
 .PHONY: test
 test:
