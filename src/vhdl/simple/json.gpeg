@@ -1,6 +1,6 @@
 TOP              <- JSON
 
-UTF8CHAR         <- { . }
+UTF8CHAR         <- .
 
 SPACE            <- %s+
 MULTILINECOMMENT <- '/*' ( !'*/' .)* '*/'
@@ -9,20 +9,20 @@ __prefix         <- ( MULTILINECOMMENT / COMMENT / SPACE )*
 END              <- !.
 
 JSON             <- VALUE END
-HASH             <- { CBOPEN OPTHASHELTS CBCLOSE }
+HASH             <- CBOPEN OPTHASHELTS CBCLOSE
 OPTHASHELTS      <- HASHELTS ?
 HASHELTS         <- HASHELT ( COMMA HASHELT )*
-HASHELT          <- { STRING COLON VALUE }
-ARRAY            <- { ABOPEN OPTARRAYELTS ABCLOSE }
+HASHELT          <- STRING COLON VALUE
+ARRAY            <- ABOPEN OPTARRAYELTS ABCLOSE
 OPTARRAYELTS     <- ARRAYELTS ?
 ARRAYELTS        <- VALUE ( COMMA VALUE )*
 VALUE            <- BIGSTRING / STRING / FLOAT / INT / BOOL / NULL / HASH / ARRAY
-BIGSTRING        <- '"""' { ( !'"""' UTF8CHAR )* } '"""'
-STRING           <- '"' { ( { '\\' ( [nrtbf"\\] / 'u' [a-fA-F0-9]^4 ) } / !'"' UTF8CHAR )* } '"'
-INT              <- { '-'? [0-9]+ }
-FLOAT            <- { '-'? [0-9]* '.' [0-9]+ }
-BOOL             <- { 'true' / 'false' }
-NULL             <- { 'null' }
+BIGSTRING        <- '"""' ( !'"""' UTF8CHAR )* '"""'
+STRING           <- '"' ( ( ( '\\' ( [nrtbf"\\] / 'u' [a-fA-F0-9]^4 ) ) / !'"' UTF8CHAR )* ) '"'
+INT              <- '-'? [0-9]+
+FLOAT            <- '-'? [0-9]* '.' [0-9]+
+BOOL             <- 'true' / 'false'
+NULL             <- 'null'
 CBOPEN           <- '{'
 CBCLOSE          <- '}'
 ABOPEN           <- '['
