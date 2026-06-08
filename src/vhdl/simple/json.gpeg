@@ -1,0 +1,14 @@
+JSON         <- %s* HASH %s*
+HASH         <- '{' %s* OPTHASHELTS %s* '}'
+OPTHASHELTS  <- HASHELTS ?
+HASHELTS     <- HASHELT %s* ',' %s* HASHELTS / HASHELT
+HASHELT      <- STRING %s* ':' %s* VALUE
+ARRAY        <- '[' %s* OPTARRAYELTS %s* ']'
+OPTARRAYELTS <- ARRAYELTS ?
+ARRAYELTS    <- VALUE %s* ',' %s* ARRAYELTS / VALUE
+VALUE        <- STRING / INT / FLOAT / BOOL / NULL / HASH / ARRAY
+STRING       <- { '"' [^"]* '"' }
+INT          <- { [0-9]+ }
+FLOAT        <- { [0-9]* '.' [0-9]+ }
+BOOL         <- { 'true' / 'false' }
+NULL         <- { 'null' }
