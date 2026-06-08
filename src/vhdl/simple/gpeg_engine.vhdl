@@ -309,7 +309,8 @@ begin
             state <= S_ERROR;
           else
             popped <= stack_mem(to_integer(sp - 1));
-            sp <= sp - 1; state <= S_EXECUTE;
+            sp <= sp - 1;
+            state <= S_EXECUTE;
           end if;
 
         when S_PUSH =>
@@ -318,7 +319,8 @@ begin
             state <= S_ERROR;
           else
             stack_mem(to_integer(sp)) <= push_elt;
-            sp <= sp + 1; state <= S_EXECUTE;
+            sp <= sp + 1;
+            state <= S_EXECUTE;
           end if;
 
         -- === Execute ===
@@ -541,7 +543,8 @@ begin
           then
             reg_found_idx <= reg_scan_idx;
             state <= S_CONDJUMP_FOUND;
-          elsif reg_scan_idx = 0 then
+          elsif reg_scan_idx = 0
+          then
             err_code <= ERR_BYTECODE;
             state <= S_ERROR;
           else
@@ -550,7 +553,8 @@ begin
 
         -- === CONDJUMP action: decrement+jump or remove+fallthrough ===
         when S_CONDJUMP_FOUND =>
-          if reg_mem(to_integer(reg_found_idx)).value <= 1 then
+          if reg_mem(to_integer(reg_found_idx)).value <= 1
+          then
             -- Counter exhausted: fall through, remove register
             bc_offset <= bc_offset + 4;
             reg_scan_idx <= reg_found_idx;
@@ -566,7 +570,8 @@ begin
 
         -- === Register removal (shift elements down) ===
         when S_REG_REMOVE =>
-          if reg_scan_idx + 1 >= reg_sp then
+          if reg_scan_idx + 1 >= reg_sp
+          then
             -- Done: all elements shifted, shrink stack
             reg_sp <= reg_sp - 1;
             n_instr <= n_instr + 1;
@@ -580,7 +585,8 @@ begin
 
         -- === Failure handler ===
         when S_FAIL_UNWIND =>
-          if sp = 0 then
+          if sp = 0
+          then
             err_code <= ERR_NOMATCH; state <= S_ERROR;
           else
             state <= S_FAIL_POP;
@@ -591,15 +597,18 @@ begin
           sp <= sp - 1; state <= S_FAIL_CHECK;
 
         when S_FAIL_CHECK =>
-          if popped.stype = STYPE_CATCH then
+          if popped.stype = STYPE_CATCH
+          then
             bc_offset <= popped.address;
             inp_offset <= popped.input_offset;
             register_count <= popped.register_count;
             reg_sp <= resize(popped.register_count, reg_sp'length);
             state <= S_FETCH_OP;
-          elsif popped.stype = STYPE_CALL then
+          elsif popped.stype = STYPE_CALL
+          then
             current_call <= popped.call_context;
-            if sp = 0 then
+            if sp = 0
+            then
               err_code <= ERR_NOMATCH; state <= S_ERROR;
             else
               state <= S_FAIL_POP;
@@ -610,11 +619,13 @@ begin
 
         -- === Terminal ===
         when S_DONE =>
-          busy <= '0'; done <= '1';
+          busy <= '0';
+          done <= '1';
           if start = '0' then state <= S_IDLE; end if;
 
         when S_ERROR =>
-          busy <= '0'; err <= '1';
+          busy <= '0';
+          err <= '1';
           if start = '0' then state <= S_IDLE; end if;
 
         end case;
