@@ -283,6 +283,17 @@ begin
           then
             need_pop <= '1';
             state <= S_POP;
+          else
+            err_code <= ERR_BYTECODE;
+            state <= S_ERROR;
+            -- synthesis translate_off
+            report "ERROR: "
+                 & " opcode=0x" & to_hstring(opcode)
+                 & " bc_off=" & integer'image(to_integer(bc_offset))
+                 & " inp_off=" & integer'image(to_integer(inp_offset))
+                 & " v_failed=" & boolean'image(v_failed)
+                 & " sp=" & integer'image(to_integer(sp));
+            -- synthesis translate_on
           end if;
 
         -- === Input byte fetch (3 cycles) ===
