@@ -26,9 +26,9 @@ architecture sim of gpeg_engine_tb is
   signal tb_done       : std_logic;
   signal tb_err        : std_logic;
   signal tb_err_code   : std_logic_vector(3 downto 0);
-  signal tb_end_code   : std_logic_vector(31 downto 0);
-  signal bytecode_size : unsigned(31 downto 0) := (others => '0');
-  signal input_size_s  : unsigned(31 downto 0) := (others => '0');
+  signal tb_end_code   : std_logic_vector(23 downto 0);
+  signal bytecode_size : unsigned(19 downto 0) := (others => '0');
+  signal input_size_s  : unsigned(19 downto 0) := (others => '0');
 
   signal bcode_addr    : std_logic_vector(15 downto 0);
   signal bcode_rd      : std_logic;

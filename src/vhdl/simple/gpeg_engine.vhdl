@@ -40,11 +40,11 @@ entity gpeg_engine is
     done               : out std_logic;
     err                : out std_logic;
     err_code           : out std_logic_vector(3 downto 0);
-    end_code           : out std_logic_vector(31 downto 0);
+    end_code           : out std_logic_vector(23 downto 0);
 
     -- Configuration (sampled at start) ----------------------------------------
-    bytecode_size      : in  unsigned(31 downto 0);
-    input_size         : in  unsigned(31 downto 0);
+    bytecode_size      : in  unsigned(19 downto 0);
+    input_size         : in  unsigned(19 downto 0);
 
     -- Bytecode memory (32‑bit, byte‑addressed) --------------------------------
     bcode_addr         : out std_logic_vector(BYTECODE_ADDR_W-1 downto 0);
@@ -91,18 +91,18 @@ architecture rtl of gpeg_engine is
   -- Stack element
   type stack_elt_t is record
     stype          : unsigned(3 downto 0);
-    address        : unsigned(31 downto 0);
-    input_offset   : unsigned(31 downto 0);
-    input_length   : unsigned(31 downto 0);
+    address        : unsigned(19 downto 0);
+    input_offset   : unsigned(19 downto 0);
+    input_length   : unsigned(19 downto 0);
     register_count : unsigned(15 downto 0);
     call_context   : unsigned(15 downto 0);
   end record;
 
   constant SELT0 : stack_elt_t := (
     stype => x"0",
-    address => x"00000000",
-    input_offset => x"00000000",
-    input_length => x"00000000",
+    address => x"00000",
+    input_offset => x"00000",
+    input_length => x"00000",
     register_count => x"0000",
     call_context => x"0000"
   );
@@ -111,9 +111,9 @@ architecture rtl of gpeg_engine is
 
   -- Register element (for COUNTER/CONDJUMP)
   type reg_elt_t is record
-    reg      : unsigned(31 downto 0);
+    reg      : unsigned(7 downto 0);
     stacklen : unsigned(8 downto 0);  -- same width as sp
-    value    : unsigned(31 downto 0);
+    value    : unsigned(19 downto 0);
   end record;
 
   constant REG_ELT0 : reg_elt_t := (
@@ -129,10 +129,7 @@ architecture rtl of gpeg_engine is
     S_IDLE,
     S_FETCH_OP, S_WAIT_OP, S_LOAD_OP,
     S_DECODE,
---    S_FETCH_P1, S_WAIT_P1, S_LOAD_P1,
---    S_FETCH_P2, S_WAIT_P2, S_LOAD_P2,
     S_FETCH_INP, S_WAIT_INP, S_LOAD_INP,
---    S_FETCH_SET, S_WAIT_SET, S_LOAD_SET,
     S_EXECUTE,
     S_PUSH,
     S_POP,
@@ -144,31 +141,31 @@ architecture rtl of gpeg_engine is
   signal state : state_t := S_IDLE;
 
   -- Execution context
-  signal bc_offset, inp_offset, inp_offset_max : unsigned(31 downto 0) := (others => '0');
-  signal inp_size_reg, bc_size_reg             : unsigned(31 downto 0) := (others => '0');
-  signal failed                                : std_logic := '0';
-  signal n_instr                               : unsigned(31 downto 0) := (others => '0');
-  signal call_counter, current_call            : unsigned(15 downto 0) := (others => '0');
-  signal register_count          : unsigned(15 downto 0) := (others => '0');
+  signal bc_offset      : unsigned(19 downto 0) := (others => '0');
+  signal inp_offset     : unsigned(19 downto 0) := (others => '0');
+  signal inp_offset_max : unsigned(19 downto 0) := (others => '0');
+  signal inp_size_reg   : unsigned(19 downto 0) := (others => '0');
+  signal bc_size_reg    : unsigned(19 downto 0) := (others => '0');
+  signal failed         : std_logic := '0';
+  signal n_instr        : unsigned(31 downto 0) := (others => '0');
+  signal call_counter   : unsigned(15 downto 0) := (others => '0');
+  signal current_call   : unsigned(15 downto 0) := (others => '0');
+  signal register_count : unsigned(15 downto 0) := (others => '0');
 
   -- Instruction registers
-  signal opcode      : unsigned(31 downto 0) := (others => '0');
-  signal instr_size  : unsigned(7 downto 0)  := (others => '0');
---  signal param1      : unsigned(31 downto 0) := (others => '0');
---  signal param2      : unsigned(31 downto 0) := (others => '0');
-  signal inp_byte    : unsigned(7 downto 0)  := (others => '0');
-  signal set_word    : unsigned(31 downto 0) := (others => '0');
+  signal opcode         : unsigned(3 downto 0) := (others => '0');
+  signal inp_byte       : unsigned(7 downto 0)  := (others => '0');
 
   -- Pipeline control flags (set in DECODE)
---  signal need_p1, need_p2, need_set : std_logic := '0';
-  signal need_inp : std_logic := '0';
-  signal need_push, need_pop                   : std_logic := '0';
-  signal push_elt                              : stack_elt_t := SELT0;
+  signal need_inp       : std_logic := '0';
+  signal need_push      : std_logic := '0';
+  signal need_pop       : std_logic := '0';
+  signal push_elt       : stack_elt_t := SELT0;
 
   -- Stack
-  signal stack_mem : stack_array_t;
-  signal sp        : unsigned(8 downto 0) := (others => '0');
-  signal popped    : stack_elt_t := SELT0;
+  signal stack_mem      : stack_array_t;
+  signal sp             : unsigned(8 downto 0) := (others => '0');
+  signal popped         : stack_elt_t := SELT0;
 
   -- Register stack (for COUNTER/CONDJUMP)
   signal reg_mem       : reg_array_t;
@@ -176,15 +173,14 @@ architecture rtl of gpeg_engine is
   signal reg_scan_idx  : unsigned(8 downto 0) := (others => '0');
   signal reg_found_idx : unsigned(8 downto 0) := (others => '0');
 
-  function get_isize(op : unsigned(31 downto 0)) return unsigned is
-  begin
-    return resize(op(23 downto 16), 8) + 4;
-  end function;
+--  function get_isize(op : unsigned(31 downto 0)) return unsigned is
+--  begin
+--    return resize(op(23 downto 16), 8) + 4;
+--  end function;
 
 begin
 
   process(clk)
-    variable vis : unsigned(7 downto 0);
     variable v_redirected : boolean;
     variable v_failed : boolean;
   begin
@@ -194,144 +190,108 @@ begin
       cap_valid <= '0';
 
       if rst = '1' then
-        state <= S_IDLE; busy <= '0'; done <= '0'; err <= '0';
-        err_code <= ERR_NONE; end_code <= (others => '0');
-        sp <= (others => '0'); reg_sp <= (others => '0');
+        state <= S_IDLE;
+        busy <= '0';
+        done <= '0';
+        err <= '0';
+        err_code <= ERR_NONE;
+        end_code <= (others => '0');
+        sp <= (others => '0');
+        reg_sp <= (others => '0');
         bc_offset <= (others => '0');
-        inp_offset <= (others => '0'); failed <= '0';
+        inp_offset <= (others => '0');
+        failed <= '0';
       else
         case state is
 
         when S_IDLE =>
           done <= '0'; err <= '0';
           if start = '1' then
-            bc_offset <= (others => '0'); inp_offset <= (others => '0');
+            bc_offset <= (others => '0');
+            inp_offset <= (others => '0');
             inp_offset_max <= (others => '0');
-            bc_size_reg <= bytecode_size; inp_size_reg <= input_size;
-            failed <= '0'; sp <= (others => '0');
+            bc_size_reg <= bytecode_size;
+            inp_size_reg <= input_size;
+            failed <= '0';
+            sp <= (others => '0');
             n_instr <= (others => '0');
-            call_counter <= (others => '0'); current_call <= (others => '0');
+            call_counter <= (others => '0');
+            current_call <= (others => '0');
             register_count <= (others => '0');
             reg_sp <= (others => '0');
-            busy <= '1'; state <= S_FETCH_OP;
+            busy <= '1';
+            state <= S_FETCH_OP;
           end if;
 
         -- === Opcode fetch (3 cycles) ===
         when S_FETCH_OP =>
           if bc_offset >= bc_size_reg then
-            err_code <= ERR_OVERFLOW; state <= S_ERROR;
+            err_code <= ERR_OVERFLOW;
+            state <= S_ERROR;
           else
             bcode_addr <= std_logic_vector(resize(bc_offset, BYTECODE_ADDR_W));
-            bcode_rd <= '1'; state <= S_WAIT_OP;
+            bcode_rd <= '1';
+            state <= S_WAIT_OP;
           end if;
 
         when S_WAIT_OP =>
           state <= S_LOAD_OP;  -- one dead cycle for BRAM latency
 
         when S_LOAD_OP =>
-          opcode <= unsigned(bcode_rdata);
-          vis := get_isize(unsigned(bcode_rdata));
-          instr_size <= vis;
+          opcode <= unsigned(bcode_rdata(31 downto 28));
           -- synthesis translate_off
-          report "LOAD_OP: bc_offset=" & integer'image(to_integer(bc_offset))
-               & " opcode=0x" & to_hstring(unsigned(bcode_rdata))
-               & " isize=" & integer'image(to_integer(vis));
+--           report "LOAD_OP: bc_offset=" & integer'image(to_integer(bc_offset))
+--                & " instr=0x" & to_hstring(unsigned(bcode_rdata));
           -- synthesis translate_on
-          if bc_offset + resize(vis, 32) > bc_size_reg then
-            err_code <= ERR_OVERFLOW; state <= S_ERROR;
-          else
-            state <= S_DECODE;
-          end if;
+          state <= S_DECODE;
 
         -- === Decode ===
         when S_DECODE =>
-          -- need_p1 <= '0'; need_p2 <= '0';
           need_inp <= '0';
-          -- need_set <= '0';
-          need_push <= '0'; need_pop <= '0';
+          need_push <= '0';
+          need_pop <= '0';
           if inp_offset > inp_offset_max then
             inp_offset_max <= inp_offset;
           end if;
 
-        --  if opcode = OP_NOOP or opcode = OP_FAIL or opcode = OP_ANY then
-          if opcode = OP_FAIL then
+          if    opcode = OP_FAIL
+             or opcode = OP_END
+             or opcode = OP_CALL
+             or opcode = OP_CATCH
+             or opcode = OP_COUNTER
+             or opcode = OP_CONDJUMP
+          then
             state <= S_EXECUTE;
-          elsif opcode = OP_END -- or opcode = OP_SKIP
-             or opcode = OP_CALL or opcode = OP_CATCH
-             then
-             -- or opcode = OP_OPENCAPTURE or opcode = OP_CLOSECAPTURE then
-            need_p1 <= '1'; state <= S_FETCH_P1;
-          elsif opcode = OP_CHAR then
-            need_p1 <= '1'; need_inp <= '1'; state <= S_FETCH_P1;
-          elsif opcode = OP_COUNTER or opcode = OP_CONDJUMP then
-            need_p1 <= '1'; need_p2 <= '1'; state <= S_FETCH_P1;
-          elsif opcode = OP_RANGE then
-            need_p1 <= '1'; need_p2 <= '1'; need_inp <= '1'; state <= S_FETCH_P1;
-          elsif opcode = OP_SET then
-            need_inp <= '1'; need_set <= '1'; state <= S_FETCH_INP;
-          elsif opcode = OP_COMMIT or opcode = OP_BACKCOMMIT
-             or opcode = OP_PARTIALCOMMIT then
-            need_p1 <= '1'; need_pop <= '1'; state <= S_FETCH_P1;
-          elsif opcode = OP_RET or opcode = OP_FAILTWICE then
-            need_pop <= '1'; state <= S_POP;
-          else
-            err_code <= ERR_BYTECODE; state <= S_ERROR;
+          elsif opcode = OP_RANGE
+          then
+            need_inp <= '1';
+            state <= S_FETCH_INP;
+          elsif opcode = OP_RET
+             or opcode = OP_COMMIT
+             or opcode = OP_BACKCOMMIT
+             or opcode = OP_PARTIALCOMMIT
+             or opcode = OP_FAILTWICE
+          then
+            need_pop <= '1';
+            state <= S_POP;
           end if;
-
---        -- === Param1 fetch (3 cycles) ===
---        when S_FETCH_P1 =>
---          bcode_addr <= std_logic_vector(resize(bc_offset + 4, BYTECODE_ADDR_W));
---          bcode_rd <= '1'; state <= S_WAIT_P1;
---        when S_WAIT_P1 =>
---          state <= S_LOAD_P1;
---        when S_LOAD_P1 =>
---          param1 <= unsigned(bcode_rdata);
---          if need_p2 = '1' then    state <= S_FETCH_P2;
---          elsif need_inp = '1' then state <= S_FETCH_INP;
---          elsif need_pop = '1' then state <= S_POP;
---          else                      state <= S_EXECUTE;
---          end if;
---
---        -- === Param2 fetch (3 cycles) ===
---        when S_FETCH_P2 =>
---          bcode_addr <= std_logic_vector(resize(bc_offset + 8, BYTECODE_ADDR_W));
---          bcode_rd <= '1'; state <= S_WAIT_P2;
---        when S_WAIT_P2 =>
---          state <= S_LOAD_P2;
---        when S_LOAD_P2 =>
---          param2 <= unsigned(bcode_rdata);
---          if need_inp = '1' then    state <= S_FETCH_INP;
---          elsif need_pop = '1' then state <= S_POP;
---          else                      state <= S_EXECUTE;
---          end if;
 
         -- === Input byte fetch (3 cycles) ===
         when S_FETCH_INP =>
-          if inp_offset >= inp_size_reg then
-            failed <= '1'; state <= S_EXECUTE;
+          if inp_offset >= inp_size_reg
+          then
+            failed <= '1';
+            state <= S_EXECUTE;
           else
             input_addr <= std_logic_vector(resize(inp_offset, INPUT_ADDR_W));
-            input_rd <= '1'; state <= S_WAIT_INP;
+            input_rd <= '1';
+            state <= S_WAIT_INP;
           end if;
         when S_WAIT_INP =>
           state <= S_LOAD_INP;
         when S_LOAD_INP =>
           inp_byte <= unsigned(input_rdata);
-          if need_set = '1' then state <= S_FETCH_SET;
-          else                   state <= S_EXECUTE;
-          end if;
-
-        -- === SET word fetch (3 cycles) ===
---        when S_FETCH_SET =>
---          bcode_addr <= std_logic_vector(resize(
---            bc_offset + 4 + resize(inp_byte(7 downto 5) & "00", 32),
---            BYTECODE_ADDR_W));
---          bcode_rd <= '1'; state <= S_WAIT_SET;
---        when S_WAIT_SET =>
---          state <= S_LOAD_SET;
---        when S_LOAD_SET =>
---          set_word <= unsigned(bcode_rdata);
---          state <= S_EXECUTE;
+          state <= S_EXECUTE;
 
         -- === Stack operations (1 cycle each, internal RAM) ===
         when S_POP =>
@@ -356,121 +316,190 @@ begin
           v_failed := (failed = '1');  -- capture signal into variable
           failed <= '0';               -- clear for next use
 
-          if opcode = OP_END then
-            end_code <= std_logic_vector(param1);
-            busy <= '0'; done <= '1'; state <= S_DONE; v_redirected := true;
+          if opcode = OP_END
+          then
+            end_code <= bcode_rdata(23 downto 0);
+            busy <= '0';
+            done <= '1';
+            state <= S_DONE;
+            v_redirected := true;
 
-          elsif opcode = OP_RANGE then
+          elsif opcode = OP_RANGE
+          then
             if not v_failed then
-              if inp_byte >= param1(7 downto 0) and
-                 inp_byte <= param2(7 downto 0) then
+              if inp_byte >= unsigned(bcode_rdata(15 downto 8)) and
+                 inp_byte <= unsigned(bcode_rdata(7 downto 0))
+              then
                 inp_offset <= inp_offset + 1;
-                bc_offset <= bc_offset + resize(instr_size, 32);
+                bc_offset <= bc_offset + 4;
               else
                 v_failed := true;
               end if;
             end if;
 
-          elsif opcode = OP_CALL then
-            if need_push = '0' then
+          elsif opcode = OP_CALL
+          then
+            if need_push = '0'
+            then
               call_counter <= call_counter + 1;
-              push_elt <= (STYPE_CALL,
-                bc_offset + resize(instr_size, 32),
-                inp_offset, inp_size_reg,
-                resize(reg_sp, 16), current_call);
-              need_push <= '1'; state <= S_PUSH; v_redirected := true;
+              push_elt <= (
+                STYPE_CALL,
+                bc_offset + 4,
+                inp_offset,
+                inp_size_reg,
+                resize(reg_sp, 16),
+                current_call
+              );
+              need_push <= '1';
+              state <= S_PUSH;
+              v_redirected := true;
             else
               need_push <= '0';
               current_call <= call_counter;
-              bc_offset <= param1;
+              bc_offset <= unsigned(bcode_rdata(19 downto 0));
             end if;
 
-          elsif opcode = OP_RET then
-            if popped.stype = STYPE_CALL then
+          elsif opcode = OP_RET
+          then
+            if popped.stype = STYPE_CALL
+            then
               bc_offset <= popped.address;
               inp_size_reg <= popped.input_length;
               current_call <= popped.call_context;
             else
-              err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
+              err_code <= ERR_BYTECODE;
+              state <= S_ERROR;
+              v_redirected := true;
             end if;
 
-          elsif opcode = OP_CATCH then
-            if need_push = '0' then
-              push_elt <= (STYPE_CATCH, param1,
-                inp_offset, inp_size_reg,
-                resize(reg_sp, 16), x"0000");
-              need_push <= '1'; state <= S_PUSH; v_redirected := true;
+          elsif opcode = OP_CATCH
+          then
+            if need_push = '0'
+            then
+              push_elt <= (
+                STYPE_CATCH,
+                unsigned(bcode_rdata(19 downto 0)),
+                inp_offset,
+                inp_size_reg,
+                resize(reg_sp, 16),
+                x"0000"
+              );
+              need_push <= '1';
+              state <= S_PUSH;
+              v_redirected := true;
             else
               need_push <= '0';
-              bc_offset <= bc_offset + resize(instr_size, 32);
+              bc_offset <= bc_offset + 4;
             end if;
 
-          elsif opcode = OP_COMMIT then
-            if popped.stype = STYPE_CATCH then
-              bc_offset <= param1;
+          elsif opcode = OP_COMMIT
+          then
+            if popped.stype = STYPE_CATCH
+            then
+              bc_offset <= unsigned(bcode_rdata(19 downto 0));
             else
-              err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
+              err_code <= ERR_BYTECODE;
+              state <= S_ERROR;
+              v_redirected := true;
             end if;
 
-          elsif opcode = OP_BACKCOMMIT then
-            if popped.stype = STYPE_CATCH then
-              bc_offset <= param1;
+          elsif opcode = OP_BACKCOMMIT
+          then
+            if popped.stype = STYPE_CATCH
+            then
+              bc_offset <= unsigned(bcode_rdata(19 downto 0));
               inp_offset <= popped.input_offset;
             else
-              err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
+              err_code <= ERR_BYTECODE;
+              state <= S_ERROR;
+              v_redirected := true;
             end if;
 
-          elsif opcode = OP_PARTIALCOMMIT then
-            if popped.stype = STYPE_CATCH then
-              if need_push = '0' then
-                push_elt <= (STYPE_CATCH, popped.address,
-                  inp_offset, popped.input_length,
-                  popped.register_count, popped.call_context);
-                need_push <= '1'; state <= S_PUSH; v_redirected := true;
+          elsif opcode = OP_PARTIALCOMMIT
+          then
+            if popped.stype = STYPE_CATCH
+            then
+              if need_push = '0'
+              then
+                push_elt <= (
+                  STYPE_CATCH,
+                  popped.address,
+                  inp_offset,
+                  popped.input_length,
+                  popped.register_count,
+                  popped.call_context
+                );
+                need_push <= '1';
+                state <= S_PUSH;
+                v_redirected := true;
               else
                 need_push <= '0';
-                bc_offset <= param1;
+                bc_offset <= unsigned(bcode_rdata(19 downto 0));
               end if;
             else
-              err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
+              err_code <= ERR_BYTECODE;
+              state <= S_ERROR;
+              v_redirected := true;
             end if;
 
-          elsif opcode = OP_COUNTER then
-            state <= S_REG_PUSH; v_redirected := true;
+          elsif opcode = OP_COUNTER
+          then
+            state <= S_REG_PUSH;
+            v_redirected := true;
 
-          elsif opcode = OP_CONDJUMP then
+          elsif opcode = OP_CONDJUMP
+          then
             if reg_sp = 0 then
-              err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
+              err_code <= ERR_BYTECODE;
+              state <= S_ERROR;
+              v_redirected := true;
             else
               reg_scan_idx <= reg_sp - 1;
-              state <= S_CONDJUMP_SEARCH; v_redirected := true;
+              state <= S_CONDJUMP_SEARCH;
+              v_redirected := true;
             end if;
 
-          elsif opcode = OP_FAIL then
+          elsif opcode = OP_FAIL
+          then
             v_failed := true;
 
-          elsif opcode = OP_FAILTWICE then
-            if popped.stype /= STYPE_CATCH then
-              err_code <= ERR_BYTECODE; state <= S_ERROR; v_redirected := true;
-            elsif sp = 0 then
-              err_code <= ERR_NOMATCH; state <= S_ERROR; v_redirected := true;
+          elsif opcode = OP_FAILTWICE
+          then
+            if popped.stype /= STYPE_CATCH
+            then
+              err_code <= ERR_BYTECODE;
+              state <= S_ERROR;
+              v_redirected := true;
+            elsif sp = 0
+            then
+              err_code <= ERR_NOMATCH;
+              state <= S_ERROR;
+              v_redirected := true;
             else
               v_failed := true;
             end if;
 
+          else
+            err_code <= ERR_BYTECODE;
+            state <= S_ERROR;
+            v_redirected := true;
+
           end if;
 
           -- Post-execute: handle failure or next instruction
-          if not v_redirected then
+          if not v_redirected
+            then
             n_instr <= n_instr + 1;
             -- synthesis translate_off
-            report "EXEC done: opcode=0x" & to_hstring(opcode)
+            report "EXEC: " & integer'image(to_integer(n_instr))
+                 & " opcode=0x" & to_hstring(opcode)
                  & " bc_off=" & integer'image(to_integer(bc_offset))
                  & " inp_off=" & integer'image(to_integer(inp_offset))
                  & " v_failed=" & boolean'image(v_failed)
                  & " sp=" & integer'image(to_integer(sp));
             -- synthesis translate_on
-            if v_failed then
+            if v_failed
+            then
               state <= S_FAIL_UNWIND;
             else
               state <= S_FETCH_OP;
@@ -479,26 +508,32 @@ begin
 
         -- === Register stack push (COUNTER) ===
         when S_REG_PUSH =>
-          if reg_sp >= REG_DEPTH then
-            err_code <= ERR_OVERFLOW; state <= S_ERROR;
+          if reg_sp >= REG_DEPTH
+          then
+            err_code <= ERR_OVERFLOW;
+            state <= S_ERROR;
           else
             reg_mem(to_integer(reg_sp)) <= (
-              reg => param1, stacklen => sp, value => param2
+              reg => unsigned(bcode_rdata(27 downto 20)),
+              stacklen => sp,
+              value => unsigned(bcode_rdata(19 downto 0))
             );
             reg_sp <= reg_sp + 1;
-            bc_offset <= bc_offset + resize(instr_size, 32);
+            bc_offset <= bc_offset + 4;
             n_instr <= n_instr + 1;
             state <= S_FETCH_OP;
           end if;
 
         -- === CONDJUMP register search (scan backwards) ===
         when S_CONDJUMP_SEARCH =>
-          if reg_mem(to_integer(reg_scan_idx)).reg = param1
-             and reg_mem(to_integer(reg_scan_idx)).stacklen = sp then
+          if reg_mem(to_integer(reg_scan_idx)).reg = unsigned(bcode_rdata(27 downto 20))
+             and reg_mem(to_integer(reg_scan_idx)).stacklen = sp
+          then
             reg_found_idx <= reg_scan_idx;
             state <= S_CONDJUMP_FOUND;
           elsif reg_scan_idx = 0 then
-            err_code <= ERR_BYTECODE; state <= S_ERROR;
+            err_code <= ERR_BYTECODE;
+            state <= S_ERROR;
           else
             reg_scan_idx <= reg_scan_idx - 1;
           end if;
@@ -507,14 +542,14 @@ begin
         when S_CONDJUMP_FOUND =>
           if reg_mem(to_integer(reg_found_idx)).value <= 1 then
             -- Counter exhausted: fall through, remove register
-            bc_offset <= bc_offset + resize(instr_size, 32);
+            bc_offset <= bc_offset + 4;
             reg_scan_idx <= reg_found_idx;
             state <= S_REG_REMOVE;
           else
             -- Decrement counter and jump
             reg_mem(to_integer(reg_found_idx)).value <=
               reg_mem(to_integer(reg_found_idx)).value - 1;
-            bc_offset <= param2;
+            bc_offset <= unsigned(bcode_rdata(19 downto 0));
             n_instr <= n_instr + 1;
             state <= S_FETCH_OP;
           end if;
