@@ -245,17 +245,21 @@ begin
 
         -- === Decode ===
         when S_DECODE =>
-          need_p1 <= '0'; need_p2 <= '0'; need_inp <= '0';
-          need_set <= '0'; need_push <= '0'; need_pop <= '0';
+          -- need_p1 <= '0'; need_p2 <= '0';
+          need_inp <= '0';
+          -- need_set <= '0';
+          need_push <= '0'; need_pop <= '0';
           if inp_offset > inp_offset_max then
             inp_offset_max <= inp_offset;
           end if;
 
-          if opcode = OP_NOOP or opcode = OP_FAIL or opcode = OP_ANY then
+        --  if opcode = OP_NOOP or opcode = OP_FAIL or opcode = OP_ANY then
+          if opcode = OP_FAIL then
             state <= S_EXECUTE;
-          elsif opcode = OP_END or opcode = OP_SKIP
+          elsif opcode = OP_END -- or opcode = OP_SKIP
              or opcode = OP_CALL or opcode = OP_CATCH
-             or opcode = OP_OPENCAPTURE or opcode = OP_CLOSECAPTURE then
+             then
+             -- or opcode = OP_OPENCAPTURE or opcode = OP_CLOSECAPTURE then
             need_p1 <= '1'; state <= S_FETCH_P1;
           elsif opcode = OP_CHAR then
             need_p1 <= '1'; need_inp <= '1'; state <= S_FETCH_P1;
