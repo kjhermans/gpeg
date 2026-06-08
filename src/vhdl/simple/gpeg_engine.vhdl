@@ -287,7 +287,7 @@ begin
             err_code <= ERR_BYTECODE;
             state <= S_ERROR;
             -- synthesis translate_off
-            report "ERROR: "
+            report "ERROR: Unknown opcode: " & integer'image(to_integer(n_instr))
                  & " opcode=0x" & to_hstring(opcode)
                  & " bc_off=" & integer'image(to_integer(bc_offset))
                  & " inp_off=" & integer'image(to_integer(inp_offset))
