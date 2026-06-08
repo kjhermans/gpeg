@@ -153,7 +153,11 @@ architecture rtl of gpeg_engine is
   signal register_count : unsigned(15 downto 0) := (others => '0');
 
   -- Instruction registers
-  signal opcode         : unsigned(3 downto 0) := (others => '0');
+  signal opcode         : unsigned(3 downto 0)  := (others => '0');
+  signal instr_reg      : unsigned(7 downto 0)  := (others => '0');
+  signal instr_offset   : unsigned(19 downto 0) := (others => '0');
+  signal instr_from     : unsigned(7 downto 0)  := (others => '0');
+  signal instr_until    : unsigned(7 downto 0)  := (others => '0');
   signal inp_byte       : unsigned(7 downto 0)  := (others => '0');
 
   -- Pipeline control flags (set in DECODE)
@@ -239,6 +243,11 @@ begin
 
         when S_LOAD_OP =>
           opcode <= unsigned(bcode_rdata(31 downto 28));
+          instr_reg <= unsigned(bcode_rdata(27 downto 20));
+          instr_offset <= unsigned(bcode_rdata(19 downto 0));
+          instr_from <= unsigned(bcode_rdata(15 downto 8));
+          instr_until <= unsigned(bcode_rdata(7 downto 0));
+          end_code <= bcode_rdata(23 downto 0);
           -- synthesis translate_off
 --           report "LOAD_OP: bc_offset=" & integer'image(to_integer(bc_offset))
 --                & " instr=0x" & to_hstring(unsigned(bcode_rdata));
@@ -296,7 +305,8 @@ begin
         -- === Stack operations (1 cycle each, internal RAM) ===
         when S_POP =>
           if sp = 0 then
-            err_code <= ERR_BYTECODE; state <= S_ERROR;
+            err_code <= ERR_BYTECODE;
+            state <= S_ERROR;
           else
             popped <= stack_mem(to_integer(sp - 1));
             sp <= sp - 1; state <= S_EXECUTE;
@@ -304,7 +314,8 @@ begin
 
         when S_PUSH =>
           if sp >= STACK_DEPTH then
-            err_code <= ERR_OVERFLOW; state <= S_ERROR;
+            err_code <= ERR_OVERFLOW;
+            state <= S_ERROR;
           else
             stack_mem(to_integer(sp)) <= push_elt;
             sp <= sp + 1; state <= S_EXECUTE;
@@ -318,7 +329,6 @@ begin
 
           if opcode = OP_END
           then
-            end_code <= bcode_rdata(23 downto 0);
             busy <= '0';
             done <= '1';
             state <= S_DONE;
@@ -327,8 +337,8 @@ begin
           elsif opcode = OP_RANGE
           then
             if not v_failed then
-              if inp_byte >= unsigned(bcode_rdata(15 downto 8)) and
-                 inp_byte <= unsigned(bcode_rdata(7 downto 0))
+              if inp_byte >= instr_from and
+                 inp_byte <= instr_until
               then
                 inp_offset <= inp_offset + 1;
                 bc_offset <= bc_offset + 4;
@@ -356,7 +366,7 @@ begin
             else
               need_push <= '0';
               current_call <= call_counter;
-              bc_offset <= unsigned(bcode_rdata(19 downto 0));
+              bc_offset <= instr_offset;
             end if;
 
           elsif opcode = OP_RET
@@ -378,7 +388,7 @@ begin
             then
               push_elt <= (
                 STYPE_CATCH,
-                unsigned(bcode_rdata(19 downto 0)),
+                instr_offset,
                 inp_offset,
                 inp_size_reg,
                 resize(reg_sp, 16),
@@ -396,7 +406,7 @@ begin
           then
             if popped.stype = STYPE_CATCH
             then
-              bc_offset <= unsigned(bcode_rdata(19 downto 0));
+              bc_offset <= instr_offset;
             else
               err_code <= ERR_BYTECODE;
               state <= S_ERROR;
@@ -407,7 +417,7 @@ begin
           then
             if popped.stype = STYPE_CATCH
             then
-              bc_offset <= unsigned(bcode_rdata(19 downto 0));
+              bc_offset <= instr_offset;
               inp_offset <= popped.input_offset;
             else
               err_code <= ERR_BYTECODE;
@@ -434,7 +444,7 @@ begin
                 v_redirected := true;
               else
                 need_push <= '0';
-                bc_offset <= unsigned(bcode_rdata(19 downto 0));
+                bc_offset <= instr_offset;
               end if;
             else
               err_code <= ERR_BYTECODE;
@@ -514,9 +524,9 @@ begin
             state <= S_ERROR;
           else
             reg_mem(to_integer(reg_sp)) <= (
-              reg => unsigned(bcode_rdata(27 downto 20)),
+              reg => instr_reg,
               stacklen => sp,
-              value => unsigned(bcode_rdata(19 downto 0))
+              value => instr_offset
             );
             reg_sp <= reg_sp + 1;
             bc_offset <= bc_offset + 4;
@@ -526,7 +536,7 @@ begin
 
         -- === CONDJUMP register search (scan backwards) ===
         when S_CONDJUMP_SEARCH =>
-          if reg_mem(to_integer(reg_scan_idx)).reg = unsigned(bcode_rdata(27 downto 20))
+          if reg_mem(to_integer(reg_scan_idx)).reg = instr_reg
              and reg_mem(to_integer(reg_scan_idx)).stacklen = sp
           then
             reg_found_idx <= reg_scan_idx;
@@ -549,7 +559,7 @@ begin
             -- Decrement counter and jump
             reg_mem(to_integer(reg_found_idx)).value <=
               reg_mem(to_integer(reg_found_idx)).value - 1;
-            bc_offset <= unsigned(bcode_rdata(19 downto 0));
+            bc_offset <= instr_offset;
             n_instr <= n_instr + 1;
             state <= S_FETCH_OP;
           end if;
