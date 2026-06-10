@@ -27,14 +27,14 @@ entity gpeg_engine is
   generic (
     STACK_DEPTH        : natural := 256;
     REG_DEPTH          : natural := 32;
-    BYTECODE_ADDR_W    : natural := 20;
-    INPUT_ADDR_W       : natural := 20
+    BYTECODE_ADDR_W    : natural := 16;
+    INPUT_ADDR_W       : natural := 16
   );
   port (
     clk                : in  std_logic;
     rst                : in  std_logic;
 
-    -- Control -----------------------------------------------------------------
+    -- Control ------------------------------------------------------------------
     start              : in  std_logic;
     busy               : out std_logic;
     done               : out std_logic;
@@ -43,8 +43,8 @@ entity gpeg_engine is
     end_code           : out std_logic_vector(23 downto 0);
 
     -- Configuration (sampled at start) ----------------------------------------
-    bytecode_size      : in  unsigned(BYTECODE_ADDR_W-1 downto 0);
-    input_size         : in  unsigned(INPUT_ADDR_W-1 downto 0);
+    bytecode_size      : in  unsigned(19 downto 0);
+    input_size         : in  unsigned(19 downto 0);
 
     -- Bytecode memory (32‑bit, byte‑addressed) --------------------------------
     bcode_addr         : out std_logic_vector(BYTECODE_ADDR_W-1 downto 0);
@@ -56,6 +56,11 @@ entity gpeg_engine is
     input_rd           : out std_logic;
     input_rdata        : in  std_logic_vector(7 downto 0)
 
+    -- Capture output (active for one cycle) ------------------------------------
+--    cap_valid          : out std_logic;
+--    cap_open           : out std_logic;
+--    cap_slot           : out std_logic_vector(31 downto 0);
+--    cap_input_off      : out std_logic_vector(31 downto 0)
   );
 end entity gpeg_engine;
 
@@ -156,7 +161,9 @@ architecture rtl of gpeg_engine is
   signal inp_byte       : unsigned(7 downto 0)  := (others => '0');
 
   -- Pipeline control flags (set in DECODE)
+  signal need_inp       : std_logic := '0';
   signal need_push      : std_logic := '0';
+  signal need_pop       : std_logic := '0';
   signal push_elt       : stack_elt_t := SELT0;
 
   -- Stack
@@ -240,9 +247,9 @@ begin
 
         -- === Decode ===
         when S_DECODE =>
---          need_inp <= '0';
+          need_inp <= '0';
           need_push <= '0';
---          need_pop <= '0';
+          need_pop <= '0';
           if inp_offset > inp_offset_max then
             inp_offset_max <= inp_offset;
           end if;
@@ -257,18 +264,15 @@ begin
             state <= S_EXECUTE;
           elsif opcode = OP_RANGE
           then
- if input_addr = std_logic_vector(resize(inp_offset, INPUT_ADDR_W))
- then
- state <= S_EXECUTE;
- else
+            need_inp <= '1';
             state <= S_FETCH_INP;
- end if;
           elsif opcode = OP_RET
              or opcode = OP_COMMIT
              or opcode = OP_BACKCOMMIT
              or opcode = OP_PARTIALCOMMIT
              or opcode = OP_FAILTWICE
           then
+            need_pop <= '1';
             state <= S_POP;
           else
             err_code <= ERR_BYTECODE;

@@ -30,18 +30,18 @@ architecture sim of gpeg_engine_tb is
   signal bytecode_size : unsigned(19 downto 0) := (others => '0');
   signal input_size_s  : unsigned(19 downto 0) := (others => '0');
 
-  signal bcode_addr    : std_logic_vector(15 downto 0);
+  signal bcode_addr    : std_logic_vector(19 downto 0);
   signal bcode_rd      : std_logic;
   signal bcode_rdata   : std_logic_vector(31 downto 0) := (others => '0');
 
-  signal inp_addr      : std_logic_vector(15 downto 0);
+  signal inp_addr      : std_logic_vector(19 downto 0);
   signal inp_rd        : std_logic;
   signal inp_rdata     : std_logic_vector(7 downto 0) := (others => '0');
 
-  signal cap_valid     : std_logic;
-  signal cap_open      : std_logic;
-  signal cap_slot      : std_logic_vector(31 downto 0);
-  signal cap_input_off : std_logic_vector(31 downto 0);
+--  signal cap_valid     : std_logic;
+--  signal cap_open      : std_logic;
+--  signal cap_slot      : std_logic_vector(31 downto 0);
+--  signal cap_input_off : std_logic_vector(31 downto 0);
 
   ---------------------------------------------------------------------------
   -- Memory arrays (oversized; tests select subsets via bytecode_size)
@@ -60,16 +60,16 @@ begin
 
   -- DUT
   uut: entity work.gpeg_engine
-    generic map (STACK_DEPTH => 64, REG_DEPTH => 16, BYTECODE_ADDR_W => 16, INPUT_ADDR_W => 16)
+    generic map (STACK_DEPTH => 256, REG_DEPTH => 16, BYTECODE_ADDR_W => 20, INPUT_ADDR_W => 20)
     port map (
       clk => clk, rst => rst, start => start,
       busy => busy, done => tb_done, err => tb_err,
       err_code => tb_err_code, end_code => tb_end_code,
       bytecode_size => bytecode_size, input_size => input_size_s,
       bcode_addr => bcode_addr, bcode_rd => bcode_rd, bcode_rdata => bcode_rdata,
-      input_addr => inp_addr, input_rd => inp_rd, input_rdata => inp_rdata,
-      cap_valid => cap_valid, cap_open => cap_open,
-      cap_slot => cap_slot, cap_input_off => cap_input_off
+      input_addr => inp_addr, input_rd => inp_rd, input_rdata => inp_rdata
+--      cap_valid => cap_valid, cap_open => cap_open,
+--      cap_slot => cap_slot, cap_input_off => cap_input_off
     );
 
   -- Bytecode BRAM model (registered output, 1‑cycle latency)
