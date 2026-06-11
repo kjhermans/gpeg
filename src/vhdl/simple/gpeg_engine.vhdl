@@ -269,6 +269,8 @@ opcode := unsigned(bcode_rdata(31 downto 28));
              or opcode = OP_END
              or opcode = OP_CALL
              or opcode = OP_CATCH
+             or opcode = OP_OPENCAPTURE
+             or opcode = OP_CLOSECAPTURE
              or opcode = OP_COUNTER
              or opcode = OP_CONDJUMP
           then
@@ -488,6 +490,16 @@ print_status(opcode, v_failed);
               state <= S_ERROR;
               v_redirected := true;
             end if;
+
+          elsif opcode = OP_OPENCAPTURE
+          then
+            bc_offset <= bc_offset + 4;
+            state <= S_FETCH_OP;
+
+          elsif opcode = OP_CLOSECAPTURE
+          then
+            bc_offset <= bc_offset + 4;
+            state <= S_FETCH_OP;
 
           elsif opcode = OP_COUNTER
           then
