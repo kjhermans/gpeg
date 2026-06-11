@@ -125,7 +125,7 @@ architecture rtl of gpeg_engine is
   type state_t is (
     S_IDLE,
     S_FETCH_OP, S_WAIT_OP, S_LOAD_OP,
-    S_DECODE,
+ --   S_DECODE,
     S_FETCH_INP, S_WAIT_INP, S_LOAD_INP,
     S_EXECUTE,
     S_PUSH,
@@ -150,7 +150,7 @@ architecture rtl of gpeg_engine is
   signal register_count : unsigned(15 downto 0) := (others => '0');
 
   -- Instruction registers
-  signal opcode         : unsigned(3 downto 0)  := (others => '0');
+--  signal opcode         : unsigned(3 downto 0)  := (others => '0');
   signal instr_reg      : unsigned(7 downto 0)  := (others => '0');
   signal instr_offset   : unsigned(19 downto 0) := (others => '0');
   signal instr_from     : unsigned(7 downto 0)  := (others => '0');
@@ -177,6 +177,7 @@ begin
   process(clk)
     variable v_redirected : boolean;
     variable v_failed : boolean;
+variable opcode : unsigned(3 downto 0);
   begin
     if rising_edge(clk) then
       bcode_rd  <= '0';
@@ -232,19 +233,19 @@ begin
           state <= S_LOAD_OP;  -- one dead cycle for BRAM latency
 
         when S_LOAD_OP =>
-          opcode <= unsigned(bcode_rdata(31 downto 28));
+--          opcode <= unsigned(bcode_rdata(31 downto 28));
+opcode := unsigned(bcode_rdata(31 downto 28));
+
           instr_reg <= unsigned(bcode_rdata(27 downto 20));
           instr_offset <= unsigned(bcode_rdata(19 downto 0));
           instr_from <= unsigned(bcode_rdata(15 downto 8));
           instr_until <= unsigned(bcode_rdata(7 downto 0));
           end_code <= bcode_rdata(23 downto 0);
-          state <= S_DECODE;
+--          state <= S_DECODE;
 
         -- === Decode ===
-        when S_DECODE =>
---          need_inp <= '0';
+--        when S_DECODE =>
           need_push <= '0';
---          need_pop <= '0';
           if inp_offset > inp_offset_max then
             inp_offset_max <= inp_offset;
           end if;
@@ -321,7 +322,25 @@ begin
           else
             stack_mem(to_integer(sp)) <= push_elt;
             sp <= sp + 1;
-            state <= S_EXECUTE;
+
+if opcode = OP_CALL
+then
+current_call <= call_counter;
+bc_offset <= instr_offset;
+elsif opcode = OP_CATCH
+then
+bc_offset <= bc_offset + 4;
+elsif opcode = OP_PARTIALCOMMIT
+then
+bc_offset <= instr_offset;
+end if;
+need_push <= '0';
+state <= S_FETCH_OP;
+n_instr <= n_instr + 1;
+print_status(opcode, v_failed);
+
+            --state <= S_EXECUTE;
+
           end if;
 
         -- === Execute ===
