@@ -62,16 +62,18 @@ end entity gpeg_engine;
 architecture rtl of gpeg_engine is
 
   -- Opcode constants
-  constant OP_FAIL            : unsigned(3 downto 0) := b"1001";
-  constant OP_FAILTWICE       : unsigned(3 downto 0) := b"1010";
-  constant OP_RET             : unsigned(3 downto 0) := b"0100";
   constant OP_END             : unsigned(3 downto 0) := b"0000";
+  constant OP_RANGE           : unsigned(3 downto 0) := b"0001";
   constant OP_CALL            : unsigned(3 downto 0) := b"0011";
+  constant OP_RET             : unsigned(3 downto 0) := b"0100";
   constant OP_CATCH           : unsigned(3 downto 0) := b"0101";
   constant OP_COMMIT          : unsigned(3 downto 0) := b"0110";
   constant OP_BACKCOMMIT      : unsigned(3 downto 0) := b"0111";
   constant OP_PARTIALCOMMIT   : unsigned(3 downto 0) := b"1000";
-  constant OP_RANGE           : unsigned(3 downto 0) := b"0001";
+  constant OP_FAIL            : unsigned(3 downto 0) := b"1001";
+  constant OP_FAILTWICE       : unsigned(3 downto 0) := b"1010";
+  constant OP_OPENCAPTURE     : unsigned(3 downto 0) := b"1100";
+  constant OP_CLOSECAPTURE    : unsigned(3 downto 0) := b"1101";
   constant OP_COUNTER         : unsigned(3 downto 0) := b"1110";
   constant OP_CONDJUMP        : unsigned(3 downto 0) := b"1111";
 
