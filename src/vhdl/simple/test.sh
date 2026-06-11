@@ -33,4 +33,4 @@ cd $TESTDIR
 
 ghdl -a --std=08 gpeg_engine.vhdl gpeg_engine_tb.vhdl && \
 ghdl -e --std=08 gpeg_engine_tb && \
-ghdl -r --std=08 gpeg_engine_tb --vcd=$TESTDIR/test.vcd >> $TESTDIR/test.log 2>&1
+ghdl -r --std=08 gpeg_engine_tb --fst=$TESTDIR/test.fst --vcd=$TESTDIR/test.vcd >> $TESTDIR/test.log 2>&1
