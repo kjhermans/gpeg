@@ -143,7 +143,7 @@ architecture rtl of gpeg_engine is
   signal inp_offset_max : unsigned(19 downto 0) := (others => '0');
   signal inp_size_reg   : unsigned(19 downto 0) := (others => '0');
   signal bc_size_reg    : unsigned(19 downto 0) := (others => '0');
-  signal failed         : std_logic := '0';
+  signal failed         : std_logic             := '0';
   signal n_instr        : unsigned(31 downto 0) := (others => '0');
   signal call_counter   : unsigned(15 downto 0) := (others => '0');
   signal current_call   : unsigned(15 downto 0) := (others => '0');
