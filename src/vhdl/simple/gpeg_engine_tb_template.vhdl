@@ -46,10 +46,10 @@ architecture sim of gpeg_engine_tb is
   ---------------------------------------------------------------------------
   -- Memory arrays (oversized; tests select subsets via bytecode_size)
   ---------------------------------------------------------------------------
-  type bcode_mem_t is array (0 to 1023) of std_logic_vector(31 downto 0);
+  type bcode_mem_t is array (0 to 262143) of std_logic_vector(31 downto 0);
   signal bcode_mem : bcode_mem_t := (others => (others => '0'));
 
-  type inp_mem_t is array (0 to 1023) of std_logic_vector(7 downto 0);
+  type inp_mem_t is array (0 to 4095) of std_logic_vector(7 downto 0);
   signal inp_mem : inp_mem_t := (others => (others => '0'));
 
   signal test_num : integer := 0;
