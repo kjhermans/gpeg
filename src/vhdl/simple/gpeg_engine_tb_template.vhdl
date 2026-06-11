@@ -17,7 +17,7 @@ end entity;
 
 architecture sim of gpeg_engine_tb is
 
-  constant CLK_PERIOD : time := 10 ns;
+  constant CLK_PERIOD : time := 8 ns;
 
   signal clk           : std_logic := '0';
   signal rst           : std_logic := '1';
