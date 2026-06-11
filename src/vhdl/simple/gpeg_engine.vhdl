@@ -403,10 +403,10 @@ print_status(opcode, v_failed);
               need_push <= '1';
               state <= S_PUSH;
               v_redirected := true;
-            else
-              need_push <= '0';
-              current_call <= call_counter;
-              bc_offset <= instr_offset;
+--            else
+--              need_push <= '0';
+--              current_call <= call_counter;
+--              bc_offset <= instr_offset;
             end if;
 
           elsif opcode = OP_RET
@@ -437,9 +437,9 @@ print_status(opcode, v_failed);
               need_push <= '1';
               state <= S_PUSH;
               v_redirected := true;
-            else
-              need_push <= '0';
-              bc_offset <= bc_offset + 4;
+--            else
+--              need_push <= '0';
+--              bc_offset <= bc_offset + 4;
             end if;
 
           elsif opcode = OP_COMMIT
@@ -482,9 +482,9 @@ print_status(opcode, v_failed);
                 need_push <= '1';
                 state <= S_PUSH;
                 v_redirected := true;
-              else
-                need_push <= '0';
-                bc_offset <= instr_offset;
+--              else
+--                need_push <= '0';
+--                bc_offset <= instr_offset;
               end if;
             else
               err_code <= ERR_BYTECODE;
