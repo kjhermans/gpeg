@@ -277,12 +277,13 @@ opcode := unsigned(bcode_rdata(31 downto 28));
             state <= S_EXECUTE;
           elsif opcode = OP_RANGE
           then
- if input_addr = std_logic_vector(resize(inp_offset, INPUT_ADDR_W))
- then
- state <= S_EXECUTE;
- else
-            state <= S_FETCH_INP;
- end if;
+            if input_addr = std_logic_vector(resize(inp_offset, INPUT_ADDR_W))
+            then
+              -- input is already in cache
+              state <= S_EXECUTE;
+            else
+              state <= S_FETCH_INP;
+            end if;
           elsif opcode = OP_RET
              or opcode = OP_COMMIT
              or opcode = OP_BACKCOMMIT
