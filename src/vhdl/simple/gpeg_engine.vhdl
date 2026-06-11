@@ -172,6 +172,21 @@ architecture rtl of gpeg_engine is
   signal reg_scan_idx  : unsigned(8 downto 0) := (others => '0');
   signal reg_found_idx : unsigned(8 downto 0) := (others => '0');
 
+  procedure print_status
+    (opcode :unsigned(3 downto 0); v_failed :boolean)
+  is
+  begin
+    -- synthesis translate_off
+    report "EXEC: "
+           & integer'image(to_integer(n_instr))
+           & " opcode=0x" & to_hstring(opcode)
+           & " bc_off=" & integer'image(to_integer(bc_offset))
+           & " inp_off=" & integer'image(to_integer(inp_offset))
+           & " v_failed=" & boolean'image(v_failed)
+           & " sp=" & integer'image(to_integer(sp));
+    -- synthesis translate_on
+  end procedure;
+
 begin
 
   process(clk)
@@ -522,14 +537,7 @@ print_status(opcode, v_failed);
           if not v_redirected
             then
             n_instr <= n_instr + 1;
-            -- synthesis translate_off
-            report "EXEC: " & integer'image(to_integer(n_instr))
-                 & " opcode=0x" & to_hstring(opcode)
-                 & " bc_off=" & integer'image(to_integer(bc_offset))
-                 & " inp_off=" & integer'image(to_integer(inp_offset))
-                 & " v_failed=" & boolean'image(v_failed)
-                 & " sp=" & integer'image(to_integer(sp));
-            -- synthesis translate_on
+            print_status(opcode, v_failed);
             if v_failed
             then
               state <= S_FAIL_UNWIND;
