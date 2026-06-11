@@ -78,7 +78,7 @@ begin
     if rising_edge(clk) then
       if bcode_rd = '1' then
         bcode_rdata <= bcode_mem(
-          to_integer(unsigned(bcode_addr(15 downto 2)))
+          to_integer(unsigned(bcode_addr(19 downto 2)))
         );
       end if;
     end if;
@@ -90,7 +90,7 @@ begin
     if rising_edge(clk) then
       if inp_rd = '1' then
         inp_rdata <= inp_mem(
-          to_integer(unsigned(inp_addr(15 downto 0)))
+          to_integer(unsigned(inp_addr(19 downto 0)))
         );
       end if;
     end if;
