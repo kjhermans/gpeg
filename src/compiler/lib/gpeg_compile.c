@@ -1125,7 +1125,9 @@ int gpeg_compile_varcapture
         capture = ++(state->capture);
         memcpy(node->aux, &capture, sizeof(capture));
       }
-      str2int_map_put(&(state->variables), variablename, capture);
+      if (str2int_map_get(&(state->variables), variablename, &capture) != 0) {
+        str2int_map_put(&(state->variables), variablename, capture);
+      }
       vec_append(vec, &capture, sizeof(capture));
       vec_printf(state->assembly,
         "  opencapture %u\n"
