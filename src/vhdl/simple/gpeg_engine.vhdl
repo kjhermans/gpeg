@@ -125,7 +125,6 @@ architecture rtl of gpeg_engine is
   type state_t is (
     S_IDLE,
     S_FETCH_OP, S_WAIT_OP, S_LOAD_OP,
- --   S_DECODE,
     S_FETCH_INP, S_WAIT_INP, S_LOAD_INP,
     S_EXECUTE,
     S_PUSH,
@@ -158,7 +157,6 @@ architecture rtl of gpeg_engine is
   signal inp_byte       : unsigned(7 downto 0)  := (others => '0');
 
   -- Pipeline control flags (set in DECODE)
-  signal need_push      : std_logic := '0';
   signal push_elt       : stack_elt_t := SELT0;
 
   -- Stack
@@ -254,11 +252,6 @@ begin
           instr_from <= unsigned(bcode_rdata(15 downto 8));
           instr_until <= unsigned(bcode_rdata(7 downto 0));
           end_code <= bcode_rdata(23 downto 0);
---          state <= S_DECODE;
-
-        -- === Decode ===
---        when S_DECODE =>
-          need_push <= '0';
           if inp_offset > inp_offset_max then
             inp_offset_max <= inp_offset;
           end if;
@@ -350,7 +343,6 @@ begin
             then
               bc_offset <= instr_offset;
             end if;
-            need_push <= '0';
             state <= S_FETCH_OP;
             n_instr <= n_instr + 1;
             print_status(opcode, v_failed);
@@ -386,25 +378,17 @@ begin
 
           elsif opcode = OP_CALL
           then
-            if need_push = '0'
-            then
-              call_counter <= call_counter + 1;
-              push_elt <= (
-                STYPE_CALL,
-                bc_offset + 4,
-                inp_offset,
-                inp_size_reg,
-                resize(reg_sp, 16),
-                current_call
-              );
-              need_push <= '1';
-              state <= S_PUSH;
-              v_redirected := true;
---            else
---              need_push <= '0';
---              current_call <= call_counter;
---              bc_offset <= instr_offset;
-            end if;
+            call_counter <= call_counter + 1;
+            push_elt <= (
+              STYPE_CALL,
+              bc_offset + 4,
+              inp_offset,
+              inp_size_reg,
+              resize(reg_sp, 16),
+              current_call
+            );
+            state <= S_PUSH;
+            v_redirected := true;
 
           elsif opcode = OP_RET
           then
@@ -421,23 +405,16 @@ begin
 
           elsif opcode = OP_CATCH
           then
-            if need_push = '0'
-            then
-              push_elt <= (
-                STYPE_CATCH,
-                instr_offset,
-                inp_offset,
-                inp_size_reg,
-                resize(reg_sp, 16),
-                x"0000"
-              );
-              need_push <= '1';
-              state <= S_PUSH;
-              v_redirected := true;
---            else
---              need_push <= '0';
---              bc_offset <= bc_offset + 4;
-            end if;
+            push_elt <= (
+              STYPE_CATCH,
+              instr_offset,
+              inp_offset,
+              inp_size_reg,
+              resize(reg_sp, 16),
+              x"0000"
+            );
+            state <= S_PUSH;
+            v_redirected := true;
 
           elsif opcode = OP_COMMIT
           then
@@ -466,23 +443,16 @@ begin
           then
             if popped.stype = STYPE_CATCH
             then
-              if need_push = '0'
-              then
-                push_elt <= (
-                  STYPE_CATCH,
-                  popped.address,
-                  inp_offset,
-                  popped.input_length,
-                  popped.register_count,
-                  popped.call_context
-                );
-                need_push <= '1';
-                state <= S_PUSH;
-                v_redirected := true;
---              else
---                need_push <= '0';
---                bc_offset <= instr_offset;
-              end if;
+              push_elt <= (
+                STYPE_CATCH,
+                popped.address,
+                inp_offset,
+                popped.input_length,
+                popped.register_count,
+                popped.call_context
+              );
+              state <= S_PUSH;
+              v_redirected := true;
             else
               err_code <= ERR_BYTECODE;
               state <= S_ERROR;
