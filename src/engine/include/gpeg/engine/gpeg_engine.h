@@ -170,6 +170,7 @@ typedef struct
   unsigned          offset;
   uint16_t          reg;
   vec_t             vec;
+  unsigned          stacklen;
 }
 gpege_capture_t;
 
