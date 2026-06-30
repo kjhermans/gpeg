@@ -149,7 +149,6 @@ architecture rtl of gpeg_engine is
   signal register_count : unsigned(15 downto 0) := (others => '0');
 
   -- Instruction registers
---  signal opcode         : unsigned(3 downto 0)  := (others => '0');
   signal instr_reg      : unsigned(7 downto 0)  := (others => '0');
   signal instr_offset   : unsigned(19 downto 0) := (others => '0');
   signal instr_from     : unsigned(7 downto 0)  := (others => '0');
@@ -193,6 +192,7 @@ begin
     variable opcode : unsigned(3 downto 0);
   begin
     if rising_edge(clk) then
+      opcode := unsigned(bcode_rdata(31 downto 28));
       bcode_rd  <= '0';
       input_rd  <= '0';
 
@@ -246,7 +246,6 @@ begin
           state <= S_LOAD_OP;  -- one dead cycle for BRAM latency
 
         when S_LOAD_OP =>
-          opcode := unsigned(bcode_rdata(31 downto 28));
           instr_reg <= unsigned(bcode_rdata(27 downto 20));
           instr_offset <= unsigned(bcode_rdata(19 downto 0));
           instr_from <= unsigned(bcode_rdata(15 downto 8));
@@ -346,7 +345,6 @@ begin
             state <= S_FETCH_OP;
             n_instr <= n_instr + 1;
             print_status(opcode, v_failed);
-            -- state <= S_EXECUTE;
 
           end if;
 
