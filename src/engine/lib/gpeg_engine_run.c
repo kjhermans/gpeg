@@ -264,6 +264,28 @@ inline int resolve_variable
     RETURN_ERR(GPEGE_ERR_VARIABLE);
   }
 }
+*/
+
+static
+inline int resolve_variable
+  (
+    gpege_caplist_t* captures,
+    uint16_t reg,
+    unsigned stacklen,
+    vec_t* result
+  )
+{
+  for (unsigned i = captures->count; i > 0; i++) {
+    if (captures->list[ i-1 ].reg == reg
+//        && captures->list[ i-1 ].stacklen >= stacklen)
+)
+    {
+      *result = captures->list[ i-1 ].vec;
+      return 0;
+    }
+  }
+  RETURN_ERR(GPEGE_ERR_VARIABLE);
+}
 
 #define CLEANUP { r = __r; goto CLEAN_UP; }
 
@@ -348,8 +370,7 @@ int gpeg_engine_run_limit
     vec_t value = { 0 };
     CHECK(
       resolve_variable(
-        input,
-        &(state->actions),
+        &(state->captures),
         reg,
         state->stack.count,
         &value
@@ -392,6 +413,7 @@ void gpeg_engine_run_call
     .instrptr= state->instrptr + 4,
     .inputptr = state->inputptr,
     .actioncount = state->actions.count,
+    .capturecount = state->captures.count,
     .countercount = state->countercount,
     .inputsizescount = state->inputsizes.count,
   };
@@ -422,6 +444,7 @@ void gpeg_engine_run_catch
     .instrptr = GPEGU_INSTR_OFFSET(instr8),
     .inputptr = state->inputptr,
     .actioncount = state->actions.count,
+    .capturecount = state->captures.count,
     .countercount = state->countercount,
     .inputsizescount = state->inputsizes.count,
   };
@@ -454,6 +477,7 @@ int gpeg_engine_run_partialcommit
   CHECK(stack_peek(&(state->stack), &eltptr));
   eltptr->inputptr = state->inputptr;
   eltptr->actioncount = state->actions.count;
+  eltptr->capturecount = state->captures.count;
   eltptr->countercount = state->countercount;
   eltptr->inputsizescount = state->inputsizes.count;
   state->instrptr = GPEGU_INSTR_OFFSET(instr8);
@@ -476,9 +500,8 @@ int gpeg_engine_run_var
 {
   uint16_t reg = (instr8[2] << 8) | instr8[3];
   vec_t value = { 0 };
-  CHECK(
-    resolve_variable(input, &(state->actions), reg, state->stack.count, &value)
-  );
+
+  CHECK(resolve_variable(&(state->captures), reg, state->stack.count, &value));
   if (value.size == 0) {
     state->failed = 1;
   } else if (state->inputptr + value.size > input->size) {
@@ -510,18 +533,37 @@ void gpeg_engine_run_opencapture
 }
 
 static inline
-void gpeg_engine_run_closecapture
+int gpeg_engine_run_closecapture
   (uint8_t* instr8, gpege_state_t* state)
 {
   uint16_t reg = (instr8[2] << 8) | instr8[3];
-  gpege_action_t action = {
-    .action   = ACT_CLOSE,
-    .reg      = reg,
-    .offset   = state->inputptr,
-    .stacklen = state->stack.count,
-  };
-  gpege_actionlist_push(&state->actions, action);
-  state->instrptr += 4;
+  if (state->actions.count == 0) {
+    RETURN_ERR(GPEGE_ERR_ACTIONEMPTY);
+  } else if (state->actions.list[ state->actions.count-1 ].reg != reg) {
+    RETURN_ERR(GPEGE_ERR_ACTIONMATCH);
+  } else {
+    gpege_action_t open = state->actions.list[ --(state->actions.count) ];
+    if (state->inputptr > open.offset) {
+      vec_t vec = {
+        state->input->data + open.offset,
+        state->inputptr - open.offset,
+      };
+      if (state->flags & GPEGE_FLG_COPYCAPTURES) {
+        unsigned char* copy = calloc(vec.size + 1, 1);
+        memcpy(copy, vec.data, vec.size);
+        vec.data = copy;
+      }
+      gpege_capture_t capture = {
+        .offset   = open.offset,
+        .reg      = open.reg,
+        .vec      = vec,
+  //      .stacklen = open.stacklen,
+      };
+      gpege_caplist_push(&(state->captures), capture);
+    }
+    state->instrptr += 4;
+    return 0;
+  }
 }
 
 static inline
@@ -582,6 +624,7 @@ int gpeg_engine_fail
   state->inputptr = elt.inputptr;
   state->instrptr = elt.instrptr;
   state->actions.count = elt.actioncount;
+  state->captures.count = elt.capturecount;
   state->countercount = elt.countercount;
   state->inputsizes.count = elt.inputsizescount;
   state->inputsiz = (state->inputsizes.count ?
@@ -702,7 +745,7 @@ DEBUGPOINT_INSTRUCTION
       gpeg_engine_run_opencapture(instr8, &state);
       break;
     case OP_CLOSECAPTURE:
-      gpeg_engine_run_closecapture(instr8, &state);
+      CHECK2(gpeg_engine_run_closecapture(instr8, &state), CLEANUP);
       break;
     case OP_COUNTER:
       CHECK2(gpeg_engine_run_counter(instr8, &state), CLEANUP);
@@ -720,7 +763,8 @@ DEBUGPOINT_FAIL
     }
   }
 
-  wrap_captures(input, flags, &state.actions, &(result->captures));
+  //wrap_captures(input, flags, &state.actions, &(result->captures));
+  result->captures = state.captures;
 CLEAN_UP:
   if (state.stack.list) { free(state.stack.list); }
   if (state.actions.list) { free(state.actions.list); }

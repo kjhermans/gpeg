@@ -33,28 +33,76 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gpeg/engine/lib.h>
 
+MAKE_ARRAY_CODE(gpege_node_t*, gpege_nodelist_);
+
 static
 void gpeg_captures2nodes
-  (const gpege_caplist_t* captures, unsigned i, gpege_node_t* parent)
+  (gpege_node_t* tree, gpege_capture_t* capture)
 {
-  unsigned lastoff = parent->offset;
-
-  for (; i < captures->count && captures->list[ i ].offset
-           < parent->offset + parent->vec.size; i++)
-  {
-    gpege_capture_t* cap = &(captures->list[ i ]);
-    if (cap->offset >= lastoff) {
-      gpege_node_t* child = calloc(1, sizeof(gpege_node_t));
-      parent->children = realloc(
-                           parent->children,
-                           sizeof(gpege_node_t*) * (parent->nchildren + 1));
-      child->type = cap->reg;
-      child->offset = cap->offset;
-      vec_appendv(&(child->vec), &(cap->vec));
-      gpeg_captures2nodes(captures, i+1, child);
-      parent->children[ (parent->nchildren)++ ] = child;
-      lastoff = cap->offset + cap->vec.size;
+  if (tree->children.count == 0) {
+    /* Add as first child */
+    gpege_node_t* newchild = calloc(1, sizeof(gpege_node_t));
+    newchild->vec = vec_copy_(capture->vec);
+    newchild->offset = capture->offset;
+    newchild->type = capture->reg;
+    gpege_nodelist_push(&(tree->children), newchild);
+  } else {
+    for (unsigned i=0; i < tree->children.count; i++) {
+      gpege_node_t* child = tree->children.list[ i ];
+      if (capture->offset == child->offset &&
+          capture->offset + capture->vec.size == child->offset + child->vec.size &&
+          capture->reg < child->type)
+      {
+        /* Identically placed captures reparent */
+        break;
+      }
+      if (capture->offset >= child->offset &&
+          capture->offset + capture->vec.size <= child->offset + child->vec.size)
+      {
+        /* Recurse */
+        gpeg_captures2nodes(child, capture);
+        return;
+      }
     }
+    for (unsigned i=0; i < tree->children.count; i++) {
+      gpege_node_t* child = tree->children.list[ i ];
+      if (capture->offset + capture->vec.size <= child->offset) {
+        /* Insert before */
+        gpege_node_t* newchild = calloc(1, sizeof(gpege_node_t));
+        newchild->vec = vec_copy_(capture->vec);
+        newchild->offset = capture->offset;
+        newchild->type = capture->reg;
+        gpege_nodelist_ins(&(tree->children), i, newchild);
+        return;
+      }
+      if (capture->offset <= child->offset
+          && capture->offset + capture->vec.size >= child->offset + child->vec.size)
+      {
+        unsigned j;
+        gpege_node_t* newparent = calloc(1, sizeof(gpege_node_t));
+        newparent->vec = vec_copy_(capture->vec);
+        newparent->offset = capture->offset;
+        newparent->type = capture->reg;
+        for (j = i+1; j < tree->children.count; j++) {
+          if (capture->offset + capture->vec.size <= child->offset) {
+            break;
+          }
+        }
+        for (unsigned k=i; k < j; k++) {
+          gpege_node_t* oldchild;
+          gpege_nodelist_rem(&(tree->children), i, &oldchild);
+          gpege_nodelist_push(&(newparent->children), oldchild);
+        }
+        gpege_nodelist_ins(&(tree->children), i, newparent);
+        return;
+      }
+    }
+    /* Insert after */
+    gpege_node_t* newchild = calloc(1, sizeof(gpege_node_t));
+    newchild->vec = vec_copy_(capture->vec);
+    newchild->offset = capture->offset;
+    newchild->type = capture->reg;
+    gpege_nodelist_push(&(tree->children), newchild);
   }
 }
 
@@ -68,7 +116,23 @@ gpege_node_t* gpeg_result_to_tree
   gpege_node_t* tree = calloc(1, sizeof(gpege_node_t));
   tree->vec.size = (1<<20); // TODO: Replace with some defined constant
 
-  gpeg_captures2nodes(&(result->captures), 0, tree);
+  /*
+fprintf(stderr, "CAPTURE:\n");
+for (unsigned i=0; i < result->captures.count; i++) {
+gpege_capture_t* cap = &(result->captures.list[ i ]);
+fprintf(stderr, "%u: %u, %u -> %u\n", i, cap->reg, cap->offset, cap->vec.size);
+}
+*/
+  for (unsigned i=0; i < result->captures.count; i++) {
+    gpege_capture_t* cap = &(result->captures.list[ i ]);
+    gpeg_captures2nodes(tree, cap);
+    /*
+fprintf(stderr, "----\nCAPTURE:\n");
+fprintf(stderr, "%u: %u, %u -> %u\n", i, cap->reg, cap->offset, cap->vec.size);
+fprintf(stderr, "TREE:\n");
+gpeg_node_debug(tree);
+*/
+  }
   tree->vec.size = 0;
   return tree;
 }
@@ -92,17 +156,21 @@ void gpeg_node_debug_
 {
   for (unsigned i=0; i < indent; i++) { fprintf(stderr, " "); }
   fprintf(stderr, "%u: %u: %u: ", node->type, node->offset, node->vec.size);
-  for (unsigned i=0; i < node->vec.size; i++) {
-    char c = node->vec.data[ i ];
-    if (c >= 32 && c < 127) {
-      fprintf(stderr, "%c", c);
-    } else {
-      fprintf(stderr, ".");
+  if (node->vec.data) {
+    for (unsigned i=0; i < node->vec.size; i++) {
+      char c = node->vec.data[ i ];
+      if (c >= 32 && c < 127) {
+        fprintf(stderr, "%c", c);
+      } else {
+        fprintf(stderr, ".");
+      }
     }
+  } else {
+    fprintf(stderr, "null");
   }
   fprintf(stderr, "\n");
-  for (unsigned i=0; i < node->nchildren; i++) {
-    gpeg_node_debug_(node->children[ i ], indent + 1);
+  for (unsigned i=0; i < node->children.count; i++) {
+    gpeg_node_debug_(node->children.list[ i ], indent + 1);
   }
 }
 
@@ -121,24 +189,24 @@ void gpeg_node_debug
 void gpeg_node_remove
   (gpege_node_t* node, unsigned type, int recursive, int force)
 {
-  for (unsigned i=0; i < node->nchildren; i++) {
-    gpege_node_t* child = node->children[ i ];
+  for (unsigned i=0; i < node->children.count; i++) {
+    gpege_node_t* child = node->children.list[ i ];
     if (recursive) {
       gpeg_node_remove(child, type, recursive, force);
     }
     if (child->type == type) {
-      if (force || child->nchildren == 0) {
+      if (force || child->children.count == 0) {
         gpeg_node_free(child);
-        if (i == node->nchildren - 1) {
-          --(node->nchildren);
+        if (i == node->children.count - 1) {
+          --(node->children.count);
           return;
         } else {
           memmove(
-            &(node->children[i]),
-            &(node->children[i+1]),
-            sizeof(gpege_node_t*) * (node->nchildren - (i + 1))
+            &(node->children.list[i]),
+            &(node->children.list[i+1]),
+            sizeof(gpege_node_t*) * (node->children.count - (i + 1))
           );
-          --(node->nchildren);
+          --(node->children.count);
           --i;
         }
       }
@@ -154,8 +222,8 @@ void gpeg_node_callback
     void* arg
   )
 {
-  for (unsigned i=0; i < node->nchildren; i++) {
-    gpege_node_t* child = node->children[ i ];
+  for (unsigned i=0; i < node->children.count; i++) {
+    gpege_node_t* child = node->children.list[ i ];
     if (child->type == type) {
       child->fnc = fnc;
       child->arg = arg;
@@ -168,8 +236,8 @@ static
 int gpeg_node_run_
   (gpege_node_t* parent, vec_t* parentvec)
 {
-  for (unsigned i=0; i < parent->nchildren; i++) {
-    gpege_node_t* child = parent->children[ i ];
+  for (unsigned i=0; i < parent->children.count; i++) {
+    gpege_node_t* child = parent->children.list[ i ];
     vec_t vec = { 0 };
     int r;
 
@@ -214,10 +282,11 @@ int gpeg_node_run
 void gpeg_node_free
   (gpege_node_t* node)
 {
-  for (unsigned i=0; i < node->nchildren; i++) {
-    gpeg_node_free(node->children[ i ]);
+  for (unsigned i=0; i < node->children.count; i++) {
+    gpeg_node_free(node->children.list[ i ]);
   }
-  free(node->children);
+  free(node->children.list);
+  memset(&(node->children), 0, sizeof(node->children));
   if (node->vec.data) { free(node->vec.data); }
   free(node);
 }
