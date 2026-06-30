@@ -255,9 +255,9 @@ gpege_result_t;
 extern
 int gpeg_engine_run
   (
-    const vec_t* bytecode,
-    const vec_t* input,
-    const unsigned flags,
+    const vec_t*    bytecode,
+    const vec_t*    input,
+    const unsigned  flags,
     gpege_result_t* result
   )
   __attribute__ ((warn_unused_result));
@@ -308,7 +308,12 @@ void gpeg_node_debug
 
 extern
 void gpeg_node_remove
-  (gpege_node_t* node, unsigned type, int recursive, int force);
+  (
+     gpege_node_t*  node,
+     unsigned       type,
+     int            recursive,
+     int            force
+  );
 
 #define GPEG_FNC_PRENODE      1
 #define GPEG_FNC_PRECHILD     2
