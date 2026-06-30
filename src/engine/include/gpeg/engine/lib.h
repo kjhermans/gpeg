@@ -73,6 +73,7 @@ typedef struct
   uint32_t      instrptr;
   uint32_t      inputptr;
   unsigned      actioncount;
+  unsigned      capturecount;
   unsigned      countercount;
   unsigned      inputsizescount;
 }
@@ -96,6 +97,7 @@ typedef struct gpege_state
   unsigned              inputbit;
   gpege_stack_t         stack;
   gpege_actionlist_t    actions;
+  gpege_caplist_t       captures;
   uint32list_t          inputsizes;
   unsigned              instrctr;
   unsigned              counters[ GPEGE_MAX_COUNTERS ][ 2 ];
