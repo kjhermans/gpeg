@@ -434,6 +434,7 @@ void gpeg_engine_run_call
     .countercount = state->countercount,
     .inputsizescount = state->inputsizes.count,
   };
+
   gpege_stack_push(&(state->stack), elt);
   state->instrptr = GPEGU_INSTR_OFFSET(instr8);
 }
@@ -443,6 +444,7 @@ int gpeg_engine_run_ret
   (const vec_t* input, gpege_state_t* state)
 {
   gpege_stackelt_t elt = { 0 };
+
   CHECK(stack_pop(&(state->stack), STACK_CALL, &elt));
   state->instrptr = elt.instrptr;
   state->inputsizes.count = elt.inputsizescount;
@@ -465,6 +467,7 @@ void gpeg_engine_run_catch
     .countercount = state->countercount,
     .inputsizescount = state->inputsizes.count,
   };
+
   gpege_stack_push(&(state->stack), elt);
   state->instrptr += 4;
 }
@@ -474,6 +477,7 @@ int gpeg_engine_run_backcommit
   (uint8_t* instr8, const vec_t* input, gpege_state_t* state)
 {
   gpege_stackelt_t elt = { 0 };
+
   CHECK(stack_pop(&(state->stack), 0, &elt));
   state->inputptr = elt.inputptr;
   //state->actions.count = elt.actioncount;
@@ -491,6 +495,7 @@ int gpeg_engine_run_partialcommit
   (uint8_t* instr8, gpege_state_t* state)
 {
   gpege_stackelt_t* eltptr = NULL;
+
   CHECK(stack_peek(&(state->stack), &eltptr));
   eltptr->inputptr = state->inputptr;
   eltptr->actioncount = state->actions.count;
@@ -506,6 +511,7 @@ int gpeg_engine_run_failtwice
   (gpege_state_t* state, unsigned flags)
 {
   (void)flags;
+
   CHECK(stack_fail(&(state->stack), NULL));
   state->failed = 1;
   return 0;
@@ -717,6 +723,7 @@ int gpeg_engine_run
     if (state.inputptr > result->maxinputptr) {
       result->maxinputptr = state.inputptr;
     }
+
 
 DEBUGPOINT_INSTRUCTION
 
