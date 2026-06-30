@@ -47,8 +47,8 @@ int gpeg_labelmap_label
   str2int_map_t* labelmap = arg;
 
   if (phase == GPEG_FNC_PRENODE) {
-    char* label = (char*)(node->children[ 0 ]->vec.data);
-    unsigned offset = strtoul((char*)(node->children[ 1 ]->vec.data), 0, 10);
+    char* label = (char*)(node->children.list[ 0 ]->vec.data);
+    unsigned offset = strtoul((char*)(node->children.list[ 1 ]->vec.data), 0, 10);
     str2int_map_put(labelmap, label, offset);
   }
   return 0;

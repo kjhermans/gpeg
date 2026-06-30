@@ -65,7 +65,7 @@ int gpeg_compile_rule
 
   switch (phase) {
   case GPEG_FNC_PRENODE:
-    rulename = (char*)(node->children[ 0 ]->vec.data);
+    rulename = (char*)(node->children.list[ 0 ]->vec.data);
     if (!(state->firstrule)) {
       state->firstrule = 1;
       vec_printf(state->assembly,
@@ -116,7 +116,7 @@ int gpeg_compile_expr
   struct compilestate* state = arg;
   unsigned* labels;
 
-  if (node->nchildren > 1) {
+  if (node->children.count > 1) {
     switch (phase) {
     case GPEG_FNC_PRENODE:
       {
@@ -129,7 +129,7 @@ int gpeg_compile_expr
         unsigned label = (state->label)++;
         vec_append(vec, &label, sizeof(label));
         labels = (unsigned*)(vec->data);
-        if (i + 1 < node->nchildren) {
+        if (i + 1 < node->children.count) {
           vec_printf(state->assembly,
             "  catch L%u\n"
             , labels[ (vec->size / sizeof(unsigned)) - 1 ]);
@@ -138,7 +138,7 @@ int gpeg_compile_expr
       break;
     case GPEG_FNC_POSTCHILD:
       labels = (unsigned*)(vec->data);
-      if (i + 1 < node->nchildren) {
+      if (i + 1 < node->children.count) {
         vec_printf(state->assembly,
           "  commit L%u\n"
           "L%u:\n"
@@ -164,7 +164,7 @@ int gpeg_compile_call
   (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
-  char* rulename = (char*)(node->children[ 0 ]->vec.data);
+  char* rulename = (char*)(node->children.list[ 0 ]->vec.data);
   (void)i;
   (void)vec;
 
@@ -179,7 +179,7 @@ int gpeg_compile_string
   (gpege_node_t* node, unsigned phase, unsigned _i, vec_t* vec, void* arg)
 {
   struct compilestate* state = arg;
-  vec_t* string = &(node->children[ 0 ]->children[ 0 ]->vec);
+  vec_t* string = &(node->children.list[ 0 ]->children.list[ 0 ]->vec);
   (void)_i;
   (void)vec;
   int nocase = 0;
@@ -301,7 +301,7 @@ int gpeg_compile_q_1p_pre
   unsigned label = (state->label)++;
 
   vec_append(vec, &label, sizeof(label));
-  CHECK(gpeg_node_run(node->children[ 0 ]));
+  CHECK(gpeg_node_run(node->children.list[ 0 ]));
   vec_printf(state->assembly,
     "  catch L%u\n"
     "LOOP%u:\n"
@@ -357,12 +357,12 @@ int gpeg_compile_q_ft_pre
   case 0:
     break;
   case 1:
-    CHECK(gpeg_node_run(node->children[ 0 ]));
+    CHECK(gpeg_node_run(node->children.list[ 0 ]));
     break;
   default:
     if (state->flags & GPEGC_FLG_NOCOUNTER) {
       for (unsigned i=0; i < from; i++) {
-        CHECK(gpeg_node_run(node->children[ 0 ]));
+        CHECK(gpeg_node_run(node->children.list[ 0 ]));
       }
     } else {
       vec_printf(state->assembly,
@@ -372,7 +372,7 @@ int gpeg_compile_q_ft_pre
         , from
         , counter0
       );
-      CHECK(gpeg_node_run(node->children[ 0 ]));
+      CHECK(gpeg_node_run(node->children.list[ 0 ]));
       vec_printf(state->assembly,
         "  condjump %u CTR%u\n"
         , counter0
@@ -388,7 +388,7 @@ int gpeg_compile_q_ft_pre
         , label
       );
       for (unsigned i=0; i < until - from; i++) {
-        CHECK(gpeg_node_run(node->children[ 0 ]));
+        CHECK(gpeg_node_run(node->children.list[ 0 ]));
         if (i + 1 < until - from) {
           vec_printf(state->assembly,
             "  partialcommit __NEXT__\n"
@@ -455,7 +455,7 @@ int gpeg_compile_q_fr_pre
 
   if (state->flags & GPEGC_FLG_NOCOUNTER) {
     for (unsigned i=0; i < from; i++) {
-      CHECK(gpeg_node_run(node->children[ 0 ]));
+      CHECK(gpeg_node_run(node->children.list[ 0 ]));
     }
     vec_printf(state->assembly,
       "  catch L%u\n"
@@ -463,7 +463,7 @@ int gpeg_compile_q_fr_pre
       , label
       , label
     );
-    CHECK(gpeg_node_run(node->children[ 0 ]));
+    CHECK(gpeg_node_run(node->children.list[ 0 ]));
     vec_printf(state->assembly,
       "  partialcommit PART%u\n"
       "L%u:\n"
@@ -481,7 +481,7 @@ int gpeg_compile_q_fr_pre
         , from
         , counter
       );
-      CHECK(gpeg_node_run(node->children[ 0 ]));
+      CHECK(gpeg_node_run(node->children.list[ 0 ]));
       vec_printf(state->assembly,
         "  condjump %u CTR%u\n"
         , counter
@@ -537,7 +537,7 @@ int gpeg_compile_q_un_pre
       , label
     );
     for (unsigned i=0; i < until; i++) {
-      CHECK(gpeg_node_run(node->children[ 0 ]));
+      CHECK(gpeg_node_run(node->children.list[ 0 ]));
       if (i + 1 < until) {
         vec_printf(state->assembly,
           "  partialcommit __NEXT__\n"
@@ -596,7 +596,7 @@ int gpeg_compile_q_sp_pre
 
   if (state->flags & GPEGC_FLG_NOCOUNTER) {
     for (unsigned i=0; i < counts; i++) {
-      CHECK(gpeg_node_run(node->children[ 0 ]));
+      CHECK(gpeg_node_run(node->children.list[ 0 ]));
     }
     return GPEGE_ERR_NOFURTHERPROC;
   } else {
@@ -631,10 +631,10 @@ int gpeg_compile_q
   struct compilestate* state = arg;
   (void)i;
 
-  if (node->nchildren == 2) {
+  if (node->children.count == 2) {
     switch (phase) {
     case GPEG_FNC_PRENODE:
-      switch (node->children[ 1 ]->children[ 0 ]->type) {
+      switch (node->children.list[ 1 ]->children.list[ 0 ]->type) {
       case SLOT_Q_ZEROORONE:
         gpeg_compile_q_01_pre(state, vec);
         break;
@@ -650,8 +650,8 @@ int gpeg_compile_q
             node,
             state,
             vec,
-            &(node->children[ 1 ]->children[ 0 ]->children[ 0 ]->vec),
-            &(node->children[ 1 ]->children[ 0 ]->children[ 1 ]->vec)
+            &(node->children.list[ 1 ]->children.list[ 0 ]->children.list[ 0 ]->vec),
+            &(node->children.list[ 1 ]->children.list[ 0 ]->children.list[ 1 ]->vec)
           )
         );
         break;
@@ -661,7 +661,7 @@ int gpeg_compile_q
             node,
             state,
             vec,
-            &(node->children[ 1 ]->children[ 0 ]->children[ 0 ]->vec)
+            &(node->children.list[ 1 ]->children.list[ 0 ]->children.list[ 0 ]->vec)
           )
         );
         break;
@@ -671,7 +671,7 @@ int gpeg_compile_q
             node,
             state,
             vec,
-            &(node->children[ 1 ]->children[ 0 ]->children[ 0 ]->vec)
+            &(node->children.list[ 1 ]->children.list[ 0 ]->children.list[ 0 ]->vec)
           )
         );
         break;
@@ -681,14 +681,14 @@ int gpeg_compile_q
             node,
             state,
             vec,
-            &(node->children[ 1 ]->children[ 0 ]->children[ 0 ]->vec)
+            &(node->children.list[ 1 ]->children.list[ 0 ]->children.list[ 0 ]->vec)
           )
         );
         break;
       }
       break;
     case GPEG_FNC_POSTNODE:
-      switch (node->children[ 1 ]->children[ 0 ]->type) {
+      switch (node->children.list[ 1 ]->children.list[ 0 ]->type) {
       case SLOT_Q_ZEROORONE:
         gpeg_compile_q_01_post(state, vec);
         break;
@@ -739,14 +739,14 @@ int gpeg_compile_notand
     }
     break;
   case GPEG_FNC_POSTNODE:
-    if (node->children[ 0 ]->type == SLOT_NOT) {
+    if (node->children.list[ 0 ]->type == SLOT_NOT) {
       unsigned* label = (unsigned*)(vec->data);
       vec_printf(state->assembly,
         "  failtwice\n"
         "L%u:\n"
         , *label
       );
-    } else if (node->children[ 0 ]->type == SLOT_AND) {
+    } else if (node->children.list[ 0 ]->type == SLOT_AND) {
       unsigned* label = (unsigned*)(vec->data);
       vec_printf(state->assembly,
         "  backcommit OUT%u\n"
@@ -855,12 +855,12 @@ int gpeg_compile_ranges
   } else {
     memset(bits, 0x00, sizeof(bits));
   }
-  for (unsigned i=0; i < node->nchildren; i++) {
-    gpege_node_t* child = node->children[ i ];
+  for (unsigned i=0; i < node->children.count; i++) {
+    gpege_node_t* child = node->children.list[ i ];
     switch (child->type) {
     case SLOT_SET_1:
       {
-        gpege_node_t* child1 = node->children[ ++i ];
+        gpege_node_t* child1 = node->children.list[ ++i ];
         unsigned char from = range_unescape((char*)(child->vec.data));
         unsigned char until = range_unescape((char*)(child1->vec.data));
         for (unsigned j=from; j <= until; j++) {
@@ -946,7 +946,7 @@ int gpeg_compile_set
   (void)vec;
 
   if (phase == GPEG_FNC_PRENODE) {
-    if (node->children[ 1 ]->type == SLOT_SET_0) {
+    if (node->children.list[ 1 ]->type == SLOT_SET_0) {
       CHECK(gpeg_compile_ranges(node, state, 1));
     } else {
       CHECK(gpeg_compile_ranges(node, state, 0));
@@ -1118,7 +1118,7 @@ int gpeg_compile_varcapture
   switch (phase) {
   case GPEG_FNC_PRENODE:
     {
-      char* variablename = (char*)(node->children[ 2 ]->vec.data);
+      char* variablename = (char*)(node->children.list[ 2 ]->vec.data);
       unsigned capture;
       memcpy(&capture, node->aux, sizeof(capture));
       if (capture == 0) {
@@ -1168,7 +1168,7 @@ int gpeg_compile_varref
   switch (phase) {
   case GPEG_FNC_PRENODE:
     {
-      char* variablename = (char*)(node->children[ 0 ]->vec.data);
+      char* variablename = (char*)(node->children.list[ 0 ]->vec.data);
       unsigned capture = 0;
       if (strcmp(variablename, "_")) {
         if (str2int_map_get(&(state->variables), variablename, &capture)) {
@@ -1227,7 +1227,7 @@ int gpeg_compile_endforce
     {
       vec_printf(state->assembly,
         "  end %s\n"
-        , (char*)(node->children[ 0 ]->vec.data)
+        , (char*)(node->children.list[ 0 ]->vec.data)
       );
     }
     break;
@@ -1280,10 +1280,10 @@ int gpeg_compile_lim
 {
   if (phase == GPEG_FNC_PRENODE) {
     struct compilestate* state = arg;
-    char* variablename = (char*)(node->children[ 0 ]->vec.data);
-    unsigned endian = atoi((char*)(node->children[ 2 ]->vec.data));
-    unsigned bitlength = atoi((char*)(node->children[ 4 ]->vec.data));
-    char* function = (char*)(node->children[ 6 ]->vec.data);
+    char* variablename = (char*)(node->children.list[ 0 ]->vec.data);
+    unsigned endian = atoi((char*)(node->children.list[ 2 ]->vec.data));
+    unsigned bitlength = atoi((char*)(node->children.list[ 4 ]->vec.data));
+    char* function = (char*)(node->children.list[ 6 ]->vec.data);
     unsigned capture = 0;
 
     (void)node;

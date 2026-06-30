@@ -270,16 +270,17 @@ void gpeg_engine_set_maxinstr
 
 typedef struct gpege_node gpege_node_t;
 
+MAKE_ARRAY_HEADER(gpege_node_t*, gpege_nodelist_)
+
 struct gpege_node
 {
-  vec_t            vec;
-  unsigned         offset;
-  unsigned         type;
-  gpege_node_t**   children;
-  unsigned         nchildren;
-  int            (*fnc)(gpege_node_t*,unsigned,unsigned,vec_t*,void*);
-  void*            arg;
-  uint8_t          aux[ 32 ]; // this one is for you
+  vec_t             vec;
+  unsigned          offset;
+  unsigned          type;
+  gpege_nodelist_t  children;
+  int             (*fnc)(gpege_node_t*,unsigned,unsigned,vec_t*,void*);
+  void*             arg;
+  uint8_t           aux[ 32 ]; // this one is for you
 };
 
 /**
