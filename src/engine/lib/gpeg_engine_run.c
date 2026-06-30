@@ -169,6 +169,21 @@ inline int stack_peek
   }
 }
 
+/*
+static
+void debug_actions_captures
+  (gpege_state_t* state)
+{
+  for (unsigned i=0; i < state->actions.count; i++) {
+    fprintf(stderr, "ACTION: %u, %u\n", i, state->actions.list[ i ].reg);
+  }
+  for (unsigned i=0; i < state->captures.count; i++) {
+    fprintf(stderr, "CAPTURE: %u, %u\n", i, state->captures.list[ i ].reg);
+  }
+}
+*/
+
+/*
 static
 inline void wrap_captures
   (
