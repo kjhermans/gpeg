@@ -322,6 +322,10 @@ void gpeg_engine_run_range
   unsigned until = instr8[ 3 ];
   unsigned chr = 0;
 
+  if (state->eof) {
+    state->failed = 1;
+    return;
+  }
   if (state->inputbit == 0 && nbits == 8) {
     chr = *input8;
   } else if (state->inputbit + nbits <= 8) {
@@ -329,9 +333,7 @@ void gpeg_engine_run_range
   } else {
     abort();
   }
-  if (state->eof) {
-    state->failed = 1;
-  } else if (R) {
+  if (R) {
     if ((chr & mask) < from || (chr & mask) > until) {
       state->failed = 1;
     } else {
