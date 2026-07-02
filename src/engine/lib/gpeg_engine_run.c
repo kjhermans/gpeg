@@ -398,7 +398,7 @@ int gpeg_engine_run_backcommit
 
   CHECK(stack_pop(&(state->stack), 0, &elt));
   state->inputptr = elt.inputptr;
-  //state->actions.count = elt.actioncount;
+  state->actions.count = elt.actioncount;
   state->countercount = elt.countercount;
   state->inputsizes.count = elt.inputsizescount;
   state->inputsiz = (state->inputsizes.count ?
@@ -498,7 +498,7 @@ int gpeg_engine_run_closecapture
         .offset   = open.offset,
         .reg      = open.reg,
         .vec      = vec,
-  //      .stacklen = open.stacklen,
+        .stacklen = open.stacklen,
       };
       gpege_caplist_push(&(state->captures), capture);
     }
