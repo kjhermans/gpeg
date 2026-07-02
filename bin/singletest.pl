@@ -8,11 +8,16 @@ my $assembler = shift @ARGV;
 my $engine = shift @ARGV;
 my $disassembler = shift @ARGV;
 my $replace = shift @ARGV;
+my $options;
 
 my $test = `cat $file`;
 my $n = 'single';
 if ($file =~ /([0-9]+)\.tst$/) {
   $n = int($1);
+}
+
+while ($test =~ s/-- Options: (.*)\n//) {
+  $options .= "$1 ";
 }
 
 #my $tmpfile="/tmp/test$$";
@@ -99,7 +104,7 @@ if ($test =~ /-- (Replace|Capture|Grammar|Assembly):\s*\n(.*)\n-- (Input|Hexinpu
   system("echo >> $tmpfile.log");
   system("hexdump -C $tmpfile.txt >> $tmpfile.log");
   system("echo \"---- Log:\" >> $tmpfile.log");
-  my $x = system($e);
+  my $x = system("$options $e");
   if ($x) {
     print "Engine NOK - ";
     if ($fields[2] eq 'NOK') {
