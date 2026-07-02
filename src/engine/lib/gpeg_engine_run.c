@@ -186,76 +186,38 @@ void debug_actions_captures
 static
 inline int resolve_variable
   (
-    const vec_t* input,
-    gpege_actionlist_t* actions,
-    uint16_t reg,
-    unsigned stacklen,
-    vec_t* result
-  )
-{
-  int option_set = 0;
-  unsigned option_offset = 0;
-  unsigned option_length = 0;
-  unsigned option_stacklen = 0;
-
-  for (unsigned i=0; i < actions->count; i++) {
-    gpege_action_t* action0 = &(actions->list[ i ]);
-    if (action0->action == ACT_OPEN
-        && (0 == reg || action0->reg == reg)
-        && action0->stacklen >= stacklen)
-    {
-      unsigned level = 1;
-      for (unsigned j = i+1; j < actions->count; j++) {
-        gpege_action_t* action1 = &(actions->list[ j ]);
-        if (action1->action == ACT_CLOSE) {
-          --level;
-          if (level == 0 && (0 == reg || action1->reg == action0->reg)) {
-            if (option_set == 0) {
-              option_set = 1;
-              option_offset = action0->offset;
-              option_length = action1->offset - action0->offset;
-              option_stacklen = action0->stacklen;
-            } else if (action0->stacklen <= option_stacklen) {
-              option_offset = action0->offset;
-              option_length = action1->offset - action0->offset;
-              option_stacklen = action0->stacklen;
-            }
-          }
-        } else if (action1->action == ACT_OPEN) {
-          ++level;
-        }
-      }
-    }
-  }
-  if (option_set) {
-    result->data = input->data + option_offset;
-    result->size = option_length;
-    return 0;
-  } else {
-    RETURN_ERR(GPEGE_ERR_VARIABLE);
-  }
-}
-*/
-
-static
-inline int resolve_variable
-  (
     gpege_caplist_t* captures,
     uint16_t reg,
     unsigned stacklen,
     vec_t* result
   )
 {
-  for (unsigned i = captures->count; i > 0; i++) {
-    if (captures->list[ i-1 ].reg == reg
-//        && captures->list[ i-1 ].stacklen >= stacklen)
-)
-    {
-      *result = captures->list[ i-1 ].vec;
-      return 0;
+  unsigned candidate = 0;
+
+  for (unsigned i = captures->count; i > 0; i--) {
+    if (reg == 0 || captures->list[ i-1 ].reg == reg) {
+      if (captures->list[ i-1 ].stacklen == stacklen) {
+        *result = captures->list[ i-1 ].vec;
+        return 0;
+      } else if (captures->list[ i-1 ].stacklen >= stacklen) {
+        if (candidate) {
+          if (captures->list[ candidate-1 ].stacklen
+                > captures->list[ i-1 ].stacklen)
+          {
+            candidate = i;
+          }
+        } else {
+          candidate = i;
+        }
+      }
     }
   }
-  RETURN_ERR(GPEGE_ERR_VARIABLE);
+  if (candidate) {
+    *result = captures->list[ candidate-1 ].vec;
+    return 0;
+  } else {
+    RETURN_ERR(GPEGE_ERR_VARIABLE);
+  }
 }
 
 #define CLEANUP { r = __r; goto CLEAN_UP; }
