@@ -1,3 +1,4 @@
+-- Options: valgrind
 -- Grammar:
 
 item <- ({ %s* '<' {:tag: %w+ } %s* '>' (item / %s* { (!(%s* '<') .)+ })
