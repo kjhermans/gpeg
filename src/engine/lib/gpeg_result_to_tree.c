@@ -53,7 +53,7 @@ void gpeg_captures2nodes
           capture->offset + capture->vec.size == child->offset + child->vec.size &&
           capture->reg < child->type)
       {
-        /* Identically placed captures reparent */
+        /* Identically placed captures go in ascending order of capture type */
         break;
       }
       if (capture->offset >= child->offset &&
