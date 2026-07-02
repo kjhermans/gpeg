@@ -183,50 +183,6 @@ void debug_actions_captures
 }
 */
 
-/*
-static
-inline void wrap_captures
-  (
-    const vec_t* input,
-    unsigned flags,
-    gpege_actionlist_t* actions,
-    gpege_caplist_t* captures
-  )
-{
-  for (unsigned i=0; i < actions->count; i++) {
-    gpege_action_t* action0 = &(actions->list[ i ]);
-    if (action0->action == ACT_OPEN) {
-      unsigned level = 1;
-      for (unsigned j=i+1; j < actions->count; j++) {
-        gpege_action_t* action1 = &(actions->list[ j ]);
-        if (action1->action == ACT_OPEN) {
-          ++level;
-        } else if (action1->action == ACT_CLOSE) {
-          --level;
-          if (level == 0 && action1->reg == action0->reg) {
-            gpege_capture_t capture = {
-              .reg = action0->reg,
-              .offset = action0->offset,
-            };
-            if (flags & GPEGE_FLG_COPYCAPTURES) {
-              vec_append(
-                &(capture.vec),
-                input->data + action0->offset,
-                action1->offset - action0->offset
-              );
-            } else {
-              capture.vec.data = input->data + action0->offset;
-              capture.vec.size = action1->offset - action0->offset;
-            }
-            gpege_caplist_push(captures, capture);
-            break;
-          }
-        }
-      }
-    }
-  }
-}
-
 static
 inline int resolve_variable
   (
@@ -724,6 +680,7 @@ int gpeg_engine_run
       result->maxinputptr = state.inputptr;
     }
 
+//debug_actions_captures(&state);
 
 DEBUGPOINT_INSTRUCTION
 
