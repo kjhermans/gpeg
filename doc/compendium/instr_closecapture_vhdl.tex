@@ -1,0 +1,53 @@
+The closecapture instruction pops an action from the action list,
+and pushes a capture on the capture list.
+The popped action must correspond to the given register value,
+and the pushed capture will be filled with the combined data from the
+current state, and the popped action.
+
+\begin{myquote}
+\begin{verbatim}
+
+when state = S_EXECUTE =>
+  if opcode = OP_CLOSECAPTURE then
+    if actioncount = 0 then
+      errorcode <= ERR_ACTIONCOUNT;
+      state <= S_ERROR;
+      v_redirected := true; -- prevent fetchop
+    else
+      actionpopped <= actionmem(to_integer(actioncount - 1));
+      if actionpopped.reg /= instrreg then
+        errorcode <= ERR_ACTIONMISMATCH;
+        state <= S_ERROR;
+        v_redirected := true; -- prevent fetchop
+      else
+        pushcapturetuple <= (
+          reg      = actionpopped.reg,
+          offset   = actionpopped.offset,
+          size     = inputptr - actionpopped.offset,
+          stacklen = stackcount
+        );
+        actioncount <= actioncount - 1;
+        state <= S_PUSHCAPTURE;
+        v_redirected := true; -- prevent fetchop
+      end if;
+    end if;
+  end if;
+
+\end{verbatim}
+\end{myquote}
+
+\begin{myquote}
+\begin{verbatim}
+
+when state == S_PUSHCAPTURE:
+  if capturecount < max then
+    capturemem[ capturecount ] <= pushcapturetuple;
+    capturecount <= capturecount + 1;
+    state <= S_FETCHOP; // end of instruction handling
+  else
+    errorcode <= ERR_CAPTURECOUNT;
+    state <= S_ERROR;
+  endif;
+
+\end{verbatim}
+\end{myquote}
