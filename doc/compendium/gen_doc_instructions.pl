@@ -78,6 +78,10 @@ $rule
       ".\n" .
       "\n" .
       "\\InputIfFileExists{instr_$key" . "_state.tex}{}{}\n\n" .
+      "\\subsubsection{Logic}\n\n" .
+      ".\n" .
+      "\n" .
+      "\\InputIfFileExists{instr_$key" . "_vhdl.tex}{}{}\n\n" .
       "";
     close INSTR;
 #  }

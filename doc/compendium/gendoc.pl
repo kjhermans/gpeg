@@ -47,6 +47,10 @@ for (my $i=0; $i < scalar(@instr); $i++) {
 \\subsubsection{Bytecode}
 
 \\InputIfFileExists{instr_$instr" . "_bytecode.tex}{}{}
+
+\\subsubsection{VHDL}
+
+\\InputIfFileExists{instr_$instr" . "_vhdl.tex}{}{}
 ";
   close FILE;
 }
