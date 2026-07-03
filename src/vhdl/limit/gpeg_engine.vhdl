@@ -182,12 +182,9 @@ architecture rtl of gpeg_engine is
   signal inp_byte       : unsigned(7 downto 0)  := (others => '0');
 
   -- Pipeline control flags (set in DECODE)
-  signal push_elt       : stack_elt_t := SELT0;
-
-  -- Stack
-  signal stack_mem      : stack_array_t;
+  signal stacktuple     : stack_elt_t := SELT0;
+  signal stackmem       : stack_array_t;
   signal stacksize      : unsigned(7 downto 0) := (others => '0');
-  signal popped         : stack_elt_t := SELT0;
 
   -- Register stack (for COUNTER/CONDJUMP)
   signal ctr_mem       : ctr_array_t;
@@ -195,8 +192,13 @@ architecture rtl of gpeg_engine is
   signal ctr_scan_idx  : unsigned(8 downto 0) := (others => '0');
   signal ctr_found_idx : unsigned(8 downto 0) := (others => '0');
 
+  signal actiontuple   : action_elt_t := AELT0;
+  signal actionmem     : action_array_t;
   signal actioncount   : unsigned(8 downto 0) := (others => '0');
-  signal push_capture  : action_elt_t := AELT0;
+
+  signal capturetuple  : capture_elt_t := CELT0;
+  signal capturemem    : capture_array_t;
+  signal capturecount  : unsigned(8 downto 0) := (others => '0');
 
   procedure print_status
     (opcode :unsigned(3 downto 0); v_failed :boolean)
@@ -351,7 +353,7 @@ begin
             err_code <= ERR_BYTECODE;
             state <= S_ERROR;
           else
-            popped <= stack_mem(to_integer(stacksize - 1));
+            stacktuple <= stackmem(to_integer(stacksize - 1));
             stacksize <= stacksize - 1;
             state <= S_EXECUTE;
           end if;
@@ -361,7 +363,7 @@ begin
             err_code <= ERR_OVERFLOW;
             state <= S_ERROR;
           else
-            stack_mem(to_integer(stacksize)) <= push_elt;
+            stackmem(to_integer(stacksize)) <= stacktuple;
             stacksize <= stacksize + 1;
 
             if opcode = OP_CALL
@@ -386,7 +388,7 @@ begin
             err_code <= ERR_OVERFLOW;
             state <= S_ERROR;
           else
-            stack_mem(to_integer(actioncount)) <= push_elt;
+            stackmem(to_integer(actioncount)) <= stacktuple;
             actioncount <= actioncount + 1;
             bc_offset <= bc_offset + 4;
             n_instr <= n_instr + 1;
@@ -450,7 +452,7 @@ begin
           elsif opcode = OP_CALL
           then
             call_counter <= call_counter + 1;
-            push_elt <= (
+            stacktuple <= (
               STYPE_CALL,
               bc_offset + 4,
               inp_offset,
@@ -463,11 +465,11 @@ begin
 
           elsif opcode = OP_RET
           then
-            if popped.stype = STYPE_CALL
+            if stacktuple.stype = STYPE_CALL
             then
-              bc_offset <= popped.address;
-              inp_size_ctr <= popped.input_length;
-              current_call <= popped.call_context;
+              bc_offset <= stacktuple.address;
+              inp_size_ctr <= stacktuple.input_length;
+              current_call <= stacktuple.call_context;
             else
               err_code <= ERR_BYTECODE;
               state <= S_ERROR;
@@ -476,7 +478,7 @@ begin
 
           elsif opcode = OP_CATCH
           then
-            push_elt <= (
+            stacktuple <= (
               STYPE_CATCH,
               instr_offset,
               inp_offset,
@@ -489,7 +491,7 @@ begin
 
           elsif opcode = OP_COMMIT
           then
-            if popped.stype = STYPE_CATCH
+            if stacktuple.stype = STYPE_CATCH
             then
               bc_offset <= instr_offset;
             else
@@ -500,10 +502,10 @@ begin
 
           elsif opcode = OP_BACKCOMMIT
           then
-            if popped.stype = STYPE_CATCH
+            if stacktuple.stype = STYPE_CATCH
             then
               bc_offset <= instr_offset;
-              inp_offset <= popped.input_offset;
+              inp_offset <= stacktuple.input_offset;
             else
               err_code <= ERR_BYTECODE;
               state <= S_ERROR;
@@ -512,15 +514,15 @@ begin
 
           elsif opcode = OP_PARTIALCOMMIT
           then
-            if popped.stype = STYPE_CATCH
+            if stacktuple.stype = STYPE_CATCH
             then
-              push_elt <= (
+              stacktuple <= (
                 STYPE_CATCH,
-                popped.address,
+                stacktuple.address,
                 inp_offset,
-                popped.input_length,
-                popped.register_count,
-                popped.call_context
+                stacktuple.input_length,
+                stacktuple.register_count,
+                stacktuple.call_context
               );
               state <= S_PUSH_STACK;
               v_redirected := true;
@@ -532,7 +534,7 @@ begin
 
           elsif opcode = OP_OPENCAPTURE
           then
-            push_capture <= (
+            actiontuple <= (
               CTYPE_OPEN,
               instr_var,
               inp_offset,
@@ -544,7 +546,7 @@ begin
 
           elsif opcode = OP_CLOSECAPTURE
           then
-            push_capture <= (
+            actiontuple <= (
               CTYPE_CLOSE,
               instr_var,
               inp_offset,
@@ -577,7 +579,7 @@ begin
 
           elsif opcode = OP_FAILTWICE
           then
-            if popped.stype /= STYPE_CATCH
+            if stacktuple.stype /= STYPE_CATCH
             then
               err_code <= ERR_BYTECODE;
               state <= S_ERROR;
@@ -686,20 +688,21 @@ begin
           end if;
 
         when S_FAIL_POP =>
-          popped <= stack_mem(to_integer(stacksize - 1));
-          stacksize <= stacksize - 1; state <= S_FAIL_CHECK;
+          stacktuple <= stackmem(to_integer(stacksize - 1));
+          stacksize <= stacksize - 1;
+          state <= S_FAIL_CHECK;
 
         when S_FAIL_CHECK =>
-          if popped.stype = STYPE_CATCH
+          if stacktuple.stype = STYPE_CATCH
           then
-            bc_offset <= popped.address;
-            inp_offset <= popped.input_offset;
-            register_count <= popped.register_count;
-            ctr_stacksize <= resize(popped.register_count, ctr_stacksize'length);
+            bc_offset <= stacktuple.address;
+            inp_offset <= stacktuple.input_offset;
+            register_count <= stacktuple.register_count;
+            ctr_stacksize <= resize(stacktuple.register_count, ctr_stacksize'length);
             state <= S_FETCH_OP;
-          elsif popped.stype = STYPE_CALL
+          elsif stacktuple.stype = STYPE_CALL
           then
-            current_call <= popped.call_context;
+            current_call <= stacktuple.call_context;
             if stacksize = 0
             then
               err_code <= ERR_NOMATCH; state <= S_ERROR;
