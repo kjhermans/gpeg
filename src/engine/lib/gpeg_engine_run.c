@@ -199,7 +199,7 @@ inline int resolve_variable
       if (captures->list[ i-1 ].stacklen == stacklen) {
         *result = captures->list[ i-1 ].vec;
         return 0;
-      } else if (captures->list[ i-1 ].stacklen >= stacklen) {
+      } else { //if (captures->list[ i-1 ].stacklen >= stacklen) {
         if (candidate) {
           if (captures->list[ candidate-1 ].stacklen
                 > captures->list[ i-1 ].stacklen)
@@ -216,6 +216,7 @@ inline int resolve_variable
     *result = captures->list[ candidate-1 ].vec;
     return 0;
   } else {
+    DBGMSG("%s: Could not resolve variable %u.\n", __PRETTY_FUNCTION__, reg);
     RETURN_ERR(GPEGE_ERR_VARIABLE);
   }
 }
