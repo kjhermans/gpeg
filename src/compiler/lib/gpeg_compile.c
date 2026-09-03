@@ -196,26 +196,26 @@ int gpeg_compile_string
           ++i;
           switch (c = string->data[ i ]) {
           case 'n':
-            vec_printf(state->assembly, "  range 0a\n");
+            vec_printf(state->assembly, "  char 0a\n");
             break;
           case 'r':
-            vec_printf(state->assembly, "  range 0d\n");
+            vec_printf(state->assembly, "  char 0d\n");
             break;
           case 't':
-            vec_printf(state->assembly, "  range 09\n");
+            vec_printf(state->assembly, "  char 09\n");
             break;
           case 'v':
-            vec_printf(state->assembly, "  range 0b\n");
+            vec_printf(state->assembly, "  char 0b\n");
             break;
           case 'x':
             if (i < string->size-2) {
               vec_printf(state->assembly,
-                "  range %-.*s\n", 2, &(string->data[ i + 1 ]));
+                "  char %-.*s\n", 2, &(string->data[ i + 1 ]));
             }
             i += 2;
             break;
           default:
-            vec_printf(state->assembly, "  range %.2x\n", c);
+            vec_printf(state->assembly, "  char %.2x\n", c);
           }
         } else {
           if (state->error) {
@@ -229,13 +229,13 @@ int gpeg_compile_string
       default:
         if (nocase && c >= 'a' && c <= 'z') {
           vec_printf(state->assembly,
-            "  range false 8 %.2x %.2x ff\n", c-32, c);
+            "  bitmask false 8 %.2x %.2x ff\n", c-32, c);
         } else if (nocase && c >= 'A' && c <= 'Z') {
           vec_printf(state->assembly,
-            "  range false 8 %.2x %.2x ff\n", c, c+32);
+            "  bitmask false 8 %.2x %.2x ff\n", c, c+32);
         } else {
           vec_printf(state->assembly,
-            "  range %.2x\n", c);
+            "  char %.2x\n", c);
         }
       }
     }
@@ -970,7 +970,7 @@ int gpeg_compile_macro
     if (0 == strcmp((char*)(node->vec.data), "%s")) {
       vec_printf(state->assembly,
         "  catch MACRO%u_1\n"
-        "  range 20\n"
+        "  char 20\n"
         "  commit L%u\n"
         "MACRO%u_1:\n"
         "  range 07 0d\n"
@@ -1024,10 +1024,10 @@ int gpeg_compile_macro
         "  commit L%u\n"
         "MACRO%u_1:\n"
         "  catch MACRO%u_2\n"
-        "  range 0a\n"
+        "  char 0a\n"
         "  commit L%u\n"
         "MACRO%u_2:\n"
-        "  range 0c\n"
+        "  char 0c\n"
         "L%u:\n"
         , label
         , label
@@ -1204,7 +1204,7 @@ int gpeg_compile_hex
   case GPEG_FNC_PRENODE:
     {
       vec_printf(state->assembly,
-        "  range %s\n"
+        "  char %s\n"
         , (char*)(&(node->vec.data[ 2 ]))
       );
     }
@@ -1262,7 +1262,7 @@ int gpeg_compile_bitmask
         }
       }
       vec_printf(state->assembly,
-        "  range false %u %.2x %.2x %.2x\n"
+        "  bitmask false %u %.2x %.2x %.2x\n"
         , node->vec.size-2
         , target
         , target

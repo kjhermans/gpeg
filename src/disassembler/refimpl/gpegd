@@ -62,7 +62,7 @@ sub disassemble
     } elsif ($opcode == 1) {
       my $R = $bytes[ 0 ] & 0x08;
       my $nbits = ($bytes[ 0 ] & 0x07) + 1;
-      $output .= "range ";
+      $output .= "bitmask ";
       if ($R) {
         $output .= "true $nbits ";
       } else {

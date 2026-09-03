@@ -18,7 +18,8 @@ RULEINSTR          <- BACKCOMMITINSTR / CALLINSTR /
                       ENDINSTR / FAILTWICEINSTR / FAILINSTR /
                       LIMITINSTR /
                       OPENCAPTUREINSTR / PARTIALCOMMITINSTR /
-                      RETINSTR / RANGEINSTR /
+                      RETINSTR /
+                      RANGEINSTR / BITMASKINSTR / CHARINSTR /
                       VARINSTR /
                       COUNTERINSTR / CONDJUMPINSTR
 
@@ -36,7 +37,9 @@ LIMITINSTR         <- 'limit' S BIT S UNSIGNED S SLOT
 OPENCAPTUREINSTR   <- 'opencapture' S SLOT
 PARTIALCOMMITINSTR <- 'partialcommit' S LABEL
 RETINSTR           <- 'ret'
-RANGEINSTR         <- 'range' S (BOOLEAN UNSIGNED)? ( HEXBYTE S )^1-3
+CHARINSTR          <- 'char' S HEXBYTE
+RANGEINSTR         <- 'range' S HEXBYTE S HEXBYTE
+BITMASKINSTR       <- 'bitmask' S (BOOLEAN UNSIGNED)? ( HEXBYTE S )^1-3
 VARINSTR           <- 'var' S SLOT
 COUNTERINSTR       <- 'counter' S REGISTER S UNSIGNED
 CONDJUMPINSTR      <- 'condjump' S REGISTER S LABEL
