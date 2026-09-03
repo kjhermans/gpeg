@@ -1,5 +1,7 @@
 all:
-	xxd -i release engine/include/gpeg/engine/release.h
+	xxd -i release engine/include/gpeg/engine/release.h && \
+	  sed -i 's/unsigned/static unsigned __attribute__((unused))/g' \
+	    engine/include/gpeg/engine/release.h
 	cd build && make
 	if [ ! -d ../../util ]; then \
 	  git clone https://github.com/kjhermans/util ../../; \
