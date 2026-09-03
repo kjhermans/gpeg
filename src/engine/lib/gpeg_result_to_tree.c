@@ -116,22 +116,27 @@ gpege_node_t* gpeg_result_to_tree
   gpege_node_t* tree = calloc(1, sizeof(gpege_node_t));
   tree->vec.size = (1<<20); // TODO: Replace with some defined constant
 
-  /*
+/*
 fprintf(stderr, "CAPTURE:\n");
 for (unsigned i=0; i < result->captures.count; i++) {
 gpege_capture_t* cap = &(result->captures.list[ i ]);
 fprintf(stderr, "%u: %u, %u -> %u\n", i, cap->reg, cap->offset, cap->vec.size);
 }
 */
+/*
   for (unsigned i=0; i < result->captures.count; i++) {
     gpege_capture_t* cap = &(result->captures.list[ i ]);
-    gpeg_captures2nodes(tree, cap);
-    /*
-fprintf(stderr, "----\nCAPTURE:\n");
-fprintf(stderr, "%u: %u, %u -> %u\n", i, cap->reg, cap->offset, cap->vec.size);
-fprintf(stderr, "TREE:\n");
-gpeg_node_debug(tree);
 */
+  for (unsigned i=result->captures.count; i > 0; i--) {
+    gpege_capture_t* cap = &(result->captures.list[ i-1 ]);
+
+    gpeg_captures2nodes(tree, cap);
+
+//fprintf(stderr, "----\nCAPTURE:\n");
+//fprintf(stderr, "%u/%u: %u, %u -> %u\n", i, result->captures.count, cap->reg, cap->offset, cap->vec.size);
+//fprintf(stderr, "TREE:\n");
+//gpeg_node_debug(tree);
+
   }
   tree->vec.size = 0;
   return tree;
