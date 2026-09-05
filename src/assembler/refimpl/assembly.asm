@@ -43,7 +43,7 @@ LOOP4:
   char 5d
   failtwice
 L5:
-  range 00 ff
+  any
   partialcommit LOOP4
 L4:
   char 5d
@@ -175,13 +175,17 @@ L31:
   commit L17
 L32:
   catch L33
-  call VARINSTR
+  call ANYINSTR
   commit L17
 L33:
   catch L34
-  call COUNTERINSTR
+  call VARINSTR
   commit L17
 L34:
+  catch L35
+  call COUNTERINSTR
+  commit L17
+L35:
   call CONDJUMPINSTR
 L17:
   closecapture 7
@@ -190,10 +194,10 @@ L17:
 END:
   call __prefix
   opencapture 8
-  catch L36
-  range 00 ff
+  catch L37
+  any
   failtwice
-L36:
+L37:
   closecapture 8
   ret
 
@@ -414,14 +418,14 @@ BITMASKINSTR:
   char 73
   char 6b
   call S
-  catch L37
+  catch L38
   call BOOLEAN
   call UNSIGNED
   commit __NEXT__
-L37:
+L38:
   call HEXBYTE
   call S
-  catch L38
+  catch L39
   counter 1 2
 CTR1:
   call HEXBYTE
@@ -429,24 +433,33 @@ CTR1:
   partialcommit __NEXT__
   condjump 1 CTR1
   commit __NEXT__
-L38:
+L39:
   closecapture 23
+  ret
+
+ANYINSTR:
+  call __prefix
+  opencapture 24
+  char 61
+  char 6e
+  char 79
+  closecapture 24
   ret
 
 VARINSTR:
   call __prefix
-  opencapture 24
+  opencapture 25
   char 76
   char 61
   char 72
   call S
   call SLOT
-  closecapture 24
+  closecapture 25
   ret
 
 COUNTERINSTR:
   call __prefix
-  opencapture 25
+  opencapture 26
   char 63
   char 6f
   char 75
@@ -458,12 +471,12 @@ COUNTERINSTR:
   call REGISTER
   call S
   call UNSIGNED
-  closecapture 25
+  closecapture 26
   ret
 
 CONDJUMPINSTR:
   call __prefix
-  opencapture 26
+  opencapture 27
   char 63
   char 6f
   char 6e
@@ -476,75 +489,58 @@ CONDJUMPINSTR:
   call REGISTER
   call S
   call LABEL
-  closecapture 26
+  closecapture 27
   ret
 
 LABELDEF:
   call __prefix
-  opencapture 27
+  opencapture 28
   call LABEL
   call COLON
-  closecapture 27
+  closecapture 28
   ret
 
 HEXBYTE:
   call __prefix
-  opencapture 28
+  opencapture 29
   counter 2 2
 CTR2:
-  catch SET39_0
+  catch SET40_0
   range 30 39
-  commit L39
-SET39_0:
-  catch SET39_1
+  commit L40
+SET40_0:
+  catch SET40_1
   range 41 46
-  commit L39
-SET39_1:
+  commit L40
+SET40_1:
   range 61 66
-L39:
+L40:
   condjump 2 CTR2
-  closecapture 28
+  closecapture 29
   ret
 
 BOOLEAN:
   call __prefix
-  opencapture 29
-  catch L41
+  opencapture 30
+  catch L42
   char 74
   char 72
   char 75
   char 65
-  commit L40
-L41:
+  commit L41
+L42:
   char 66
   char 61
   char 6c
   char 73
   char 65
-L40:
-  closecapture 29
+L41:
+  closecapture 30
   ret
 
 LABEL:
   call __prefix
-  opencapture 30
-  catch SET44_0
-  range 30 39
-  commit L44
-SET44_0:
-  catch SET44_1
-  range 41 5a
-  commit L44
-SET44_1:
-  catch SET44_2
-  range 5f 5f
-  commit L44
-SET44_2:
-  range 61 7a
-L44:
-  catch L43
-  counter 4 63
-CTR4:
+  opencapture 31
   catch SET45_0
   range 30 39
   commit L45
@@ -559,67 +555,84 @@ SET45_1:
 SET45_2:
   range 61 7a
 L45:
+  catch L44
+  counter 4 63
+CTR4:
+  catch SET46_0
+  range 30 39
+  commit L46
+SET46_0:
+  catch SET46_1
+  range 41 5a
+  commit L46
+SET46_1:
+  catch SET46_2
+  range 5f 5f
+  commit L46
+SET46_2:
+  range 61 7a
+L46:
   partialcommit __NEXT__
   condjump 4 CTR4
   commit __NEXT__
-L43:
-  closecapture 30
-  ret
-
-CODE:
-  call __prefix
-  opencapture 31
-  call UNSIGNED
+L44:
   closecapture 31
   ret
 
-SLOT:
+CODE:
   call __prefix
   opencapture 32
   call UNSIGNED
   closecapture 32
   ret
 
-REGISTER:
+SLOT:
   call __prefix
   opencapture 33
   call UNSIGNED
   closecapture 33
   ret
 
-TYPE:
+REGISTER:
   call __prefix
   opencapture 34
   call UNSIGNED
   closecapture 34
   ret
 
-UNSIGNED:
+TYPE:
   call __prefix
   opencapture 35
-  range 30 39
-L47:
-  catch L46
-LOOP46:
+  call UNSIGNED
+  closecapture 35
+  ret
+
+UNSIGNED:
+  call __prefix
+  opencapture 36
   range 30 39
 L48:
-  partialcommit LOOP46
-L46:
-  closecapture 35
+  catch L47
+LOOP47:
+  range 30 39
+L49:
+  partialcommit LOOP47
+L47:
+  closecapture 36
   ret
 
 BIT:
   call __prefix
-  opencapture 36
+  opencapture 37
   range 30 31
-L49:
-  closecapture 36
+L50:
+  closecapture 37
   ret
 
 COLON:
   call __prefix
-  opencapture 37
+  opencapture 38
   char 3a
-  closecapture 37
+  closecapture 38
   ret
 

@@ -774,7 +774,7 @@ int gpeg_compile_any
 
   if (phase == GPEG_FNC_PRENODE) {
     vec_printf(state->assembly,
-      "  range 00 ff\n"
+      "  any\n"
     );
   }
   return 0;

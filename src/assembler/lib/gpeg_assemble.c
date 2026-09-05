@@ -387,6 +387,37 @@ uint8_t gpeg_asm_hex
 }
 
 static
+int gpeg_asm_any
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct assemblerstate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    if (state->pass == 1) {
+      state->offset += GPEG_INSTR_SIZE;
+    } else {
+      uint32_t instr = 0;
+      unsigned p1 = 1, p2 = 7, p3 = 0xff, p4 = 0, p5 = 0xff;
+      gpeg_asm_instr(
+        &instr,
+        OP_RANGE,
+        5,
+        4, 1, p1,
+        5, 3, p2,
+        8, 8, p3,
+        16, 8, p4,
+        24, 8, p5
+      );
+      vec_append(state->bytecode, &instr, sizeof(instr));
+    }
+  }
+  return 0;
+}
+
+static
 int gpeg_asm_chr
   (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
@@ -696,6 +727,7 @@ int gpeg_assemble
   gpeg_node_callback(tree, SLOT_RANGEINSTR, gpeg_asm_rng, &state);
   gpeg_node_callback(tree, SLOT_BITMASKINSTR, gpeg_asm_msk, &state);
   gpeg_node_callback(tree, SLOT_CHARINSTR, gpeg_asm_chr, &state);
+  gpeg_node_callback(tree, SLOT_ANYINSTR, gpeg_asm_any, &state);
   gpeg_node_callback(tree, SLOT_VARINSTR, gpeg_asm_var, &state);
   gpeg_node_callback(tree, SLOT_COUNTERINSTR, gpeg_asm_ctr, &state);
   gpeg_node_callback(tree, SLOT_CONDJUMPINSTR, gpeg_asm_cjp, &state);

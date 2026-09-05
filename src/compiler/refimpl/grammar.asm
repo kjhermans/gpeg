@@ -54,7 +54,7 @@ LOOP8:
   char 5d
   failtwice
 L9:
-  range 00 ff
+  any
   partialcommit LOOP8
 L8:
   char 5d
@@ -101,7 +101,7 @@ END:
   call __prefix
   opencapture 5
   catch L17
-  range 00 ff
+  any
   failtwice
 L17:
   closecapture 5
