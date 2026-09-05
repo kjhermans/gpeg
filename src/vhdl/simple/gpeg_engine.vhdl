@@ -271,7 +271,16 @@ begin
             state <= S_EXECUTE;
           elsif opcode = OP_RANGE
           then
-            if input_addr = std_logic_vector(resize(inp_offset, INPUT_ADDR_W))
+            if inp_offset < inp_size_reg
+                 and instr_from = 0
+                 and instr_until = x"ff" -- 'any' - no need to fetch input char
+            then
+              report "ANY";
+              inp_offset <= inp_offset + 1;
+              bc_offset <= bc_offset + 4;
+              n_instr <= n_instr + 1;
+              state <= S_FETCH_OP;
+            elsif input_addr = std_logic_vector(resize(inp_offset, INPUT_ADDR_W))
             then
               -- input is already in cache
               state <= S_EXECUTE;
