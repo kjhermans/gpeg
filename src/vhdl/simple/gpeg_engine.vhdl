@@ -149,10 +149,10 @@ architecture rtl of gpeg_engine is
   signal register_count : unsigned(15 downto 0) := (others => '0');
 
   -- Instruction registers
-  signal instr_reg      : unsigned(7 downto 0)  := (others => '0');
-  signal instr_offset   : unsigned(19 downto 0) := (others => '0');
-  signal instr_from     : unsigned(7 downto 0)  := (others => '0');
-  signal instr_until    : unsigned(7 downto 0)  := (others => '0');
+--  signal instr_reg      : unsigned(7 downto 0)  := (others => '0');
+--  signal instr_offset   : unsigned(19 downto 0) := (others => '0');
+--  signal instr_from     : unsigned(7 downto 0)  := (others => '0');
+--  signal instr_until    : unsigned(7 downto 0)  := (others => '0');
   signal inp_byte       : unsigned(7 downto 0)  := (others => '0');
 
   -- Pipeline control flags (set in DECODE)
@@ -187,12 +187,20 @@ architecture rtl of gpeg_engine is
 begin
 
   process(clk)
-    variable v_redirected : boolean;
-    variable v_failed : boolean;
-    variable opcode : unsigned(3 downto 0);
+    variable v_redirected   : boolean;
+    variable v_failed       : boolean;
+    variable opcode         : unsigned(3 downto 0);
+    variable instr_reg      : unsigned(7 downto 0);
+    variable instr_offset   : unsigned(19 downto 0);
+    variable instr_from     : unsigned(7 downto 0);
+    variable instr_until    : unsigned(7 downto 0);
   begin
     if rising_edge(clk) then
       opcode := unsigned(bcode_rdata(31 downto 28));
+      instr_reg := unsigned(bcode_rdata(27 downto 20));
+      instr_offset := unsigned(bcode_rdata(19 downto 0));
+      instr_from := unsigned(bcode_rdata(15 downto 8));
+      instr_until := unsigned(bcode_rdata(7 downto 0));
       bcode_rd  <= '0';
       input_rd  <= '0';
 
@@ -246,10 +254,6 @@ begin
           state <= S_LOAD_OP;  -- one dead cycle for BRAM latency
 
         when S_LOAD_OP =>
-          instr_reg <= unsigned(bcode_rdata(27 downto 20));
-          instr_offset <= unsigned(bcode_rdata(19 downto 0));
-          instr_from <= unsigned(bcode_rdata(15 downto 8));
-          instr_until <= unsigned(bcode_rdata(7 downto 0));
           end_code <= bcode_rdata(23 downto 0);
           if inp_offset > inp_offset_max then
             inp_offset_max <= inp_offset;
