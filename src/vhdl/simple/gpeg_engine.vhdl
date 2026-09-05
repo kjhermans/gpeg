@@ -90,7 +90,7 @@ architecture rtl of gpeg_engine is
     stype          : unsigned(3 downto 0);
     address        : unsigned(19 downto 0);
     input_offset   : unsigned(19 downto 0);
-    input_length   : unsigned(19 downto 0);
+--    input_length   : unsigned(19 downto 0);
     register_count : unsigned(15 downto 0);
     call_context   : unsigned(15 downto 0);
   end record;
@@ -99,7 +99,7 @@ architecture rtl of gpeg_engine is
     stype => x"0",
     address => x"00000",
     input_offset => x"00000",
-    input_length => x"00000",
+--    input_length => x"00000",
     register_count => x"0000",
     call_context => x"0000"
   );
@@ -140,8 +140,8 @@ architecture rtl of gpeg_engine is
   signal bc_offset      : unsigned(19 downto 0) := (others => '0');
   signal inp_offset     : unsigned(19 downto 0) := (others => '0');
   signal inp_offset_max : unsigned(19 downto 0) := (others => '0');
-  signal inp_size_reg   : unsigned(19 downto 0) := (others => '0');
-  signal bc_size_reg    : unsigned(19 downto 0) := (others => '0');
+--  signal inp_size_reg   : unsigned(19 downto 0) := (others => '0');
+--  signal bc_size_reg    : unsigned(19 downto 0) := (others => '0');
   signal failed         : std_logic             := '0';
   signal n_instr        : unsigned(31 downto 0) := (others => '0');
   signal call_counter   : unsigned(15 downto 0) := (others => '0');
@@ -225,8 +225,8 @@ begin
             bc_offset <= (others => '0');
             inp_offset <= (others => '0');
             inp_offset_max <= (others => '0');
-            bc_size_reg <= bytecode_size;
-            inp_size_reg <= input_size;
+--            bc_size_reg <= bytecode_size;
+--            inp_size_reg <= input_size;
             failed <= '0';
             sp <= (others => '0');
             n_instr <= (others => '0');
@@ -240,7 +240,7 @@ begin
 
         -- === Opcode fetch (3 cycles) ===
         when S_FETCH_OP =>
-          if bc_offset >= bc_size_reg
+          if bc_offset >= bytecode_size -- bc_size_reg
           then
             err_code <= ERR_OVERFLOW;
             state <= S_ERROR;
@@ -271,7 +271,7 @@ begin
             state <= S_EXECUTE;
           elsif opcode = OP_RANGE
           then
-            if inp_offset < inp_size_reg
+            if inp_offset < input_size -- inp_size_reg
                  and instr_from = 0
                  and instr_until = x"ff" -- 'any' - no need to fetch input char
             then
@@ -310,7 +310,7 @@ begin
 
         -- === Input byte fetch (3 cycles) ===
         when S_FETCH_INP =>
-          if inp_offset >= inp_size_reg
+          if inp_offset >= input_size -- inp_size_reg
           then
             failed <= '1';
             state <= S_EXECUTE;
@@ -394,7 +394,7 @@ begin
               STYPE_CALL,
               bc_offset + 4,
               inp_offset,
-              inp_size_reg,
+--              inp_size_reg,
               resize(reg_sp, 16),
               current_call
             );
@@ -406,7 +406,7 @@ begin
             if popped.stype = STYPE_CALL
             then
               bc_offset <= popped.address;
-              inp_size_reg <= popped.input_length;
+--              inp_size_reg <= popped.input_length;
               current_call <= popped.call_context;
             else
               err_code <= ERR_BYTECODE;
@@ -420,7 +420,7 @@ begin
               STYPE_CATCH,
               instr_offset,
               inp_offset,
-              inp_size_reg,
+--              inp_size_reg,
               resize(reg_sp, 16),
               x"0000"
             );
@@ -458,7 +458,7 @@ begin
                 STYPE_CATCH,
                 popped.address,
                 inp_offset,
-                popped.input_length,
+--                popped.input_length,
                 popped.register_count,
                 popped.call_context
               );
