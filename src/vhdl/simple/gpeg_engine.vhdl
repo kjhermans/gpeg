@@ -156,10 +156,10 @@ architecture rtl of gpeg_engine is
   signal popped         : stack_elt_t := SELT0;
 
   -- Register stack (for COUNTER/CONDJUMP)
-  signal reg_mem       : reg_array_t;
-  signal reg_sp        : unsigned(8 downto 0) := (others => '0');
-  signal reg_scan_idx  : unsigned(8 downto 0) := (others => '0');
-  signal reg_found_idx : unsigned(8 downto 0) := (others => '0');
+  signal reg_mem        : reg_array_t;
+  signal reg_sp         : unsigned(8 downto 0) := (others => '0');
+  signal reg_scan_idx   : unsigned(8 downto 0) := (others => '0');
+  signal reg_found_idx  : unsigned(8 downto 0) := (others => '0');
 
   procedure print_status
     (opcode :unsigned(3 downto 0); v_failed :boolean)
