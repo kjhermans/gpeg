@@ -62,17 +62,29 @@ sub disassemble
     } elsif ($opcode == 1) {
       my $R = $bytes[ 0 ] & 0x08;
       my $nbits = ($bytes[ 0 ] & 0x07) + 1;
-      $output .= "bitmask ";
-      if ($R) {
-        $output .= "true $nbits ";
+      if ($R && $nbits == 8 && $bytes[ 1 ] == 0xff) {
+        if ($bytes[ 2 ] == $bytes[ 3 ]) {
+          $output .= "char " . sprintf("%.2x", $bytes[ 2 ]);
+        } elsif ($bytes[ 2 ] == 0x00 && $bytes[ 3 ] == 0xff) {
+          $output .= "any";
+        } else {
+          $output .= "range " .
+                     sprintf("%2.x", $bytes[ 2 ]) . ' ' .
+                     sprintf("%.2x", $bytes[ 3 ]);
+        }
       } else {
-        $output .= "false $nbits ";
-      }
-      $output .= sprintf("%.2x ", $bytes[2]);
-      if ($bytes[2] != $bytes[3]) {
-        $output .= sprintf("%.2x ", $bytes[3]);
-        if ($bytes[1] != 0xff || !$R) {
-          $output .= sprintf("%.2x", $bytes[1]);
+        $output .= "bitmask ";
+        if ($R) {
+          $output .= "true $nbits ";
+        } else {
+          $output .= "false $nbits ";
+        }
+        $output .= sprintf("%.2x ", $bytes[2]);
+        if ($bytes[2] != $bytes[3]) {
+          $output .= sprintf("%.2x ", $bytes[3]);
+          if ($bytes[1] != 0xff || !$R) {
+            $output .= sprintf("%.2x", $bytes[1]);
+          }
         }
       }
     } elsif ($opcode == 2) {
