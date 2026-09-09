@@ -54,7 +54,8 @@ MATCHER            <- ANY /
                       ENDFORCE /
                       VARREFERENCE /
                       REFERENCE /
-                      LIMITEDCALL
+                      LIMITEDCALL /
+                      ANNOTATION
 
 BITMASK            <- '|' [01_]^1-8 '|'
 
@@ -83,6 +84,7 @@ NOT                <- '!'
 AND                <- '&'
 MACRO              <- '%' [a-zA-Z] [a-zA-Z0-9]*
 ENDFORCE           <- '__end' S NUMBER
+ANNOTATION         <- '@@' IDENT { [^\n]* } '\n'
 HEXLITERAL         <- '0x' [0-9a-fA-F]^2
 NUMBER             <- [0-9]+
 STRING             <- STRINGLITERAL 'i'?

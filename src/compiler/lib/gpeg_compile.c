@@ -47,6 +47,7 @@ struct compilestate
   unsigned      capture;
   int           prefixset;
   int           firstrule;
+  const vec_t*  input;
   vec_t*        assembly;
   vec_t*        error;
   FILE*         slotmap;
@@ -75,6 +76,15 @@ int gpeg_compile_rule
         "\n"
         , release_len
         , release
+        , rulename
+      );
+    }
+    if (state->flags & GPEGC_FLG_ANNOTATE) {
+      unsigned yx[ 2 ] = { 0 };
+      int p = strxypos((char*)(state->input->data), node->offset, yx); (void)p;
+      vec_printf(state->assembly,
+        "@@rule: lineno=%u, name=%s\n"
+        , yx[ 0 ]
         , rulename
       );
     }
@@ -1214,6 +1224,28 @@ int gpeg_compile_hex
 }
 
 static
+int gpeg_compile_annotation
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct compilestate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+
+  switch (phase) {
+  case GPEG_FNC_PRENODE:
+    if (state->flags & GPEGC_FLG_ANNOTATE) {
+      vec_printf(state->assembly,
+        "@@%s %s\n"
+        , (char*)(node->children.list[ 0 ]->vec.data)
+        , (char*)(node->children.list[ 1 ]->vec.data)
+      );
+    }
+  }
+  return 0;
+}
+
+static
 int gpeg_compile_endforce
   (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
 {
@@ -1344,6 +1376,7 @@ int gpeg_compile
     .label = 1,
     .prefixset  = 0,
     .capture = 0,
+    .input = grammar,
     .assembly = assembly,
     .error = error,
     .slotmap = slotmap,
@@ -1391,6 +1424,7 @@ int gpeg_compile
   gpeg_node_callback(tree, SLOT_VARREFERENCE, gpeg_compile_varref, &state);
   gpeg_node_callback(tree, SLOT_HEXLITERAL, gpeg_compile_hex, &state);
   gpeg_node_callback(tree, SLOT_ENDFORCE, gpeg_compile_endforce, &state);
+  gpeg_node_callback(tree, SLOT_ANNOTATION, gpeg_compile_annotation, &state);
   gpeg_node_callback(tree, SLOT_BITMASK, gpeg_compile_bitmask, &state);
   gpeg_node_callback(tree, SLOT_LIMITEDCALL, gpeg_compile_lim, &state);
   CHECK(gpeg_node_run(tree));

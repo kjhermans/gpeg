@@ -47,6 +47,7 @@ char* usage =
   "-o <path>   Specify output path.\n"
   "-C          Treat every rule as an automatic capture region.\n"
   "-M <path>   Specify slotmap header file.\n"
+  "-a          Annotate the assembly.\n"
   "\n"
   "--opt-noctr Do not emit counter and condjump instructions.\n"
 ;
@@ -90,6 +91,9 @@ int main
   }
   if (queryargs(argc, argv, 0, "opt-noctr", 0, 0, 0, 0) == 0) {
     flags |= GPEGC_FLG_NOCOUNTER;
+  }
+  if (queryargs(argc, argv, 'a', "annotate", 0, 0, 0, 0) == 0) {
+    flags |= GPEGC_FLG_ANNOTATE;
   }
   if (queryargs(argc, argv, 'M', "slotmap", 0, 1, 0, &value) == 0) {
     if ((slotmap = fopen(value, "w")) == NULL) {

@@ -657,6 +657,54 @@ int gpeg_asm_limit
   return 0;
 }
 
+static
+int gpeg_asm_annotation
+  (gpege_node_t* node, unsigned phase, unsigned i, vec_t* vec, void* arg)
+{
+  struct assemblerstate* state = arg;
+  (void)node;
+  (void)i;
+  (void)vec;
+  uint32_t instr = 0;
+
+  if (phase == GPEG_FNC_PRENODE) {
+    switch (node->children.list[ 0 ]->type) {
+    case SLOT_AN_RULE:
+      {
+        unsigned lineno = atoi(
+          (char*)(node->children.list[ 0 ]->children.list[ 0 ]->vec.data)
+        );
+        char* name =
+          (char*)(node->children.list[ 0 ]->children.list[ 1 ]->vec.data);
+        unsigned l = strlen(name) + 1;
+        if (state->pass == 1) {
+          state->offset += (GPEG_INSTR_SIZE * 2) + (l - (l % 4));
+        } else {
+          gpeg_asm_instr(&instr, OP_END, 2
+            , 4, 4, 0xf
+            , 8, 24, lineno
+          );
+          vec_append(state->bytecode, &instr, sizeof(instr));
+          vec_append(state->bytecode, name, l);
+          vec_append(state->bytecode, NULL, (4 - (l % 4)));
+        }
+      }
+      break;
+    case SLOT_AN_BRKP:
+      if (state->pass == 1) {
+        state->offset += GPEG_INSTR_SIZE;
+      } else {
+        gpeg_asm_instr(&instr, OP_END, 1
+          , 4, 4, 0xe
+        );
+        vec_append(state->bytecode, &instr, sizeof(instr));
+      }
+      break;
+    }
+  }
+  return 0;
+}
+
 /**
  *
  */
@@ -732,6 +780,7 @@ int gpeg_assemble
   gpeg_node_callback(tree, SLOT_COUNTERINSTR, gpeg_asm_ctr, &state);
   gpeg_node_callback(tree, SLOT_CONDJUMPINSTR, gpeg_asm_cjp, &state);
   gpeg_node_callback(tree, SLOT_LIMITINSTR, gpeg_asm_limit, &state);
+  gpeg_node_callback(tree, SLOT_ANNOTATION, gpeg_asm_annotation, &state);
 
   state.pass = 1;
   CHECK(gpeg_node_run(tree));

@@ -54,11 +54,35 @@ sub disassemble
     my $opcode = $bytes[ 0 ] >> 4;
     $output .= "L_" . sprintf("%.6d", ($label * 4)) . ": ";
     if ($opcode == 0) {
-      $output .= "end " . (
-        ($bytes[1] << 16) |
-        ($bytes[2] << 8) |
-        $bytes[3]
-      );
+      if ($bytes[ 0 ] & 0xf) {
+        if ($bytes[ 0 ] == 0xf) {
+          my $lineno =
+            ($bytes[ 1 ] << 16) |
+            ($bytes[ 2 ] << 8) |
+            ($bytes[ 3 ]);
+          my $name = '';
+          while (length($input)) {
+            my $byte = substr($input, 0, 1);
+            $input = substr($input, 1);
+            if (ord($byte) == 0) {
+              last;
+            } else {
+              $name .= $byte;
+            }
+          }
+          my $l = 4 - ((length($name) + 1) % 4);
+          $input = substr($input, $l);
+          $output .= "\n\n" .'@@' . "rule: lineno=$lineno, name=$name\n";
+        } elsif ($bytes[ 0 ] == 0xe) {
+          $output .= "\n" . '@@' . "breakpoint\n";
+        }
+      } else {
+        $output .= "end " . (
+          ($bytes[1] << 16) |
+          ($bytes[2] << 8) |
+          $bytes[3]
+        );
+      }
     } elsif ($opcode == 1) {
       my $R = $bytes[ 0 ] & 0x08;
       my $nbits = ($bytes[ 0 ] & 0x07) + 1;

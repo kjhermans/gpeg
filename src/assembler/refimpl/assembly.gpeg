@@ -21,7 +21,8 @@ RULEINSTR          <- BACKCOMMITINSTR / CALLINSTR /
                       RETINSTR /
                       RANGEINSTR / BITMASKINSTR / CHARINSTR / ANYINSTR /
                       VARINSTR /
-                      COUNTERINSTR / CONDJUMPINSTR
+                      COUNTERINSTR / CONDJUMPINSTR /
+                      ANNOTATION
 
 END                <- !.
 
@@ -45,6 +46,10 @@ VARINSTR           <- 'var' S SLOT
 COUNTERINSTR       <- 'counter' S REGISTER S UNSIGNED
 CONDJUMPINSTR      <- 'condjump' S REGISTER S LABEL
 
+ANNOTATION         <- '@@' ( AN_RULE / AN_BRKP ) '\n'
+AN_RULE            <- 'rule: lineno=' UNSIGNED ', name=' IDENT
+AN_BRKP            <- 'breakpoint'
+
 LABELDEF           <- LABEL COLON
 
 -- terminals
@@ -52,6 +57,7 @@ LABELDEF           <- LABEL COLON
 HEXBYTE            <- [0-9a-fA-F]^2
 BOOLEAN            <- 'true' / 'false'
 LABEL              <- [a-zA-Z0-9_]^1-64
+IDENT              <- [a-zA-Z0-9_]^1-64
 CODE               <- UNSIGNED
 SLOT               <- UNSIGNED
 REGISTER           <- UNSIGNED
