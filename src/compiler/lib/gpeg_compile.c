@@ -79,6 +79,7 @@ int gpeg_compile_rule
         , rulename
       );
     }
+    vec_printf(state->assembly, "%s:\n", rulename);
     if (state->flags & GPEGC_FLG_ANNOTATE) {
       unsigned yx[ 2 ] = { 0 };
       int p = strxypos((char*)(state->input->data), node->offset, yx); (void)p;
@@ -88,7 +89,6 @@ int gpeg_compile_rule
         , rulename
       );
     }
-    vec_printf(state->assembly, "%s:\n", rulename);
     if (state->prefixset) {
       vec_printf(state->assembly, "  call __prefix\n");
     }
