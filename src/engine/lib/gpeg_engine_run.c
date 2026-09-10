@@ -236,13 +236,35 @@ static inline
 void gpeg_engine_run_end
   (uint8_t* instr8, gpege_result_t* result, gpege_state_t* state)
 {
-  result->success = 1;
-  result->endcode = (
-    (instr8[1]<<16) |
-    (instr8[2]<<8) |
-    instr8[3]
-  );
-  state->ended = 1;
+  if (instr8[ 0 ] & 0x0f) {
+    switch (instr8[ 0 ]) {
+    case 0x0f:
+      state->instrptr += 4;
+      while (state->instrptr < state->bytecode->size) {
+        if (state->bytecode->data[ state->instrptr ] == 0) {
+          break;
+        }
+        ++(state->instrptr);
+      }
+      while (state->instrptr < state->bytecode->size
+             && (state->instrptr % 4))
+      {
+        ++(state->instrptr);
+      }
+      break;
+    case 0x0e:
+      state->instrptr += 4;
+      break;
+    }
+  } else {
+    result->success = 1;
+    result->endcode = (
+      (instr8[ 1 ] << 16) |
+      (instr8[ 2 ] << 8) |
+      instr8[ 3 ]
+    );
+    state->ended = 1;
+  }
 }
 
 static inline
