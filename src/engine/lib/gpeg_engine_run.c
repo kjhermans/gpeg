@@ -241,14 +241,12 @@ void gpeg_engine_run_end
     case 0x0f:
       state->instrptr += 4;
       while (state->instrptr < state->bytecode->size) {
-        if (state->bytecode->data[ state->instrptr ] == 0) {
+        uint8_t b = state->bytecode->data[ (state->instrptr)++ ];
+        if (b == 0) {
           break;
         }
-        ++(state->instrptr);
       }
-      while (state->instrptr < state->bytecode->size
-             && (state->instrptr % 4))
-      {
+      while (state->instrptr < state->bytecode->size && (state->instrptr % 4)) {
         ++(state->instrptr);
       }
       break;
