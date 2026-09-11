@@ -665,8 +665,6 @@ int gpeg_engine_run
       result->maxinputptr = state.inputptr;
     }
 
-//debug_actions_captures(&state);
-
 DEBUGPOINT_INSTRUCTION
 
     switch (opcode) {
