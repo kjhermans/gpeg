@@ -128,7 +128,12 @@ void gpeg_instruction_print_end
 
   if (instr8[ 0 ]) {
     if (instr8[ 0 ] == 0x0f) {
-      fprintf(stderr, "Rule: %s\n", (char*)(instr8 + 4));
+      unsigned lineno = (
+        (instr8[ 1 ] << 16) |
+        (instr8[ 2 ] << 8) |
+        (instr8[ 3 ])
+      );
+      fprintf(stderr, "Rule: %s, lineno: %u\n", (char*)(instr8 + 4), lineno);
     } else if (instr8[ 0 ] == 0x0e) {
       fprintf(stderr, "Breakpoint.\n");
     }
