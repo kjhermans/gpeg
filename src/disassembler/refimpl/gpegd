@@ -70,9 +70,11 @@ sub disassemble
               $name .= $byte;
             }
           }
-          my $l = 4 - ((length($name) + 1) % 4);
+          my $nl = length($name) + 1;
+          my $l = ($nl % 4) ? (4 - ($nl % 4)) : 0;
           $input = substr($input, $l);
           $output .= "\n\n" .'@@' . "rule: lineno=$lineno, name=$name\n";
+          $label += int(($nl + $l) / 4);
         } elsif ($bytes[ 0 ] == 0xe) {
           $output .= "\n" . '@@' . "breakpoint\n";
         }

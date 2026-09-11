@@ -678,7 +678,7 @@ int gpeg_asm_annotation
           (char*)(node->children.list[ 0 ]->children.list[ 1 ]->vec.data);
         unsigned l = strlen(name) + 1;
         if (state->pass == 1) {
-          state->offset += (GPEG_INSTR_SIZE * 2) + (l - (l % 4));
+          state->offset += GPEG_INSTR_SIZE + l + ((l % 4) ? (4 - (l % 4)) : 0);
         } else {
           gpeg_asm_instr(&instr, OP_END, 2
             , 4, 4, 0xf
@@ -686,7 +686,7 @@ int gpeg_asm_annotation
           );
           vec_append(state->bytecode, &instr, sizeof(instr));
           vec_append(state->bytecode, name, l);
-          vec_append(state->bytecode, NULL, (4 - (l % 4)));
+          vec_append(state->bytecode, NULL, (l % 4) ? (4 - (l % 4)) : 0);
         }
       }
       break;
