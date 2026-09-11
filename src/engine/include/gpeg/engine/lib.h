@@ -110,6 +110,10 @@ gpege_state_t;
 extern
 void gpeg_debug_instruction
   (gpege_state_t* state);
+
+extern
+void gpeg_debug_stackpop
+  (gpege_stack_t* stack, gpege_stackelt_t* elt);
 #endif
 
 extern str2int_map_t* gpeg_labelmap;

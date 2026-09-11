@@ -271,3 +271,16 @@ AGAIN:
   }
   goto AGAIN;
 }
+
+void gpeg_debug_stackpop
+  (gpege_stack_t* stack, gpege_stackelt_t* elt)
+{
+  (void)stack;
+
+  fprintf(stderr,
+    "  -- Stack pop: typ=%s, ins=%u, inp=%u\n"
+    , ((elt->type == STACK_CALL) ? "call" : "catch")
+    , elt->instrptr
+    , elt->inputptr
+  );
+}

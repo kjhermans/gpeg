@@ -31,6 +31,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief
  */
 
+#ifdef _DEBUGGER
+  #define DEBUGPOINT_INSTRUCTION gpeg_debug_instruction(&state);
+  #define DEBUGPOINT_FAIL gpeg_debug_instruction(&state);
+  #define DEBUGPOINT_STACKPOP gpeg_debug_stackpop(stack, &elt);
+#else
+  #ifdef _DEBUG
+    #define DEBUGPOINT_INSTRUCTION if (flags & GPEGE_FLG_DEBUG) { \
+      gpeg_engine_state_print(&state); \
+    }
+    #define DEBUGPOINT_FAIL if (flags & GPEGE_FLG_DEBUG) { \
+      fprintf(stderr, "FAIL\n"); \
+    }
+    #define DEBUGPOINT_STACKPOP fprintf(stderr, "Stack pop.\n");
+  #else
+    #define DEBUGPOINT_INSTRUCTION {}
+    #define DEBUGPOINT_FAIL {}
+    #define DEBUGPOINT_STACKPOP {}
+  #endif
+#endif
+
 #include <andy/uint32list.h>
 MAKE_ARRAY_CODE(uint32_t, uint32list_)
 
@@ -149,6 +169,9 @@ inline int stack_fail
   }
   while (stack->count) {
     stack_pop(stack, 0, &elt);
+
+DEBUGPOINT_STACKPOP
+
     if (elt.type == STACK_CATCH) {
       if (ret) { *ret = elt; }
       break;
@@ -594,23 +617,6 @@ int gpeg_engine_fail
                     input->size);
   return 0;
 }
-
-#ifdef _DEBUGGER
-  #define DEBUGPOINT_INSTRUCTION gpeg_debug_instruction(&state);
-  #define DEBUGPOINT_FAIL gpeg_debug_instruction(&state);
-#else
-  #ifdef _DEBUG
-    #define DEBUGPOINT_INSTRUCTION if (flags & GPEGE_FLG_DEBUG) { \
-      gpeg_engine_state_print(&state); \
-    }
-    #define DEBUGPOINT_FAIL if (flags & GPEGE_FLG_DEBUG) { \
-      fprintf(stderr, "FAIL\n"); \
-    }
-  #else
-    #define DEBUGPOINT_INSTRUCTION {}
-    #define DEBUGPOINT_FAIL {}
-  #endif
-#endif
 
 /**
  * Runs the GPEG engine using \p bytecode on \p input.
