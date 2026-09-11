@@ -34,6 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <gpeg/engine/lib.h>
 
 #define GPEG_DBGRSTAT_NEXTCALL  (1<<0)
+#define GPEG_DBGRSTAT_NEXTBRKP  (1<<1)
 
 int gpeg_debugger_off = 0;
 
@@ -90,15 +91,70 @@ void gpeg_instruction_print_labeled
 }
 
 static
+void gpeg_instruction_print_range
+  (gpege_state_t* state)
+{
+  uint8_t* instr8 = state->bytecode->data + state->instrptr;
+  unsigned R = instr8[ 0 ] & 0x08;
+  unsigned nbits = (instr8[ 0 ] & 0x07) + 1;
+  unsigned bitmask = instr8[ 1 ];
+  unsigned from = instr8[ 2 ];
+  unsigned until = instr8[ 3 ];
+
+  if (R && nbits == 8) {
+    if (from == until) {
+      fprintf(stderr, "  char %.2x\n", instr8[ 2 ]);
+    } else if (from == 0 && until == 0xff) {
+      fprintf(stderr, "  any\n");
+    } else {
+      fprintf(stderr, "  range %.2x %.2x\n", instr8[ 2 ], instr8[ 3 ]);
+    }
+  } else {
+    fprintf(stderr, "  bitmask %s %u %.2x %.2x %.2x\n"
+                    , (R ? "true" : "false")
+                    , nbits
+                    , from
+                    , until
+                    , bitmask
+    );
+  }
+}
+
+static
+void gpeg_instruction_print_end
+  (gpege_state_t* state)
+{
+  uint8_t* instr8 = state->bytecode->data + state->instrptr;
+
+  if (instr8[ 0 ]) {
+    if (instr8[ 0 ] == 0x0f) {
+      fprintf(stderr, "Rule: %s\n", (char*)(instr8 + 4));
+    } else if (instr8[ 0 ] == 0x0e) {
+      fprintf(stderr, "Breakpoint.\n");
+    }
+  } else {
+    fprintf(stderr,
+      "  end %u\n"
+      , ((instr8[1]<<16) | (instr8[2]<<8) | instr8[3])
+    );
+  }
+}
+
+static
 void gpeg_instruction_print
   (gpege_state_t* state)
 {
   uint8_t* instr8 = state->bytecode->data + state->instrptr;
   uint8_t opcode = instr8[0] >> 4;
 
+  if (state->failed) {
+    fprintf(stderr, "  FAIL\n");
+    return;
+  }
+
   switch (opcode) {
-  case OP_END: fprintf(stderr, "  end %u\n", ((instr8[1]<<16) | (instr8[2]<<8) | instr8[3])); break;
-  case OP_RANGE: break;
+  case OP_END: gpeg_instruction_print_end(state); break;
+  case OP_RANGE: gpeg_instruction_print_range(state); break;
   case OP_LIMIT: break;
   case OP_CALL: gpeg_instruction_print_labeled(state, "call"); break;
   case OP_RET: fprintf(stderr, "  ret\n"); break;
@@ -127,11 +183,27 @@ void gpeg_debug_instruction
   if (state->flags & GPEGE_FLG_DEBUGHEX) { readable_hex = 1; }
 
 AGAIN:
-  gpeg_engine_state_print(state);
+  if (opcode || instr8[ 0 ] == 0) {
+    gpeg_engine_state_print(state);
+  }
   gpeg_instruction_print(state);
-
-  if ((state->debuggerstate & GPEG_DBGRSTAT_NEXTCALL) && opcode != OP_CALL) {
+  if (instr8[ 0 ] == 0x0f) {
     return;
+  }
+
+  if (state->debuggerstate & GPEG_DBGRSTAT_NEXTBRKP) {
+    if (instr8[ 0 ] == 0x0e) {
+      state->debuggerstate &= ~GPEG_DBGRSTAT_NEXTBRKP;
+    } else {
+      return;
+    }
+  }
+  if (state->debuggerstate & GPEG_DBGRSTAT_NEXTCALL) {
+    if (opcode == OP_CALL) {
+      state->debuggerstate &= ~GPEG_DBGRSTAT_NEXTCALL;
+    } else {
+      return;
+    }
   }
   fprintf(stderr, "[?qdcoarSAHF] > ");
   if (fgets(buf, sizeof(buf), stdin)) {
@@ -144,6 +216,7 @@ AGAIN:
 "q           Quit\n"
 "? or h      Print this help text.\n"
 "<Enter>     Step.\n"
+"b           Run to the next breakpoint.\n"
 "d           Dump the current input from current offset.\n"
 "d <n>       Dump the current input from current offset for <n> bytes.\n"
 "d <o> <n>   Dump the current input from absolute <o> for <n> bytes.\n"
@@ -164,6 +237,8 @@ AGAIN:
     } else if (0 == strcmp(buf, "c\n")) {
       state->debuggerstate |= GPEG_DBGRSTAT_NEXTCALL;
       return;
+    } else if (0 == strcmp(buf, "b\n")) {
+      state->debuggerstate |= GPEG_DBGRSTAT_NEXTBRKP;
     } else if (0 == strcmp(buf, "A\n")) {
       gpege_actionlist_debug(state->input, &(state->actions));
     } else if (0 == strcmp(buf, "S\n")) {
