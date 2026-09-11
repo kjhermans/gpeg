@@ -1235,11 +1235,21 @@ int gpeg_compile_annotation
   switch (phase) {
   case GPEG_FNC_PRENODE:
     if (state->flags & GPEGC_FLG_ANNOTATE) {
-      vec_printf(state->assembly,
-        "@@%s %s\n"
-        , (char*)(node->children.list[ 0 ]->vec.data)
-        , (char*)(node->children.list[ 1 ]->vec.data)
-      );
+      switch (node->children.count) {
+      case 1:
+        vec_printf(state->assembly,
+          "@@%s\n"
+          , (char*)(node->children.list[ 0 ]->vec.data)
+        );
+        break;
+      case 2:
+        vec_printf(state->assembly,
+          "@@%s %s\n"
+          , (char*)(node->children.list[ 0 ]->vec.data)
+          , (char*)(node->children.list[ 1 ]->vec.data)
+        );
+        break;
+      }
     }
   }
   return 0;
