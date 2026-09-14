@@ -103,6 +103,7 @@ typedef struct gpege_state
   unsigned              counters[ GPEGE_MAX_COUNTERS ][ 2 ];
   unsigned              countercount;
   unsigned              debuggerstate;
+  unsigned              stepoverlength;
 }
 gpege_state_t;
 

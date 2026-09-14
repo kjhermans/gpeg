@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define GPEG_DBGRSTAT_NEXTCALL  (1<<0)
 #define GPEG_DBGRSTAT_NEXTBRKP  (1<<1)
+#define GPEG_DBGRSTAT_STEPOVER  (1<<2)
 
 int gpeg_debugger_off = 0;
 
@@ -210,6 +211,13 @@ AGAIN:
       return;
     }
   }
+  if (state->debuggerstate & GPEG_DBGRSTAT_STEPOVER) {
+    if (state->stack.count < state->stepoverlength) {
+      state->debuggerstate &= ~GPEG_DBGRSTAT_STEPOVER;
+    } else {
+      return;
+    }
+  }
   fprintf(stderr, "[?qdcoarSAHF] > ");
   if (fgets(buf, sizeof(buf), stdin)) {
     if (0 == strcmp(buf, "q\n")) {
@@ -222,10 +230,10 @@ AGAIN:
 "? or h      Print this help text.\n"
 "<Enter>     Step.\n"
 "b           Run to the next breakpoint.\n"
+"c           Run to the next call.\n"
 "d           Dump the current input from current offset.\n"
 "d <n>       Dump the current input from current offset for <n> bytes.\n"
 "d <o> <n>   Dump the current input from absolute <o> for <n> bytes.\n"
-"c           Run to the next call.\n"
 "o           Step over the call.\n"
 "a           Always step over this call.\n"
 "r <n>       Run to instruction number <n>.\n"
@@ -244,6 +252,9 @@ AGAIN:
       return;
     } else if (0 == strcmp(buf, "b\n")) {
       state->debuggerstate |= GPEG_DBGRSTAT_NEXTBRKP;
+    } else if (0 == strcmp(buf, "o\n")) {
+      state->debuggerstate |= GPEG_DBGRSTAT_STEPOVER;
+      state->stepoverlength = state->stack.count;
     } else if (0 == strcmp(buf, "A\n")) {
       gpege_actionlist_debug(state->input, &(state->actions));
     } else if (0 == strcmp(buf, "S\n")) {
