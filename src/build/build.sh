@@ -65,6 +65,7 @@ make -C $GEN0/assembler/
 
 cp grammar.gpeg assembly.gpeg $GEN1/
 
+#valgrind $GEN0/compiler/main/gpegc \
 $GEN0/compiler/main/gpegc \
   -C \
   -i $GEN1/grammar.gpeg \
