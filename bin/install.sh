@@ -13,6 +13,7 @@ cp ./src/compiler/main/gpegc       /usr/local/bin/
 cp ./src/assembler/main/gpega      /usr/local/bin/
 #cp ./src/disassembler/main/gpegd   /usr/local/bin/
 cp ./src/engine/main/gpege         /usr/local/bin/
+cp ./src/debugger/main/gpege_dbg   /usr/local/bin/
 
 mkdir -p /usr/local/lib/gpeg
 cp ./src/compiler/lib/libgpegc.a   /usr/local/lib/gpeg/
