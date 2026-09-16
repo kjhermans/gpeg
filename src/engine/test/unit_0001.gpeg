@@ -1,0 +1,6 @@
+RULE     <- ENTRY ( COMMA ENTRY )*
+ENTRY    <- STRING COLON UNSIGNED
+COLON    <- ':'
+COMMA    <- ','
+STRING   <- '"' { [^"]* } '"'
+UNSIGNED <- [0-9]+

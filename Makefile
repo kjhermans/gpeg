@@ -44,6 +44,13 @@ superclean: clean
 			make -C $$DIR superclean; \
 		done
 
+unittests:
+	@MFS=`find src/ doc/ -name Makefile | xargs grep -l '^unittests:'`; \
+		for MF in $$MFS; do \
+			DIR=`dirname $$MF`; \
+			make -C $$DIR unittests; \
+		done
+
 archive: clean
 	RELEASE=$$(cat release); \
 	echo "  [TAR] gpeg-src-$$RELEASE.tar.gz"; \
