@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     #define DEBUGPOINT_FAIL if (flags & GPEGE_FLG_DEBUG) { \
       fprintf(stderr, "FAIL\n"); \
     }
-    #define DEBUGPOINT_STACKPOP fprintf(stderr, "Stack pop.\n");
+    #define DEBUGPOINT_STACKPOP {}
   #else
     #define DEBUGPOINT_INSTRUCTION {}
     #define DEBUGPOINT_FAIL {}
