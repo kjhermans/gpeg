@@ -755,11 +755,11 @@ int gpeg_assemble
     RETURN_ERR(GPEGA_ERR_PARSER);
   }
 
-  gpege_node_t* tree = gpeg_result_to_tree(&result);
-  gpeg_node_remove(tree, SLOT_S, 1, 1);
-  gpeg_node_remove(tree, SLOT_MULTILINECOMMENT, 1, 1);
-  gpeg_node_remove(tree, SLOT_COMMENT, 1, 1);
+  gpeg_result_remove_slot(&result, SLOT_S);
+  gpeg_result_remove_slot(&result, SLOT_MULTILINECOMMENT);
+  gpeg_result_remove_slot(&result, SLOT_COMMENT);
 
+  gpege_node_t* tree = gpeg_result_to_tree(&result);
   gpeg_node_callback(tree, SLOT_LABELDEF, gpeg_asm_label, &state);
   gpeg_node_callback(tree, SLOT_BACKCOMMITINSTR, gpeg_asm_bcm, &state);
   gpeg_node_callback(tree, SLOT_CALLINSTR, gpeg_asm_cll, &state);

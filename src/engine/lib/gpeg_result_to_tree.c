@@ -219,6 +219,20 @@ void gpeg_node_remove
   }
 }
 
+void gpeg_result_remove_slot
+  (gpege_result_t* result, unsigned type)
+{
+  for (unsigned i=0; i < result->captures.count; i++) {
+    if (result->captures.list[ i ].reg == type) {
+      if (result->flags & GPEGE_FLG_COPYCAPTURES) {
+        free(result->captures.list[ i ].vec.data);
+      }
+      gpege_caplist_rem(&(result->captures), i, NULL);
+      --i;
+    }
+  }
+}
+
 void gpeg_node_callback
   (
     gpege_node_t* node,

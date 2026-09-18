@@ -300,6 +300,10 @@ gpege_node_t* gpeg_result_to_tree
   __attribute__ ((warn_unused_result));
 
 extern
+void gpeg_result_remove_slot
+  (gpege_result_t* result, unsigned slot);
+
+extern
 void gpeg_result_free
   (gpege_result_t* result);
 
