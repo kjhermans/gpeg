@@ -36,110 +36,78 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 MAKE_ARRAY_CODE(gpege_node_t*, gpege_nodelist_);
 
 static
-void gpeg_captures2nodes
-  (gpege_node_t* tree, gpege_capture_t* capture)
+void gpege_nodelist_sort
+  (gpege_nodelist_t* list)
 {
-  if (tree->children.count == 0) {
-    /* Add as first child */
-    gpege_node_t* newchild = calloc(1, sizeof(gpege_node_t));
-    newchild->vec = vec_copy_(capture->vec);
-    newchild->offset = capture->offset;
-    newchild->type = capture->reg;
-    gpege_nodelist_push(&(tree->children), newchild);
-  } else {
-    for (unsigned i=0; i < tree->children.count; i++) {
-      gpege_node_t* child = tree->children.list[ i ];
-      if (capture->offset == child->offset &&
-          capture->offset + capture->vec.size == child->offset + child->vec.size &&
-          capture->reg < child->type)
+  int sorted = 0;
+  while (!sorted) {
+    sorted = 1;
+//    for (unsigned i=0; i < list->count-1; i++) {
+    for (unsigned i=list->count-2; i != (unsigned)-1; i--) {
+      gpege_node_t* node0 = list->list[ i ];
+      gpege_node_t* node1 = list->list[ i+1 ];
+      if (
+           (node0->offset > node1->offset) || (
+             node0->offset == node1->offset && (
+               node0->vec.size < node1->vec.size || (
+                 node0->vec.size == node1->vec.size &&
+                 node0->type > node1->type
+               )
+             )
+           )
+         )
       {
-        /* Identically placed captures go in ascending order of capture type */
+        gpege_node_t* tmp = list->list[ i ];
+        list->list[ i ] = list->list[ i+1 ];
+        list->list[ i+1 ] = tmp;
+        sorted = 0;
+      }
+    }
+  }
+}
+
+static
+void gpege_nodelist_tree
+  (gpege_nodelist_t* list)
+{
+  int sorted = 0;
+  while (!sorted) {
+    sorted = 1;
+    for (unsigned i=0; i < list->count-1; i++) {
+      gpege_node_t* node0 = list->list[ i ];
+      gpege_node_t* node1 = list->list[ i+1 ];
+      if (node1->offset >= node0->offset &&
+          node1->offset + node1->vec.size <= node0->offset + node0->vec.size)
+      {
+        gpege_nodelist_rem(list, i+1, NULL);
+        gpege_nodelist_push(&(node0->children), node1);
+        gpege_nodelist_tree(&(node0->children));
+        sorted = 0;
         break;
       }
-      if (capture->offset >= child->offset &&
-          capture->offset + capture->vec.size <= child->offset + child->vec.size)
-      {
-        /* Recurse */
-        gpeg_captures2nodes(child, capture);
-        return;
-      }
     }
-    for (unsigned i=0; i < tree->children.count; i++) {
-      gpege_node_t* child = tree->children.list[ i ];
-      if (capture->offset + capture->vec.size <= child->offset) {
-        /* Insert before */
-        gpege_node_t* newchild = calloc(1, sizeof(gpege_node_t));
-        newchild->vec = vec_copy_(capture->vec);
-        newchild->offset = capture->offset;
-        newchild->type = capture->reg;
-        gpege_nodelist_ins(&(tree->children), i, newchild);
-        return;
-      }
-      if (capture->offset <= child->offset
-          && capture->offset + capture->vec.size >= child->offset + child->vec.size)
-      {
-        unsigned j;
-        gpege_node_t* newparent = calloc(1, sizeof(gpege_node_t));
-        newparent->vec = vec_copy_(capture->vec);
-        newparent->offset = capture->offset;
-        newparent->type = capture->reg;
-        for (j = i+1; j < tree->children.count; j++) {
-          if (capture->offset + capture->vec.size <= child->offset) {
-            break;
-          }
-        }
-        for (unsigned k=i; k < j; k++) {
-          gpege_node_t* oldchild;
-          gpege_nodelist_rem(&(tree->children), i, &oldchild);
-          gpege_nodelist_push(&(newparent->children), oldchild);
-        }
-        gpege_nodelist_ins(&(tree->children), i, newparent);
-        return;
-      }
-    }
-    /* Insert after */
-    gpege_node_t* newchild = calloc(1, sizeof(gpege_node_t));
-    newchild->vec = vec_copy_(capture->vec);
-    newchild->offset = capture->offset;
-    newchild->type = capture->reg;
-    gpege_nodelist_push(&(tree->children), newchild);
   }
 }
 
-/**
- * Transforms a result list with captures to a tree based structure,
- * which may be easier to use.
- */
 gpege_node_t* gpeg_result_to_tree
-  (const gpege_result_t* result)
+  (const gpege_result_t* captures)
 {
-  gpege_node_t* tree = calloc(1, sizeof(gpege_node_t));
-  tree->vec.size = (1<<20); // TODO: Replace with some defined constant
+  gpege_node_t* result = calloc(1, sizeof(gpege_node_t));
 
-/*
-fprintf(stderr, "CAPTURE:\n");
-for (unsigned i=0; i < result->captures.count; i++) {
-gpege_capture_t* cap = &(result->captures.list[ i ]);
-fprintf(stderr, "%u: %u, %u -> %u\n", i, cap->reg, cap->offset, cap->vec.size);
-}
-*/
-/*
-  for (unsigned i=0; i < result->captures.count; i++) {
-    gpege_capture_t* cap = &(result->captures.list[ i ]);
-*/
-  for (unsigned i=result->captures.count; i > 0; i--) {
-    gpege_capture_t* cap = &(result->captures.list[ i-1 ]);
+  result->vec.size = (1<<20); // #define some constant please
+  for (unsigned i=0; i < captures->captures.count; i++) {
+    gpege_capture_t* cap = &(captures->captures.list[ i ]);
+    gpege_node_t* node = calloc(1, sizeof(gpege_node_t));
 
-    gpeg_captures2nodes(tree, cap);
-
-//fprintf(stderr, "----\nCAPTURE:\n");
-//fprintf(stderr, "%u/%u: %u, %u -> %u\n", i, result->captures.count, cap->reg, cap->offset, cap->vec.size);
-//fprintf(stderr, "TREE:\n");
-//gpeg_node_debug(tree);
-
+    node->vec = vec_copy_(cap->vec);
+    node->offset = cap->offset;
+    node->type = cap->reg;
+    gpege_nodelist_push(&(result->children), node);
   }
-  tree->vec.size = 0;
-  return tree;
+  gpege_nodelist_sort(&(result->children));
+  gpege_nodelist_tree(&(result->children));
+  result->vec.size = 0;
+  return result;
 }
 
 void gpeg_result_free
