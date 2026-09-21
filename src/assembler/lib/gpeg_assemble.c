@@ -43,7 +43,7 @@ struct assemblerstate
 {
   unsigned      pass;
   unsigned      offset;
-  str2int_map_t offsets;
+  hash_t        offsets;
   vec_t*        bytecode;
   vec_t*        error;
   vec_t*        labelmap;
@@ -60,11 +60,12 @@ int gpeg_asm_label
 
   if (phase == GPEG_FNC_PRENODE) {
     if (state->pass == 1) {
-      char* label = (char*)(node->children.list[ 0 ]->vec.data);
-      str2int_map_put(&(state->offsets), label, state->offset);
+      vec_t offset = { 0 };
+      vec_append(&offset, &(state->offset), sizeof(state->offset));
+      int r = hash_put(&(state->offsets), &(node->children.list[ 0 ]->vec), &offset); (void)r;
       if (state->labelmap) {
         vec_printf(state->labelmap,
-          "%s:%u\n", label, state->offset
+          "%s:%u\n", (char*)(node->children.list[ 0 ]->vec.data), state->offset
         );
       }
     }
@@ -112,31 +113,37 @@ int gpeg_asm_labeled_instr
     o = state->bytecode->size + GPEG_INSTR_SIZE;
     offset = &o;
   } else {
-    offset = str2int_map_getptr(&(state->offsets), label);
-    if (offset && *offset == state->bytecode->size) {
+    vec_t tuple = { 0 };
+    int notfound = hash_get(
+                     &(state->offsets),
+                     &(node->children.list[ 0 ]->vec),
+                     &tuple);
+    if (notfound) {
       if (state->error) {
         vec_printf(state->error,
-          "Endless loop detected in instruction %u, label '%s'.\n"
-          , state->bytecode->size
+          "Label '%s' cannot be resolved.\n"
           , label
         );
       }
-      RETURN_ERR(GPEGA_ERR_ENDLESSLOOP);
+      RETURN_ERR(GPEGA_ERR_LABEL);
+    } else {
+      offset = (unsigned*)(tuple.data);
     }
   }
-  if (offset) {
+  if (*offset == state->bytecode->size) {
+    if (state->error) {
+      vec_printf(state->error,
+        "Endless loop detected in instruction %u, label '%s'.\n"
+        , state->bytecode->size
+        , label
+      );
+    }
+    RETURN_ERR(GPEGA_ERR_ENDLESSLOOP);
+  } else {
     uint32_t instr = 0;
     gpeg_asm_instr(&instr, opcode, 1, 12, 20, *offset);
     vec_append(state->bytecode, &instr, sizeof(instr));
     return 0;
-  } else {
-    if (state->error) {
-      vec_printf(state->error,
-        "Label '%s' cannot be resolved.\n"
-        , label
-      );
-    }
-    RETURN_ERR(GPEGA_ERR_LABEL);
   }
 }
 
@@ -598,12 +605,15 @@ int gpeg_asm_cjp
     if (state->pass == 1) {
       state->offset += GPEG_INSTR_SIZE;
     } else {
-      unsigned counter = atoi((char*)(node->children.list[ 0 ]->vec.data));
-      unsigned* offset = str2int_map_getptr(
-          &(state->offsets),
-          (char*)(node->children.list[ 1 ]->vec.data));
       uint32_t instr = 0;
-      if (NULL == offset) {
+      unsigned counter = atoi((char*)(node->children.list[ 0 ]->vec.data));
+      unsigned* offset = NULL;
+      vec_t tuple = { 0 };
+      int notfound = hash_get(
+                       &(state->offsets),
+                       &(node->children.list[ 1 ]->vec),
+                       &tuple);
+      if (notfound) {
         if (state->error) {
           vec_printf(state->error,
             "Condjump: label '%s' cannot be resolved.\n"
@@ -612,6 +622,7 @@ int gpeg_asm_cjp
         }
         RETURN_ERR(GPEGA_ERR_LABEL);
       }
+      offset = (unsigned*)(tuple.data);
       gpeg_asm_instr(&instr, OP_CONDJUMP, 2, 4, 8, counter, 12, 20, *offset);
       vec_append(state->bytecode, &instr, sizeof(instr));
     }
@@ -730,6 +741,8 @@ int gpeg_assemble
     .offset    = 0,
   };
   int e;
+
+  hash_init(&(state.offsets));
 
   if ((e = gpeg_engine_run(&assemblybytecode, assembly, 0, &result)) != 0) {
     if (error) {

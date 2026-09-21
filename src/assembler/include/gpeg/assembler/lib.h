@@ -46,7 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <andy/vec_t.h>
 #include <andy/devmacroes.h>
 #include <andy/util_functions.h>
-#include <andy/str2int_map.h>
+#include <andy/hash.h>
 
 #include <gpeg/assembler/gpeg_assembler.h>
 #include <gpeg/assembler/assembly_slotmap.h>
