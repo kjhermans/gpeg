@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 static
 char* usage =
+  "%s release %-.*s\n"
   "Usage: %s [options]\n"
   "Where options are:\n"
   "-? or -h   Display this text and exit.\n"
@@ -75,7 +76,7 @@ int main
   if (queryargs(argc, argv, '?', "help", 0, 0, 0, 0) == 0
       || queryargs(argc, argv, 'h', "help", 0, 0, 0, 0) == 0)
   {
-    printf(usage, argv[ 0 ]);
+    printf(usage, argv[ 0 ], release_len, release, argv[ 0 ]);
     exit(0);
   }
   if (queryargs(argc, argv, 'i', "input", 0, 1, 0, &value) == 0) {
