@@ -1,14 +1,14 @@
 TOP              <- JSON
 
-UTF8CHAR         <- .
-
 --[[
-UTF8CHAR         <- { ASCII / DOUBLE / TRIPLE / QUADRUPLE }
-ASCII            <- [0x00-0x7f]
-DOUBLE           <- [0xc0-0xdf] [0x80-0xbf]
-TRIPLE           <- [0xe0-0xef] [0x80-0xbf] [0x80-0xbf]
-QUADRUPLE        <- [0xf0-0xf7] [0x80-0xbf] [0x80-0xbf] [0x80-0xbf]
+UTF8CHAR         <- .
 ]]
+
+UTF8CHAR         <- { ASCII / DOUBLE / TRIPLE / QUADRUPLE }
+ASCII            <- [\x00-\x7f]
+DOUBLE           <- [\xc0-\xdf] [\x80-\xbf]
+TRIPLE           <- [\xe0-\xef] [\x80-\xbf] [\x80-\xbf]
+QUADRUPLE        <- [\xf0-\xf7] [\x80-\xbf] [\x80-\xbf] [\x80-\xbf]
 
 SPACE            <- %s+
 MULTILINECOMMENT <- '/*' ( !'*/' .)* '*/'
