@@ -97,7 +97,6 @@ gpege_node_t* gpeg_result_to_tree
 {
   gpege_node_t* result = calloc(1, sizeof(gpege_node_t));
 
-//  result->vec.size = (1<<20); // #define some constant please
   for (unsigned i=0; i < captures->captures.count; i++) {
     gpege_capture_t* cap = &(captures->captures.list[ i ]);
     gpege_node_t* node = calloc(1, sizeof(gpege_node_t));
@@ -109,7 +108,6 @@ gpege_node_t* gpeg_result_to_tree
   }
   gpege_nodelist_sort(&(result->children));
   gpege_nodelist_tree(&(result->children));
-//  result->vec.size = 0;
   return result;
 }
 
