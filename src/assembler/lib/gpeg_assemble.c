@@ -716,6 +716,17 @@ int gpeg_asm_annotation
   return 0;
 }
 
+static
+void gpeg_labelhash_free
+  (hash_t* h, vec_t* key, vec_t* value, void* arg)
+{
+  (void)h;
+  (void)key;
+  (void)arg;
+
+  free(value->data);
+}
+
 /**
  *
  */
@@ -743,6 +754,8 @@ int gpeg_assemble
   int e;
 
   hash_init(&(state.offsets));
+  hash_set_depth(&(state.offsets), 5);
+  hash_set_ownership_policy(&(state.offsets), HASH_OWNER_CALLBACK, gpeg_labelhash_free, NULL);
 
   if ((e = gpeg_engine_run(&assemblybytecode, assembly, 0, &result)) != 0) {
     if (error) {
@@ -773,6 +786,7 @@ int gpeg_assemble
   gpeg_result_remove_slot(&result, SLOT_COMMENT);
 
   gpege_node_t* tree = gpeg_result_to_tree(&result);
+  gpeg_result_free(&result);
   gpeg_node_callback(tree, SLOT_LABELDEF, gpeg_asm_label, &state);
   gpeg_node_callback(tree, SLOT_BACKCOMMITINSTR, gpeg_asm_bcm, &state);
   gpeg_node_callback(tree, SLOT_CALLINSTR, gpeg_asm_cll, &state);
@@ -799,6 +813,9 @@ int gpeg_assemble
   CHECK(gpeg_node_run(tree));
   state.pass = 2;
   CHECK(gpeg_node_run(tree));
+
+  hash_free(&(state.offsets));
+  gpeg_node_free(tree);
 
   RETURN_OK;
 }

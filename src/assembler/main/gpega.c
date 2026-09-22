@@ -121,5 +121,8 @@ int main
     free(labelmap.data);
   }
 
+  free(input.data);
+  free(output.data);
+
   return 0;
 }
