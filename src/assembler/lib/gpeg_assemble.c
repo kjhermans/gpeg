@@ -62,7 +62,15 @@ int gpeg_asm_label
     if (state->pass == 1) {
       vec_t offset = { 0 };
       vec_append(&offset, &(state->offset), sizeof(state->offset));
-      int r = hash_put(&(state->offsets), &(node->children.list[ 0 ]->vec), &offset); (void)r;
+      if (hash_put(&(state->offsets), &(node->children.list[ 0 ]->vec), &offset)) {
+        if (state->error) {
+          vec_printf(state->error,
+            "Duplicate label detected; label '%s'.\n"
+            , (char*)(node->children.list[ 0 ]->vec.data)
+          );
+        }
+        RETURN_ERR(GPEGA_ERR_LABEL);
+      }
       if (state->labelmap) {
         vec_printf(state->labelmap,
           "%s:%u\n", (char*)(node->children.list[ 0 ]->vec.data), state->offset
@@ -755,6 +763,7 @@ int gpeg_assemble
 
   hash_init(&(state.offsets));
   hash_set_depth(&(state.offsets), 5);
+  hash_set_replace_policy(&(state.offsets), HASH_REPLACE_ERROR); /* No duplicate labels allowed */
   hash_set_ownership_policy(&(state.offsets), HASH_OWNER_CALLBACK, gpeg_labelhash_free, NULL);
 
   if ((e = gpeg_engine_run(&assemblybytecode, assembly, 0, &result)) != 0) {
