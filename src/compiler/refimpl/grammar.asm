@@ -1,4 +1,4 @@
--- GPEG compiler, release 0.6.3
+-- GPEG compiler, release 0.6.4
 
   call GRAMMAR
   end 0
