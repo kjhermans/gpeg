@@ -1,6 +1,9 @@
 TARGET=gpegc
 CFLAGS=-g -O2 -Wall -Wextra -I../include $(DEBUG)
-LIBS=../lib/libgpegc.a ../../engine/lib/libgpege.a ../../util/src/lib/libutil.a
+LIBS=../lib/libgpegc.a \
+		 ../../assembler/lib/libgpega.a \
+		 ../../engine/lib/libgpege.a \
+		 ../../util/src/lib/libutil.a
 CC=$(ARCH)gcc
 
 all: $(TARGET)

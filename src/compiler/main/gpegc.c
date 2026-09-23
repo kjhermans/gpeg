@@ -32,6 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <gpeg/compiler/lib.h>
+#include <gpeg/assembler/lib.h>
 #include <gpeg/engine/release.h>
 #include <andy/queryargs.h>
 #include <andy/absorb_file.h>
@@ -48,6 +49,8 @@ char* usage =
   "-o <path>   Specify output path.\n"
   "-C          Treat every rule as an automatic capture region.\n"
   "-M <path>   Specify slotmap header file.\n"
+  "-I          Integrate compilation with assembly (output is bytecode).\n"
+  "-L <path>   Specify labelmap file (when integrated compiling).\n"
   "-a          Annotate the assembly.\n"
   "\n"
   "--opt-noctr Do not emit counter and condjump instructions.\n"
@@ -64,12 +67,15 @@ int main
   char* inputfile = defaultinput;
   char* outputfile = defaultoutput;
   FILE* slotmap = NULL;
+  FILE* labelmapfile = NULL;
+  vec_t labelmap = { 0 };
   char* value;
   vec_t input = { 0 };
   vec_t output = { 0 };
   vec_t error = { 0 };
   int fdout = 1;
   unsigned flags = 0;
+  int integrated = 0;
 
 #ifdef _DEBUG
   fprintf(stderr, "gpegc DEBUG version, release %-.*s\n", release_len, release);
@@ -98,7 +104,21 @@ int main
   }
   if (queryargs(argc, argv, 'M', "slotmap", 0, 1, 0, &value) == 0) {
     if ((slotmap = fopen(value, "w")) == NULL) {
-      fprintf(stderr, "Could not open slotmap file '%s'\n", value);
+      fprintf(stderr, "Could not open slotmap file '%s'.\n", value);
+      return ~0;
+    }
+  }
+  if (queryargs(argc, argv, 'I', "integrated", 0, 0, 0, 0) == 0) {
+    integrated = 1;
+  }
+  if (queryargs(argc, argv, 'L', "labelmap", 0, 1, 0, &value) == 0) {
+    if (integrated) {
+      if ((labelmapfile = fopen(value, "w")) == NULL) {
+        fprintf(stderr, "Could not open labelmap file '%s'.\n", value);
+        return ~0;
+      }
+    } else {
+      fprintf(stderr, "Labelmap requires integrated compilation (-I).\n");
       return ~0;
     }
   }
@@ -107,21 +127,45 @@ int main
     return ~0;
   }
 
-  if (gpeg_compile(&input, &output, flags, slotmap, &error)) {
-    fprintf(stderr, "Compilation error.\n");
-    if (error.data) {
-      fprintf(stderr, "%s", error.data);
+  if (integrated) {
+    vec_t assembly = { 0 };
+    if (gpeg_compile(&input, &assembly, flags, slotmap, &error)) {
+      fprintf(stderr, "Compilation error.\n");
+      if (error.data) {
+        fprintf(stderr, "%s", error.data);
+      }
+      return ~0;
     }
-    return ~0;
+    if (gpeg_assemble(&assembly, &output, &error, labelmapfile ? &labelmap : NULL)) {
+      fprintf(stderr, "Assmbly error.\n");
+      if (error.data) {
+        fprintf(stderr, "%s", error.data);
+      }
+      return ~0;
+    }
+    if (labelmapfile) {
+      fwrite(labelmap.data, 1, labelmap.size, labelmapfile);
+      fclose(labelmapfile);
+    }
+  } else {
+    if (gpeg_compile(&input, &output, flags, slotmap, &error)) {
+      fprintf(stderr, "Compilation error.\n");
+      if (error.data) {
+        fprintf(stderr, "%s", error.data);
+      }
+      return ~0;
+    }
   }
   if (0 != strcmp(outputfile, "-")) {
     fdout = open(outputfile, O_WRONLY|O_CREAT|O_TRUNC, 0644);
     if (fdout == -1) {
+      fprintf(stderr, "Compiler: could not open output file '%s'.\n", outputfile);
       return ~0;
     }
   }
   if (write_insistent(fdout, output.data, output.size, 0)) {
-    fprintf(stderr, "Assembly writing error: %d\n", errno);
+    fprintf(stderr, "Compiler: output writing error: %d\n", errno);
+    return ~0;
   }
   close(fdout);
   if (slotmap) {

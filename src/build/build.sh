@@ -52,13 +52,13 @@ find $GEN0 -type f | grep Makefile | xargs -n 1 sed -i 's/..ARCH.//'
 make -C $GEN0/util/
 make -C $GEN0/engine/
  
-cp $GEN0/grammar.* $GEN0/compiler/lib/
-cp $GEN0/grammar_*.h $GEN0/compiler/include/gpeg/compiler/
-make -C $GEN0/compiler/
-
 cp $GEN0/assembly.* $GEN0/assembler/lib/
 cp $GEN0/assembly_*.h $GEN0/assembler/include/gpeg/assembler/
 make -C $GEN0/assembler/
+
+cp $GEN0/grammar.* $GEN0/compiler/lib/
+cp $GEN0/grammar_*.h $GEN0/compiler/include/gpeg/compiler/
+make -C $GEN0/compiler/
 
 
 ## round 1
@@ -102,13 +102,13 @@ find $GEN1 -type f | grep Makefile | xargs -n 1 sed -i 's/..ARCH.//'
 
 make -C $GEN1/engine/
  
-cp $GEN1/grammar.* $GEN1/compiler/lib/
-cp $GEN1/grammar_*.h $GEN1/compiler/include/gpeg/compiler/
-make -C $GEN1/compiler/
-
 cp $GEN1/assembly.* $GEN1/assembler/lib/
 cp $GEN1/assembly_*.h $GEN1/assembler/include/gpeg/assembler/
 make -C $GEN1/assembler/
+
+cp $GEN1/grammar.* $GEN1/compiler/lib/
+cp $GEN1/grammar_*.h $GEN1/compiler/include/gpeg/compiler/
+make -C $GEN1/compiler/
 
 
 
@@ -152,13 +152,13 @@ find $GEN2 -type f | grep Makefile | xargs -n 1 sed -i 's/..ARCH.//'
 
 make -C $GEN2/engine/
  
-cp $GEN2/grammar.* $GEN2/compiler/lib/
-cp $GEN2/grammar_*.h $GEN2/compiler/include/gpeg/compiler/
-make -C $GEN2/compiler/
-
 cp $GEN2/assembly.* $GEN2/assembler/lib/
 cp $GEN2/assembly_*.h $GEN2/assembler/include/gpeg/assembler/
 make -C $GEN2/assembler/
+
+cp $GEN2/grammar.* $GEN2/compiler/lib/
+cp $GEN2/grammar_*.h $GEN2/compiler/include/gpeg/compiler/
+make -C $GEN2/compiler/
 
 
 ## copying the artefacts to the proper build directory

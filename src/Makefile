@@ -8,8 +8,8 @@ all:
 	fi
 	cd util && make ARCH=$(GPEGARCH)
 	cd engine && make ARCH=$(GPEGARCH)
-	cd compiler && make ARCH=$(GPEGARCH)
 	cd assembler && make ARCH=$(GPEGARCH)
+	cd compiler && make ARCH=$(GPEGARCH)
 	cd debugger && make
 	cd lib && make
 
