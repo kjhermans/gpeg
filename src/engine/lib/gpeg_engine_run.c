@@ -114,7 +114,7 @@ void gpeg_engine_state_print
   {
     fprintf(stderr,
       "%.8u: %.8u (%s): %s: %.6u: %.6u: %s: #s=%u\n"
-      , state->instrctr-1
+      , state->stats.instrcount - 1
       , state->instrptr
       , label
       , instrstr[ opcode ]
@@ -127,7 +127,7 @@ void gpeg_engine_state_print
 #endif
   fprintf(stderr,
     "%.8u: %.8u: %s: %.6u: %.6u: %s: #s=%u\n"
-    , state->instrctr-1
+    , state->stats.instrcount - 1
     , state->instrptr
     , instrstr[ opcode ]
     , state->inputptr
@@ -648,11 +648,17 @@ int gpeg_engine_run
   state.input = input;
   state.inputsiz = input->size;
   result->flags = flags;
+  gettimeofday(&(state.stats.tv_start), NULL);
 
   while (!state.ended && !(state.failed && state.stack.count == 0)) {
-    if (maxinstrctr && ++state.instrctr > maxinstrctr) {
+    if (maxinstrctr && ++(state.stats.instrcount) > maxinstrctr) {
       RETURN_ERR2(GPEGE_ERR_MAXINSTR, CLEANUP);
     }
+#ifdef _DEBUG
+    if (state.stack.count > state.stats.stackmax) {
+      state.stats.stackmax = state.stack.count;
+    }
+#endif
     state.failed = 0;
     if (state.instrptr >= bytecode->size + 4) {
       RETURN_ERR2(GPEGE_ERR_OVERFLOW, CLEANUP);
@@ -730,11 +736,23 @@ DEBUGPOINT_FAIL
       CHECK2(gpeg_engine_fail(input, &state, flags), CLEANUP);
     }
   }
+  gettimeofday(&(state.stats.tv_stop), NULL);
 
-  //wrap_captures(input, flags, &state.actions, &(result->captures));
   result->captures = state.captures;
 CLEAN_UP:
   if (state.stack.list) { free(state.stack.list); }
   if (state.actions.list) { free(state.actions.list); }
+
+#ifdef _DEBUG
+  if (flags & GPEGE_FLG_DEBUG) {
+    fprintf(stderr,
+      "Max instructions: %u, Max stack size: %u, Running time: %ld usec.\n"
+      , state.stats.instrcount
+      , state.stats.stackmax
+      , ((state.stats.tv_stop.tv_sec - state.stats.tv_start.tv_sec) * 1000000) +
+          (state.stats.tv_stop.tv_usec - state.stats.tv_start.tv_usec)
+    );
+  }
+#endif
   return r;
 }

@@ -197,23 +197,23 @@ AGAIN:
     return;
   }
 
-  if (state->debuggerstate & GPEG_DBGRSTAT_NEXTBRKP) {
+  if (state->debugger.state & GPEG_DBGRSTAT_NEXTBRKP) {
     if (instr8[ 0 ] == 0x0e) {
-      state->debuggerstate &= ~GPEG_DBGRSTAT_NEXTBRKP;
+      state->debugger.state &= ~GPEG_DBGRSTAT_NEXTBRKP;
     } else {
       return;
     }
   }
-  if (state->debuggerstate & GPEG_DBGRSTAT_NEXTCALL) {
+  if (state->debugger.state & GPEG_DBGRSTAT_NEXTCALL) {
     if (opcode == OP_CALL) {
-      state->debuggerstate &= ~GPEG_DBGRSTAT_NEXTCALL;
+      state->debugger.state &= ~GPEG_DBGRSTAT_NEXTCALL;
     } else {
       return;
     }
   }
-  if (state->debuggerstate & GPEG_DBGRSTAT_STEPOVER) {
-    if (state->stack.count < state->stepoverlength) {
-      state->debuggerstate &= ~GPEG_DBGRSTAT_STEPOVER;
+  if (state->debugger.state & GPEG_DBGRSTAT_STEPOVER) {
+    if (state->stack.count < state->debugger.stepoverlength) {
+      state->debugger.state &= ~GPEG_DBGRSTAT_STEPOVER;
     } else {
       return;
     }
@@ -248,13 +248,13 @@ AGAIN:
       fprintf(stderr, "Input now in hex.\n");
       readable_hex = !readable_hex;
     } else if (0 == strcmp(buf, "c\n")) {
-      state->debuggerstate |= GPEG_DBGRSTAT_NEXTCALL;
+      state->debugger.state |= GPEG_DBGRSTAT_NEXTCALL;
       return;
     } else if (0 == strcmp(buf, "b\n")) {
-      state->debuggerstate |= GPEG_DBGRSTAT_NEXTBRKP;
+      state->debugger.state |= GPEG_DBGRSTAT_NEXTBRKP;
     } else if (0 == strcmp(buf, "o\n")) {
-      state->debuggerstate |= GPEG_DBGRSTAT_STEPOVER;
-      state->stepoverlength = state->stack.count;
+      state->debugger.state |= GPEG_DBGRSTAT_STEPOVER;
+      state->debugger.stepoverlength = state->stack.count;
     } else if (0 == strcmp(buf, "A\n")) {
       gpege_actionlist_debug(state->input, &(state->actions));
     } else if (0 == strcmp(buf, "S\n")) {

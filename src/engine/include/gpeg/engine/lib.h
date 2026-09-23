@@ -38,6 +38,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <stdint.h>
 
+#include <sys/time.h>
+
 #include <andy/vec_t.h>
 #include <andy/devmacroes.h>
 #include <andy/array.h>
@@ -99,11 +101,18 @@ typedef struct gpege_state
   gpege_actionlist_t    actions;
   gpege_caplist_t       captures;
   uint32list_t          inputsizes;
-  unsigned              instrctr;
   unsigned              counters[ GPEGE_MAX_COUNTERS ][ 2 ];
   unsigned              countercount;
-  unsigned              debuggerstate;
-  unsigned              stepoverlength;
+  struct {
+    struct timeval        tv_start;
+    struct timeval        tv_stop;
+    unsigned              instrcount;
+    unsigned              stackmax;
+  }                     stats;
+  struct {
+    unsigned              state;
+    unsigned              stepoverlength;
+  }                     debugger;
 }
 gpege_state_t;
 
