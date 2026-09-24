@@ -191,15 +191,19 @@ void gpeg_node_remove
 void gpeg_result_remove_slot
   (gpege_result_t* result, unsigned type)
 {
+  gpege_caplist_t newlist = { 0 };
+
   for (unsigned i=0; i < result->captures.count; i++) {
     if (result->captures.list[ i ].reg == type) {
       if (result->flags & GPEGE_FLG_COPYCAPTURES) {
         free(result->captures.list[ i ].vec.data);
       }
-      gpege_caplist_rem(&(result->captures), i, NULL);
-      --i;
+    } else {
+      gpege_caplist_push(&newlist, result->captures.list[ i ]);
     }
   }
+  free(result->captures.list);
+  result->captures = newlist;
 }
 
 void gpeg_node_callback
