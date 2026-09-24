@@ -1,5 +1,8 @@
 TARGET=gpegc
-CFLAGS=-g -O2 -Wall -Wextra -I../include $(DEBUG)
+CFLAGS=-g -O2 -Wall -Wextra \
+  -I../include \
+  -I../../engine/include \
+  -I../../assembler/include $(DEBUG)
 LIBS=../lib/libgpegc.a \
 		 ../../assembler/lib/libgpega.a \
 		 ../../engine/lib/libgpege.a \

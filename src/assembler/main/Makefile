@@ -1,5 +1,5 @@
 TARGET=gpega
-CFLAGS=-g -O2 -Wall -Wextra -I../include $(DEBUG)
+CFLAGS=-g -O2 -Wall -Wextra -I../include -I../../engine/include $(DEBUG)
 LIBS=../lib/libgpega.a ../../engine/lib/libgpege.a ../../util/src/lib/libutil.a
 CC=$(ARCH)gcc
 
