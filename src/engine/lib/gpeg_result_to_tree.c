@@ -86,7 +86,6 @@ void gpege_nodelist_tree
         gpege_nodelist_push(&(node0->children), node1);
         gpege_nodelist_tree(&(node0->children));
         sorted = 0;
-        break;
       }
     }
   }
