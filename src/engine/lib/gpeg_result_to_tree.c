@@ -69,6 +69,32 @@ void gpege_nodelist_sort
   }
 }
 
+/*
+static
+void gpege_nodelist_tree
+  (gpege_nodelist_t* list)
+{
+  if (0 == list->count) {
+    return;
+  }
+//  for (unsigned i=0; i < list->count-1; i++) {
+  for (unsigned i=list->count-2; i != (unsigned)-1; i--) {
+    gpege_node_t* node0 = list->list[ i ];
+    for (unsigned j=i+1; j < list->count; j++) {
+      gpege_node_t* node1 = list->list[ j ];
+      if (node1->offset >= node0->offset &&
+          node1->offset + node1->vec.size <= node0->offset + node0->vec.size)
+      {
+        gpege_nodelist_rem(list, j, NULL);
+        gpege_nodelist_push(&(node0->children), node1);
+        --j;
+      }
+    }
+    gpege_nodelist_tree(&(node0->children));
+  }
+}
+*/
+
 static
 void gpege_nodelist_tree
   (gpege_nodelist_t* list)
@@ -76,7 +102,8 @@ void gpege_nodelist_tree
   int sorted = 0;
   while (!sorted) {
     sorted = 1;
-    for (unsigned i=0; i < list->count-1; i++) {
+//    for (unsigned i=0; i < list->count-1; i++) {
+    for (unsigned i=list->count-2; i != (unsigned)-1; i--) {
       gpege_node_t* node0 = list->list[ i ];
       gpege_node_t* node1 = list->list[ i+1 ];
       if (node1->offset >= node0->offset &&
@@ -90,40 +117,6 @@ void gpege_nodelist_tree
     }
   }
 }
-
-/*
-static
-void gpege_nodelist_tree
-  (gpege_nodelist_t* list)
-{
-  int sorted = 0;
-
-  if (0 == list->count) {
-    return;
-  }
-  while (!sorted) {
-    sorted = 1;
-    gpege_nodelist_t copy = { 0 };
-    gpege_nodelist_push(&copy, list->list[ 0 ]);
-    for (unsigned i=0; i < list->count-1; i++) {
-      gpege_node_t* node0 = list->list[ i ];
-      gpege_node_t* node1 = list->list[ i+1 ];
-      if (node1->offset >= node0->offset &&
-          node1->offset + node1->vec.size <= node0->offset + node0->vec.size)
-      {
-        gpege_nodelist_push(&(node0->children), node1);
-        gpege_nodelist_tree(&(node0->children));
-        sorted = 0;
-      } else {
-        gpege_nodelist_push(&copy, node1);
-      }
-    }
-    free(list->list);
-    list->list = copy.list;
-    list->count = copy.count;
-  }
-}
-*/
 
 gpege_node_t* gpeg_result_to_tree
   (const gpege_result_t* captures)
