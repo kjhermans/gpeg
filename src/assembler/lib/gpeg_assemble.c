@@ -742,6 +742,7 @@ int gpeg_assemble
   (
     const vec_t* assembly,
     vec_t* bytecode,
+    unsigned flags,
     vec_t* error,
     vec_t* labelmap
   )
@@ -763,7 +764,11 @@ int gpeg_assemble
 
   hash_init(&(state.offsets));
   hash_set_depth(&(state.offsets), 5);
-  hash_set_replace_policy(&(state.offsets), HASH_REPLACE_ERROR); /* No duplicate labels allowed */
+  if (flags & GPEGA_FLG_DUPLICATELABELS) {
+    hash_set_replace_policy(&(state.offsets), HASH_REPLACE_REJECT);
+  } else {
+    hash_set_replace_policy(&(state.offsets), HASH_REPLACE_ERROR);
+  }
   hash_set_ownership_policy(&(state.offsets), HASH_OWNER_CALLBACK, gpeg_labelhash_free, NULL);
 
   if ((e = gpeg_engine_run(&assemblybytecode, assembly, 0, &result)) != 0) {

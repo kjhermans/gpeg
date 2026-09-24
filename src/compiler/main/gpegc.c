@@ -32,7 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <gpeg/compiler/lib.h>
-#include <gpeg/assembler/lib.h>
+#include <gpeg/assembler/gpeg_assembler.h>
 #include <gpeg/engine/release.h>
 #include <andy/queryargs.h>
 #include <andy/absorb_file.h>
@@ -54,6 +54,7 @@ char* usage =
   "-a          Annotate the assembly.\n"
   "\n"
   "--opt-noctr Do not emit counter and condjump instructions.\n"
+  "--opt_duplabel Allow duplicate labels.\n"
 ;
 
 /**
@@ -76,6 +77,7 @@ int main
   int fdout = 1;
   unsigned flags = 0;
   int integrated = 0;
+  unsigned aflags = 0;
 
 #ifdef _DEBUG
   fprintf(stderr, "gpegc DEBUG version, release %-.*s\n", release_len, release);
@@ -98,6 +100,9 @@ int main
   }
   if (queryargs(argc, argv, 0, "opt-noctr", 0, 0, 0, 0) == 0) {
     flags |= GPEGC_FLG_NOCOUNTER;
+  }
+  if (queryargs(argc, argv, 0, "opt-duplabel", 0, 0, 0, 0) == 0) {
+    aflags |= GPEGA_FLG_DUPLICATELABELS;
   }
   if (queryargs(argc, argv, 'a', "annotate", 0, 0, 0, 0) == 0) {
     flags |= GPEGC_FLG_ANNOTATE;
@@ -136,7 +141,7 @@ int main
       }
       return ~0;
     }
-    if (gpeg_assemble(&assembly, &output, &error, labelmapfile ? &labelmap : NULL)) {
+    if (gpeg_assemble(&assembly, &output, aflags, &error, labelmapfile ? &labelmap : NULL)) {
       fprintf(stderr, "Assmbly error.\n");
       if (error.data) {
         fprintf(stderr, "%s", error.data);

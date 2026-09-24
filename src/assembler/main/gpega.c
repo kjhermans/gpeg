@@ -46,6 +46,8 @@ char* usage =
   "-i <path>  Specify input path.\n"
   "-o <path>  Specify output path.\n"
   "-L <path>  Specify label map path (output).\n"
+  "\n"
+  "--opt-duplabel Allow duplicate labels.\n"
 ;
 
 /**
@@ -65,6 +67,7 @@ int main
   vec_t error = { 0 };
   vec_t labelmap = { 0 };
   int fdout = 1;
+  unsigned flags = 0;
 
 #ifdef _DEBUG
   fprintf(stderr, "gpega DEBUG version, release %-.*s\n", release_len, release);
@@ -85,12 +88,16 @@ int main
   if (queryargs(argc, argv, 'L', "labelmap", 0, 1, 0, &value) == 0) {
     labelmapfile = value;
   }
+  if (queryargs(argc, argv, 0, "opt-duplabel", 0, 0, 0, 0) == 0) {
+    flags |= GPEGA_FLG_DUPLICATELABELS;
+  }
+
   if (absorb_file(inputfile, &(input.data), &(input.size))) {
     fprintf(stderr, "Could not absorb file '%s'\n", inputfile);
     return ~0;
   }
 
-  if (gpeg_assemble(&input, &output, &error, (labelmapfile ? &labelmap : 0))) {
+  if (gpeg_assemble(&input, &output, flags, &error, (labelmapfile ? &labelmap : 0))) {
     fprintf(stderr, "Assembler error.\n");
     if (error.data) {
       fprintf(stderr, "%s", error.data);

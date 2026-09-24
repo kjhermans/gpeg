@@ -39,11 +39,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define GPEGA_ERR_LIMIT       515
 #define GPEGA_ERR_ENDLESSLOOP 516
 
+#define GPEGA_FLG_DUPLICATELABELS   (1<<0)
+
 extern
 int gpeg_assemble
   (
     const vec_t* assembly,
     vec_t* bytecode,
+    unsigned flags,
     vec_t* error,
     vec_t* labelmap // may be NULL
   )
