@@ -91,6 +91,40 @@ void gpege_nodelist_tree
   }
 }
 
+/*
+static
+void gpege_nodelist_tree
+  (gpege_nodelist_t* list)
+{
+  int sorted = 0;
+
+  if (0 == list->count) {
+    return;
+  }
+  while (!sorted) {
+    sorted = 1;
+    gpege_nodelist_t copy = { 0 };
+    gpege_nodelist_push(&copy, list->list[ 0 ]);
+    for (unsigned i=0; i < list->count-1; i++) {
+      gpege_node_t* node0 = list->list[ i ];
+      gpege_node_t* node1 = list->list[ i+1 ];
+      if (node1->offset >= node0->offset &&
+          node1->offset + node1->vec.size <= node0->offset + node0->vec.size)
+      {
+        gpege_nodelist_push(&(node0->children), node1);
+        gpege_nodelist_tree(&(node0->children));
+        sorted = 0;
+      } else {
+        gpege_nodelist_push(&copy, node1);
+      }
+    }
+    free(list->list);
+    list->list = copy.list;
+    list->count = copy.count;
+  }
+}
+*/
+
 gpege_node_t* gpeg_result_to_tree
   (const gpege_result_t* captures)
 {
