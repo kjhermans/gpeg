@@ -37,7 +37,13 @@ while (length($input)) {
   if ($input =~ s/^end(\s+([0-9]+))?//) {
     push @tokens, { type => 'end' };
     $offset += 4;
-  } elsif ($input =~ s/^range\s+//) {
+  } elsif ($input =~ s/^char\s+([0-9a-fA-F]{2})//) {
+    push @tokens, { type => 'char', char => $1 };
+    $offset += 4;
+  } elsif ($input =~ s/^range\s+([0-9a-fA-F]{2})\s+([0-9a-fA-F]{2})//) {
+    push @tokens, { type => 'set', from => $1, until => $2 };
+    $offset += 36;
+  } elsif ($input =~ s/^bitmask\s+//) {
     my ($truerange, $nbits, $bitmask, $from, $until) = (1, 8, 0xff, 0, 0);
     if ($input =~ s/^(true|false)\s+([0-9]+)\s+//) {
       $truerange = ($1 eq 'true') ? 1 : 0;

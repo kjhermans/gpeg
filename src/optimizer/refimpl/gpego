@@ -66,6 +66,8 @@ sub tokenize
       push @tokens, { type => 'end', code => $2 };
     } elsif ($input =~ s/^char\s+([a-fA-F0-9]{2})//) {
       push @tokens, { type => 'range', from => hex($1), until => hex($1) };
+    } elsif ($input =~ s/^range\s+([a-fA-F0-9]{2})\s+([a-fA-F0-9]{2})//) {
+      push @tokens, { type => 'range', from => hex($1), until => hex($2) };
     } elsif ($input =~ s/^(ret|failtwice|fail)//) {
       push @tokens, { type => $1 };
     } elsif ($input =~ s/^any//) {
@@ -73,7 +75,7 @@ sub tokenize
     } elsif ($input =~ s/^limit\s+([01])\s+([0-9]+)\s+([0-9]+)//) {
       my ($E, $S, $reg) = ($1, $2, $3);
       push @tokens, { type => 'limit', E => $E, S => $S, reg => $reg };
-    } elsif ($input =~ s/^range\s+//) {
+    } elsif ($input =~ s/^bitmask\s+//) {
       my ($truerange, $nbits, $bitmask, $from, $until) = (1, 8, 0xff, 0, 0);
       if ($input =~ s/^\s*(true|false)\s+([0-9]+)//) {
         $truerange = ($1 eq 'true') ? 1 : 0;
