@@ -123,7 +123,8 @@ architecture rtl of gpeg_engine is
   type state_t is (
     S_IDLE,
     S_FETCH_OP, S_WAIT_OP, S_LOAD_OP,
-    S_FETCH_INP, S_WAIT_INP, S_LOAD_INP,
+--    S_FETCH_INP,
+    S_WAIT_INP, S_LOAD_INP,
     S_EXECUTE,
     S_PUSH,
     S_POP,
@@ -275,7 +276,19 @@ begin
               -- input is already in cache
               state <= S_EXECUTE;
             else
-              state <= S_FETCH_INP;
+
+-- new from S_FETCH_INP
+          if inp_offset >= input_size
+          then
+            failed <= '1';
+            state <= S_EXECUTE;
+          else
+            input_addr <= std_logic_vector(resize(inp_offset, INPUT_ADDR_W));
+            input_rd <= '1';
+            state <= S_WAIT_INP;
+          end if;
+--              state <= S_FETCH_INP;
+
             end if;
           elsif opcode = OP_RET
              or opcode = OP_COMMIT
@@ -299,16 +312,16 @@ begin
           end if;
 
         -- === Input byte fetch (3 cycles) ===
-        when S_FETCH_INP =>
-          if inp_offset >= input_size
-          then
-            failed <= '1';
-            state <= S_EXECUTE;
-          else
-            input_addr <= std_logic_vector(resize(inp_offset, INPUT_ADDR_W));
-            input_rd <= '1';
-            state <= S_WAIT_INP;
-          end if;
+--        when S_FETCH_INP =>
+--          if inp_offset >= input_size
+--          then
+--            failed <= '1';
+--            state <= S_EXECUTE;
+--          else
+--            input_addr <= std_logic_vector(resize(inp_offset, INPUT_ADDR_W));
+--            input_rd <= '1';
+--            state <= S_WAIT_INP;
+--          end if;
         when S_WAIT_INP =>
           state <= S_LOAD_INP;
         when S_LOAD_INP =>
@@ -348,7 +361,6 @@ begin
             state <= S_FETCH_OP;
             n_instr <= n_instr + 1;
             print_status(opcode, v_failed);
-
           end if;
 
         -- === Execute ===
