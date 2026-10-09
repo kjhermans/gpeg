@@ -11,8 +11,8 @@ TESTDIR=/tmp/gpeg_vhdl_test_$IDENT
 rm -rf $TESTDIR
 mkdir -p $TESTDIR
 
-./gpegc -N -i $GPEG > $TESTDIR/$GPEG.asm
-./gpega -i $TESTDIR/$GPEG.asm > $TESTDIR/$GPEG.byc
+./gpegc --opt-noctr -N -i $GPEG > $TESTDIR/$GPEG.asm
+./gpega --opt-duplabel -i $TESTDIR/$GPEG.asm > $TESTDIR/$GPEG.byc
 ./gpege -c $TESTDIR/$GPEG.byc -i $INPUT -v > $TESTDIR/test.log 2>&1
 
 cat $TESTDIR/$GPEG.byc | perl -e 'my $c=0; while (1) { my $buf=""; sysread(STDIN, $buf, 4); last if (length($buf) != 4); my $hex = join "", map { sprintf("%02X", ord($_)) } split(//, $buf); print "    bcode_mem($c) <= x\"$hex\";\n"; $c++; } print "    bytecode_size <= to_unsigned(".($c*4).", 20);\n";' > $TESTDIR/bytecode.vhdl
