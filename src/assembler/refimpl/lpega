@@ -38,10 +38,10 @@ while (length($input)) {
     push @tokens, { type => 'end' };
     $offset += 4;
   } elsif ($input =~ s/^char\s+([0-9a-fA-F]{2})//) {
-    push @tokens, { type => 'char', char => $1 };
+    push @tokens, { type => 'char', char => hex($1) };
     $offset += 4;
   } elsif ($input =~ s/^range\s+([0-9a-fA-F]{2})\s+([0-9a-fA-F]{2})//) {
-    push @tokens, { type => 'set', from => $1, until => $2 };
+    push @tokens, { type => 'set', from => hex($1), until => hex($2) };
     $offset += 36;
   } elsif ($input =~ s/^bitmask\s+//) {
     my ($truerange, $nbits, $bitmask, $from, $until) = (1, 8, 0xff, 0, 0);
@@ -140,14 +140,19 @@ sub quad
 sub pack_sig_low_32
 {
   my $n = shift;
-  my $neg = 0;
-  if ($n < 0) {
-    $neg = 1;
-    $n = -$n;
-  }
-  my $res =
-    chr($n & 0xff) . chr(($n >> 8) & 0xff) . chr(($n >> 16) & 0xff) .
-    chr((($n >> 24) & 0x7f) | ($neg ? 0x80 : 0x00));
+#  my $neg = 0;
+#  if ($n < 0) {
+#    $neg = 1;
+#    $n = -$n;
+#  }
+  my $res = pack('V', $n);
+  print STDERR sprintf("$n -> %.2x %.2x %.2x %.2x.\n"
+    , ord(substr($res, 0, 1))
+    , ord(substr($res, 1, 1))
+    , ord(substr($res, 2, 1))
+    , ord(substr($res, 3, 1))
+  );
+
   return $res;
 }
 
