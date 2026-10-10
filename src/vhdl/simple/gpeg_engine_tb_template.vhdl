@@ -36,7 +36,7 @@ architecture sim of gpeg_engine_tb is
 
   signal inp_addr      : std_logic_vector(19 downto 0);
   signal inp_rd        : std_logic;
-  signal inp_rdata     : std_logic_vector(7 downto 0) := (others => '0');
+  signal inp_rdata     : std_logic_vector(7 downto 0) := (others => '0'); -- CHANGE: to 32 bits
 
 --  signal cap_valid     : std_logic;
 --  signal cap_open      : std_logic;
@@ -90,7 +90,7 @@ begin
     if rising_edge(clk) then
       if inp_rd = '1' then
         inp_rdata <= inp_mem(
-          to_integer(unsigned(inp_addr(19 downto 0)))
+          to_integer(unsigned(inp_addr(19 downto 0))) -- CHANGE; send four bytes, not one.
         );
       end if;
     end if;
