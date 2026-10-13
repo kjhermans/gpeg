@@ -36,7 +36,7 @@ architecture sim of gpeg_engine_tb is
 
   signal inp_addr      : std_logic_vector(19 downto 0);
   signal inp_rd        : std_logic;
-  signal inp_rdata     : std_logic_vector(7 downto 0) := (others => '0'); -- CHANGE: to 32 bits
+  signal inp_rdata     : std_logic_vector(31 downto 0) := (others => '0'); -- +CHANGE: to 32 bits
 
 --  signal cap_valid     : std_logic;
 --  signal cap_open      : std_logic;
@@ -86,12 +86,34 @@ begin
 
   -- Input BRAM model
   process(clk)
+    variable v_input_index : unsigned(19 downto 0);
   begin
     if rising_edge(clk) then
       if inp_rd = '1' then
-        inp_rdata <= inp_mem(
-          to_integer(unsigned(inp_addr(19 downto 0))) -- CHANGE; send four bytes, not one.
-        );
+        v_input_index := unsigned(inp_addr(19 downto 0));
+
+        report "input requested offset " & integer'image(to_integer(v_input_index));
+
+        if v_input_index < input_size_s then
+          inp_rdata(31 downto 24) <= inp_mem(to_integer(v_input_index)); -- +CHANGE
+        else
+          inp_rdata(31 downto 24) <= b"00000000";
+        end if;
+        if v_input_index + 1 < input_size_s then
+          inp_rdata(23 downto 16) <= inp_mem(to_integer(v_input_index + 1));
+        else
+          inp_rdata(23 downto 16) <= b"00000000";
+        end if;
+        if v_input_index + 2 < input_size_s then
+          inp_rdata(15 downto 8) <= inp_mem(to_integer(v_input_index + 2));
+        else
+          inp_rdata(15 downto 8) <= b"00000000";
+        end if;
+        if v_input_index + 3 < input_size_s then
+          inp_rdata(7 downto 0) <= inp_mem(to_integer(v_input_index + 3));
+        else
+          inp_rdata(7 downto 0) <= b"00000000";
+        end if;
       end if;
     end if;
   end process;
