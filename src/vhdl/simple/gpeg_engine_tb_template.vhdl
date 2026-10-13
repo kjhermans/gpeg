@@ -36,7 +36,7 @@ architecture sim of gpeg_engine_tb is
 
   signal inp_addr      : std_logic_vector(19 downto 0);
   signal inp_rd        : std_logic;
-  signal inp_rdata     : std_logic_vector(31 downto 0) := (others => '0'); -- +CHANGE: to 32 bits
+  signal inp_rdata     : std_logic_vector(31 downto 0) := (others => '0');
 
 --  signal cap_valid     : std_logic;
 --  signal cap_open      : std_logic;
@@ -91,11 +91,8 @@ begin
     if rising_edge(clk) then
       if inp_rd = '1' then
         v_input_index := unsigned(inp_addr(19 downto 0));
-
-        report "input requested offset " & integer'image(to_integer(v_input_index));
-
         if v_input_index < input_size_s then
-          inp_rdata(31 downto 24) <= inp_mem(to_integer(v_input_index)); -- +CHANGE
+          inp_rdata(31 downto 24) <= inp_mem(to_integer(v_input_index));
         else
           inp_rdata(31 downto 24) <= b"00000000";
         end if;

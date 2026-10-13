@@ -19,9 +19,6 @@
 -- Copyright 2024 Kees‑Jan Hermans — BSD licence (same as GPEG).
 -------------------------------------------------------------------------------
 
--- CHANGE: Proposed: to create a 4-byte input cache instead
--- of an input byte, always fetched at real input position >> 2.
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -57,7 +54,7 @@ entity gpeg_engine is
     -- Input memory (8‑bit, byte‑addressed) ------------------------------------
     input_addr         : out std_logic_vector(INPUT_ADDR_W-1 downto 0);
     input_rd           : out std_logic;
-    input_rdata        : in  std_logic_vector(31 downto 0) -- +CHANGE: 32 bits
+    input_rdata        : in  std_logic_vector(31 downto 0)
 
   );
 end entity gpeg_engine;
@@ -148,7 +145,7 @@ architecture rtl of gpeg_engine is
   signal register_count : unsigned(15 downto 0) := (others => '0');
 
   -- Instruction registers
-  signal inp_cache      : unsigned(31 downto 0)  := (others => '0'); -- +CHANGE: 32 bits and to inp_cache
+  signal inp_cache      : unsigned(31 downto 0)  := (others => '0');
 
   -- Pipeline control flags (set in DECODE)
   signal push_elt       : stack_elt_t := SELT0;
@@ -191,7 +188,6 @@ begin
     variable instr_until    : unsigned(7 downto 0);
     variable v_input        : unsigned(7 downto 0);
     variable v_input_cache_offset : unsigned(17 downto 0);
-    -- +CHANGE: variable v_input : unsigned( 7 downto 0 );
   begin
     if rising_edge(clk) then
       opcode := unsigned(bcode_rdata(31 downto 28));
@@ -209,7 +205,6 @@ begin
         when b"11" => v_input := unsigned(inp_cache(7 downto 0));
         when others => null;
       end case;
-      -- +CHANGE v_input := unsigned cast of inp_cache[ input_offset % 4 ]
 
       if rst = '1' then
         state <= S_IDLE;
@@ -232,6 +227,7 @@ begin
             bc_offset <= (others => '0');
             inp_offset <= (others => '0');
             inp_offset_max <= (others => '0');
+            input_addr <= b"11111111111111111111";
             failed <= '0';
             sp <= (others => '0');
             n_instr <= (others => '0');
@@ -285,7 +281,7 @@ begin
               bc_offset <= bc_offset + 4;
               n_instr <= n_instr + 1;
               state <= S_FETCH_OP;
-            elsif unsigned(input_addr(19 downto 2)) = v_input_cache_offset -- std_logic_vector(resize(inp_offset, INPUT_ADDR_W)) -- +CHANGE: if input_addr >> 2 == inp_off >> 2 
+            elsif unsigned(input_addr(19 downto 2)) = v_input_cache_offset
             then
               -- input is already in cache
               state <= S_EXECUTE;
@@ -295,7 +291,7 @@ begin
                 failed <= '1';
                 state <= S_EXECUTE;
               else
-                input_addr <= std_logic_vector(resize(v_input_cache_offset * 4, INPUT_ADDR_W)); -- CHANGE
+                input_addr <= std_logic_vector(resize(v_input_cache_offset * 4, INPUT_ADDR_W));
                 input_rd <= '1';
                 state <= S_WAIT_INP;
               end if;
@@ -325,7 +321,7 @@ begin
         when S_WAIT_INP =>
           state <= S_LOAD_INP;
         when S_LOAD_INP =>
-          inp_cache <= unsigned(input_rdata); -- +CHANGE: inp_byte to inp_cache
+          inp_cache <= unsigned(input_rdata);
           state <= S_EXECUTE;
 
         -- === Stack operations (1 cycle each, internal RAM) ===
@@ -379,7 +375,7 @@ begin
           elsif opcode = OP_RANGE
           then
             if not v_failed then
-              if v_input >= instr_from and -- +CHANGE: v_input >= and v_input >=
+              if v_input >= instr_from and
                  v_input <= instr_until
               then
                 inp_offset <= inp_offset + 1;
