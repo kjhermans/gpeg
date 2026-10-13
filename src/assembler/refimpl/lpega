@@ -146,12 +146,12 @@ sub pack_sig_low_32
 #    $n = -$n;
 #  }
   my $res = pack('V', $n);
-  print STDERR sprintf("$n -> %.2x %.2x %.2x %.2x.\n"
-    , ord(substr($res, 0, 1))
-    , ord(substr($res, 1, 1))
-    , ord(substr($res, 2, 1))
-    , ord(substr($res, 3, 1))
-  );
+#  print STDERR sprintf("$n -> %.2x %.2x %.2x %.2x.\n"
+#    , ord(substr($res, 0, 1))
+#    , ord(substr($res, 1, 1))
+#    , ord(substr($res, 2, 1))
+#    , ord(substr($res, 3, 1))
+#  );
 
   return $res;
 }
