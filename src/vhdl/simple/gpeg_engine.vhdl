@@ -162,13 +162,13 @@ architecture rtl of gpeg_engine is
   signal reg_found_idx  : unsigned(8 downto 0) := (others => '0');
 
   procedure print_status
-    (opcode :unsigned(3 downto 0); v_failed :boolean)
+    (v_opcode :unsigned(3 downto 0); v_failed :boolean)
   is
   begin
     -- synthesis translate_off
     report "EXEC: "
            & integer'image(to_integer(n_instr))
-           & " opcode=0x" & to_hstring(opcode)
+           & " opcode=0x" & to_hstring(v_opcode)
            & " bc_off=" & integer'image(to_integer(bc_offset))
            & " inp_off=" & integer'image(to_integer(inp_offset))
            & " v_failed=" & boolean'image(v_failed)
@@ -181,20 +181,20 @@ begin
   process(clk)
     variable v_redirected   : boolean;
     variable v_failed       : boolean;
-    variable opcode         : unsigned(3 downto 0);
-    variable instr_reg      : unsigned(7 downto 0);
-    variable instr_offset   : unsigned(19 downto 0);
-    variable instr_from     : unsigned(7 downto 0);
-    variable instr_until    : unsigned(7 downto 0);
+    variable v_opcode       : unsigned(3 downto 0);
+    variable v_instr_reg    : unsigned(7 downto 0);
+    variable v_instr_offset : unsigned(19 downto 0);
+    variable v_instr_from   : unsigned(7 downto 0);
+    variable v_instr_until  : unsigned(7 downto 0);
     variable v_input        : unsigned(7 downto 0);
     variable v_input_cache_offset : unsigned(17 downto 0);
   begin
     if rising_edge(clk) then
-      opcode := unsigned(bcode_rdata(31 downto 28));
-      instr_reg := unsigned(bcode_rdata(27 downto 20));
-      instr_offset := unsigned(bcode_rdata(19 downto 0));
-      instr_from := unsigned(bcode_rdata(15 downto 8));
-      instr_until := unsigned(bcode_rdata(7 downto 0));
+      v_opcode := unsigned(bcode_rdata(31 downto 28));
+      v_instr_reg := unsigned(bcode_rdata(27 downto 20));
+      v_instr_offset := unsigned(bcode_rdata(19 downto 0));
+      v_instr_from := unsigned(bcode_rdata(15 downto 8));
+      v_instr_until := unsigned(bcode_rdata(7 downto 0));
       bcode_rd  <= '0';
       input_rd  <= '0';
       v_input_cache_offset := unsigned(inp_offset(19 downto 2));
@@ -260,21 +260,21 @@ begin
             inp_offset_max <= inp_offset;
           end if;
 
-          if    opcode = OP_FAIL
-             or opcode = OP_END
-             or opcode = OP_CALL
-             or opcode = OP_CATCH
-             or opcode = OP_OPENCAPTURE
-             or opcode = OP_CLOSECAPTURE
-             or opcode = OP_COUNTER
-             or opcode = OP_CONDJUMP
+          if    v_opcode = OP_FAIL
+             or v_opcode = OP_END
+             or v_opcode = OP_CALL
+             or v_opcode = OP_CATCH
+             or v_opcode = OP_OPENCAPTURE
+             or v_opcode = OP_CLOSECAPTURE
+             or v_opcode = OP_COUNTER
+             or v_opcode = OP_CONDJUMP
           then
             state <= S_EXECUTE;
-          elsif opcode = OP_RANGE
+          elsif v_opcode = OP_RANGE
           then
             if inp_offset < input_size
-                 and instr_from = 0
-                 and instr_until = x"ff" -- 'any' - no need to fetch input char
+                 and v_instr_from = 0
+                 and v_instr_until = x"ff" -- 'any' - no need to fetch input char
             then
               report "ANY";
               inp_offset <= inp_offset + 1;
@@ -296,11 +296,11 @@ begin
                 state <= S_WAIT_INP;
               end if;
             end if;
-          elsif opcode = OP_RET
-             or opcode = OP_COMMIT
-             or opcode = OP_BACKCOMMIT
-             or opcode = OP_PARTIALCOMMIT
-             or opcode = OP_FAILTWICE
+          elsif v_opcode = OP_RET
+             or v_opcode = OP_COMMIT
+             or v_opcode = OP_BACKCOMMIT
+             or v_opcode = OP_PARTIALCOMMIT
+             or v_opcode = OP_FAILTWICE
           then
             state <= S_POP;
           else
@@ -309,7 +309,7 @@ begin
             -- synthesis translate_off
             report "ERROR: Unknown opcode: "
                  & integer'image(to_integer(n_instr))
-                 & " opcode=0x" & to_hstring(opcode)
+                 & " opcode=0x" & to_hstring(v_opcode)
                  & " bc_off=" & integer'image(to_integer(bc_offset))
                  & " inp_off=" & integer'image(to_integer(inp_offset))
                  & " v_failed=" & boolean'image(v_failed)
@@ -319,7 +319,7 @@ begin
 
         -- === Input byte fetch (2 cycles) ===
         when S_WAIT_INP =>
-          state <= S_LOAD_INP;
+          state <= S_LOAD_INP; -- One dead cycle for BRAM latency
         when S_LOAD_INP =>
           inp_cache <= unsigned(input_rdata);
           state <= S_EXECUTE;
@@ -343,20 +343,20 @@ begin
             stack_mem(to_integer(sp)) <= push_elt;
             sp <= sp + 1;
 
-            if opcode = OP_CALL
+            if v_opcode = OP_CALL
             then
               current_call <= call_counter;
-              bc_offset <= instr_offset;
-            elsif opcode = OP_CATCH
+              bc_offset <= v_instr_offset;
+            elsif v_opcode = OP_CATCH
             then
               bc_offset <= bc_offset + 4;
-            elsif opcode = OP_PARTIALCOMMIT
+            elsif v_opcode = OP_PARTIALCOMMIT
             then
-              bc_offset <= instr_offset;
+              bc_offset <= v_instr_offset;
             end if;
             state <= S_FETCH_OP;
             n_instr <= n_instr + 1;
-            print_status(opcode, v_failed);
+            print_status(v_opcode, v_failed);
           end if;
 
         -- === Execute ===
@@ -365,18 +365,18 @@ begin
           v_failed := (failed = '1');  -- capture signal into variable
           failed <= '0';               -- clear for next use
 
-          if opcode = OP_END
+          if v_opcode = OP_END
           then
             busy <= '0';
             done <= '1';
             state <= S_DONE;
             v_redirected := true;
 
-          elsif opcode = OP_RANGE
+          elsif v_opcode = OP_RANGE
           then
             if not v_failed then
-              if v_input >= instr_from and
-                 v_input <= instr_until
+              if v_input >= v_instr_from and
+                 v_input <= v_instr_until
               then
                 inp_offset <= inp_offset + 1;
                 bc_offset <= bc_offset + 4;
@@ -385,7 +385,7 @@ begin
               end if;
             end if;
 
-          elsif opcode = OP_CALL
+          elsif v_opcode = OP_CALL
           then
             call_counter <= call_counter + 1;
             push_elt <= (
@@ -398,7 +398,7 @@ begin
             state <= S_PUSH;
             v_redirected := true;
 
-          elsif opcode = OP_RET
+          elsif v_opcode = OP_RET
           then
             if popped.stype = STYPE_CALL
             then
@@ -410,11 +410,11 @@ begin
               v_redirected := true;
             end if;
 
-          elsif opcode = OP_CATCH
+          elsif v_opcode = OP_CATCH
           then
             push_elt <= (
               STYPE_CATCH,
-              instr_offset,
+              v_instr_offset,
               inp_offset,
               resize(reg_sp, 16),
               x"0000"
@@ -422,22 +422,22 @@ begin
             state <= S_PUSH;
             v_redirected := true;
 
-          elsif opcode = OP_COMMIT
+          elsif v_opcode = OP_COMMIT
           then
             if popped.stype = STYPE_CATCH
             then
-              bc_offset <= instr_offset;
+              bc_offset <= v_instr_offset;
             else
               err_code <= ERR_BYTECODE;
               state <= S_ERROR;
               v_redirected := true;
             end if;
 
-          elsif opcode = OP_BACKCOMMIT
+          elsif v_opcode = OP_BACKCOMMIT
           then
             if popped.stype = STYPE_CATCH
             then
-              bc_offset <= instr_offset;
+              bc_offset <= v_instr_offset;
               inp_offset <= popped.input_offset;
             else
               err_code <= ERR_BYTECODE;
@@ -445,7 +445,7 @@ begin
               v_redirected := true;
             end if;
 
-          elsif opcode = OP_PARTIALCOMMIT
+          elsif v_opcode = OP_PARTIALCOMMIT
           then
             if popped.stype = STYPE_CATCH
             then
@@ -464,22 +464,22 @@ begin
               v_redirected := true;
             end if;
 
-          elsif opcode = OP_OPENCAPTURE
+          elsif v_opcode = OP_OPENCAPTURE
           then
             bc_offset <= bc_offset + 4;
             state <= S_FETCH_OP;
 
-          elsif opcode = OP_CLOSECAPTURE
+          elsif v_opcode = OP_CLOSECAPTURE
           then
             bc_offset <= bc_offset + 4;
             state <= S_FETCH_OP;
 
-          elsif opcode = OP_COUNTER
+          elsif v_opcode = OP_COUNTER
           then
             state <= S_REG_PUSH;
             v_redirected := true;
 
-          elsif opcode = OP_CONDJUMP
+          elsif v_opcode = OP_CONDJUMP
           then
             if reg_sp = 0 then
               err_code <= ERR_BYTECODE;
@@ -491,11 +491,11 @@ begin
               v_redirected := true;
             end if;
 
-          elsif opcode = OP_FAIL
+          elsif v_opcode = OP_FAIL
           then
             v_failed := true;
 
-          elsif opcode = OP_FAILTWICE
+          elsif v_opcode = OP_FAILTWICE
           then
             if popped.stype /= STYPE_CATCH
             then
@@ -522,7 +522,7 @@ begin
           if not v_redirected
             then
             n_instr <= n_instr + 1;
-            print_status(opcode, v_failed);
+            print_status(v_opcode, v_failed);
             if v_failed
             then
               state <= S_FAIL_UNWIND;
@@ -539,9 +539,9 @@ begin
             state <= S_ERROR;
           else
             reg_mem(to_integer(reg_sp)) <= (
-              reg => instr_reg,
+              reg => v_instr_reg,
               stacklen => sp,
-              value => instr_offset
+              value => v_instr_offset
             );
             reg_sp <= reg_sp + 1;
             bc_offset <= bc_offset + 4;
@@ -551,7 +551,7 @@ begin
 
         -- === CONDJUMP register search (scan backwards) ===
         when S_CONDJUMP_SEARCH =>
-          if reg_mem(to_integer(reg_scan_idx)).reg = instr_reg
+          if reg_mem(to_integer(reg_scan_idx)).reg = v_instr_reg
              and reg_mem(to_integer(reg_scan_idx)).stacklen = sp
           then
             reg_found_idx <= reg_scan_idx;
@@ -576,7 +576,7 @@ begin
             -- Decrement counter and jump
             reg_mem(to_integer(reg_found_idx)).value <=
               reg_mem(to_integer(reg_found_idx)).value - 1;
-            bc_offset <= instr_offset;
+            bc_offset <= v_instr_offset;
             n_instr <= n_instr + 1;
             state <= S_FETCH_OP;
           end if;
