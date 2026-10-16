@@ -190,13 +190,13 @@ begin
     variable v_input_cache_offset : unsigned(17 downto 0);
   begin
     if rising_edge(clk) then
+      bcode_rd <= '0';
+      input_rd <= '0';
       v_opcode := unsigned(bcode_rdata(31 downto 28));
       v_instr_reg := unsigned(bcode_rdata(27 downto 20));
       v_instr_offset := unsigned(bcode_rdata(19 downto 0));
       v_instr_from := unsigned(bcode_rdata(15 downto 8));
       v_instr_until := unsigned(bcode_rdata(7 downto 0));
-      bcode_rd  <= '0';
-      input_rd  <= '0';
       v_input_cache_offset := unsigned(inp_offset(19 downto 2));
       case inp_offset(1 downto 0) is
         when b"00" => v_input := unsigned(inp_cache(31 downto 24));
