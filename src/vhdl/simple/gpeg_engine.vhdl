@@ -375,7 +375,8 @@ begin
           elsif v_opcode = OP_RANGE
           then
             if not v_failed then
-              if v_input >= v_instr_from and
+              if inp_offset < input_size and
+                 v_input >= v_instr_from and
                  v_input <= v_instr_until
               then
                 inp_offset <= inp_offset + 1;
