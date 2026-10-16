@@ -520,7 +520,7 @@ begin
 
           -- Post-execute: handle failure or next instruction
           if not v_redirected
-            then
+          then
             n_instr <= n_instr + 1;
             print_status(v_opcode, v_failed);
             if v_failed
